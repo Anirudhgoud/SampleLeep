@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.goleep.driverapp.leep.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/login_layout"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <com.goleep.driverapp.helpers.customfont.CustomEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
+            android:textColor="@color/white"
+            style="@style/login_edit_style"
+            android:layout_margin="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingLeft="10dp"
+            android:inputType="number"
+            android:id="@+id/phone_editText"
+            app:typeface="NotoSans-Light"
+            android:hint="@string/phone_hint"/>
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint=" "
+            android:layout_margin="10dp"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleDrawable="@drawable/leep_show_password_icon">
+
+            <com.goleep.driverapp.helpers.customfont.CustomEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/password_editText"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:paddingLeft="10dp"
+                app:typeface="NotoSans-Light"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                style="@style/login_edit_style"
+                android:inputType="textPassword"
+                android:hint="@string/password_hint"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <com.goleep.driverapp.helpers.customfont.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            app:typeface="NotoSans-Regular"
+            android:background="@drawable/login_button_bg"
+            android:textColor="@color/white"
+            android:layout_margin="15dp"
+            android:id="@+id/login_button"
+            android:text="@string/log_in_text"/>
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:text="@string/forgot_password"
+            android:id="@+id/forgot_password_textView"
+            app:typeface="NotoSans-Regular"
+            android:textColor="@color/light_grey"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/splash_leep_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/login_layout"
+        android:layout_marginBottom="20dp"/>
+
+</RelativeLayout>

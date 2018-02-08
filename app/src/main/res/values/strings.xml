@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">leep</string>
+    <string name="network_error_message">Network Error</string>
+    <string name="error">Error</string>
+    <string name="phone_hint">Phone Number</string>
+    <string name="log_in_text">Log In</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="password_hint">Password</string>
 </resources>
