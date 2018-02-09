@@ -18,7 +18,7 @@ android {
         debug {
             minifyEnabled false
             buildConfigField 'boolean', 'PROD_ENV', "false"
-            buildConfigField 'String', 'BASE_URL', '"http://leep.cybrilla.io"'
+            buildConfigField 'String', 'BASE_URL', '"http://leep.cybrilla.io/v1"'
         }
     }
 }

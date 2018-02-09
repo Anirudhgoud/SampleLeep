@@ -1,10 +1,10 @@
 package com.goleep.driverapp.services.room;
 
 import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
+
 import android.content.Context;
 
-import com.goleep.driverapp.services.storage.LocalFileStore;
+
 
 /**
  * Created by vishalm on 09/02/18.
