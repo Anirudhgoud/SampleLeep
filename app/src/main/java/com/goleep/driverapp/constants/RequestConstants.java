@@ -11,4 +11,7 @@ public class RequestConstants {
     public static final String KEY_PHONE_NUMBER = "contact_number";
     public static final String KEY_COUNTRY_CODE = "country_code";
     public static final String KEY_PASSWORD = "password";
+    public static final String KEY_USER_AGENT = "User-Agent";
+    public static final String USER_AGENT = "driver_app";
+    public static final String CONTENT_TYPE_JSON = "json";
 }

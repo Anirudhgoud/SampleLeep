@@ -3,17 +3,21 @@ package com.goleep.driverapp.services.network;
 import android.content.Context;
 
 
-
 import com.goleep.driverapp.constants.NetworkConstants;
+import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.interfaces.NetworkRequest;
 import com.goleep.driverapp.services.storage.LocalFileStore;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
@@ -36,6 +40,7 @@ public class RequestFactory {
             networkRequest = new GetRequest();
         }
         Map<String, String> headerParams = new HashMap<>();
+        headerParams.put(RequestConstants.KEY_USER_AGENT, RequestConstants.USER_AGENT);
         RequestBody requestBody = null;
         if(isAuthRequired){
             LocalFileStore localFileStore = LocalStorageService.sharedInstance().getLocalFileStore();
@@ -61,10 +66,26 @@ public class RequestFactory {
             }
             requestBody = bodyBuilder.build();
             headerParams.put("Content-Type", "application/x-form-urlencoded");
-        }else if (contentType != null && contentType.equals("json")){
+        }else if (contentType != null && contentType.equals(RequestConstants.CONTENT_TYPE_JSON)){
+            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             headerParams.put("Content-Type", "application/json");
+            JSONObject json = new JSONObject();
+            for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
+                String value;
+                try{
+                    value = (String) entry.getValue();
+                }catch (ClassCastException exception){
+                    exception.printStackTrace();
+                    value = entry.getValue().toString();
+                }
+                try {
+                    json.put(entry.getKey(), value);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            requestBody = RequestBody.create(JSON, String.valueOf(json));
         }
         return networkRequest.buildRequest(url, requestBody, headerParams);
     }
-
 }

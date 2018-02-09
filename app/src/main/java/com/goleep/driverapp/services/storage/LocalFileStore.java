@@ -10,11 +10,12 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class LocalFileStore {
-    private final String APP_SHARED_PREFS = "xamcheck_parent";
+
 
     LocalFileStore(){}
 
     private EncryptedSharedPreferences getSharedPreference(Context context){
+        final String APP_SHARED_PREFS = "leep_driverapp";
         return new EncryptedSharedPreferences(
                 context, context.getSharedPreferences(APP_SHARED_PREFS, MODE_PRIVATE));
     }
@@ -38,12 +39,7 @@ public class LocalFileStore {
     }
 
     public String getString(Context context, String appKey) {
-        String key = getSharedPreference(context).getString(appKey, null);
-        if(key != null && key.equals("")){
-            return null;
-        }else{
-            return key;
-        }
+        return getSharedPreference(context).getString(appKey, "");
     }
 
     public long getLong(Context context, String appKey) {

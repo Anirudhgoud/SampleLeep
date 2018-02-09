@@ -6,6 +6,8 @@ package com.goleep.driverapp.constants;
 
 public class SharedPreferenceKeys {
 
+    public static final String USER_META = "user_meta";
+
     private SharedPreferenceKeys(){
 
     }

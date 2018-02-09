@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.goleep.driverapp">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -12,15 +14,20 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".leep.SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".leep.LoginActivity"
-            android:theme="@style/SplashTheme"/>
+        <activity
+            android:name=".leep.LoginActivity"
+            android:theme="@style/LoginTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".leep.HomeActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

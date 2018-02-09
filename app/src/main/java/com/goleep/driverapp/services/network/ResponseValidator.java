@@ -31,6 +31,7 @@ public class ResponseValidator {
                 break;
             case 404:
             case 401:
+            case 405:
             case 500:
                 responseObjects[0] = NetworkConstants.FAILURE;
                 responseObjects[1] = null;

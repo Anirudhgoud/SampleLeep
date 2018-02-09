@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.NetworkStringConstants;
+import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.utils.LogUtils;
 
@@ -42,9 +43,9 @@ public class NetworkClient {
                 NetworkConstants.PUT_REQUEST, networkAPICallback, null);
     }
 
-    public void makeFormPostRequest(Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
+    public void makeJsonPostRequest(Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
                                     final NetworkAPICallback networkAPICallback){
-        requestHandler(context, requestUrl, isAuthRequired, bodyParams, "form",
+        requestHandler(context, requestUrl, isAuthRequired, bodyParams, RequestConstants.CONTENT_TYPE_JSON,
                 NetworkConstants.POST_REQUEST, networkAPICallback, null);
     }
 
@@ -132,7 +133,4 @@ public class NetworkClient {
         Object error = objects[2];
         return error != null ? (String) error: null;
     }
-
-
-
 }
