@@ -27,7 +27,8 @@
             android:theme="@style/LoginTheme"
             android:screenOrientation="portrait"/>
         <activity android:name=".leep.HomeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme"/>
     </application>
 
 </manifest>

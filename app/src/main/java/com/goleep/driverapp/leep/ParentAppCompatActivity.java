@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.helpers.customfont.CustomButton;
+import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.AlertDialogHelper;
 import com.goleep.driverapp.interfaces.NetworkChangeListener;
 import com.goleep.driverapp.services.network.NetworkChecker;
@@ -99,6 +102,26 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     protected void setResources(int resourceIdentifier) {
         setContentView(resourceIdentifier);
         doInitialSetup();
+    }
+
+    protected void setToolbarLeftIcon(int resId){
+        CustomButton leftToolbarButton = findViewById(R.id.left_toolbar_button);
+        leftToolbarButton.setVisibility(View.VISIBLE);
+        leftToolbarButton.setOnClickListener(this);
+        leftToolbarButton.setBackgroundResource(resId);
+    }
+
+    protected void setToolbarRightText(String text){
+        CustomTextView leftToolbarButton = findViewById(R.id.right_toolbar_text);
+        leftToolbarButton.setText(text);
+        leftToolbarButton.setVisibility(View.VISIBLE);
+        leftToolbarButton.setOnClickListener(this);
+    }
+
+    protected void setToolBarColor(int colorId){
+        RelativeLayout toolbarContainer = findViewById(R.id.toolbar_container);
+        toolbarContainer.setBackgroundColor(colorId);
+
     }
 
     @Override

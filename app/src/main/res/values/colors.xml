@@ -6,4 +6,7 @@
     <color name="login_green">#3ED4C2</color>
     <color name="white">#FFFFFF</color>
     <color name="light_grey">#939393</color>
+    <color name="transparent">#00000000</color>
+    <color name="dark_grey">#656565</color>
+    <color name="text_color">#787878</color>
 </resources>
