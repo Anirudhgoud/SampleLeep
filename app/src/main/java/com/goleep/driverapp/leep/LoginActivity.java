@@ -83,18 +83,12 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private boolean isValidUsernamePassword() {
-        Pattern pattern;
-        Matcher matcher;
-
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])$";
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(passwordEditText.getText().toString());
-
+        final String PATTERN = ".*[A-Za-z0-9]+.*";
         if(phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
                 !passwordEditText.getText().toString().isEmpty() &&
                 passwordEditText.getText().toString().length() >= PASSWORD_MIN_LENGTH &&
                 passwordEditText.getText().toString().length() <= PASSWORD_MAX_LENGTH &&
-                matcher.matches())
+                passwordEditText.getText().toString().matches(PATTERN))
             return true;
         return false;
     }
