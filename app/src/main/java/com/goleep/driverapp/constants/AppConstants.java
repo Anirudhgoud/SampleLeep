@@ -8,5 +8,5 @@ public class AppConstants {
     private AppConstants(){
 
     }
-    public static final int PHONE_NUMBER_LENGTH = 10;
+
 }

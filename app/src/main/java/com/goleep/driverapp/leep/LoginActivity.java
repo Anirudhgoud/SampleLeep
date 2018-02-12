@@ -2,14 +2,12 @@ package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatTextView;
+
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.constants.AppConstants;
+
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
@@ -21,14 +19,20 @@ import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.viewmodels.LoginViewModel;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.goleep.driverapp.constants.AppConstants.PHONE_NUMBER_LENGTH;
 
 public class LoginActivity extends ParentAppCompatActivity implements EditTextListener {
-    LoginViewModel loginViewModel;
+
+    public static final int PHONE_NUMBER_LENGTH = 10;
+    public static final int PASSWORD_MAX_LENGTH = 15;
+    public static final int PASSWORD_MIN_LENGTH = 8;
+
+    private LoginViewModel loginViewModel;
     @BindView(R.id.phone_editText)CustomEditText phoneEditText;
     @BindView(R.id.password_editText) CustomEditText passwordEditText;
     @BindView(R.id.login_button) CustomButton loginButton;
@@ -73,10 +77,26 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void performLoginOperation() {
-        if(phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
-                !passwordEditText.getText().toString().isEmpty())
+        if(isValidUsernamePassword())
             loginViewModel.login(phoneEditText.getText().toString(), passwordEditText.getText().toString(),
                 "+91", loginCallBack);
+    }
+
+    private boolean isValidUsernamePassword() {
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])$";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(passwordEditText.getText().toString());
+
+        if(phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
+                !passwordEditText.getText().toString().isEmpty() &&
+                passwordEditText.getText().toString().length() >= PASSWORD_MIN_LENGTH &&
+                passwordEditText.getText().toString().length() <= PASSWORD_MAX_LENGTH &&
+                matcher.matches())
+            return true;
+        return false;
     }
 
     private void attachEditTextListeners() {
