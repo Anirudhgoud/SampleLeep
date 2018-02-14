@@ -13,7 +13,7 @@
         android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/dull_green"
         android:layout_weight="4">
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -144,13 +144,143 @@
 
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
-        android:layout_weight="6"></RelativeLayout>
+        android:paddingLeft="30dp"
+        android:orientation="vertical"
+        android:paddingTop="30dp"
+        android:paddingRight="30dp"
+        android:layout_weight="6">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/contact_layout"
+            android:layout_marginBottom="10dp">
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/contact_label_text_view"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold"
+                android:text="xxx"
+                android:textColor="@color/text_light_grey"/>
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/contact_text_view"
+                android:textSize="16sp"
+                app:typeface="NotoSans-Regular"
+                android:text="xxx"/>
+        </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/address_layout"
+            android:layout_marginBottom="10dp">
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/address_label_text_view"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold"
+                android:text="xxx"
+                android:textColor="@color/text_light_grey"/>
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/address_text_view"
+                android:textSize="16sp"
+                app:typeface="NotoSans-Regular"
+                android:text="xxx"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/driver_licence_layout"
+            android:layout_marginBottom="10dp">
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/driver_licence_label_text_view"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold"
+                android:text="xxx"
+                android:textColor="@color/text_light_grey"/>
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/driver_licence_text_view"
+                android:textSize="16sp"
+                app:typeface="NotoSans-Regular"
+                android:text="xxx"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/register_number__layout"
+            android:layout_marginBottom="10dp">
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_number_label_text_view"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold"
+                android:text="xxx"
+                android:textColor="@color/text_light_grey"/>
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_number_text_view"
+                android:textSize="16sp"
+                app:typeface="NotoSans-Regular"
+                android:text="xxx"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/employee_number_layout"
+            android:layout_marginBottom="10dp">
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/employee_number_label_text_view"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold"
+                android:text="xxx"
+                android:textColor="@color/text_light_grey"/>
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/remployee_number_text_view"
+                android:textSize="16sp"
+                app:typeface="NotoSans-Regular"
+                android:text="xxx"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+<com.goleep.driverapp.helpers.customfont.CustomButton
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/signout"
+    android:padding="10dp"
+    android:textSize="20sp"
+    android:text="@string/sign_out"
+    android:textColor="@color/white"
+    app:typeface="NotoSans-Regular"
+    android:background="@color/blue"/>
 
 
 </LinearLayout>

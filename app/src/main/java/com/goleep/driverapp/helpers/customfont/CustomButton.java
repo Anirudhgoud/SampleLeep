@@ -39,6 +39,7 @@ public class CustomButton extends AppCompatButton {
                     "fonts/" + fontName + ".ttf");
             setTypeface(typeface);
         }
+        setTransformationMethod(null);
     }
 
 }

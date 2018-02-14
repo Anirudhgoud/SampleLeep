@@ -7,4 +7,5 @@
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="password_hint">Password</string>
     <string name="edit">Edit</string>
+    <string name="sign_out">Sign Out</string>
 </resources>

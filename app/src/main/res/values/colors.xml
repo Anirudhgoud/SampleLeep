@@ -9,4 +9,10 @@
     <color name="transparent">#00000000</color>
     <color name="dark_grey">#656565</color>
     <color name="text_color">#787878</color>
+    <color name="text_light_grey">#CFCFCF</color>
+    <color name="text_black">#080033</color>
+    <color name="blue">#2699FB</color>
+    <color name="dull_green">#BFA5D6A7</color>
+    <color name="green">#28DC76</color>
+    <color name="red">#FF6464</color>
 </resources>

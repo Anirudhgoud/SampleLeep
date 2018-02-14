@@ -13,10 +13,12 @@ import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
+import com.goleep.driverapp.helpers.uimodels.UserMeta;
 import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.viewmodels.LoginViewModel;
+import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -56,9 +58,21 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.setResources(R.layout.activity_login);
-        if(isLoggedIn()){
-            startHomeActivity();
+        UserMeta userMeta = getUserMeta();
+        if(userMeta != null){
+            startHomeActivity(userMeta);
         }
+    }
+
+    private UserMeta getUserMeta(){
+        String userMetaString = LocalStorageService.sharedInstance().getLocalFileStore().getString(
+                LoginActivity.this, SharedPreferenceKeys.USER_META);
+        UserMeta userMeta = null;
+
+        userMeta = (userMetaString.isEmpty()) ? null : new Gson().fromJson(userMetaString, UserMeta.class);
+
+        return userMeta;
+
     }
 
     private boolean isLoggedIn() {
@@ -103,11 +117,13 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
         if(isDialogToBeShown)
             showNetworkRelatedDialogs(isDialogToBeShown, errorMessage);
         if(uiModels != null)
-            startHomeActivity();
+            if(uiModels.size() > 0)
+                startHomeActivity((UserMeta) uiModels.get(0));
     }
 
-    private void startHomeActivity() {
+    private void startHomeActivity(UserMeta userMeta) {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        intent.putExtra(SharedPreferenceKeys.USER_META, userMeta);
         startActivity(intent);
         finish();
     }
