@@ -60,7 +60,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         setToolbarLeftIcon(R.drawable.ic_profile);
         setToolbarRightText("xxx");
         profileButton.setOnClickListener(this);
-        handleIntent(getIntent());
+        //handleIntent(getIntent());
     }
 
     private void handleIntent(Intent intent) {
@@ -109,17 +109,20 @@ public class HomeActivity extends ParentAppCompatActivity {
     }
 
     private void setupInnerDashboard(String tag) {
+        final String TAG_PICKUP = "0";
+        final String TAG_DROPOFF = "1";
+        final String TAG_INFO = "2";
         ViewGroup innerDashBoardView = viewPager.findViewWithTag("inner");
         innerDashBoardView.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
         switch (tag){
-            case "0": innerDashBoardView.addView(inflater.inflate(R.layout.pickup_dashboard_view,
+            case TAG_PICKUP: innerDashBoardView.addView(inflater.inflate(R.layout.pickup_dashboard_view,
                     null, false));
                 break;
-            case "1": innerDashBoardView.addView(inflater.inflate(R.layout.drop_off_dashboard_view,
+            case TAG_DROPOFF: innerDashBoardView.addView(inflater.inflate(R.layout.drop_off_dashboard_view,
                     null, false));
                 break;
-            case "2": innerDashBoardView.addView(inflater.inflate(R.layout.information_dashboard_view,
+            case TAG_INFO: innerDashBoardView.addView(inflater.inflate(R.layout.information_dashboard_view,
                     null, false));
                 break;
         }

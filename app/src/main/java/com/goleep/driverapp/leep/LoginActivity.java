@@ -51,8 +51,13 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     public void doInitialSetup() {
         ButterKnife.bind(this);
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        initView();
+    }
+
+    private void initView() {
         loginButton.setOnClickListener(this);
         attachEditTextListeners();
+        forgotPasswordTextView.setOnClickListener(this);
     }
 
     @Override
@@ -87,7 +92,14 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
         switch (resourceId){
             case R.id.login_button: performLoginOperation();
             break;
+            case R.id.forgot_password_textView:
+                startForgotPasswordActivity();
         }
+    }
+
+    private void startForgotPasswordActivity() {
+        Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+        startActivity(intent);
     }
 
     private void performLoginOperation() {
@@ -123,7 +135,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private void startHomeActivity(UserMeta userMeta) {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        intent.putExtra(SharedPreferenceKeys.USER_META, userMeta);
+        //intent.putExtra(SharedPreferenceKeys.USER_META, userMeta);
         startActivity(intent);
         finish();
     }
