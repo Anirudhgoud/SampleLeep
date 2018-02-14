@@ -16,4 +16,5 @@ public class NetworkConstants {
     public static final String PUT_REQUEST = "put";
     public static final String POST_REQUEST = "post";
     public static final String GET_REQUEST = "get";
+    public static final String DELETE_REQUEST = "delete";
 }

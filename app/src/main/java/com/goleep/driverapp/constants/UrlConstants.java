@@ -11,4 +11,6 @@ public class UrlConstants {
 
     }
     public static final String LOGIN_URL = BASE_URL + "/login";
+    public static final String FORGOT_PASSWORD_URL = BASE_URL + "/forgot_password";
+    public static final String LOGOUT_URL = BASE_URL + "/logout";
 }

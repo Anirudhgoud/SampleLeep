@@ -21,7 +21,11 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.uimodels.UserMeta;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.viewmodels.HomeViewModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +40,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     ImageView closeButton;
     @BindView(R.id.dashboard_viewpager)
     ViewPager viewPager;
+    @BindView(R.id.signout) CustomButton signOutButton;
 
     View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
@@ -46,13 +51,32 @@ public class HomeActivity extends ParentAppCompatActivity {
         }
     };
 
+    private UILevelNetworkCallback logoutCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
+            if(errorMessage == null){
+                performSignOut();
+            }
+        }
+    };
 
+    private UILevelNetworkCallback driverProfileCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
+
+        }
+    };
 
     @Override
     public void doInitialSetup() {
         ButterKnife.bind(this);
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         initView();
+        populateProfile();
+    }
+
+    private void populateProfile() {
+        viewModel.getDriverProfile(driverProfileCallback);
     }
 
     private void initView() {
@@ -60,17 +84,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         setToolbarLeftIcon(R.drawable.ic_profile);
         setToolbarRightText("xxx");
         profileButton.setOnClickListener(this);
-        //handleIntent(getIntent());
-    }
-
-    private void handleIntent(Intent intent) {
-        UserMeta userMeta = intent.getParcelableExtra(SharedPreferenceKeys.USER_META);
-        if(userMeta != null)
-            populateProfile(userMeta);
-    }
-
-    private void populateProfile(UserMeta userMeta) {
-
+        signOutButton.setOnClickListener(this);
     }
 
     private void initDrawer() {
@@ -105,7 +119,18 @@ public class HomeActivity extends ParentAppCompatActivity {
                 break;
             case R.id.close_button:
                 drawerLayout.closeDrawers();
+                break;
+            case R.id.signout:
+                viewModel.signout(logoutCallback);
+                break;
         }
+    }
+
+    private void performSignOut() {
+        LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(HomeActivity.this);
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setupInnerDashboard(String tag) {
@@ -116,8 +141,15 @@ public class HomeActivity extends ParentAppCompatActivity {
         innerDashBoardView.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
         switch (tag){
-            case TAG_PICKUP: innerDashBoardView.addView(inflater.inflate(R.layout.pickup_dashboard_view,
-                    null, false));
+            case TAG_PICKUP: View pickupView = inflater.inflate(R.layout.pickup_dashboard_view,
+                    null, false);
+                pickupView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+                innerDashBoardView.addView(pickupView);
                 break;
             case TAG_DROPOFF: innerDashBoardView.addView(inflater.inflate(R.layout.drop_off_dashboard_view,
                     null, false));
@@ -165,6 +197,17 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
             return arg0 == arg1;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(viewPager.getCurrentItem() != 0){
+            viewPager.setCurrentItem(0);
+        } else if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        } else {
+            finish();
         }
     }
 }

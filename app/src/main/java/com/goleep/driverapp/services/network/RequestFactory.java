@@ -36,6 +36,8 @@ public class RequestFactory {
             networkRequest = new PutRequest();
         }else if(requestType.equals(NetworkConstants.POST_REQUEST)){
             networkRequest = new PostRequest();
+        } else if(requestType.equals(NetworkConstants.DELETE_REQUEST)){
+            networkRequest = new DeleteRequest();
         }else{
             networkRequest = new GetRequest();
         }
@@ -45,7 +47,7 @@ public class RequestFactory {
         if(isAuthRequired){
             LocalFileStore localFileStore = LocalStorageService.sharedInstance().getLocalFileStore();
             String authToken = localFileStore.getString(context, SharedPreferenceKeys.AUTH_TOKEN);
-            headerParams.put("Authorization", "Bearer " + authToken);
+            headerParams.put(RequestConstants.AUTHORIZATION, "Bearer " + authToken);
         }
         if(localHeaderParams != null){
             for (Map.Entry<String, String> entry : localHeaderParams.entrySet()) {
@@ -70,21 +72,23 @@ public class RequestFactory {
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             headerParams.put("Content-Type", "application/json");
             JSONObject json = new JSONObject();
-            for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
-                String value;
-                try{
-                    value = (String) entry.getValue();
-                }catch (ClassCastException exception){
-                    exception.printStackTrace();
-                    value = entry.getValue().toString();
+            if(bodyParams != null) {
+                for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
+                    Object value;
+                    try {
+                        value = entry.getValue();
+                    } catch (ClassCastException exception) {
+                        exception.printStackTrace();
+                        value = entry.getValue().toString();
+                    }
+                    try {
+                        json.put(entry.getKey(), value);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-                try {
-                    json.put(entry.getKey(), value);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                requestBody = RequestBody.create(JSON, String.valueOf(json));
             }
-            requestBody = RequestBody.create(JSON, String.valueOf(json));
         }
         return networkRequest.buildRequest(url, requestBody, headerParams);
     }

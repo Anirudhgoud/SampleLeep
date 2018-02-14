@@ -6,7 +6,9 @@ import android.content.Context;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.NetworkStringConstants;
 import com.goleep.driverapp.constants.RequestConstants;
+import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
+import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 
 import org.json.JSONArray;
@@ -43,10 +45,18 @@ public class NetworkClient {
                 NetworkConstants.PUT_REQUEST, networkAPICallback, null);
     }
 
-    public void makeJsonPostRequest(Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
+    public void makeJsonPostRequest(Context context, String requestUrl, boolean isAuthRequired,
+                                    Map<String, Object> bodyParams,
                                     final NetworkAPICallback networkAPICallback){
         requestHandler(context, requestUrl, isAuthRequired, bodyParams, RequestConstants.CONTENT_TYPE_JSON,
                 NetworkConstants.POST_REQUEST, networkAPICallback, null);
+    }
+
+    public void makeDeleteRequest(Context context, String requestUrl, boolean isAuthRequired,
+                                  Map<String, String> headerParams, final NetworkAPICallback networkAPICallback){
+        requestHandler(context, requestUrl, isAuthRequired, null,
+                RequestConstants.CONTENT_TYPE_JSON, NetworkConstants.DELETE_REQUEST, networkAPICallback, headerParams);
+
     }
 
     public void makeGetRequest(Context context, String requestUrl, boolean isAuthRequired,
@@ -61,7 +71,7 @@ public class NetworkClient {
                 NetworkConstants.GET_REQUEST, networkAPICallback, headerParams);
     }
 
-    private void requestHandler(Context context, String requestUrl, boolean isAuthRequired,
+    private void requestHandler(final Context context, String requestUrl, final boolean isAuthRequired,
                                 Map<String, Object> bodyParams, String contentType,
                                 String requestType, final NetworkAPICallback networkAPICallback,
                                 Map<String, String> headerParams){
@@ -88,6 +98,12 @@ public class NetworkClient {
             public void onResponse(Call call, Response response) throws IOException {
                 LogUtils.error("response", response.toString());
                 if(networkAPICallback != null){
+                    if(response.header(RequestConstants.AUTHORIZATION) != null) {
+                        LocalStorageService.sharedInstance().getLocalFileStore().store(context,
+                                SharedPreferenceKeys.AUTH_TOKEN,
+                                response.header(RequestConstants.AUTHORIZATION));
+
+                    }
                     Object[] objects = responseValidator.validateResponse(response);
                     networkAPICallback.onNetworkResponse(getNetworkState(objects), getResponse(objects),
                             getErrorMessage(objects));
