@@ -18,7 +18,7 @@ public class DeliveryOrdersMapFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_delivery_order_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_delivery_order_map, container, false);
 
         return view;
     }

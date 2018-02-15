@@ -37,7 +37,7 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
         initialiseTabBar();
     }
 
-    private void initialiseTabBar(){
+    private void initialiseTabBar() {
         DeliveryOrderPagerAdapter deliveryOrderPagerAdapter = new DeliveryOrderPagerAdapter(getSupportFragmentManager());
         doViewPager.setAdapter(deliveryOrderPagerAdapter);
         tabLayout = findViewById(R.id.tab_layout);
@@ -46,8 +46,8 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
     }
 
     private void setupTabIcons() {
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_list_tab);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_map_tab);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_list_tab).setCustomView(R.layout.custom_tab_item_layout);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_map_tab).setCustomView(R.layout.custom_tab_item_layout);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
     }
 
 
-    class DeliveryOrderPagerAdapter extends FragmentPagerAdapter{
+    class DeliveryOrderPagerAdapter extends FragmentPagerAdapter {
 
         private int NUMBER_OF_ITEMS = 2;
 
@@ -66,10 +66,13 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
-                case 0: return new DeliveryOrdersListFragment();
-                case 1: return new DeliveryOrdersMapFragment();
-                default: return null;
+            switch (position) {
+                case 0:
+                    return new DeliveryOrdersListFragment();
+                case 1:
+                    return new DeliveryOrdersMapFragment();
+                default:
+                    return null;
             }
         }
 
@@ -80,10 +83,13 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
-                case 0: return getResources().getString(R.string.list);
-                case 1: return getResources().getString(R.string.map);
-                default: return getResources().getString(R.string.app_name);
+            switch (position) {
+                case 0:
+                    return getResources().getString(R.string.list);
+                case 1:
+                    return getResources().getString(R.string.map);
+                default:
+                    return getResources().getString(R.string.app_name);
             }
         }
     }
