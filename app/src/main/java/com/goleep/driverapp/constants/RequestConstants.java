@@ -5,6 +5,10 @@ package com.goleep.driverapp.constants;
  */
 
 public class RequestConstants {
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_USER = "user";
+    public static final java.lang.String AUTHORIZATION = "Authorization";
+
     private RequestConstants(){
 
     }

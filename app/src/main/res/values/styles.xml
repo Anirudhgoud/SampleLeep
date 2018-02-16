@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -26,6 +26,7 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
 
     </style>
 
@@ -35,6 +36,10 @@
 
     <style name="LoginTheme" parent="AppTheme.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
+
+    <style name="HomeScreenTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/home_background</item>
     </style>
 
 

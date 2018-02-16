@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,23 +48,22 @@ public class LoginViewModel extends AndroidViewModel {
             public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                 switch (type){
                     case NetworkConstants.SUCCESS:
-                        List<UserMeta> userMetaList = new ArrayList<>();
                         try{
-                            UserMeta userMeta = new Gson().fromJson(String.valueOf(response.get(0)), UserMeta.class);
-                            userMetaList.add(userMeta);
                             LocalStorageService.sharedInstance().getLocalFileStore().store(context,
-                                    SharedPreferenceKeys.USER_META, String.valueOf(response.get(0)));
+                                    SharedPreferenceKeys.DRIVER_ID, ((JSONObject)response.get(0)).getString("id"));
                         }catch (JSONException ex){
                             ex.printStackTrace();
                         }
-                        loginCallBack.onResponseReceived(userMetaList, false, null);
+                        loginCallBack.onResponseReceived(null, false, null, false);
                         break;
                     case NetworkConstants.FAILURE:
-                        loginCallBack.onResponseReceived(null, false, errorMessage);
+                        loginCallBack.onResponseReceived(null, false, errorMessage, false);
                         break;
                     case NetworkConstants.NETWORK_ERROR:
-                        loginCallBack.onResponseReceived(null, true, errorMessage);
+                        loginCallBack.onResponseReceived(null, true, errorMessage, false);
                         break;
+                    case NetworkConstants.UNAUTHORIZED:
+                        loginCallBack.onResponseReceived(null, false, errorMessage, true);
                 }
             }
         });

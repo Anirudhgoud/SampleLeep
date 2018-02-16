@@ -1,12 +1,8 @@
 package com.goleep.driverapp.helpers.uimodels;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +10,7 @@ import java.util.List;
  */
 
 
-public class UserMeta implements Parcelable {
+public class UserMeta {
 
     @SerializedName("id")
     @Expose
@@ -302,71 +298,4 @@ public class UserMeta implements Parcelable {
 
     }
 
-
-    protected UserMeta(Parcel in) {
-        id = in.readByte() == 0x00 ? null : in.readInt();
-        email = in.readString();
-        firstName = in.readString();
-        lastName = in.readString();
-        contactNumber = in.readString();
-        countryCode = in.readString();
-        businessName = in.readString();
-        businessId = in.readByte() == 0x00 ? null : in.readInt();
-        profileImageUrl = in.readString();
-        if (in.readByte() == 0x01) {
-            locations = new ArrayList<Location>();
-            in.readList(locations, Location.class.getClassLoader());
-        } else {
-            locations = null;
-        }
-        permissions = (Permissions) in.readValue(Permissions.class.getClassLoader());
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if (id == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(id);
-        }
-        dest.writeString(email);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(contactNumber);
-        dest.writeString(countryCode);
-        dest.writeString(businessName);
-        if (businessId == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(businessId);
-        }
-        dest.writeString(profileImageUrl);
-        if (locations == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(locations);
-        }
-        dest.writeValue(permissions);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<UserMeta> CREATOR = new Parcelable.Creator<UserMeta>() {
-        @Override
-        public UserMeta createFromParcel(Parcel in) {
-            return new UserMeta(in);
-        }
-
-        @Override
-        public UserMeta[] newArray(int size) {
-            return new UserMeta[size];
-        }
-    };
 }

@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UILevelNetworkCallback {
 
-    void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage);
+    void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout);
 
 }

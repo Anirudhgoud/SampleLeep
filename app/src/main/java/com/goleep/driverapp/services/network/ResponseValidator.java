@@ -30,13 +30,17 @@ public class ResponseValidator {
                 responseObjects[2] = null;
                 break;
             case 404:
-            case 401:
             case 405:
             case 500:
                 responseObjects[0] = NetworkConstants.FAILURE;
                 responseObjects[1] = null;
                 responseObjects[2] = NetworkStringConstants.BAD_REQUEST;
                 break;
+            case 401:
+                responseObjects[0] = NetworkConstants.UNAUTHORIZED;
+                responseObjects[1] = null;
+                responseObjects[2] = NetworkStringConstants.UNAUTHORIZED;
+
         }
         return responseObjects;
     }

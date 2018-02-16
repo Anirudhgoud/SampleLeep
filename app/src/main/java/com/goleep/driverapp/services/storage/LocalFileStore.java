@@ -50,5 +50,7 @@ public class LocalFileStore {
         return getSharedPreference(context).getBoolean(appKey, false);
     }
 
-
+    public void clearAllPreferences(Context context){
+        getSharedPreference(context).edit().clear().apply();
+    }
 }

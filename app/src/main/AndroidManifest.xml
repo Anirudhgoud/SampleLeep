@@ -11,6 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".leep.LeepApp"
         android:theme="@style/AppTheme">
         <activity
             android:name=".leep.SplashActivity"
@@ -30,10 +31,11 @@
             android:name=".leep.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme" />
-        <activity
-            android:name=".leep.ForgotPasswordActivity"
+
+        <activity android:name=".leep.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme" />
+
         <activity android:name=".leep.DeliveryOrdersActivity"
             android:screenOrientation="portrait"/>
     </application>

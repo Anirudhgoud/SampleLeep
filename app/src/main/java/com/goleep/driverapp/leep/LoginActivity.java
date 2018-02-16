@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.goleep.driverapp.R;
 
+import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
@@ -42,7 +43,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private UILevelNetworkCallback loginCallBack = new UILevelNetworkCallback() {
         @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             handleLoginResponse(uiModels, isDialogToBeShown, errorMessage);
         }
     };
@@ -63,26 +64,14 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.setResources(R.layout.activity_login);
-        UserMeta userMeta = getUserMeta();
-        if(userMeta != null){
-            startHomeActivity(userMeta);
+        if(isLoggedIn()){
+            startHomeActivity();
         }
-    }
-
-    private UserMeta getUserMeta(){
-        String userMetaString = LocalStorageService.sharedInstance().getLocalFileStore().getString(
-                LoginActivity.this, SharedPreferenceKeys.USER_META);
-        UserMeta userMeta = null;
-
-        userMeta = (userMetaString.isEmpty()) ? null : new Gson().fromJson(userMetaString, UserMeta.class);
-
-        return userMeta;
-
     }
 
     private boolean isLoggedIn() {
         if(!LocalStorageService.sharedInstance().getLocalFileStore().getString(
-                LoginActivity.this, SharedPreferenceKeys.USER_META).isEmpty())
+                LoginActivity.this, SharedPreferenceKeys.AUTH_TOKEN).isEmpty())
             return true;
         return false;
     }
@@ -126,16 +115,15 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void handleLoginResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
-        if(isDialogToBeShown)
-            showNetworkRelatedDialogs(isDialogToBeShown, errorMessage);
-        if(uiModels != null)
-            if(uiModels.size() > 0)
-                startHomeActivity((UserMeta) uiModels.get(0));
+        if(errorMessage != null)
+            showNetworkRelatedDialogs(errorMessage);
+        else
+            startHomeActivity();
+
     }
 
-    private void startHomeActivity(UserMeta userMeta) {
+    private void startHomeActivity() {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        //intent.putExtra(SharedPreferenceKeys.USER_META, userMeta);
         startActivity(intent);
         finish();
     }

@@ -7,7 +7,16 @@ import static com.goleep.driverapp.BuildConfig.BASE_URL;
  */
 
 public interface UrlConstants {
-    String LOGIN_URL = BASE_URL + "/login";
-    String DELIVERY_ORDERS_URL = BASE_URL + "/delivery_orders";
 
+    //Login
+    String LOGIN_URL = BASE_URL + "/login";
+    String LOGOUT_URL = BASE_URL + "/logout";
+    String FORGOT_PASSWORD_URL = BASE_URL + "/forgot_password";
+
+    //Dashboard
+    String DRIVERS_URL = BASE_URL + "/drivers";
+    String SUMMARY_URL = BASE_URL + "/summary";
+
+    //Delivery Orders
+    String DELIVERY_ORDERS_URL = BASE_URL + "/delivery_orders";
 }
