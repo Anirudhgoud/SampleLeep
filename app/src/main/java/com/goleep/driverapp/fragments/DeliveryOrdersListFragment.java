@@ -52,8 +52,9 @@ public class DeliveryOrdersListFragment extends Fragment {
     }
 
     private UILevelNetworkCallback loginCallBack = new UILevelNetworkCallback() {
+
         @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
 
         }
     };
