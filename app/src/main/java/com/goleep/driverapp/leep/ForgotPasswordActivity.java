@@ -30,8 +30,10 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
 
     private UILevelNetworkCallback submitEmailCallback = new UILevelNetworkCallback() {
         @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
-            if(errorMessage == null){
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            if(toLogout)
+                logoutUser();
+            else if(errorMessage == null){
                 finish();
             }
         }

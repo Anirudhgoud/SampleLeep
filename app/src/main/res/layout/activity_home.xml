@@ -5,6 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#8CFFFFFF"
     android:fitsSystemWindows="true"
     tools:context=".leep.HomeActivity">
 
@@ -20,12 +21,12 @@
         layout="@layout/toolbar_layout" />
 
 
-        <android.support.v4.view.ViewPager
+        <com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager
             android:id="@+id/dashboard_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar_layout"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginTop="50dp"/>
 
 
     </RelativeLayout>
@@ -36,7 +37,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start">
 
-        <include layout="@layout/profile_layout"/>
+        <include layout="@layout/profile_layout"
+            android:id="@+id/profile_layout"/>
 
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

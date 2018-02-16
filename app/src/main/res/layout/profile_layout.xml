@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
+    android:paddingTop="25dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -13,7 +13,7 @@
         android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
-        android:background="@color/dull_green"
+        android:background="@color/light_green"
         android:layout_weight="4">
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -31,6 +31,7 @@
                 android:text="@string/edit"
                 android:layout_centerHorizontal="true"
                 app:typeface="NotoSans-Regular"
+                android:layout_marginTop="5dp"
                 android:textSize="6sp"
                 android:layout_marginBottom="8dp"
                 android:layout_alignBottom="@id/edit_profile_imageview"/>
@@ -87,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="10sp"
                     app:typeface="NotoSans-Bold"
-                    android:text="xxx"
+                    android:text="@string/deliveries"
                     android:id="@+id/deliveries_label_textview"/>
             </LinearLayout>
 
@@ -108,7 +109,7 @@
                 <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="xxx"
+                    android:text="@string/payment_collected"
                     android:textSize="10sp"
                     app:typeface="NotoSans-Bold"
                     android:id="@+id/payment_collected_label_textview"/>
@@ -131,7 +132,7 @@
                 <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="xxx"
+                    android:text="@string/locations"
                     android:textSize="10sp"
                     app:typeface="NotoSans-Bold"
                     android:id="@+id/locations_layout_label_textview"/>
@@ -166,13 +167,13 @@
                 android:id="@+id/contact_label_text_view"
                 android:textSize="12sp"
                 app:typeface="NotoSans-Bold"
-                android:text="xxx"
+                android:text="@string/contact_number"
                 android:textColor="@color/text_light_grey"/>
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/contact_text_view"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
                 android:text="xxx"/>
         </LinearLayout>
@@ -189,13 +190,13 @@
                 android:id="@+id/address_label_text_view"
                 android:textSize="12sp"
                 app:typeface="NotoSans-Bold"
-                android:text="xxx"
+                android:text="@string/address"
                 android:textColor="@color/text_light_grey"/>
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/address_text_view"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
                 android:text="xxx"/>
         </LinearLayout>
@@ -212,13 +213,13 @@
                 android:id="@+id/driver_licence_label_text_view"
                 android:textSize="12sp"
                 app:typeface="NotoSans-Bold"
-                android:text="xxx"
+                android:text="@string/driver_licence_number"
                 android:textColor="@color/text_light_grey"/>
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/driver_licence_text_view"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
                 android:text="xxx"/>
         </LinearLayout>
@@ -235,13 +236,13 @@
                 android:id="@+id/register_number_label_text_view"
                 android:textSize="12sp"
                 app:typeface="NotoSans-Bold"
-                android:text="xxx"
+                android:text="@string/vehicle_reg_no"
                 android:textColor="@color/text_light_grey"/>
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/register_number_text_view"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
                 android:text="xxx"/>
         </LinearLayout>
@@ -258,13 +259,13 @@
                 android:id="@+id/employee_number_label_text_view"
                 android:textSize="12sp"
                 app:typeface="NotoSans-Bold"
-                android:text="xxx"
+                android:text="@string/employee_no"
                 android:textColor="@color/text_light_grey"/>
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/remployee_number_text_view"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
                 android:text="xxx"/>
         </LinearLayout>

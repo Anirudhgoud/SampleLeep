@@ -54,14 +54,16 @@ public class LoginViewModel extends AndroidViewModel {
                         }catch (JSONException ex){
                             ex.printStackTrace();
                         }
-                        loginCallBack.onResponseReceived(null, false, null);
+                        loginCallBack.onResponseReceived(null, false, null, false);
                         break;
                     case NetworkConstants.FAILURE:
-                        loginCallBack.onResponseReceived(null, false, errorMessage);
+                        loginCallBack.onResponseReceived(null, false, errorMessage, false);
                         break;
                     case NetworkConstants.NETWORK_ERROR:
-                        loginCallBack.onResponseReceived(null, true, errorMessage);
+                        loginCallBack.onResponseReceived(null, true, errorMessage, false);
                         break;
+                    case NetworkConstants.UNAUTHORIZED:
+                        loginCallBack.onResponseReceived(null, false, errorMessage, true);
                 }
             }
         });

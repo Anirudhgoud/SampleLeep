@@ -18,22 +18,41 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
-        <com.goleep.driverapp.helpers.customfont.CustomEditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
-            style="@style/login_edit_style"
-            android:layout_margin="10dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:paddingLeft="10dp"
-            android:inputType="phone"
-            android:id="@+id/phone_editText"
-            app:typeface="NotoSans-Light"
-            android:hint="@string/phone_hint"/>
+            android:layout_margin="10dp">
 
+            <com.goleep.driverapp.helpers.customfont.CustomEditText
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/light_grey"
+                android:textColor="@color/light_grey"
+                style="@style/login_edit_style"
+                android:paddingLeft="10dp"
+                android:inputType="none"
+                android:enabled="false"
+                android:id="@+id/country_code_editText"
+                app:typeface="NotoSans-Light"
+                android:hint="@string/india_code"/>
 
+            <com.goleep.driverapp.helpers.customfont.CustomEditText
+                android:layout_width="0dp"
+                android:layout_weight="8"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                style="@style/login_edit_style"
+                android:focusable="true"
+                android:paddingLeft="10dp"
+                android:focusableInTouchMode="true"
+                android:inputType="phone"
+                android:id="@+id/phone_editText"
+                app:typeface="NotoSans-Light"
+                android:hint="@string/phone_hint"/>
+
+        </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="fill_parent"

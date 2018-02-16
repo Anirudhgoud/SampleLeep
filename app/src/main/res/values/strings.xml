@@ -14,4 +14,13 @@
     <string name="pickup">Pick Up</string>
     <string name="dropoff">Drop Off</string>
     <string name="information">Information</string>
+    <string name="deliveries">Deliveries</string>
+    <string name="payment_collected">Payment Collected</string>
+    <string name="locations">Locations</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="address">Address</string>
+    <string name="driver_licence_number">Driver Licence No.</string>
+    <string name="vehicle_reg_no">Vehicle Registration No.</string>
+    <string name="employee_no">Employee No.</string>
+    <string name="india_code">+91</string>
 </resources>

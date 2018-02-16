@@ -30,7 +30,7 @@
         <activity
             android:name=".leep.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme" />
+            android:theme="@style/HomeScreenTheme" />
         <activity android:name=".leep.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"/>

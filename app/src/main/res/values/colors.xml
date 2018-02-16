@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#A5D6A7</color>
-    <color name="colorPrimaryDark">#A5D6A7</color>
+    <color name="colorPrimary">#CEFFE3</color>
+    <color name="colorPrimaryDark">#CEFFE3</color>
     <color name="colorAccent">#FF4081</color>
     <color name="login_green">#3ED4C2</color>
     <color name="white">#FFFFFF</color>
@@ -15,4 +15,13 @@
     <color name="dull_green">#BFA5D6A7</color>
     <color name="green">#28DC76</color>
     <color name="red">#FF6464</color>
+    <color name="inner_dashboard_blue">#1400FF</color>
+    <color name="inner_dashboard_red">#FF6464</color>
+    <color name="inner_dashboard_green">#28DC76</color>
+    <color name="inner_dashboard_light_blue">#2699FB</color>
+    <color name="inner_dashboard_purple">#D41FFF</color>
+    <color name="inner_dashboard_bahama_blue">#016C9B</color>
+    <color name="inner_dashboard_orange">#FF8F1F</color>
+    <color name="inner_dashboard_olive">#377500</color>
+    <color name="light_green">#CEFFE3</color>
 </resources>

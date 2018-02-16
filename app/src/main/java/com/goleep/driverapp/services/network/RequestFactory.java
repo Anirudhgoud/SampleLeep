@@ -47,7 +47,7 @@ public class RequestFactory {
         if(isAuthRequired){
             LocalFileStore localFileStore = LocalStorageService.sharedInstance().getLocalFileStore();
             String authToken = localFileStore.getString(context, SharedPreferenceKeys.AUTH_TOKEN);
-            headerParams.put(RequestConstants.AUTHORIZATION, "Bearer " + authToken);
+            headerParams.put(RequestConstants.AUTHORIZATION, authToken);
         }
         if(localHeaderParams != null){
             for (Map.Entry<String, String> entry : localHeaderParams.entrySet()) {

@@ -7,9 +7,7 @@
     android:padding="20dp">
 
 
-    <include layout="@layout/inner_dashboard_item"/>
 
-    <include layout="@layout/inner_dashboard_item"/>
 
 
 </LinearLayout>

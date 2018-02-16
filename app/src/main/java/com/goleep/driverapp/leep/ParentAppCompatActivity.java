@@ -1,5 +1,6 @@
 package com.goleep.driverapp.leep;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.goleep.driverapp.R;
@@ -17,6 +19,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.AlertDialogHelper;
 import com.goleep.driverapp.interfaces.NetworkChangeListener;
 import com.goleep.driverapp.services.network.NetworkChecker;
+import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import java.util.Vector;
 
@@ -31,6 +34,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     private NetworkChangeListener networkChangeListener;
     private AlertDialogHelper alertDialogHelper;
+    private ProgressDialog progressBar;
 
     private BroadcastReceiver connectivityChangeReceiver = new BroadcastReceiver() {
         @Override
@@ -60,14 +64,13 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         registerReceiverForNetworkChange();
     }
 
-    public boolean showNetworkRelatedDialogs(boolean isDialogToBeShown, String message){
-        if(isDialogToBeShown){
-            alertDialogHelper = new AlertDialogHelper();
-            alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
-            return true;
-        }else{
-            return false;
-        }
+    protected void showNetworkRelatedDialogs(String message){
+        alertDialogHelper = new AlertDialogHelper();
+        alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
+    }
+
+    protected void showProgressDialog(){
+
     }
 
     private void closeAllNetworkDialogs() {
@@ -122,6 +125,14 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         RelativeLayout toolbarContainer = findViewById(R.id.toolbar_container);
         toolbarContainer.setBackgroundColor(colorId);
 
+    }
+
+    protected void logoutUser(){
+        LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(this);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     @Override

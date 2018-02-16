@@ -43,7 +43,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private UILevelNetworkCallback loginCallBack = new UILevelNetworkCallback() {
         @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             handleLoginResponse(uiModels, isDialogToBeShown, errorMessage);
         }
     };
@@ -115,9 +115,9 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void handleLoginResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
-        if(isDialogToBeShown)
-            showNetworkRelatedDialogs(isDialogToBeShown, errorMessage);
-        else if(errorMessage == null)
+        if(errorMessage != null)
+            showNetworkRelatedDialogs(errorMessage);
+        else
             startHomeActivity();
 
     }

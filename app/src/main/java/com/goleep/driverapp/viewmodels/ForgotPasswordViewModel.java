@@ -53,14 +53,17 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type){
                             case NetworkConstants.SUCCESS:
-                                submitEmailCallback.onResponseReceived(null, false, null);
+                                submitEmailCallback.onResponseReceived(null, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
-                                submitEmailCallback.onResponseReceived(null, false, errorMessage);
+                                submitEmailCallback.onResponseReceived(null, false, errorMessage, false);
                                 break;
                             case NetworkConstants.NETWORK_ERROR:
-                                submitEmailCallback.onResponseReceived(null, true, errorMessage);
+                                submitEmailCallback.onResponseReceived(null, true, errorMessage, false);
                                 break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                submitEmailCallback.onResponseReceived(null, false, errorMessage, true);
+
                         }
                     }
                 });
