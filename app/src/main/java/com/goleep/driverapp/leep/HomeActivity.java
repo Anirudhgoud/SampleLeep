@@ -66,7 +66,9 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public void onClick(View view) {
             switch ((String)view.getTag()){
-
+                case InnerDashboardUiModel.TAG_DELIVERY_ORDERS:
+                    Intent doIntent = new Intent(HomeActivity.this, DeliveryOrdersActivity.class);
+                    startActivity(doIntent);
             }
         }
     };

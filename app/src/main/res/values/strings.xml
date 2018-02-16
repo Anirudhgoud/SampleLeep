@@ -10,6 +10,8 @@
     <string name="sign_out">Sign Out</string>
     <string name="email">Email</string>
     <string name="submit">Submit</string>
+    <string name="list">List</string>
+    <string name="map">Map</string>
     <string name="forgot_password_success">Email submitted successfully</string>
     <string name="pickup">Pick Up</string>
     <string name="dropoff">Drop Off</string>
