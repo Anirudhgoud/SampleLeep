@@ -28,30 +28,41 @@ import butterknife.BindView;
 
 public class DeliveryOrdersListFragment extends Fragment {
 
+    private DeliveryOrdersViewModel doViewModel;
+    private RecyclerView doListRecyclerView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_delivery_order_list, container, false);
-        final DeliveryOrdersViewModel doViewModel = ViewModelProviders.of(getActivity()).get(DeliveryOrdersViewModel.class);
-        RecyclerView doListRecyclerView = view.findViewById(R.id.delivery_order_recyclerview);
+        doListRecyclerView = view.findViewById(R.id.delivery_order_recyclerview);
+        initialise();
+        fetchDeliveryOrders();
+        return view;
+    }
+
+    private void initialise(){
+        doViewModel = ViewModelProviders.of(getActivity()).get(DeliveryOrdersViewModel.class);
+        initialiseRecyclerView();
+    }
+
+    private void initialiseRecyclerView(){
         doListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         final DeliveryOrdersListAdapter doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<DeliveryOrder>());
         doListRecyclerView.setAdapter(doListAdapter);
-
         doViewModel.deliveryOrders.observe(DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
             public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
                 doListAdapter.updateList(deliveryOrders);
             }
         });
-
-        doViewModel.fetchAllDeliveryOrders(loginCallBack);
-
-        return view;
     }
 
-    private UILevelNetworkCallback loginCallBack = new UILevelNetworkCallback() {
+    private void fetchDeliveryOrders(){
+        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+    }
+
+    private UILevelNetworkCallback deliveryOrderCallBack = new UILevelNetworkCallback() {
 
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {

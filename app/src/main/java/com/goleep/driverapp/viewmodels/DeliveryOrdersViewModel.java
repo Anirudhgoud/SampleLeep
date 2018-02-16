@@ -57,8 +57,8 @@ public class DeliveryOrdersViewModel extends AndroidViewModel {
                     try{
                         Type listType = new TypeToken<List<DeliveryOrder>>() {}.getType();
                         JSONObject obj = (JSONObject) response.get(0);
-                        JsonElement element = (JsonElement) obj.get("data");
-                        deliveryOrdersList = new Gson().fromJson(element, listType);
+                        deliveryOrdersList = new Gson().fromJson(obj.getJSONArray("data").toString(), listType);
+                        leepDatabase.deliveryOrderDao().deleteAllDeliveryOrders();
                         leepDatabase.deliveryOrderDao().insertDeliveryOrders(deliveryOrdersList);
 
                     }catch (JSONException ex){
