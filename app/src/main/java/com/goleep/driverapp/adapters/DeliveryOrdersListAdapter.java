@@ -30,7 +30,8 @@ public class DeliveryOrdersListAdapter extends RecyclerView.Adapter<DeliveryOrde
 
     @Override
     public void onBindViewHolder(DeliveryOrdersViewHolder holder, int position) {
-
+        DeliveryOrder deliveryOrder = deliveryOrderList.get(position);
+        holder.bindData(deliveryOrder);
     }
 
     @Override

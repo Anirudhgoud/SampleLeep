@@ -42,7 +42,7 @@ public class DeliveryOrdersViewModel extends AndroidViewModel {
         super(application);
         context = application.getApplicationContext();
         leepDatabase = RoomDBService.sharedInstance().getDatabase(this.getApplication());
-        deliveryOrders = leepDatabase.deliveryOrderDao().getAllDeliveryOrders();
+        deliveryOrders = leepDatabase.deliveryOrderDao().getCustomerDeliveryOrders();
     }
 
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doCallBack){

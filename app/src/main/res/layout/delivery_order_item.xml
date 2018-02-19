@@ -1,11 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello" />
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-</android.support.constraint.ConstraintLayout>
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/tv_customer_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:text="M K Mart"
+            android:ellipsize="end"
+            android:textColor="@color/doTabTextColor"
+            android:textSize="18sp"
+            app:typeface="NotoSans-Bold" />
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/tv_store_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kormangala"
+            android:textColor="@color/doTabTextColor"
+            android:textSize="12sp"
+            app:typeface="NotoSans-Regular" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/do_number"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/tv_do_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="@string/do_number"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Regular" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="8dp"
+                app:srcCompat="@drawable/ic_calender" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/tv_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lines="1"
+                android:text="22 jan, 2013"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="8dp"
+                app:srcCompat="@drawable/ic_time_slot" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/tv_schedule"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lines="1"
+                android:text="9AM - 6PM"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginRight="8dp"
+                app:srcCompat="@drawable/ic_map_unselected" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/tv_estimated_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lines="1"
+                android:text="51 Min"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_weight="2"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical">
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/tv_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:text="Rs.111111.00"
+            android:textColor="@color/doTabTextColor"
+            android:textSize="14sp"
+            app:typeface="NotoSans-Bold" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal">
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/items"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Bold" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/tv_item_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:lines="1"
+                android:text="0"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="10sp"
+                app:typeface="NotoSans-Regular" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <com.goleep.driverapp.helpers.customfont.CustomButton
+            android:id="@+id/bt_delivery"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/rounded_green_button"
+            android:gravity="center_horizontal|center_vertical"
+            android:lines="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="@string/deliver"
+            android:textColor="@android:color/white"
+            app:typeface="NotoSans-Regular" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

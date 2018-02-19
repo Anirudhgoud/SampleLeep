@@ -25,4 +25,9 @@
     <string name="vehicle_reg_no">Vehicle Registration No.</string>
     <string name="employee_no">Employee No.</string>
     <string name="india_code">+91</string>
+
+    <!--Delivery Orders-->
+    <string name="deliver">Deliver</string>
+    <string name="items">"Items: "</string>
+    <string name="do_number">"DO No. "</string>
 </resources>
