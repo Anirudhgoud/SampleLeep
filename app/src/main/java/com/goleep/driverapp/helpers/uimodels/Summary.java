@@ -34,6 +34,17 @@ public class Summary {
     @Expose
     private Integer informationOnReports;
 
+    public Summary(){
+        this.dropOffCashSales = 0;
+        this.dropOffDeliveryOrdersCount = 0;
+        this.dropOffToWarehouse = 0;
+        this.pickUpFromWarehouse = 0;
+        this.returnsFromCustomers = 0;
+        this.informationOnHistory = 0;
+        this.informationOnReports = 0;
+        this.informationStocks = 0;
+    }
+
     public Integer getPickUpFromWarehouse() {
         return pickUpFromWarehouse;
     }

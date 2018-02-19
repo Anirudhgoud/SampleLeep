@@ -260,12 +260,14 @@
                 android:textSize="12sp"
                 app:typeface="NotoSans-Bold"
                 android:text="@string/employee_no"
+                android:visibility="gone"
                 android:textColor="@color/text_light_grey"/>
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/remployee_number_text_view"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:typeface="NotoSans-Regular"
                 android:text="xxx"/>
         </LinearLayout>

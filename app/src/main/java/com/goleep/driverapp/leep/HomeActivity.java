@@ -107,14 +107,9 @@ public class HomeActivity extends ParentAppCompatActivity {
         public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             if(toLogout){
                 performSignOut();
-            } else if(errorMessage != null){
+            } else if(errorMessage == null){
                 if(uiModels.size() > 0){
-                    HomeActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            summary = (Summary) uiModels.get(0);
-                        }
-                    });
+                    summary = (Summary) uiModels.get(0);
                 }
             } else if(isDialogToBeShown){
                 showNetworkRelatedDialogs(errorMessage);
