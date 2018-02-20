@@ -40,7 +40,6 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
     private void initialiseTabBar() {
         DeliveryOrderPagerAdapter deliveryOrderPagerAdapter = new DeliveryOrderPagerAdapter(getSupportFragmentManager());
         doViewPager.setAdapter(deliveryOrderPagerAdapter);
-        tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(doViewPager);
         setupTabIcons();
     }

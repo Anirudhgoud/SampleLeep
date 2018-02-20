@@ -4,14 +4,10 @@ package com.goleep.driverapp.constants;
  * Created by kunalsingh on 13/04/17.
  */
 
-public class NetworkStringConstants {
+public interface NetworkStringConstants {
 
-    private NetworkStringConstants(){
-
-    }
-
-    public static final String REQUEST_FAILURE = "Something is not right. Please try again!";
-    public static final String BAD_REQUEST = "Bad Request";
-    public static final String SERVER_ERROR = "Server Error";
-    public static final String UNAUTHORIZED = "Unauthorized request";
+    String REQUEST_FAILURE = "Something is not right. Please try again!";
+    String BAD_REQUEST = "Bad Request";
+    String SERVER_ERROR = "Server Error";
+    String UNAUTHORIZED = "Unauthorized request";
 }

@@ -1,6 +1,7 @@
 package com.goleep.driverapp.services.room.entities;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -76,6 +77,11 @@ public class DeliveryOrder implements Parcelable {
     @SerializedName("total_value")
     @Expose
     private Float totalValue;
+
+    @Ignore
+    @SerializedName("duration_from_current_location")
+    private Integer durationFromCurrentLocation = 0;
+
     public final static Parcelable.Creator<DeliveryOrder> CREATOR = new Creator<DeliveryOrder>() {
 
 
@@ -114,6 +120,7 @@ public class DeliveryOrder implements Parcelable {
         this.destinationAddressLine2 = ((String) in.readValue((String.class.getClassLoader())));
         this.deliveryOrderItemsCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.totalValue = ((Float) in.readValue((Float.class.getClassLoader())));
+        this.durationFromCurrentLocation = ((Integer) in.readValue((Integer.class.getClassLoader())));
     }
 
     public DeliveryOrder() {
@@ -279,6 +286,15 @@ public class DeliveryOrder implements Parcelable {
         this.totalValue = totalValue;
     }
 
+    public Integer getDurationFromCurrentLocation() {
+        return durationFromCurrentLocation;
+    }
+
+    public void setDurationFromCurrentLocation(Integer durationFromCurrentLocation) {
+        this.durationFromCurrentLocation = durationFromCurrentLocation;
+    }
+
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(doNumber);
@@ -300,6 +316,7 @@ public class DeliveryOrder implements Parcelable {
         dest.writeValue(destinationAddressLine2);
         dest.writeValue(deliveryOrderItemsCount);
         dest.writeValue(totalValue);
+        dest.writeValue(durationFromCurrentLocation);
     }
 
     public int describeContents() {

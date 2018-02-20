@@ -19,6 +19,9 @@ public interface DeliveryOrderDao {
     @Query("Select * from DeliveryOrder")
     LiveData<List<DeliveryOrder>> getAllDeliveryOrders();
 
+    @Query("Select * from DeliveryOrder where status = 'in_transit' and type = 'customer'")
+    LiveData<List<DeliveryOrder>> getCustomerDeliveryOrders();
+
     @Query("Delete from DeliveryOrder")
     void deleteAllDeliveryOrders();
 
