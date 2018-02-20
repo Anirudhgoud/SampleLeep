@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,14 +49,15 @@ public class DeliveryOrdersListFragment extends Fragment {
 
     private void initialiseRecyclerView(){
         doListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        doListRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         final DeliveryOrdersListAdapter doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<DeliveryOrder>());
-        doListRecyclerView.setAdapter(doListAdapter);
-        doViewModel.deliveryOrders.observe(DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
+        doViewModel.getDeliveryOrders().observe(DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
             public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
                 doListAdapter.updateList(deliveryOrders);
             }
         });
+        doListRecyclerView.setAdapter(doListAdapter);
     }
 
     private void fetchDeliveryOrders(){
