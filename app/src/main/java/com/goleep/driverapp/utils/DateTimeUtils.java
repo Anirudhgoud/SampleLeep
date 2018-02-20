@@ -27,5 +27,17 @@ public class DateTimeUtils {
         return "";
     }
 
+    public static Date dateFrom(String dateString, String dateFormatString){
+        if(dateString == null || dateFormatString == null){
+            return  null;
+        }
+        DateFormat format = new SimpleDateFormat(dateFormatString);
+        try {
+            return format.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

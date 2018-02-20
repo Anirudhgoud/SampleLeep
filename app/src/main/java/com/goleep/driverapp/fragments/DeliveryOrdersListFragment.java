@@ -11,17 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DeliveryOrdersListAdapter;
+import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.viewmodels.DeliveryOrdersViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * Created by anurag on 15/02/18.
@@ -30,13 +30,18 @@ import butterknife.BindView;
 public class DeliveryOrdersListFragment extends Fragment {
 
     private DeliveryOrdersViewModel doViewModel;
+    private DeliveryOrdersListAdapter doListAdapter;
+
+    //UI elements
     private RecyclerView doListRecyclerView;
+    private RadioGroup rgFilterRadioGroup;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_delivery_order_list, container, false);
         doListRecyclerView = view.findViewById(R.id.delivery_order_recyclerview);
+        rgFilterRadioGroup = view.findViewById(R.id.rg_sort);
         initialise();
         fetchDeliveryOrders();
         return view;
@@ -45,12 +50,13 @@ public class DeliveryOrdersListFragment extends Fragment {
     private void initialise(){
         doViewModel = ViewModelProviders.of(getActivity()).get(DeliveryOrdersViewModel.class);
         initialiseRecyclerView();
+        initialiseRadioButtons();
     }
 
     private void initialiseRecyclerView(){
         doListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         doListRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        final DeliveryOrdersListAdapter doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<DeliveryOrder>());
+        doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<DeliveryOrder>());
         doViewModel.getDeliveryOrders().observe(DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
             public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
@@ -60,8 +66,33 @@ public class DeliveryOrdersListFragment extends Fragment {
         doListRecyclerView.setAdapter(doListAdapter);
     }
 
+    private void initialiseRadioButtons(){
+        rgFilterRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                onRadioSelectionChange(checkedId);
+            }
+        });
+    }
+
     private void fetchDeliveryOrders(){
         doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+    }
+
+    private void onRadioSelectionChange(int checkedId){
+        switch (checkedId){
+            case R.id.rb_date:
+                doListAdapter.sortList(SortCategoryType.DATE);
+                break;
+
+            case R.id.rb_distance:
+                doListAdapter.sortList(SortCategoryType.DISTANCE);
+                break;
+
+            case R.id.rb_value:
+                doListAdapter.sortList(SortCategoryType.VALUE);
+                break;
+        }
     }
 
     private UILevelNetworkCallback deliveryOrderCallBack = new UILevelNetworkCallback() {

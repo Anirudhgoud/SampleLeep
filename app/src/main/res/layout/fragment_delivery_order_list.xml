@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <RadioGroup
+        android:id="@+id/rg_sort"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:orientation="horizontal">

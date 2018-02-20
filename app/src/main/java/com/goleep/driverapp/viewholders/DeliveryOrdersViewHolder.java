@@ -48,7 +48,7 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
     }
 
     private String dateToDisplay(String dateString){
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, "yyyy-MM-dd", "22 MMM, yyyy");
+        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, "yyyy-MM-dd", "dd MMM, yyyy");
 
     }
 
