@@ -30,4 +30,7 @@
     <string name="deliver">Deliver</string>
     <string name="items">"Items: "</string>
     <string name="do_number">"DO No. "</string>
+    <string name="date">Date</string>
+    <string name="distance">Distance</string>
+    <string name="value">Value</string>
 </resources>
