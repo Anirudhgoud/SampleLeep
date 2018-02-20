@@ -1,66 +1,52 @@
 package com.goleep.driverapp.leep;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.fragments.PickupCashSalessFragment;
-import com.goleep.driverapp.fragments.PickupDeliveryOrderFragment;
+import com.goleep.driverapp.fragments.DeliveryOrdersListFragment;
+import com.goleep.driverapp.fragments.DeliveryOrdersMapFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.goleep.driverapp.viewmodels.DeliveryOrdersViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PickupActivity extends ParentAppCompatActivity {
+public class DeliveryOrdersActivity extends ParentAppCompatActivity {
 
-    @BindView(R.id.pickup_view_pager)
-    ViewPager viewPager;
+    DeliveryOrdersViewModel viewModel;
+
+    @BindView(R.id.do_view_pager)
+    ViewPager doViewPager;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.setResources(R.layout.activity_delivery_orders);
+    }
 
     @Override
     public void doInitialSetup() {
         ButterKnife.bind(this);
-        initView();
-    }
-
-
-
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.setResources(R.layout.activity_pickup);
-    }
-
-    @Override
-    public void onClickWithId(int resourceId) {
-
-    }
-
-    private void initView() {
-        setToolBarColor(getResources().getColor(R.color.light_green));
+        viewModel = ViewModelProviders.of(this).get(DeliveryOrdersViewModel.class);
         initialiseTabBar();
-
     }
 
     private void initialiseTabBar() {
-        PickupPagerAdapter deliveryOrderPagerAdapter = new PickupPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(deliveryOrderPagerAdapter);
+        DeliveryOrderPagerAdapter deliveryOrderPagerAdapter = new DeliveryOrderPagerAdapter(getSupportFragmentManager());
+        doViewPager.setAdapter(deliveryOrderPagerAdapter);
         tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(doViewPager);
         setupTabIcons();
     }
 
@@ -70,8 +56,8 @@ public class PickupActivity extends ParentAppCompatActivity {
         ImageView icon = view.findViewById(R.id.icon);
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        textView.setText(getString(R.string.delivery_order));
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.delivery_orders_tab));
+        textView.setText(getString(R.string.list));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_list_tab));
 
 
         tabLayout.getTabAt(0).setCustomView(view);
@@ -80,16 +66,22 @@ public class PickupActivity extends ParentAppCompatActivity {
         textView = mapTab.findViewById(R.id.title_text);
         icon = mapTab.findViewById(R.id.icon);
         mapTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        textView.setText(getString(R.string.cash_sales));
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.cash_sales_tab));
+        textView.setText(getString(R.string.map));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_map_tab));
         tabLayout.getTabAt(1).setCustomView(mapTab);
     }
 
-    class PickupPagerAdapter extends FragmentPagerAdapter {
+    @Override
+    public void onClickWithId(int resourceId) {
+
+    }
+
+
+    class DeliveryOrderPagerAdapter extends FragmentPagerAdapter {
 
         private int NUMBER_OF_ITEMS = 2;
 
-        public PickupPagerAdapter(FragmentManager fragmentManager) {
+        public DeliveryOrderPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
@@ -97,9 +89,9 @@ public class PickupActivity extends ParentAppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new PickupDeliveryOrderFragment();
+                    return new DeliveryOrdersListFragment();
                 case 1:
-                    return new PickupCashSalessFragment();
+                    return new DeliveryOrdersMapFragment();
                 default:
                     return null;
             }
@@ -122,4 +114,5 @@ public class PickupActivity extends ParentAppCompatActivity {
             }
         }
     }
+
 }

@@ -10,6 +10,8 @@
     <string name="sign_out">Sign Out</string>
     <string name="email">Email</string>
     <string name="submit">Submit</string>
+    <string name="list">List</string>
+    <string name="map">Map</string>
     <string name="forgot_password_success">Email submitted successfully</string>
     <string name="pickup">Pick Up</string>
     <string name="dropoff">Drop Off</string>
@@ -23,4 +25,8 @@
     <string name="vehicle_reg_no">Vehicle Registration No.</string>
     <string name="employee_no">Employee No.</string>
     <string name="india_code">+91</string>
+    <string name="delivery_order">Delivery Order</string>
+    <string name="cash_sales">Cash Sales</string>
+    <string name="orders">Orders</string>
+    <string name="value">Value</string>
 </resources>
