@@ -7,10 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.fragments.DeliveryOrdersListFragment;
 import com.goleep.driverapp.fragments.DeliveryOrdersMapFragment;
+import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.viewmodels.DeliveryOrdersViewModel;
 
 import butterknife.BindView;
@@ -45,8 +50,24 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
     }
 
     private void setupTabIcons() {
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_list_tab).setCustomView(R.layout.custom_tab_item_layout);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_map_tab).setCustomView(R.layout.custom_tab_item_layout);
+        View view = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
+        CustomTextView textView = view.findViewById(R.id.title_text);
+        ImageView icon = view.findViewById(R.id.icon);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        textView.setText(getString(R.string.delivery_order));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_list_tab));
+
+
+        tabLayout.getTabAt(0).setCustomView(view);
+
+        View mapTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
+        textView = mapTab.findViewById(R.id.title_text);
+        icon = mapTab.findViewById(R.id.icon);
+        mapTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        textView.setText(getString(R.string.cash_sales));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_map_tab));
+        tabLayout.getTabAt(1).setCustomView(mapTab);
     }
 
     @Override
