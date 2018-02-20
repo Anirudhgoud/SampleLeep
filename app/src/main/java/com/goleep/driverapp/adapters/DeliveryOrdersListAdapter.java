@@ -5,9 +5,14 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.comparators.SortDOByDeliveryTime;
+import com.goleep.driverapp.services.room.entities.comparators.SortDoByPreferredDeliveryDate;
+import com.goleep.driverapp.services.room.entities.comparators.SortDoByTotalValue;
 import com.goleep.driverapp.viewholders.DeliveryOrdersViewHolder;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,7 +35,8 @@ public class DeliveryOrdersListAdapter extends RecyclerView.Adapter<DeliveryOrde
 
     @Override
     public void onBindViewHolder(DeliveryOrdersViewHolder holder, int position) {
-
+        DeliveryOrder deliveryOrder = deliveryOrderList.get(position);
+        holder.bindData(deliveryOrder);
     }
 
     @Override
@@ -41,6 +47,23 @@ public class DeliveryOrdersListAdapter extends RecyclerView.Adapter<DeliveryOrde
     public void updateList(List<DeliveryOrder> deliveryOrderList){
         this.deliveryOrderList.clear();
         this.deliveryOrderList.addAll(deliveryOrderList);
+        notifyDataSetChanged();
+    }
+
+    public void sortList(String sortType){
+        switch (sortType){
+            case SortCategoryType.DATE:
+                Collections.sort(deliveryOrderList, new SortDoByPreferredDeliveryDate());
+                break;
+
+            case SortCategoryType.DISTANCE:
+                Collections.sort(deliveryOrderList, new SortDOByDeliveryTime());
+                break;
+
+            case SortCategoryType.VALUE:
+                Collections.sort(deliveryOrderList, new SortDoByTotalValue());
+                break;
+        }
         notifyDataSetChanged();
     }
 }

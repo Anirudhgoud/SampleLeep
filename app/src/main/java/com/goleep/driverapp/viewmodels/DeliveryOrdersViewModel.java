@@ -35,14 +35,18 @@ import java.util.List;
 public class DeliveryOrdersViewModel extends AndroidViewModel {
 
     private Context context;
-    public LiveData<List<DeliveryOrder>> deliveryOrders;
+    private LiveData<List<DeliveryOrder>> deliveryOrders;
     private AppDatabase leepDatabase;
 
     public DeliveryOrdersViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
         leepDatabase = RoomDBService.sharedInstance().getDatabase(this.getApplication());
-        deliveryOrders = leepDatabase.deliveryOrderDao().getAllDeliveryOrders();
+        deliveryOrders = leepDatabase.deliveryOrderDao().getCustomerDeliveryOrders();
+    }
+
+    public LiveData<List<DeliveryOrder>> getDeliveryOrders() {
+        return deliveryOrders;
     }
 
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doCallBack){
@@ -53,12 +57,12 @@ public class DeliveryOrdersViewModel extends AndroidViewModel {
                 switch (type){
                     case NetworkConstants.SUCCESS:
 
-                    List<DeliveryOrder> deliveryOrdersList = new ArrayList<>();
+                    List<DeliveryOrder> deliveryOrdersList;
                     try{
                         Type listType = new TypeToken<List<DeliveryOrder>>() {}.getType();
                         JSONObject obj = (JSONObject) response.get(0);
-                        JsonElement element = (JsonElement) obj.get("data");
-                        deliveryOrdersList = new Gson().fromJson(element, listType);
+                        deliveryOrdersList = new Gson().fromJson(obj.getJSONArray("data").toString(), listType);
+                        leepDatabase.deliveryOrderDao().deleteAllDeliveryOrders();
                         leepDatabase.deliveryOrderDao().insertDeliveryOrders(deliveryOrdersList);
 
                     }catch (JSONException ex){
