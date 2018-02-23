@@ -8,6 +8,8 @@
     <color name="light_grey">#939393</color>
     <color name="transparent">#00000000</color>
     <color name="dark_grey">#656565</color>
+    <color name="dark_grey_text">#525252</color>
+    <color name="text_light_grey_title">#939393</color>
     <color name="text_color">#787878</color>
     <color name="text_light_grey">#CFCFCF</color>
     <color name="text_black">#080033</color>
@@ -16,6 +18,7 @@
     <color name="green">#28DC76</color>
     <color name="red">#FF6464</color>
     <color name="doTabTextColor">#525252</color>
+    <color name="tab_light_grey">#ECECEC</color>
 
     <color name="tabBackgroundGreyColor">#F2F2F2</color>
     <color name="inner_dashboard_blue">#1400FF</color>

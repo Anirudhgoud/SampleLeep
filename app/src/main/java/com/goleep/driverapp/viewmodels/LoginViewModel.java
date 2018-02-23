@@ -7,22 +7,18 @@ import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.RequestConstants;
-import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.helpers.uimodels.UserMeta;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
-import com.goleep.driverapp.services.storage.LocalStorageService;
+import com.goleep.driverapp.services.room.RoomDBService;
+import com.goleep.driverapp.services.room.entities.UserMeta;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,7 +33,7 @@ public class LoginViewModel extends AndroidViewModel {
         context = application.getApplicationContext();
     }
 
-    public void login(String phoneNumber, String password, String code, final UILevelNetworkCallback loginCallBack) {
+    public void login(String phoneNumber, String password, final String code, final UILevelNetworkCallback loginCallBack) {
         Map<String, Object> bodyParams = new HashMap<>();
         bodyParams.put(RequestConstants.KEY_PHONE_NUMBER, phoneNumber);
         bodyParams.put(RequestConstants.KEY_COUNTRY_CODE, code);
@@ -49,8 +45,10 @@ public class LoginViewModel extends AndroidViewModel {
                 switch (type){
                     case NetworkConstants.SUCCESS:
                         try{
-                            LocalStorageService.sharedInstance().getLocalFileStore().store(context,
-                                    SharedPreferenceKeys.DRIVER_ID, ((JSONObject)response.get(0)).getString("id"));
+                            RoomDBService.sharedInstance().getDatabase(context).userMetaDao().
+                                    insertUserMeta(new Gson().fromJson(String.valueOf(response.get(0)), UserMeta.class));
+//                            LocalStorageService.sharedInstance().getLocalFileStore().store(context,
+//                                    SharedPreferenceKeys.DRIVER_ID, ((JSONObject)response.get(0)).getJSONObject("driver").getString("id"));
                         }catch (JSONException ex){
                             ex.printStackTrace();
                         }

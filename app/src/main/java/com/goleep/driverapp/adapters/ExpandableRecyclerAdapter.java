@@ -82,20 +82,22 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
             });
         }
 
-        public HeaderViewHolder(View view, final ImageView arrow) {
+        public HeaderViewHolder(View view, final ImageView arrow, final View.OnClickListener clickListener) {
             super(view);
 
             this.arrow = arrow;
 
-            arrow.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    clickListener.onClick(v);
                     handleClick();
                 }
             });
         }
 
         protected void handleClick() {
+            openArrow(arrow);
             if (toggleExpandedItems(getLayoutPosition(), false)) {
                 openArrow(arrow);
             } else {
@@ -104,7 +106,11 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         }
 
         public void bind(int position) {
-            arrow.setRotation(isExpanded(position) ? 90 : 0);
+            try {
+                arrow.setRotation(isExpanded(position) ? 90 : 0);
+            }catch (Exception e){
+
+            }
         }
     }
 

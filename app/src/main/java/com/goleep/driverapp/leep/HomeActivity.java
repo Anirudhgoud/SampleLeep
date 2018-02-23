@@ -1,17 +1,12 @@
 package com.goleep.driverapp.leep;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
-import com.goleep.driverapp.helpers.uimodels.Driver;
+import com.goleep.driverapp.services.room.RoomDBService;
+import com.goleep.driverapp.services.room.entities.Driver;
 import com.goleep.driverapp.helpers.uimodels.InnerDashboardUiModel;
 import com.goleep.driverapp.helpers.uimodels.Summary;
-import com.goleep.driverapp.helpers.uimodels.UserMeta;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.viewmodels.HomeViewModel;
 
 import java.util.ArrayList;
@@ -82,9 +75,9 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             if(toLogout){
-                performSignOut();
+                logoutUser();
             } else if(errorMessage == null){
-                performSignOut();
+                logoutUser();
             } else {
                 showNetworkRelatedDialogs(errorMessage);
             }
@@ -113,7 +106,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             if(toLogout){
-                performSignOut();
+                logoutUser();
             } else if(errorMessage == null){
                 if(uiModels.size() > 0){
                     summary = (Summary) uiModels.get(0);
@@ -123,8 +116,6 @@ public class HomeActivity extends ParentAppCompatActivity {
             }
         }
     };
-
-
 
     private void displayDriverProfile(Driver driver) {
         View view = findViewById(R.id.profile_layout);
@@ -202,13 +193,6 @@ public class HomeActivity extends ParentAppCompatActivity {
                 viewModel.signout(logoutCallback);
                 break;
         }
-    }
-
-    private void performSignOut() {
-        LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(HomeActivity.this);
-        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     private void setupInnerDashboard(String tag) {
