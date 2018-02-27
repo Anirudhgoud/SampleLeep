@@ -55,6 +55,8 @@ public class HomeViewModel extends AndroidViewModel {
                     case NetworkConstants.NETWORK_ERROR:
                         logoutCallback.onResponseReceived(null, true, errorMessage, false);
                         break;
+                    case NetworkConstants.UNAUTHORIZED:
+                        logoutCallback.onResponseReceived(null, false, errorMessage, true);
                 }
             }
         });

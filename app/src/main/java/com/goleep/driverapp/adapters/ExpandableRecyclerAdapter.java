@@ -110,7 +110,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
             expandItems(position, notify);
 
             if (mode == MODE_ACCORDION) {
-               // collapseAllExcept(position);
+               collapseAllExcept(position);
             }
 
             return true;

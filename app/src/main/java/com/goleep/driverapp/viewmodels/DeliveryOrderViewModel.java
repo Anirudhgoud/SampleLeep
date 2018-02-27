@@ -1,6 +1,5 @@
 package com.goleep.driverapp.viewmodels;
 
-
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
@@ -15,7 +14,6 @@ import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
-import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,42 +25,39 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * Created by anurag on 14/02/18.
+ * Created by vishalm on 27/02/18.
  */
 
-public class DeliveryOrdersViewModel extends AndroidViewModel {
-
+public class DeliveryOrderViewModel extends AndroidViewModel {
     private Context context;
+    protected AppDatabase leepDatabase;
     private LiveData<List<DeliveryOrder>> deliveryOrders;
-    private LiveData<DoDetails> doDetailsLiveData;
-    private AppDatabase leepDatabase;
 
     public static final String TYPE_CUSTOMER = "customer";
     public static final String TYPE_DRIVER = "driver";
     public static final String STATUS_IN_TRANSIT = "in_transit";
     public static final String STATUS_ASSIGNED = "assigned";
 
-    public DeliveryOrdersViewModel(@NonNull Application application) {
+    public DeliveryOrderViewModel(@NonNull Application application) {
         super(application);
-        context = application.getApplicationContext();
-        leepDatabase = RoomDBService.sharedInstance().getDatabase(this.getApplication());
+        context = application;
+        leepDatabase = RoomDBService.sharedInstance().getDatabase(context);
     }
-
     public LiveData<List<DeliveryOrder>> getDeliveryOrders(String type, String status) {
         String doType;
         String doStatus;
         switch (type){
             case TYPE_CUSTOMER : doType = TYPE_CUSTOMER;
-            break;
+                break;
             case TYPE_DRIVER : doType = TYPE_DRIVER;
-            break;
+                break;
             default: doType = TYPE_CUSTOMER;
         }
         switch (status){
             case STATUS_ASSIGNED : doStatus = STATUS_ASSIGNED;
-            break;
+                break;
             case STATUS_IN_TRANSIT : doStatus = STATUS_IN_TRANSIT;
-            break;
+                break;
             default: doStatus = STATUS_ASSIGNED;
         }
         deliveryOrders = leepDatabase.deliveryOrderDao().getCustomerDeliveryOrders(doType, doStatus);
@@ -72,41 +67,17 @@ public class DeliveryOrdersViewModel extends AndroidViewModel {
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doCallBack){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context, UrlConstants.DELIVERY_ORDERS_URL,
                 true, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type){
-                    case NetworkConstants.SUCCESS:
-                        List<DeliveryOrder> deliveryOrdersList;
-                    try{
-                        Type listType = new TypeToken<List<DeliveryOrder>>() {}.getType();
-                        JSONObject obj = (JSONObject) response.get(0);
-                        deliveryOrdersList = new Gson().fromJson(obj.getJSONArray("data").toString(), listType);
-                        leepDatabase.deliveryOrderDao().deleteAllDeliveryOrders();
-                        leepDatabase.deliveryOrderDao().insertDeliveryOrders(deliveryOrdersList);
-
-                    }catch (JSONException ex){
-                        ex.printStackTrace();
-                    }
-                    break;
-                }
-            }
-        });
-    }
-
-    public void fetchDoItems(final String doId){
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
-                UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type){
                             case NetworkConstants.SUCCESS:
-                                DoDetails doDetailsList;
+                                List<DeliveryOrder> deliveryOrdersList;
                                 try{
-                                    Type doDetailsType = new TypeToken<DoDetails>() {}.getType();
+                                    Type listType = new TypeToken<List<DeliveryOrder>>() {}.getType();
                                     JSONObject obj = (JSONObject) response.get(0);
-                                    doDetailsList = new Gson().fromJson(String.valueOf(obj), doDetailsType);
-                                    leepDatabase.doDetailsDao().deleteDoDetails(doId);
-                                    leepDatabase.doDetailsDao().insertDoDetails(doDetailsList);
+                                    deliveryOrdersList = new Gson().fromJson(obj.getJSONArray("data").toString(), listType);
+                                    leepDatabase.deliveryOrderDao().deleteAllDeliveryOrders();
+                                    leepDatabase.deliveryOrderDao().insertDeliveryOrders(deliveryOrdersList);
 
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
@@ -115,16 +86,5 @@ public class DeliveryOrdersViewModel extends AndroidViewModel {
                         }
                     }
                 });
-    }
-
-
-    public LiveData<DoDetails> getDoDetails(Integer id) {
-        doDetailsLiveData = leepDatabase.doDetailsDao().getDoDetails(id);
-        return doDetailsLiveData;
-    }
-
-    public DoDetails getDoDetailsObj(Integer id) {
-        //doDetailsLiveData = leepDatabase.doDetailsDao().getDoDetails(id);
-        return leepDatabase.doDetailsDao().getDoDetailsObj(id);
     }
 }

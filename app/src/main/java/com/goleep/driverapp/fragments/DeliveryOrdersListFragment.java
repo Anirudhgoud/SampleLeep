@@ -18,7 +18,7 @@ import com.goleep.driverapp.adapters.DeliveryOrdersListAdapter;
 import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
-import com.goleep.driverapp.viewmodels.DeliveryOrdersViewModel;
+import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.List;
 
 public class DeliveryOrdersListFragment extends Fragment {
 
-    private DeliveryOrdersViewModel doViewModel;
+    private DropOffDeliveryOrdersViewModel doViewModel;
     private DeliveryOrdersListAdapter doListAdapter;
 
     //UI elements
@@ -48,7 +48,7 @@ public class DeliveryOrdersListFragment extends Fragment {
     }
 
     private void initialise(){
-        doViewModel = ViewModelProviders.of(getActivity()).get(DeliveryOrdersViewModel.class);
+        doViewModel = ViewModelProviders.of(getActivity()).get(DropOffDeliveryOrdersViewModel.class);
         initialiseRecyclerView();
         initialiseRadioButtons();
     }
@@ -57,8 +57,8 @@ public class DeliveryOrdersListFragment extends Fragment {
         doListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         doListRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<DeliveryOrder>());
-        doViewModel.getDeliveryOrders(DeliveryOrdersViewModel.TYPE_CUSTOMER,
-                DeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
+        doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
+                DropOffDeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
                         DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
             public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
