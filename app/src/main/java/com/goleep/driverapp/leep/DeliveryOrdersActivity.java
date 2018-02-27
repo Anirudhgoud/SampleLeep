@@ -16,14 +16,14 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.fragments.DeliveryOrdersListFragment;
 import com.goleep.driverapp.fragments.DeliveryOrdersMapFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.viewmodels.DeliveryOrdersViewModel;
+import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DeliveryOrdersActivity extends ParentAppCompatActivity {
 
-    DeliveryOrdersViewModel viewModel;
+    DropOffDeliveryOrdersViewModel viewModel;
 
     @BindView(R.id.do_view_pager)
     ViewPager doViewPager;
@@ -38,7 +38,7 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
     @Override
     public void doInitialSetup() {
         ButterKnife.bind(this);
-        viewModel = ViewModelProviders.of(this).get(DeliveryOrdersViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(DropOffDeliveryOrdersViewModel.class);
         initialiseTabBar();
     }
 

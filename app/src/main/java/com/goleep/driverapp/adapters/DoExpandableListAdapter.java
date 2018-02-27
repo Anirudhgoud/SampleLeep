@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.utils.AppUtils;
@@ -28,7 +27,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
     final int TYPE_DO_ITEM = 10;
     final int LIST_DO_HEADER = 11;
     private List<DeliveryOrder> doList;
-    private Map<String, DoDetails> doDetailsMap = new HashMap<>();
     View.OnClickListener headerClickListener;
     private List<DoListItem> recyclerViewListData = new ArrayList<>();
     private List<DoListItem> headerList = new ArrayList<>();
@@ -50,7 +48,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
             list.add(new DoListItem(deliveryOrder));
         }
         headerList.addAll(list);
-        //list.addAll(getItemsList(RoomDBService.sharedInstance().getDatabase(mContext).doDetailsDao().getDoDetailsObj(7).getDeliveryOrderItems()));
         recyclerViewListData.addAll(list);
         return recyclerViewListData;
     }
@@ -107,10 +104,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
 
     public DeliveryOrder getItemAt(int pos) {
         return doList.get(pos);
-    }
-
-    public void updateMap(DoDetails doDetails) {
-        doDetailsMap.put(String.valueOf(doDetails.getId()), doDetails);
     }
 
     public class HeaderViewHolder extends ExpandableRecyclerAdapter.HeaderViewHolder{
@@ -230,14 +223,11 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
         boolean isChecked = false;
         int itemType;
         int selectedCount = 0;
-        public DoListItem(int itemType) {
-            super(itemType);
-        }
-        public DoListItem(DeliveryOrder deliveryOrder){
+        private DoListItem(DeliveryOrder deliveryOrder){
             super(TYPE_HEADER);
             this.deliveryOrder = deliveryOrder;
         }
-        public DoListItem(DoDetails.DeliveryOrderItem doItem){
+        private DoListItem(DoDetails.DeliveryOrderItem doItem){
             super(TYPE_DO_ITEM);
             this.doDetails = doItem;
         }
@@ -246,19 +236,16 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
             return deliveryOrder;
         }
 
-        public DoDetails.DeliveryOrderItem getDoDetails(){
+        private DoDetails.DeliveryOrderItem getDoDetails(){
             return doDetails;
         }
 
         boolean isAllSelected(){
-            if(selectedCount == deliveryOrder.getDeliveryOrderItemsCount())
-                return true;
-            else return false;
+            return selectedCount == deliveryOrder.getDeliveryOrderItemsCount();
         }
 
         void addSelection(int selection){
             selectedCount = selectedCount + selection;
         }
     }
-
 }

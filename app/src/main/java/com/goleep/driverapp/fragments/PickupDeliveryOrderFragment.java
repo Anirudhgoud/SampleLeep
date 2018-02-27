@@ -12,18 +12,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DoDetails;
-import com.goleep.driverapp.viewmodels.DeliveryOrdersViewModel;
+import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
+import com.goleep.driverapp.viewmodels.PickupDropOffDeliveryOrderViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +37,7 @@ import butterknife.ButterKnife;
 
 public class PickupDeliveryOrderFragment extends Fragment{
 
-    private DeliveryOrdersViewModel doViewModel;
+    private PickupDropOffDeliveryOrderViewModel doViewModel;
 
     @BindView(R.id.expandable_list)
     RecyclerView expandableListView;
@@ -47,20 +45,19 @@ public class PickupDeliveryOrderFragment extends Fragment{
     CustomButton confirmButton;
 
     DoExpandableListAdapter adapter;
-    boolean updated = false;
     ArrayList<DeliveryOrder> doList = new ArrayList<>();
-    Map<Integer, DoDetails> doDetailsMap = new HashMap<>();
+    Map<Integer, Boolean> doUpdateMap = new HashMap<>();
     View.OnClickListener headerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             final int pos = expandableListView.getChildLayoutPosition(view);
-            if(!updated) {
+            if(doUpdateMap.containsKey(adapter.getItemAt(pos).getId()) && !doUpdateMap.get(adapter.getItemAt(pos).getId())) {
                 doViewModel.getDoDetails(adapter.getItemAt(pos).getId()).observe(
                         PickupDeliveryOrderFragment.this, new Observer<DoDetails>() {
                             @Override
                             public void onChanged(@Nullable DoDetails doDetails) {
                                 adapter.updateItems(doDetails, pos);
-                                updated = true;
+                                doUpdateMap.put(adapter.getItemAt(pos).getId(), true);
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -102,7 +99,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
     }
 
     private void initialise() {
-        doViewModel = ViewModelProviders.of(getActivity()).get(DeliveryOrdersViewModel.class);
+        doViewModel = ViewModelProviders.of(getActivity()).get(PickupDropOffDeliveryOrderViewModel.class);
         initRecyclerView();
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,8 +114,8 @@ public class PickupDeliveryOrderFragment extends Fragment{
         expandableListView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         adapter = new DoExpandableListAdapter(getActivity(), doList, headerClickListener);
         expandableListView.setAdapter(adapter);
-        doViewModel.getDeliveryOrders(DeliveryOrdersViewModel.TYPE_CUSTOMER,
-                DeliveryOrdersViewModel.STATUS_ASSIGNED).observe(
+        doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
+                DropOffDeliveryOrdersViewModel.STATUS_ASSIGNED).observe(
                         PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
             public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
