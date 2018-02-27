@@ -73,6 +73,7 @@
         android:background="@color/green"
         android:text="@string/next"
         android:textColor="@color/white"
+        android:visibility="visible"
         android:textSize="18sp"
         app:typeface="NotoSans-Regular" />
 

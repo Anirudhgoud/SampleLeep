@@ -74,6 +74,7 @@
         android:id="@+id/confirm_button"
         app:typeface="NotoSans-Regular"
         android:textSize="18sp"
+        android:visibility="visible"
         android:textColor="@color/white"
         android:background="@color/green"/>
 </RelativeLayout>

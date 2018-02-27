@@ -3,6 +3,7 @@ package com.goleep.driverapp.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
+import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
@@ -24,7 +26,9 @@ import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.viewmodels.DeliveryOrdersViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,21 +47,42 @@ public class PickupDeliveryOrderFragment extends Fragment{
     CustomButton confirmButton;
 
     DoExpandableListAdapter adapter;
+    boolean updated = false;
     ArrayList<DeliveryOrder> doList = new ArrayList<>();
+    Map<Integer, DoDetails> doDetailsMap = new HashMap<>();
     View.OnClickListener headerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             final int pos = expandableListView.getChildLayoutPosition(view);
-            doViewModel.getDoDetails(adapter.getItemAt(pos).getId()).observe(
-                    PickupDeliveryOrderFragment.this, new Observer<DoDetails>() {
-                @Override
-                public void onChanged(@Nullable DoDetails doDetails) {
-                    adapter.updateItems(doDetails, pos);
-                }
-            });
-            doViewModel.fetchDoItems(String.valueOf(adapter.getItemAt(pos).getId()));
+            if(!updated) {
+                doViewModel.getDoDetails(adapter.getItemAt(pos).getId()).observe(
+                        PickupDeliveryOrderFragment.this, new Observer<DoDetails>() {
+                            @Override
+                            public void onChanged(@Nullable DoDetails doDetails) {
+                                adapter.updateItems(doDetails, pos);
+                                updated = true;
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
+                                    }
+                                }, 5);
+
+                            }
+                        });
+                doViewModel.fetchDoItems(String.valueOf(adapter.getItemAt(pos).getId()));
+            }
         }
     };
+
+//    private DoSelectionListener doSelectionListener = new DoSelectionListener() {
+//        @Override
+//        public void allDOSelected(boolean allSelected) {
+//            if(allSelected)
+//                confirmButton.setVisibility(View.VISIBLE);
+//            else confirmButton.setVisibility(View.GONE);
+//        }
+//    };
 
     private UILevelNetworkCallback deliveryOrderCallBack = new UILevelNetworkCallback() {
 
@@ -100,6 +125,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
                 doList.clear();
                 doList.addAll(deliveryOrders);
                 adapter.upDateList(deliveryOrders);
+                adapter.updateItems(doViewModel.getDoDetailsObj(deliveryOrders.get(0).getId()), 0);
             }
         });
     }

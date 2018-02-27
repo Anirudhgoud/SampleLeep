@@ -3,11 +3,13 @@ package com.goleep.driverapp.adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.utils.AppUtils;
@@ -30,11 +32,12 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
     View.OnClickListener headerClickListener;
     private List<DoListItem> recyclerViewListData = new ArrayList<>();
     private List<DoListItem> headerList = new ArrayList<>();
-
+    int headerSelectionCount = 0;
     public DoExpandableListAdapter(Context context, ArrayList<DeliveryOrder> doList,
                                    View.OnClickListener headerClickListener) {
         super(context);
         this.doList = doList;
+        setMode(MODE_ACCORDION);
         setItems(getList(doList));
         this.headerClickListener = headerClickListener;
     }
@@ -47,9 +50,12 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
             list.add(new DoListItem(deliveryOrder));
         }
         headerList.addAll(list);
+        //list.addAll(getItemsList(RoomDBService.sharedInstance().getDatabase(mContext).doDetailsDao().getDoDetailsObj(7).getDeliveryOrderItems()));
         recyclerViewListData.addAll(list);
         return recyclerViewListData;
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -59,7 +65,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
                 return new HeaderViewHolder(headerView);
             case TYPE_DO_ITEM:
             default:
-                View contentView = inflate(R.layout.item_content, parent);
+                View contentView = inflate(R.layout.do_details_list_item, parent);
                 return new ItemViewHolder(contentView);
         }
     }
@@ -86,8 +92,15 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
 
     public void updateItems(DoDetails doDetails, int headerPosition) {
         int index = recyclerViewListData.indexOf(headerList.get(headerPosition));
-        if(recyclerViewListData.size() < 2)
-            recyclerViewListData.add(index+1, new DoListItem(doDetails.getDeliveryOrderItems().get(0)));
+        recyclerViewListData.clear();
+        recyclerViewListData.addAll(headerList);
+        addItemsList(doDetails.getDeliveryOrderItems(), index);
+    }
+
+    private void addItemsList(List<DoDetails.DeliveryOrderItem> doDetailsObj, int position) {
+        for(int i=0;i<doDetailsObj.size();i++){
+            recyclerViewListData.add(position+i+1, new DoListItem(doDetailsObj.get(i)));
+        }
         setItems(recyclerViewListData);
         notifyDataSetChanged();
     }
@@ -107,6 +120,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
         CustomTextView tvDate;
         CustomTextView tvSchedule;
         CustomTextView tvAmount;
+        ImageView selectionIcon;
+
         public HeaderViewHolder(View itemView) {
             super(itemView, (ImageView) itemView.findViewById(R.id.img_arrow), headerClickListener);
             tvCustomerName = itemView.findViewById(R.id.tv_customer_name);
@@ -115,17 +130,26 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
             tvDate = itemView.findViewById(R.id.tv_date);
             tvSchedule = itemView.findViewById(R.id.tv_schedule);
             tvAmount = itemView.findViewById(R.id.tv_amount);
+            selectionIcon = itemView.findViewById(R.id.selection_icon);
         }
 
         public void bind(int position) {
             super.bind(position);
-            DeliveryOrder deliveryOrder = doList.get(position);
+            DeliveryOrder deliveryOrder = recyclerViewListData.get(position).getDo();
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
             tvDoNumber.setText(deliveryOrder.getDoNumber() ==  null ? "-" : deliveryOrder.getDoNumber());
             tvDate.setText(dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
             tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
             tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
+            if(recyclerViewListData.get(position).isAllSelected()) {
+                selectionIcon.setImageResource(R.drawable.ic_do_selected);
+                headerSelectionCount +=1;
+            }
+            else {
+                headerSelectionCount = headerSelectionCount == 0? 0 : --headerSelectionCount;
+                selectionIcon.setImageResource(R.drawable.ic_do_unselected);
+            }
         }
         private String dateToDisplay(String dateString){
             return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
@@ -169,15 +193,33 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
     }
 
     public class ItemViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
-        CustomTextView itemNameTextView;
+        private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
+        private CheckBox productCheckbox;
         public ItemViewHolder(View view) {
             super(view);
-            itemNameTextView = view.findViewById(R.id.item_text_view);
+            productNameTv = view.findViewById(R.id.product_name_text_view);
+            productQuantityTv = view.findViewById(R.id.quantity_text_view);
+            amountTv = view.findViewById(R.id.amount_text_view);
+            unitsTv = view.findViewById(R.id.units_text_view);
+            productCheckbox = view.findViewById(R.id.product_checkbox);
         }
 
         public void bind(int position) {
-            String name = recyclerViewListData.get(position).doDetails.getProduct().getName();
-            itemNameTextView.setText(name);
+            DoDetails.DeliveryOrderItem doDetails = recyclerViewListData.get(position).getDoDetails();
+            productNameTv.setText(doDetails.getProduct().getName());
+            double value = doDetails.getQuantity() * doDetails.getPrice();
+            productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
+            unitsTv.setText(String.valueOf(doDetails.getQuantity()));
+            amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+            productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if(isChecked)
+                        recyclerViewListData.get(0).addSelection(1);
+                    else recyclerViewListData.get(0).addSelection(-1);
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
 
@@ -185,7 +227,9 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
     public class DoListItem extends ExpandableRecyclerAdapter.ListItem{
         DeliveryOrder deliveryOrder;
         DoDetails.DeliveryOrderItem doDetails;
+        boolean isChecked = false;
         int itemType;
+        int selectedCount = 0;
         public DoListItem(int itemType) {
             super(itemType);
         }
@@ -204,6 +248,16 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
 
         public DoDetails.DeliveryOrderItem getDoDetails(){
             return doDetails;
+        }
+
+        boolean isAllSelected(){
+            if(selectedCount == deliveryOrder.getDeliveryOrderItemsCount())
+                return true;
+            else return false;
+        }
+
+        void addSelection(int selection){
+            selectedCount = selectedCount + selection;
         }
     }
 

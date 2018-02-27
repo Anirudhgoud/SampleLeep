@@ -122,4 +122,9 @@ public class DeliveryOrdersViewModel extends AndroidViewModel {
         doDetailsLiveData = leepDatabase.doDetailsDao().getDoDetails(id);
         return doDetailsLiveData;
     }
+
+    public DoDetails getDoDetailsObj(Integer id) {
+        //doDetailsLiveData = leepDatabase.doDetailsDao().getDoDetails(id);
+        return leepDatabase.doDetailsDao().getDoDetailsObj(id);
+    }
 }

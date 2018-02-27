@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.goleep.driverapp.services.room.entities.DoDetails;
@@ -18,7 +19,7 @@ public interface DoDetailsDao {
     @Insert
     void insertDoDetails(List<DoDetails> doDetailsList) ;
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertDoDetails(DoDetails doDetailsList) ;
 
     @Query("DELETE FROM DoDetails WHERE id = :doId")
@@ -32,4 +33,7 @@ public interface DoDetailsDao {
 
     @Query("SELECT * FROM DoDetails WHERE id = :id")
     LiveData<DoDetails> getDoDetails(Integer id);
+
+    @Query("SELECT * FROM DoDetails WHERE id = :id")
+    DoDetails getDoDetailsObj(Integer id);
 }

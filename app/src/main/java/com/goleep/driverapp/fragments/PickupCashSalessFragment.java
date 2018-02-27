@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
+import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.PickupActivity;
@@ -40,6 +41,7 @@ public class PickupCashSalessFragment extends Fragment{
     CustomButton confirmButton;
     private CashSalesViewModel cashSalesViewModel;
     private PickupCashSalesListAdapter adapter;
+
     private UILevelNetworkCallback driverDoCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
@@ -52,6 +54,15 @@ public class PickupCashSalessFragment extends Fragment{
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             if(toLogout)
                 ((PickupActivity)getActivity()).logoutUser();
+        }
+    };
+
+    private DoSelectionListener doSelectionListener = new DoSelectionListener() {
+        @Override
+        public void allDOSelected(boolean allSelected) {
+            if(allSelected)
+                confirmButton.setVisibility(View.VISIBLE);
+            else confirmButton.setVisibility(View.GONE);
         }
     };
 

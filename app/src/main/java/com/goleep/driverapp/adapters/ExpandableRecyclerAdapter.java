@@ -73,20 +73,13 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
                 @Override
                 public void onClick(View v) {
                     toggleExpandedItems(getLayoutPosition(),false);
-                /*if(isExpanded(getLayoutPosition())){
-                    collapseItems(getLayoutPosition(),false);
-                }else {
-                    expandItems(getLayoutPosition(),true);
-                }*/
                 }
             });
         }
 
         public HeaderViewHolder(View view, final ImageView arrow, final View.OnClickListener clickListener) {
             super(view);
-
             this.arrow = arrow;
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,8 +90,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         }
 
         protected void handleClick() {
-            openArrow(arrow);
-            if (toggleExpandedItems(getLayoutPosition(), false)) {
+            if (toggleExpandedItems(getLayoutPosition(), true)) {
                 openArrow(arrow);
             } else {
                 closeArrow(arrow);
@@ -106,11 +98,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         }
 
         public void bind(int position) {
-            try {
-                arrow.setRotation(isExpanded(position) ? 90 : 0);
-            }catch (Exception e){
 
-            }
         }
     }
 
@@ -122,7 +110,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
             expandItems(position, notify);
 
             if (mode == MODE_ACCORDION) {
-                collapseAllExcept(position);
+               // collapseAllExcept(position);
             }
 
             return true;
