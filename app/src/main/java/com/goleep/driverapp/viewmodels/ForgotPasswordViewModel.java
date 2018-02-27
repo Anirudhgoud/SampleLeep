@@ -7,22 +7,15 @@ import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.RequestConstants;
-import com.goleep.driverapp.constants.SharedPreferenceKeys;
-import com.goleep.driverapp.helpers.uimodels.UserMeta;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.ForgotPasswordActivity;
 import com.goleep.driverapp.services.network.NetworkService;
-import com.goleep.driverapp.services.storage.LocalStorageService;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.goleep.driverapp.constants.UrlConstants.FORGOT_PASSWORD_URL;

@@ -25,7 +25,7 @@ public class RoomDBService {
 
     public AppDatabase getDatabase(Context context){
         return roomDB != null? roomDB: Room.databaseBuilder(context, AppDatabase.class,
-                "leep_db").build();
+                "leep_db").allowMainThreadQueries().build();
 
     }
 }

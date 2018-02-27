@@ -1,4 +1,9 @@
-package com.goleep.driverapp.helpers.uimodels;
+package com.goleep.driverapp.services.room.entities;
+
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.v4.widget.DrawerLayout;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,11 +14,12 @@ import java.util.List;
  * Created by vishalm on 09/02/18.
  */
 
-
+@Entity
 public class UserMeta {
 
     @SerializedName("id")
     @Expose
+    @PrimaryKey
     private Integer id;
     @SerializedName("email")
     @Expose
@@ -45,6 +51,13 @@ public class UserMeta {
     @SerializedName("permissions")
     @Expose
     private Permissions permissions;
+    @SerializedName("driver")
+    @Expose
+    private Driver driver;
+
+    public UserMeta(){
+
+    }
 
     public Integer getId() {
         return id;
@@ -134,7 +147,15 @@ public class UserMeta {
         this.permissions = permissions;
     }
 
-    private class Permissions {
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public class Permissions {
 
         @SerializedName("web_login")
         @Expose
@@ -163,6 +184,10 @@ public class UserMeta {
         @SerializedName("settings")
         @Expose
         private Boolean settings;
+
+        public Permissions(){
+
+        }
 
         public Boolean getWebLogin() {
             return webLogin;
@@ -238,11 +263,11 @@ public class UserMeta {
 
     }
 
-    private class Location {
+    public class Location {
 
         @SerializedName("id")
         @Expose
-        private Integer id;
+        private Integer locationId;
         @SerializedName("name")
         @Expose
         private String name;
@@ -256,12 +281,12 @@ public class UserMeta {
         @Expose
         private String redistributionCentre;
 
-        public Integer getId() {
-            return id;
+        public Integer getLocationId() {
+            return locationId;
         }
 
-        public void setId(Integer id) {
-            this.id = id;
+        public void setLocationId(Integer locationId) {
+            this.locationId = locationId;
         }
 
         public String getName() {
@@ -297,5 +322,93 @@ public class UserMeta {
         }
 
     }
+
+    public class Driver {
+
+        @SerializedName("id")
+        @Expose
+        private Integer driverId;
+        @SerializedName("licence_number")
+        @Expose
+        private String licenceNumber;
+        @SerializedName("vehicle_number")
+        @Expose
+        private String vehicleNumber;
+        @SerializedName("experience")
+        @Expose
+        private String experience;
+        @SerializedName("latitude")
+        @Expose
+        private Double latitude;
+        @SerializedName("longitude")
+        @Expose
+        private Double longitude;
+        @SerializedName("date_of_birth")
+        @Expose
+        private String dateOfBirth;
+
+        public Driver(){
+
+        }
+
+        public Integer getDriverId() {
+            return driverId;
+        }
+
+        public void setDriverId(Integer driverId) {
+            this.driverId = driverId;
+        }
+
+        public String getLicenceNumber() {
+            return licenceNumber;
+        }
+
+        public void setLicenceNumber(String licenceNumber) {
+            this.licenceNumber = licenceNumber;
+        }
+
+        public String getVehicleNumber() {
+            return vehicleNumber;
+        }
+
+        public void setVehicleNumber(String vehicleNumber) {
+            this.vehicleNumber = vehicleNumber;
+        }
+
+        public String getExperience() {
+            return experience;
+        }
+
+        public void setExperience(String experience) {
+            this.experience = experience;
+        }
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(Double latitude) {
+            this.latitude = latitude;
+        }
+
+        public Double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(Double longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getDateOfBirth() {
+            return dateOfBirth;
+        }
+
+        public void setDateOfBirth(String dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+        }
+
+    }
+
+
 
 }

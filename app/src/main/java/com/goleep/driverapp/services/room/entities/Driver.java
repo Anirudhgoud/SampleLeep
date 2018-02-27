@@ -1,15 +1,18 @@
-package com.goleep.driverapp.helpers.uimodels;
+package com.goleep.driverapp.services.room.entities;
 
 /**
  * Created by vishalm on 15/02/18.
  */
 
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity
 public class Driver {
-
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -55,9 +58,9 @@ public class Driver {
     @SerializedName("licence_expiration_date")
     @Expose
     private String licenceExpirationDate;
-    @SerializedName("last_sign_in_at")
-    @Expose
-    private Object lastSignInAt;
+//    @SerializedName("last_sign_in_at")
+//    @Expose
+//    private Object lastSignInAt;
     @SerializedName("completed_delivery_orders_count")
     @Expose
     private Integer completedDeliveryOrdersCount;
@@ -209,13 +212,13 @@ public class Driver {
         this.licenceExpirationDate = licenceExpirationDate;
     }
 
-    public Object getLastSignInAt() {
-        return lastSignInAt;
-    }
-
-    public void setLastSignInAt(Object lastSignInAt) {
-        this.lastSignInAt = lastSignInAt;
-    }
+//    public Object getLastSignInAt() {
+//        return lastSignInAt;
+//    }
+//
+//    public void setLastSignInAt(Object lastSignInAt) {
+//        this.lastSignInAt = lastSignInAt;
+//    }
 
     public Integer getCompletedDeliveryOrdersCount() {
         return completedDeliveryOrdersCount;

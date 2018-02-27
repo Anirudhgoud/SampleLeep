@@ -27,6 +27,30 @@
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:visibility="visible" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/title_layout"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/left_toolbar_button"
+            android:layout_toEndOf="@id/left_toolbar_button">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="5dp"
+                android:id="@+id/title_icon"/>
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/activity_title"
+                app:typeface="NotoSans-Regular"
+                android:textColor="@color/text_black"
+                android:lines="1"
+                android:textSize="24sp"/>
+        </LinearLayout>
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:id="@+id/right_toolbar_text"

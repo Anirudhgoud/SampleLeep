@@ -29,6 +29,7 @@
     <string name="delivery_order">Delivery Order</string>
     <string name="cash_sales">Cash Sales</string>
     <string name="orders">Orders</string>
+    <string name="items_label">"Items"</string>
 
 
     <!--Delivery Orders-->
@@ -39,4 +40,9 @@
     <string name="distance">Distance</string>
 
     <string name="value">Value</string>
+    <string name="units">Units</string>
+    <string name="from_top">From:</string>
+    <string name="pickup_stock">Pick Up Stock</string>
+    <string name="confirm">Confirm</string>
+    <string name="next">Next</string>
 </resources>

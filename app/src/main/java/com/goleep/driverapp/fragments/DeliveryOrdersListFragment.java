@@ -57,7 +57,9 @@ public class DeliveryOrdersListFragment extends Fragment {
         doListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         doListRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<DeliveryOrder>());
-        doViewModel.getDeliveryOrders().observe(DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
+        doViewModel.getDeliveryOrders(DeliveryOrdersViewModel.TYPE_CUSTOMER,
+                DeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
+                        DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
             public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
                 doListAdapter.updateList(deliveryOrders);

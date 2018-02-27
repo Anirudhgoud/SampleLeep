@@ -19,6 +19,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.AlertDialogHelper;
 import com.goleep.driverapp.interfaces.NetworkChangeListener;
 import com.goleep.driverapp.services.network.NetworkChecker;
+import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import java.util.Vector;
@@ -114,6 +115,12 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         leftToolbarButton.setBackgroundResource(resId);
     }
 
+    protected void setTitleIconAndText(String title, int resId){
+        findViewById(R.id.title_layout).setVisibility(View.VISIBLE);
+        ((CustomTextView)findViewById(R.id.activity_title)).setText(title);
+        findViewById(R.id.title_icon).setBackgroundResource(resId);
+    }
+
     protected void setToolbarRightText(String text){
         CustomTextView leftToolbarButton = findViewById(R.id.right_toolbar_text);
         leftToolbarButton.setText(text);
@@ -129,6 +136,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     protected void logoutUser(){
         LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(this);
+        RoomDBService.sharedInstance().getDatabase(this).userMetaDao().deleteUserMeta();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

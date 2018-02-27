@@ -8,22 +8,18 @@ import android.os.Bundle;
 
 import com.goleep.driverapp.R;
 
-import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
-import com.goleep.driverapp.helpers.uimodels.UserMeta;
 import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.storage.LocalStorageService;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.LoginViewModel;
-import com.google.gson.Gson;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,8 +67,11 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private boolean isLoggedIn() {
         if(!LocalStorageService.sharedInstance().getLocalFileStore().getString(
-                LoginActivity.this, SharedPreferenceKeys.AUTH_TOKEN).isEmpty())
+                LoginActivity.this, SharedPreferenceKeys.AUTH_TOKEN).isEmpty()) {
+            LogUtils.error("AuthToken", LocalStorageService.sharedInstance().getLocalFileStore().getString(
+                    LoginActivity.this, SharedPreferenceKeys.AUTH_TOKEN));
             return true;
+        }
         return false;
     }
 
