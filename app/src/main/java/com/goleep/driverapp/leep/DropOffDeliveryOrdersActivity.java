@@ -21,7 +21,7 @@ import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DeliveryOrdersActivity extends ParentAppCompatActivity {
+public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
 
     DropOffDeliveryOrdersViewModel viewModel;
 

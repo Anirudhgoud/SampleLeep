@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -42,13 +41,14 @@
             android:name=".leep.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme" />
-        <activity android:name=".leep.PickupActivity"
+        <activity
+            android:name=".leep.PickupActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".leep.DeliveryOrdersActivity"
-            android:screenOrientation="portrait"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".leep.DropOffDeliveryOrdersActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".leep.DropOffDeliveryOrderDetailsActivity"></activity>
     </application>
 
 </manifest>

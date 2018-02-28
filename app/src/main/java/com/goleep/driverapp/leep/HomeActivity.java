@@ -18,7 +18,6 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
-import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.Driver;
 import com.goleep.driverapp.helpers.uimodels.InnerDashboardUiModel;
 import com.goleep.driverapp.helpers.uimodels.Summary;
@@ -60,7 +59,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         public void onClick(View view) {
             switch ((String)view.getTag()){
                 case InnerDashboardUiModel.TAG_DELIVERY_ORDERS:
-                    Intent doIntent = new Intent(HomeActivity.this, DeliveryOrdersActivity.class);
+                    Intent doIntent = new Intent(HomeActivity.this, DropOffDeliveryOrdersActivity.class);
                     startActivity(doIntent);
                     break;
                 case InnerDashboardUiModel.TAG_PICKUP:
