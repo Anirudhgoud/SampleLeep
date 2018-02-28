@@ -2,6 +2,7 @@ package com.goleep.driverapp.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.PickupActivity;
+import com.goleep.driverapp.leep.PickupConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.viewmodels.CashSalesViewModel;
@@ -82,6 +84,13 @@ public class PickupCashSalessFragment extends Fragment{
 
     private void initialize() {
         cashSalesViewModel = ViewModelProviders.of(getActivity()).get(CashSalesViewModel.class);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

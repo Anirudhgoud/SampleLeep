@@ -38,6 +38,9 @@
         <activity android:name=".leep.PickupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".leep.PickupConfirmationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".leep.DeliveryOrdersActivity"
             android:screenOrientation="portrait"/>

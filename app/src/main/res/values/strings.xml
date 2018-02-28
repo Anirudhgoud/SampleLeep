@@ -45,4 +45,5 @@
     <string name="pickup_stock">Pick Up Stock</string>
     <string name="confirm">Confirm</string>
     <string name="next">Next</string>
+    <string name="confirm_pickup">Confirm Pick Up</string>
 </resources>

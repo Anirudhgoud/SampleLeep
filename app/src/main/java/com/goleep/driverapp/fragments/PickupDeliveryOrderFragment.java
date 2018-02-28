@@ -67,8 +67,8 @@ public class PickupDeliveryOrderFragment extends Fragment{
 
                             }
                         });
-                doViewModel.fetchDoItems(String.valueOf(adapter.getItemAt(pos).getId()));
             }
+            doViewModel.fetchDoItems(String.valueOf(adapter.getItemAt(pos).getId()));
         }
     };
 
