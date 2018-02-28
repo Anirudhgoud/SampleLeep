@@ -22,6 +22,7 @@ import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.leep.PickupConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.viewmodels.CashSalesViewModel;
 
@@ -97,12 +98,13 @@ public class PickupCashSalessFragment extends Fragment{
     private void initialiseRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        adapter = new PickupCashSalesListAdapter(new ArrayList<DoDetails.DeliveryOrderItem>());
+        adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>());
         recyclerView.setAdapter(adapter);
         cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this, new Observer<DeliveryOrder>() {
             @Override
             public void onChanged(@Nullable DeliveryOrder doDetails) {
-                fetchDriverDoDetails(doDetails.getId());
+                if(doDetails != null)
+                    fetchDriverDoDetails(doDetails.getId());
             }
         });
     }
@@ -111,7 +113,8 @@ public class PickupCashSalessFragment extends Fragment{
         cashSalesViewModel.getDriverDoDetails().observe(PickupCashSalessFragment.this, new Observer<DoDetails>() {
             @Override
             public void onChanged(@Nullable DoDetails doDetails) {
-                adapter.updateList(doDetails.getDeliveryOrderItems());
+                if(doDetails != null)
+                    adapter.updateList(doDetails.getDeliveryOrderItems());
             }
         });
         cashSalesViewModel.fetchDriverDoDetails(String.valueOf(id), driverDoDetailsCallback);

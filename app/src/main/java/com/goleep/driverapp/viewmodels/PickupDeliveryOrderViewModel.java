@@ -10,6 +10,7 @@ import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.room.RoomDBService;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.services.room.entities.Driver;
 import com.google.gson.Gson;
@@ -29,7 +30,7 @@ import java.util.List;
 
 public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel {
     private Context context;
-    private LiveData<DoDetails> doDetailsLiveData;
+    private LiveData<List<DeliveryOrderItem>> doDetailsLiveData;
 
     public PickupDeliveryOrderViewModel(@NonNull Application application) {
         super(application);
@@ -50,9 +51,8 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                                     JSONObject obj = (JSONObject) response.get(0);
                                     doDetailsList = new Gson().fromJson(String.valueOf(obj), doDetailsType);
                                     leepDatabase.doDetailsDao().deleteDoDetails(doId);
-                                    //leepDatabase.deliveryOrderItemDao().insert(getProductsList(doDetailsList));
-                                    leepDatabase.doDetailsDao().insertDoDetails(doDetailsList);
-
+                                    leepDatabase.deliveryOrderItemDao().insertDeliveryOrderItems(getProductsList(doDetailsList));
+                                    //leepDatabase.doDetailsDao().insertDoDetails(doDetailsList);
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
                                 }
@@ -61,8 +61,8 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                     }
                 });
     }
-    public LiveData<DoDetails> getDoDetails(Integer id) {
-        doDetailsLiveData = leepDatabase.doDetailsDao().getDoDetails(id);
+    public LiveData<List<DeliveryOrderItem>> getDoDetails(Integer id) {
+        doDetailsLiveData = leepDatabase.deliveryOrderItemDao().getDeliveryOrderItems(id);
         return doDetailsLiveData;
     }
 
@@ -74,13 +74,13 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         Driver driver = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
         return driver.getAddressLine1()+", "+driver.getAddressLine2();
     }
-//    private List<DeliveryOrderItem> getProductsList(DoDetails deliveryOrder) {
-//        List<DeliveryOrderItem> deliveryOrderItemList = new ArrayList<>();
-//        List<DeliveryOrderItem> deliveryOrderItems = deliveryOrder.getDeliveryOrderItems();
-//        for(DeliveryOrderItem deliveryOrderItem: deliveryOrderItems){
-//            deliveryOrderItem.setId(deliveryOrder.getId());
-//            deliveryOrderItemList.add(deliveryOrderItem);
-//        }
-//        return deliveryOrderItemList;
-//    }
+    private List<DeliveryOrderItem> getProductsList(DoDetails deliveryOrder) {
+        List<DeliveryOrderItem> deliveryOrderItemList = new ArrayList<>();
+        List<DeliveryOrderItem> deliveryOrderItems = deliveryOrder.getDeliveryOrderItems();
+        for(DeliveryOrderItem deliveryOrderItem: deliveryOrderItems){
+            deliveryOrderItem.setDoId(deliveryOrder.getId());
+            deliveryOrderItemList.add(deliveryOrderItem);
+        }
+        return deliveryOrderItemList;
+    }
 }

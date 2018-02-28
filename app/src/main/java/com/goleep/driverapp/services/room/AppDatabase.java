@@ -9,10 +9,12 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 import com.goleep.driverapp.services.room.daos.DeliveryOrderDao;
+import com.goleep.driverapp.services.room.daos.DeliveryOrderItemDao;
 import com.goleep.driverapp.services.room.daos.DoDetailsDao;
 import com.goleep.driverapp.services.room.daos.DriverDao;
 import com.goleep.driverapp.services.room.daos.UserMetaDao;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.services.room.entities.Driver;
 import com.goleep.driverapp.services.room.entities.UserMeta;
@@ -20,7 +22,7 @@ import com.goleep.driverapp.services.room.entities.UserMeta;
 /**
  * Created by vishalm on 09/02/18.
  */
-@Database(entities = {DeliveryOrder.class, UserMeta.class, Driver.class, DoDetails.class}, version = 1)
+@Database(entities = {DeliveryOrder.class, UserMeta.class, Driver.class, DoDetails.class, DeliveryOrderItem.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase{
 
@@ -42,4 +44,5 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract UserMetaDao userMetaDao();
     public abstract DriverDao driverDao();
     public abstract DoDetailsDao doDetailsDao();
+    public abstract DeliveryOrderItemDao deliveryOrderItemDao();
 }

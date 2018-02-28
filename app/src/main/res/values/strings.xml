@@ -30,6 +30,7 @@
     <string name="cash_sales">Cash Sales</string>
     <string name="orders">Orders</string>
     <string name="items_label">"Items"</string>
+    <string name="confirm_pickup">Confirm Pick Up</string>
 
 
     <!--Delivery Orders-->
@@ -45,5 +46,4 @@
     <string name="pickup_stock">Pick Up Stock</string>
     <string name="confirm">Confirm</string>
     <string name="next">Next</string>
-    <string name="confirm_pickup">Confirm Pick Up</string>
 </resources>

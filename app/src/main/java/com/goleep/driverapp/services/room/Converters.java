@@ -2,6 +2,7 @@ package com.goleep.driverapp.services.room;
 
 import android.arch.persistence.room.TypeConverter;
 
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.services.room.entities.UserMeta;
 import com.google.gson.Gson;
@@ -51,12 +52,12 @@ public class Converters {
     }
 
     @TypeConverter
-    public static List<DoDetails.DeliveryOrderItem> doItemFromString(String value){
-        Type type = new TypeToken<List<DoDetails.DeliveryOrderItem>>(){}.getType();
+    public static List<DeliveryOrderItem> doItemFromString(String value){
+        Type type = new TypeToken<List<DeliveryOrderItem>>(){}.getType();
         return new Gson().fromJson(value, type);
     }
     @TypeConverter
-    public static String stringFromDoItem(List<DoDetails.DeliveryOrderItem> doItem){
+    public static String stringFromDoItem(List<DeliveryOrderItem> doItem){
         return new Gson().toJson(doItem);
     }
 
@@ -94,13 +95,13 @@ public class Converters {
     }
 
     @TypeConverter
-    public static DoDetails.Product productFromString(String value){
-        Type type = new TypeToken<DoDetails.Product>(){}.getType();
+    public static DeliveryOrderItem.Product productFromString(String value){
+        Type type = new TypeToken<DeliveryOrderItem.Product>(){}.getType();
         return new Gson().fromJson(value, type);
     }
 
     @TypeConverter
-    public static String stringFromProduct(DoDetails.Product product){
+    public static String stringFromProduct(DeliveryOrderItem.Product product){
         return new Gson().toJson(product);
     }
 }

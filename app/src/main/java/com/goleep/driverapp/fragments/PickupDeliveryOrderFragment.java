@@ -19,9 +19,10 @@ import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
-import com.goleep.driverapp.viewmodels.PickupDropOffDeliveryOrderViewModel;
+import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ import butterknife.ButterKnife;
 
 public class PickupDeliveryOrderFragment extends Fragment{
 
-    private PickupDropOffDeliveryOrderViewModel doViewModel;
+    private PickupDeliveryOrderViewModel doViewModel;
 
     @BindView(R.id.expandable_list)
     RecyclerView expandableListView;
@@ -53,10 +54,10 @@ public class PickupDeliveryOrderFragment extends Fragment{
             final int pos = expandableListView.getChildLayoutPosition(view);
             if(doUpdateMap.containsKey(adapter.getItemAt(pos).getId()) && !doUpdateMap.get(adapter.getItemAt(pos).getId())) {
                 doViewModel.getDoDetails(adapter.getItemAt(pos).getId()).observe(
-                        PickupDeliveryOrderFragment.this, new Observer<DoDetails>() {
+                        PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderItem>>() {
                             @Override
-                            public void onChanged(@Nullable DoDetails doDetails) {
-                                adapter.updateItems(doDetails, pos);
+                            public void onChanged(@Nullable List<DeliveryOrderItem> doDetails) {
+                                adapter.addItemsList(doDetails, pos);
                                 doUpdateMap.put(adapter.getItemAt(pos).getId(), true);
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -67,8 +68,9 @@ public class PickupDeliveryOrderFragment extends Fragment{
 
                             }
                         });
+            } else if(!doUpdateMap.containsKey(adapter.getItemAt(pos).getId())) {
+                doViewModel.fetchDoItems(String.valueOf(adapter.getItemAt(pos).getId()));
             }
-            doViewModel.fetchDoItems(String.valueOf(adapter.getItemAt(pos).getId()));
         }
     };
 
@@ -99,7 +101,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
     }
 
     private void initialise() {
-        doViewModel = ViewModelProviders.of(getActivity()).get(PickupDropOffDeliveryOrderViewModel.class);
+        doViewModel = ViewModelProviders.of(getActivity()).get(PickupDeliveryOrderViewModel.class);
         initRecyclerView();
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,10 +121,12 @@ public class PickupDeliveryOrderFragment extends Fragment{
                         PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
             public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
-                doList.clear();
-                doList.addAll(deliveryOrders);
-                adapter.upDateList(deliveryOrders);
-                adapter.updateItems(doViewModel.getDoDetailsObj(deliveryOrders.get(0).getId()), 0);
+                if(deliveryOrders.size() > 0) {
+                    doList.clear();
+                    doList.addAll(deliveryOrders);
+                    adapter.upDateList(deliveryOrders);
+                    //adapter.updateItems(doViewModel.getDoDetailsObj(deliveryOrders.get(0).getId()), 0);
+                }
             }
         });
     }

@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/name_textView"
             android:layout_below="@id/edit_profile_pic_layout"
-            android:text="xxx"
+            android:text=""
             android:textSize="22sp"
             android:layout_centerHorizontal="true"
             app:typeface="NotoSans-Bold"/>
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/place_text_view"
             android:layout_below="@id/name_textView"
-            android:text="xxx"
+            android:text=""
             android:layout_centerHorizontal="true"
             app:typeface="NotoSans-Regular"/>
 
@@ -82,7 +82,7 @@
                     android:textSize="22sp"
                     app:typeface="NotoSans-Regular"
                     android:id="@+id/deliveries_value_textview"
-                    android:text="xxx"/>
+                    android:text=""/>
                 <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                     android:id="@+id/payment_collected_values_textview"
                     android:textSize="22sp"
                     app:typeface="NotoSans-Regular"
-                    android:text="xxx"/>
+                    android:text=""/>
                 <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                     android:id="@+id/locations_layout_value_textview"
                     android:textSize="22sp"
                     app:typeface="NotoSans-Regular"
-                    android:text="xxx"/>
+                    android:text=""/>
                 <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
                 android:id="@+id/contact_text_view"
                 android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
-                android:text="xxx"/>
+                android:text=""/>
         </LinearLayout>
 
         <LinearLayout
@@ -198,7 +198,7 @@
                 android:id="@+id/address_text_view"
                 android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
-                android:text="xxx"/>
+                android:text=""/>
         </LinearLayout>
 
         <LinearLayout
@@ -221,7 +221,7 @@
                 android:id="@+id/driver_licence_text_view"
                 android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
-                android:text="xxx"/>
+                android:text=""/>
         </LinearLayout>
 
         <LinearLayout
@@ -244,7 +244,7 @@
                 android:id="@+id/register_number_text_view"
                 android:textSize="14sp"
                 app:typeface="NotoSans-Regular"
-                android:text="xxx"/>
+                android:text=""/>
         </LinearLayout>
 
         <LinearLayout
@@ -269,7 +269,7 @@
                 android:textSize="14sp"
                 android:visibility="gone"
                 app:typeface="NotoSans-Regular"
-                android:text="xxx"/>
+                android:text=""/>
         </LinearLayout>
 
     </LinearLayout>
