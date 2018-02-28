@@ -50,23 +50,24 @@ public class DeliveryOrdersActivity extends ParentAppCompatActivity {
     }
 
     private void setupTabIcons() {
-        View view = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
-        CustomTextView textView = view.findViewById(R.id.title_text);
-        ImageView icon = view.findViewById(R.id.icon);
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        View listTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
+        CustomTextView textView = listTab.findViewById(R.id.title_text);
+        ImageView icon = listTab.findViewById(R.id.icon);
+        listTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        textView.setText(getString(R.string.delivery_order));
+        textView.setText(getString(R.string.list));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_list_tab));
 
 
-        tabLayout.getTabAt(0).setCustomView(view);
+        tabLayout.getTabAt(0).setCustomView(listTab);
 
         View mapTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         textView = mapTab.findViewById(R.id.title_text);
         icon = mapTab.findViewById(R.id.icon);
         mapTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        textView.setText(getString(R.string.cash_sales));
+        textView.setText(getString(R.string.map));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_map_tab));
+
         tabLayout.getTabAt(1).setCustomView(mapTab);
     }
 
