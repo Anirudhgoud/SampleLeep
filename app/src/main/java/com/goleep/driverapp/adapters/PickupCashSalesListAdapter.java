@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.utils.AppUtils;
 

@@ -1,5 +1,6 @@
 package com.goleep.driverapp.adapters;
 
+import android.arch.persistence.room.Ignore;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseIntArray;
@@ -43,7 +44,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         public void setItemType(int itemType) {
             ItemType = itemType;
         }
-
+        @Ignore
         public int ItemType;
 
         public ListItem(int itemType) {

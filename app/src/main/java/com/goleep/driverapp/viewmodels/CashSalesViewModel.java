@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
@@ -15,7 +16,7 @@ import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseMode
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
-import com.goleep.driverapp.services.room.entities.DoDetails;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -35,7 +36,7 @@ import static com.goleep.driverapp.services.room.entities.Product.getProductsLis
 
 public class CashSalesViewModel extends AndroidViewModel {
     private LiveData<DeliveryOrder> driverDO;
-    private LiveData<DoDetails> driverDoDetails;
+    private LiveData<List<DeliveryOrderItem>> driverDoDetails;
     private Context context;
     private  AppDatabase leepDatabase;
 
@@ -50,8 +51,8 @@ public class CashSalesViewModel extends AndroidViewModel {
         return driverDO;
     }
 
-    public LiveData<DoDetails> getDriverDoDetails() {
-        //driverDoDetails = leepDatabase.doDetailsDao().getDriverDo();
+    public LiveData<List<DeliveryOrderItem>> getDriverDoDetails(Integer id) {
+        driverDoDetails = leepDatabase.deliveryOrderItemDao().getDriverDoItems(id);
         return driverDoDetails;
     }
 
@@ -85,7 +86,6 @@ public class CashSalesViewModel extends AndroidViewModel {
                 });
     }
 
-
     public void fetchDriverDoDetails(final String doId, final UILevelNetworkCallback doDetailsCallback){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, new NetworkAPICallback() {
@@ -105,6 +105,7 @@ public class CashSalesViewModel extends AndroidViewModel {
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
                                 }
+                                break;
                             case NetworkConstants.UNAUTHORIZED :
                                 doDetailsCallback.onResponseReceived(null,
                                         false, errorMessage, true);

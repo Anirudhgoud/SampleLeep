@@ -32,7 +32,7 @@ import java.util.List;
 public class DeliveryOrderViewModel extends AndroidViewModel {
     private Context context;
     protected AppDatabase leepDatabase;
-    private LiveData<List<BaseListItem>> deliveryOrders;
+    private LiveData<List<DeliveryOrder>> deliveryOrders;
 
     public static final String TYPE_CUSTOMER = "customer";
     public static final String TYPE_DRIVER = "driver";
@@ -44,7 +44,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         context = application;
         leepDatabase = RoomDBService.sharedInstance().getDatabase(context);
     }
-    public LiveData<List<BaseListItem>> getDeliveryOrders(String type, String status) {
+    public LiveData<List<DeliveryOrder>> getDeliveryOrders(String type, String status) {
         String doType;
         String doStatus;
         switch (type){

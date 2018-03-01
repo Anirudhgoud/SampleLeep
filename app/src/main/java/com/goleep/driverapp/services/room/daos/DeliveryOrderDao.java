@@ -22,7 +22,7 @@ public interface DeliveryOrderDao {
     LiveData<List<DeliveryOrder>> getAllDeliveryOrders();
 
     @Query("Select * from DeliveryOrder where status = :status and type = :type")
-    LiveData<List<BaseListItem>> getCustomerDeliveryOrders(String type, String status);
+    LiveData<List<DeliveryOrder>> getCustomerDeliveryOrders(String type, String status);
 
     @Query("Delete from DeliveryOrder")
     void deleteAllDeliveryOrders();

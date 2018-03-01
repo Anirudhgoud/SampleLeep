@@ -7,6 +7,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 
@@ -27,4 +28,7 @@ public interface DeliveryOrderItemDao {
 
     @Query("DELETE FROM DeliveryOrderItem WHERE id = :doId")
     void deleteDeliveryItems(Integer doId);
+
+    @Query("SELECT * FROM DeliveryOrderItem WHERE doId = :id")
+    LiveData<List<DeliveryOrderItem>> getDriverDoItems(Integer id);
 }

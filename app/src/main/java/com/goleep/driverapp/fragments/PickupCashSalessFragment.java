@@ -16,13 +16,13 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.leep.PickupConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.viewmodels.CashSalesViewModel;
 
 import java.util.ArrayList;
@@ -97,13 +97,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     }
 
     private void fetchDriverDoDetails(Integer id) {
-        cashSalesViewModel.getDriverDoDetails().observe(PickupCashSalessFragment.this, new Observer<DoDetails>() {
-            @Override
-            public void onChanged(@Nullable DoDetails doDetails) {
-                if(doDetails != null)
-                    adapter.updateList(doDetails.getDeliveryOrderItems());
-            }
-        });
+        cashSalesViewModel.getDriverDoDetails(id).observe(PickupCashSalessFragment.this, PickupCashSalessFragment.this);
         cashSalesViewModel.fetchDriverDoDetails(String.valueOf(id), driverDoDetailsCallback);
     }
 
@@ -126,6 +120,8 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     public void onChanged(@Nullable Object object) {
         if(object instanceof DeliveryOrder){
             fetchDriverDoDetails(((DeliveryOrder)object).getId());
+        } else if(object instanceof List){
+            adapter.updateList((List<DeliveryOrderItem>)object);
         }
 
     }
