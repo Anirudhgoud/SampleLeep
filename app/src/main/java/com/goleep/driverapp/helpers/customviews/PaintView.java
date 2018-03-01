@@ -15,7 +15,7 @@ import android.view.View;
 
 public class PaintView extends View {
 
-    private final int paintColor = Color.BLACK;
+    private int paintColor = Color.BLACK;
     private Paint drawPaint;
     private Path path = new Path();
 
@@ -34,6 +34,11 @@ public class PaintView extends View {
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
+    }
+
+    public void updateColor(int color){
+        paintColor = color;
+        drawPaint.setColor(color);
     }
 
     @Override
