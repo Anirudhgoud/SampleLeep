@@ -36,6 +36,14 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
     }
 
     public static class ListItem {
+        public int getItemType() {
+            return ItemType;
+        }
+
+        public void setItemType(int itemType) {
+            ItemType = itemType;
+        }
+
         public int ItemType;
 
         public ListItem(int itemType) {

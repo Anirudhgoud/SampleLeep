@@ -5,9 +5,14 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -18,11 +23,18 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         parentColumns = "id",
         childColumns = "doId",
         onDelete = CASCADE))
-public class DeliveryOrderItem {
+public class DeliveryOrderItem extends BaseListItem{
     @PrimaryKey
-    @SerializedName("id")
-    @Expose
     private Integer id;
+
+    public DeliveryOrderItem(Integer id, Integer doId, Integer quantity, Integer productId, Integer price) {
+        super(0);
+        this.id = id;
+        this.doId = doId;
+        this.quantity = quantity;
+        this.productId = productId;
+        this.price = price;
+    }
 
     public Integer getDoId() {
         return doId;
@@ -33,14 +45,9 @@ public class DeliveryOrderItem {
     }
 
     private Integer doId;
-    @SerializedName("quantity")
-    @Expose
     private Integer quantity;
-    @SerializedName("product")
-    @Expose
-    private Product product;
-    @SerializedName("price")
-    @Expose
+
+    private Integer productId;
     private Integer price;
 
     public Integer getId() {
@@ -59,12 +66,12 @@ public class DeliveryOrderItem {
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
-        return product;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public Integer getPrice() {
@@ -75,64 +82,16 @@ public class DeliveryOrderItem {
         this.price = price;
     }
 
-    public class Product {
-
-        @SerializedName("id")
-        @Expose
-        private Integer id;
-        @SerializedName("name")
-        @Expose
-        private String name;
-        @SerializedName("sku")
-        @Expose
-        private String sku;
-        @SerializedName("weight")
-        @Expose
-        private String weight;
-        @SerializedName("weight_unit")
-        @Expose
-        private String weightUnit;
-
-
-        public Integer getId() {
-            return id;
+    public static List<DeliveryOrderItem> getDeliveryOrderItemList(DoDetailResponseModel doDetailResponseModel) {
+        List<DeliveryOrderItem> deliveryOrderItemList = new ArrayList<>();
+        List<DoDetailResponseModel.DeliveryOrderItem> deliveryOrderItems = doDetailResponseModel.getDeliveryOrderItems();
+        for(int i=0;i<deliveryOrderItems.size();i++){
+            DoDetailResponseModel.DeliveryOrderItem responseDoItem = deliveryOrderItems.get(i);
+            DeliveryOrderItem deliveryOrderItem =  new DeliveryOrderItem(responseDoItem.getId(),
+                    doDetailResponseModel.getId(), responseDoItem.getQuantity(),
+                    responseDoItem.getProduct().getId(), responseDoItem.getPrice());
+            deliveryOrderItemList.add(deliveryOrderItem);
         }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getSku() {
-            return sku;
-        }
-
-        public void setSku(String sku) {
-            this.sku = sku;
-        }
-
-        public String getWeight() {
-            return weight;
-        }
-
-        public void setWeight(String weight) {
-            this.weight = weight;
-        }
-
-        public String getWeightUnit() {
-            return weightUnit;
-        }
-
-        public void setWeightUnit(String weightUnit) {
-            this.weightUnit = weightUnit;
-        }
+        return deliveryOrderItemList;
     }
-
 }

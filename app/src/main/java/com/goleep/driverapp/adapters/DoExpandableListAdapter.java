@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
@@ -16,43 +17,39 @@ import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by vishalm on 20/02/18.
  */
 
-public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpandableListAdapter.DoListItem>{
+public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListItem>{
     private final int TYPE_DO_ITEM = 10;
     private final int TYPE_ITEMS_HEADER = 11;
     private final int TYPE_ORDERS_HEADER = 12;
-    private List<DeliveryOrder> doList;
+    private List<BaseListItem> doList;
     private View.OnClickListener headerClickListener;
-    private List<DoListItem> recyclerViewListData = new ArrayList<>();
-    private List<DoListItem> headerList = new ArrayList<>();
-    int headerSelectionCount = 0;
-    public DoExpandableListAdapter(Context context, ArrayList<DeliveryOrder> doList,
-                                   View.OnClickListener headerClickListener) {
+    private List<BaseListItem> recyclerViewListData = new ArrayList<>();
+    private List<BaseListItem> headerList = new ArrayList<>();
+    private int headerSelectionCount = 0;
+    public DoExpandableListAdapter(Context context, List<BaseListItem> doList) {
         super(context);
         this.doList = doList;
         setMode(MODE_ACCORDION);
-        setItems(getList(doList));
-        this.headerClickListener = headerClickListener;
+        setItems(doList);
     }
 
-    private List<DoListItem> getList(ArrayList<DeliveryOrder> doList) {
-        recyclerViewListData.clear();
-        headerList.clear();
-        List<DoListItem> list = new ArrayList<>();
-        for (DeliveryOrder deliveryOrder : doList) {
-            list.add(new DoListItem(deliveryOrder));
-        }
-        headerList.addAll(list);
-        recyclerViewListData.addAll(list);
-        return recyclerViewListData;
-    }
+//    private List<BaseListItem> getList(ArrayList<DeliveryOrder> doList) {
+//        recyclerViewListData.clear();
+//        headerList.clear();
+//        List<DeliveryOrder> list = new ArrayList<>();
+//        for (DeliveryOrder deliveryOrder : doList) {
+//            list.add(new BaseListItem(deliveryOrder));
+//        }
+//        headerList.addAll(list);
+//        recyclerViewListData.addAll(list);
+//        return recyclerViewListData;
+//    }
 
 
 
@@ -82,10 +79,10 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
         }
     }
 
-    public void upDateList(List<DeliveryOrder> deliveryOrders) {
+    public void upDateList(List<BaseListItem> deliveryOrders) {
         this.doList.clear();
         this.doList.addAll(deliveryOrders);
-        setItems(getList((ArrayList<DeliveryOrder>) deliveryOrders));
+        setItems(deliveryOrders);
         notifyDataSetChanged();
     }
 
@@ -93,21 +90,25 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
         if(doDetails != null) {
             int index = recyclerViewListData.indexOf(headerList.get(headerPosition));
             recyclerViewListData.clear();
-            recyclerViewListData.addAll(headerList);
+            recyclerViewListData.addAll(doList);
             addItemsList(doDetails.getDeliveryOrderItems(), index);
         }
     }
 
     public void addItemsList(List<DeliveryOrderItem> doDetailsObj, int position) {
         for(int i=0;i<doDetailsObj.size();i++){
-            recyclerViewListData.add(position+i+1, new DoListItem(doDetailsObj.get(i)));
+            recyclerViewListData.add(position+i+1, doDetailsObj.get(i));
         }
         setItems(recyclerViewListData);
         notifyDataSetChanged();
     }
 
-    public DeliveryOrder getItemAt(int pos) {
+    public BaseListItem getItemAt(int pos) {
         return doList.get(pos);
+    }
+
+    public void setHeaderClickListener(View.OnClickListener headerClickListener) {
+        this.headerClickListener = headerClickListener;
     }
 
     public class HeaderViewHolder extends ExpandableRecyclerAdapter.HeaderViewHolder{
@@ -132,14 +133,14 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
 
         public void bind(int position) {
             super.bind(position);
-            DeliveryOrder deliveryOrder = recyclerViewListData.get(position).getDo();
+            DeliveryOrder deliveryOrder = (DeliveryOrder)recyclerViewListData.get(position);
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
             tvDoNumber.setText(deliveryOrder.getDoNumber() ==  null ? "-" : deliveryOrder.getDoNumber());
             tvDate.setText(dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
             tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
             tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
-            if(recyclerViewListData.get(position).isAllSelected()) {
+            if(((DeliveryOrder)recyclerViewListData.get(position)).isAllSelected()) {
                 selectionIcon.setImageResource(R.drawable.ic_do_selected);
                 headerSelectionCount +=1;
             }
@@ -202,10 +203,10 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
         }
 
         public void bind(int position) {
-            DeliveryOrderItem doDetails = recyclerViewListData.get(position).getDoDetails();
-            productNameTv.setText(doDetails.getProduct().getName());
+            DeliveryOrderItem doDetails = (DeliveryOrderItem)recyclerViewListData.get(position);
+            //productNameTv.setText(doDetails.getProduct().getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
-            productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
+            //productQuantityTv.setText(((DeliveryOrderItem)doDetails).getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -217,37 +218,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<DoExpanda
                     notifyDataSetChanged();
                 }
             });
-        }
-    }
-
-
-    public class DoListItem extends ExpandableRecyclerAdapter.ListItem{
-        DeliveryOrder deliveryOrder;
-        DeliveryOrderItem doDetails;
-        int selectedCount = 0;
-        private DoListItem(DeliveryOrder deliveryOrder){
-            super(TYPE_HEADER);
-            this.deliveryOrder = deliveryOrder;
-        }
-        private DoListItem(DeliveryOrderItem doItem){
-            super(TYPE_DO_ITEM);
-            this.doDetails = doItem;
-        }
-
-        public DeliveryOrder getDo(){
-            return deliveryOrder;
-        }
-
-        private DeliveryOrderItem getDoDetails(){
-            return doDetails;
-        }
-
-        boolean isAllSelected(){
-            return selectedCount == deliveryOrder.getDeliveryOrderItemsCount();
-        }
-
-        void addSelection(int selection){
-            selectedCount = selectedCount + selection;
         }
     }
 }

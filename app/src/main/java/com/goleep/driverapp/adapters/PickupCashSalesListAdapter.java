@@ -10,9 +10,7 @@ import android.widget.CompoundButton;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.utils.AppUtils;
 
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.List;
 
 public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashSalesListAdapter.ViewHolder> {
     private List<DeliveryOrderItem> doDetailsList;
-    int selectedCount = 0;
+    private int selectedCount = 0;
 
     public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList){
         this.doDetailsList = doDetailsList;
@@ -65,9 +63,9 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
         }
 
         public void bind(DeliveryOrderItem doDetails) {
-            productNameTv.setText(doDetails.getProduct().getName());
+            //productNameTv.setText(doDetails.getProduct().getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
-            productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
+            //productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

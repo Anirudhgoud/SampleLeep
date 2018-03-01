@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface DeliveryOrderDao {
     LiveData<List<DeliveryOrder>> getAllDeliveryOrders();
 
     @Query("Select * from DeliveryOrder where status = :status and type = :type")
-    LiveData<List<DeliveryOrder>> getCustomerDeliveryOrders(String type, String status);
+    LiveData<List<BaseListItem>> getCustomerDeliveryOrders(String type, String status);
 
     @Query("Delete from DeliveryOrder")
     void deleteAllDeliveryOrders();

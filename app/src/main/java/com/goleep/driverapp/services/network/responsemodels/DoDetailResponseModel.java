@@ -1,7 +1,4 @@
-package com.goleep.driverapp.services.room.entities;
-
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+package com.goleep.driverapp.services.network.responsemodels;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,21 +6,19 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by vishalm on 22/02/18.
+ * Created by vishalm on 01/03/18.
  */
 
-public class DoDetails {
-
+public class DoDetailResponseModel {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
     @SerializedName("delivery_confirmation_type")
     @Expose
-    private String deliveryConfirmationType;
+    private Object deliveryConfirmationType;
     @SerializedName("do_number")
     @Expose
     private Integer doNumber;
-    @PrimaryKey
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -35,16 +30,16 @@ public class DoDetails {
     private String type;
     @SerializedName("received_by")
     @Expose
-    private String receivedBy;
+    private Object receivedBy;
     @SerializedName("received_at")
     @Expose
-    private String receivedAt;
+    private Object receivedAt;
     @SerializedName("preferred_delivery_date")
     @Expose
     private String preferredDeliveryDate;
     @SerializedName("actual_delivery_date")
     @Expose
-    private String actualDeliveryDate;
+    private Object actualDeliveryDate;
     @SerializedName("preferred_delivery_time")
     @Expose
     private String preferredDeliveryTime;
@@ -69,11 +64,11 @@ public class DoDetails {
         this.createdAt = createdAt;
     }
 
-    public String getDeliveryConfirmationType() {
+    public Object getDeliveryConfirmationType() {
         return deliveryConfirmationType;
     }
 
-    public void setDeliveryConfirmationType(String deliveryConfirmationType) {
+    public void setDeliveryConfirmationType(Object deliveryConfirmationType) {
         this.deliveryConfirmationType = deliveryConfirmationType;
     }
 
@@ -109,19 +104,19 @@ public class DoDetails {
         this.type = type;
     }
 
-    public String getReceivedBy() {
+    public Object getReceivedBy() {
         return receivedBy;
     }
 
-    public void setReceivedBy(String receivedBy) {
+    public void setReceivedBy(Object receivedBy) {
         this.receivedBy = receivedBy;
     }
 
-    public String getReceivedAt() {
+    public Object getReceivedAt() {
         return receivedAt;
     }
 
-    public void setReceivedAt(String receivedAt) {
+    public void setReceivedAt(Object receivedAt) {
         this.receivedAt = receivedAt;
     }
 
@@ -133,11 +128,11 @@ public class DoDetails {
         this.preferredDeliveryDate = preferredDeliveryDate;
     }
 
-    public String getActualDeliveryDate() {
+    public Object getActualDeliveryDate() {
         return actualDeliveryDate;
     }
 
-    public void setActualDeliveryDate(String actualDeliveryDate) {
+    public void setActualDeliveryDate(Object actualDeliveryDate) {
         this.actualDeliveryDate = actualDeliveryDate;
     }
 
@@ -181,7 +176,7 @@ public class DoDetails {
         this.destinationLocation = destinationLocation;
     }
 
-    public class Assignee {
+    private class Assignee {
 
         @SerializedName("id")
         @Expose
@@ -264,8 +259,56 @@ public class DoDetails {
     }
 
 
+    public class DeliveryOrderItem {
 
-    public class DestinationLocation {
+        @SerializedName("id")
+        @Expose
+        private Integer id;
+        @SerializedName("quantity")
+        @Expose
+        private Integer quantity;
+        @SerializedName("product")
+        @Expose
+        private Product product;
+        @SerializedName("price")
+        @Expose
+        private Integer price;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public Integer getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(Integer quantity) {
+            this.quantity = quantity;
+        }
+
+        public Product getProduct() {
+            return product;
+        }
+
+        public void setProduct(Product product) {
+            this.product = product;
+        }
+
+        public Integer getPrice() {
+            return price;
+        }
+
+        public void setPrice(Integer price) {
+            this.price = price;
+        }
+
+    }
+
+    public class Product {
 
         @SerializedName("id")
         @Expose
@@ -273,12 +316,15 @@ public class DoDetails {
         @SerializedName("name")
         @Expose
         private String name;
-        @SerializedName("coordinates")
+        @SerializedName("sku")
         @Expose
-        private List<Object> coordinates = null;
-        @SerializedName("business_name")
+        private String sku;
+        @SerializedName("weight")
         @Expose
-        private String businessName;
+        private String weight;
+        @SerializedName("weight_unit")
+        @Expose
+        private String weightUnit;
 
         public Integer getId() {
             return id;
@@ -296,26 +342,31 @@ public class DoDetails {
             this.name = name;
         }
 
-        public List<Object> getCoordinates() {
-            return coordinates;
+        public String getSku() {
+            return sku;
         }
 
-        public void setCoordinates(List<Object> coordinates) {
-            this.coordinates = coordinates;
+        public void setSku(String sku) {
+            this.sku = sku;
         }
 
-        public String getBusinessName() {
-            return businessName;
+        public String getWeight() {
+            return weight;
         }
 
-        public void setBusinessName(String businessName) {
-            this.businessName = businessName;
+        public void setWeight(String weight) {
+            this.weight = weight;
+        }
+
+        public String getWeightUnit() {
+            return weightUnit;
+        }
+
+        public void setWeightUnit(String weightUnit) {
+            this.weightUnit = weightUnit;
         }
 
     }
-
-
-
 
     public class SourceLocation {
 
@@ -365,4 +416,98 @@ public class DoDetails {
         }
 
     }
+
+    private class DestinationLocation {
+
+        @SerializedName("id")
+        @Expose
+        private Integer id;
+        @SerializedName("name")
+        @Expose
+        private String name;
+        @SerializedName("contact_name_1")
+        @Expose
+        private String contactName1;
+        @SerializedName("contact_phone_1")
+        @Expose
+        private String contactPhone1;
+        @SerializedName("contact_email_1")
+        @Expose
+        private String contactEmail1;
+        @SerializedName("coordinates")
+        @Expose
+        private List<Object> coordinates = null;
+        @SerializedName("business_name")
+        @Expose
+        private String businessName;
+        @SerializedName("business_type")
+        @Expose
+        private String businessType;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getContactName1() {
+            return contactName1;
+        }
+
+        public void setContactName1(String contactName1) {
+            this.contactName1 = contactName1;
+        }
+
+        public String getContactPhone1() {
+            return contactPhone1;
+        }
+
+        public void setContactPhone1(String contactPhone1) {
+            this.contactPhone1 = contactPhone1;
+        }
+
+        public String getContactEmail1() {
+            return contactEmail1;
+        }
+
+        public void setContactEmail1(String contactEmail1) {
+            this.contactEmail1 = contactEmail1;
+        }
+
+        public List<Object> getCoordinates() {
+            return coordinates;
+        }
+
+        public void setCoordinates(List<Object> coordinates) {
+            this.coordinates = coordinates;
+        }
+
+        public String getBusinessName() {
+            return businessName;
+        }
+
+        public void setBusinessName(String businessName) {
+            this.businessName = businessName;
+        }
+
+        public String getBusinessType() {
+            return businessType;
+        }
+
+        public void setBusinessType(String businessType) {
+            this.businessType = businessType;
+        }
+
+    }
+
 }
