@@ -29,7 +29,8 @@
     <string name="delivery_order">Delivery Order</string>
     <string name="cash_sales">Cash Sales</string>
     <string name="orders">Orders</string>
-    <string name="items_label">"Items"</string>
+    <string name="items_label">Items</string>
+    <string name="confirm_pickup">Confirm Pick Up</string>
 
 
     <!--Delivery Orders-->

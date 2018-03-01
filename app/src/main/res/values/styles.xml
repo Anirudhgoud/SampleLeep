@@ -7,6 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/LeepTextViewStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -31,14 +33,17 @@
     </style>
 
     <style name="SplashTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
     <style name="LoginTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
         <item name="android:windowBackground">@drawable/splash_bg</item>
     </style>
 
     <style name="HomeScreenTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">true</item>
         <item name="android:windowBackground">@drawable/home_background</item>
     </style>
 

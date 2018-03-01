@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,7 +15,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 @Entity
-public class DeliveryOrder implements Parcelable {
+public class DeliveryOrder extends BaseListItem implements Parcelable {
 
     @PrimaryKey
     @SerializedName("id")
@@ -82,6 +83,8 @@ public class DeliveryOrder implements Parcelable {
     @SerializedName("duration_from_current_location")
     private Integer durationFromCurrentLocation = 0;
 
+
+
     public final static Parcelable.Creator<DeliveryOrder> CREATOR = new Creator<DeliveryOrder>() {
 
 
@@ -100,6 +103,7 @@ public class DeliveryOrder implements Parcelable {
             ;
 
     protected DeliveryOrder(Parcel in) {
+        super(0);
         this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.doNumber = ((String) in.readValue((String.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
@@ -124,6 +128,7 @@ public class DeliveryOrder implements Parcelable {
     }
 
     public DeliveryOrder() {
+        super(0);
     }
 
     public Integer getId() {
@@ -321,6 +326,10 @@ public class DeliveryOrder implements Parcelable {
 
     public int describeContents() {
         return 0;
+    }
+
+    public boolean isAllSelected(){
+        return super.selectedCount == getDeliveryOrderItemsCount();
     }
 
 }

@@ -10,8 +10,7 @@ import android.widget.CompoundButton;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.interfaces.DoSelectionListener;
-import com.goleep.driverapp.services.room.entities.DoDetails;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.utils.AppUtils;
 
 import java.util.List;
@@ -21,10 +20,10 @@ import java.util.List;
  */
 
 public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashSalesListAdapter.ViewHolder> {
-    private List<DoDetails.DeliveryOrderItem> doDetailsList;
-    int selectedCount = 0;
+    private List<DeliveryOrderItem> doDetailsList;
+    private int selectedCount = 0;
 
-    public PickupCashSalesListAdapter(List<DoDetails.DeliveryOrderItem> doDetailsList){
+    public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList){
         this.doDetailsList = doDetailsList;
     }
 
@@ -36,7 +35,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        DoDetails.DeliveryOrderItem doDetails = doDetailsList.get(position);
+        DeliveryOrderItem doDetails = doDetailsList.get(position);
         holder.bind(doDetails);
     }
 
@@ -45,7 +44,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
         return doDetailsList.size();
     }
 
-    public void updateList(List<DoDetails.DeliveryOrderItem> deliveryOrderItems) {
+    public void updateList(List<DeliveryOrderItem> deliveryOrderItems) {
         doDetailsList.clear();
         doDetailsList.addAll(deliveryOrderItems);
         notifyDataSetChanged();
@@ -63,10 +62,10 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
             productCheckbox = itemView.findViewById(R.id.product_checkbox);
         }
 
-        public void bind(DoDetails.DeliveryOrderItem doDetails) {
-            productNameTv.setText(doDetails.getProduct().getName());
+        public void bind(DeliveryOrderItem doDetails) {
+            //productNameTv.setText(doDetails.getProduct().getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
-            productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
+            //productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

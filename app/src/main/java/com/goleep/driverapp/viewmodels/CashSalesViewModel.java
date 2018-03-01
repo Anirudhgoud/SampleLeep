@@ -11,6 +11,7 @@ import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
+import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
@@ -24,6 +25,9 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.List;
+
+import static com.goleep.driverapp.services.room.entities.DeliveryOrderItem.getDeliveryOrderItemList;
+import static com.goleep.driverapp.services.room.entities.Product.getProductsList;
 
 /**
  * Created by vishalm on 22/02/18.
@@ -47,7 +51,7 @@ public class CashSalesViewModel extends AndroidViewModel {
     }
 
     public LiveData<DoDetails> getDriverDoDetails() {
-        driverDoDetails = leepDatabase.doDetailsDao().getDriverDo();
+        //driverDoDetails = leepDatabase.doDetailsDao().getDriverDo();
         return driverDoDetails;
     }
 
@@ -89,17 +93,18 @@ public class CashSalesViewModel extends AndroidViewModel {
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type){
                             case NetworkConstants.SUCCESS:
-                                DoDetails doDetailsList;
+                                DoDetailResponseModel doDetailResponse;
                                 try{
+                                    Type doDetailsType = new TypeToken<DoDetailResponseModel>() {}.getType();
                                     JSONObject obj = (JSONObject) response.get(0);
-                                    doDetailsList = new Gson().fromJson(String.valueOf(obj), DoDetails.class);
-                                    leepDatabase.doDetailsDao().deleteDoDetails(doId);
-                                    leepDatabase.doDetailsDao().insertDoDetails(doDetailsList);
-
+                                    doDetailResponse = new Gson().fromJson(String.valueOf(obj), doDetailsType);
+                                    leepDatabase.deliveryOrderItemDao().deleteDeliveryItems(doDetailResponse.getId());
+                                    leepDatabase.deliveryOrderItemDao().insertDeliveryOrderItems(
+                                            getDeliveryOrderItemList(doDetailResponse));
+                                    leepDatabase.productDao().insertAllProducts(getProductsList(doDetailResponse));
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
                                 }
-                                break;
                             case NetworkConstants.UNAUTHORIZED :
                                 doDetailsCallback.onResponseReceived(null,
                                         false, errorMessage, true);

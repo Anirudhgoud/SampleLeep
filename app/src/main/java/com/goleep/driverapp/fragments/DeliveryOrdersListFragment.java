@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DeliveryOrdersListAdapter;
 import com.goleep.driverapp.constants.SortCategoryType;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
@@ -56,12 +57,12 @@ public class DeliveryOrdersListFragment extends Fragment {
     private void initialiseRecyclerView(){
         doListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         doListRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<DeliveryOrder>());
+        doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<BaseListItem>());
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
-                        DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
+                        DeliveryOrdersListFragment.this, new Observer<List<BaseListItem>>() {
             @Override
-            public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
+            public void onChanged(@Nullable List<BaseListItem> deliveryOrders) {
                 doListAdapter.updateList(deliveryOrders);
             }
         });

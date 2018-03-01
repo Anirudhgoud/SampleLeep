@@ -43,7 +43,6 @@ public class HomeActivity extends ParentAppCompatActivity {
     @BindView(R.id.dashboard_viewpager)
     NonSwipeableViewPager viewPager;
     @BindView(R.id.signout) CustomButton signOutButton;
-    private HashMap<String, CustomTextView> summaryTextViewMap = new HashMap<>();
     private Summary summary = new Summary();
 
     View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
@@ -73,7 +72,8 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     private UILevelNetworkCallback logoutCallback = new UILevelNetworkCallback() {
         @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
             if(toLogout){
                 logoutUser();
             } else if(errorMessage == null){
@@ -86,7 +86,8 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     private UILevelNetworkCallback driverProfileCallback = new UILevelNetworkCallback() {
         @Override
-        public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+        public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
             if(errorMessage == null){
                 if(uiModels.size() > 0){
                     HomeActivity.this.runOnUiThread(new Runnable() {
@@ -104,7 +105,8 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     private UILevelNetworkCallback summaryCallback = new UILevelNetworkCallback() {
         @Override
-        public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+        public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
             if(toLogout){
                 logoutUser();
             } else if(errorMessage == null){
@@ -151,7 +153,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     private void initView() {
         initDrawer();
         setToolbarLeftIcon(R.drawable.ic_profile);
-        setToolbarRightText("xxx");
+        setToolbarRightText("");
         profileButton.setOnClickListener(this);
         signOutButton.setOnClickListener(this);
     }
@@ -209,9 +211,6 @@ public class HomeActivity extends ParentAppCompatActivity {
                 break;
         }
     }
-
-
-
 
     private void setupInformationDashboard() {
         List<InnerDashboardUiModel> innerDashboardUiModels = new ArrayList<>();

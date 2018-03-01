@@ -1,5 +1,6 @@
 package com.goleep.driverapp.services.room.entities.comparators;
 
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 
 import java.util.Comparator;
@@ -8,12 +9,12 @@ import java.util.Comparator;
  * Created by anurag on 20/02/18.
  */
 
-public class SortDOByDeliveryTime implements Comparator<DeliveryOrder> {
+public class SortDOByDeliveryTime implements Comparator<BaseListItem> {
 
     @Override
-    public int compare(DeliveryOrder do1, DeliveryOrder do2) {
-        Integer duration1 = do1.getDurationFromCurrentLocation();
-        Integer duration2 = do2.getDurationFromCurrentLocation();
+    public int compare(BaseListItem do1, BaseListItem do2) {
+        Integer duration1 = ((DeliveryOrder)do1).getDurationFromCurrentLocation();
+        Integer duration2 = ((DeliveryOrder)do2).getDurationFromCurrentLocation();
         return duration1.compareTo(duration2);
     }
 }
