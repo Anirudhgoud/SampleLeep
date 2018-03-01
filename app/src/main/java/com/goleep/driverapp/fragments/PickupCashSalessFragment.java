@@ -2,6 +2,7 @@ package com.goleep.driverapp.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,9 +18,10 @@ import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.PickupActivity;
+import com.goleep.driverapp.leep.PickupConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.viewmodels.CashSalesViewModel;
 
@@ -33,7 +35,7 @@ import butterknife.ButterKnife;
  * Created by vishalm on 19/02/18.
  */
 
-public class PickupCashSalessFragment extends Fragment{
+public class PickupCashSalessFragment extends Fragment implements View.OnClickListener, Observer{
     @BindView(R.id.cash_sales_recycler_view)
     RecyclerView recyclerView;
 
@@ -82,29 +84,49 @@ public class PickupCashSalessFragment extends Fragment{
 
     private void initialize() {
         cashSalesViewModel = ViewModelProviders.of(getActivity()).get(CashSalesViewModel.class);
+        confirmButton.setOnClickListener(PickupCashSalessFragment.this);
     }
 
 
     private void initialiseRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        adapter = new PickupCashSalesListAdapter(new ArrayList<DoDetails.DeliveryOrderItem>());
+        adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>());
         recyclerView.setAdapter(adapter);
-        cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this, new Observer<DeliveryOrder>() {
-            @Override
-            public void onChanged(@Nullable DeliveryOrder doDetails) {
-                fetchDriverDoDetails(doDetails.getId());
-            }
-        });
+        cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this, PickupCashSalessFragment.this);
     }
 
     private void fetchDriverDoDetails(Integer id) {
         cashSalesViewModel.getDriverDoDetails().observe(PickupCashSalessFragment.this, new Observer<DoDetails>() {
             @Override
             public void onChanged(@Nullable DoDetails doDetails) {
-                adapter.updateList(doDetails.getDeliveryOrderItems());
+                if(doDetails != null)
+                    adapter.updateList(doDetails.getDeliveryOrderItems());
             }
         });
         cashSalesViewModel.fetchDriverDoDetails(String.valueOf(id), driverDoDetailsCallback);
+    }
+
+
+
+    @Override
+    public void onClick(View view) {
+       switch (view.getId()){
+           case R.id.confirm_button : startConfirmActivity();
+               break;
+       }
+    }
+
+    private void startConfirmActivity() {
+        Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onChanged(@Nullable Object object) {
+        if(object instanceof DeliveryOrder){
+            fetchDriverDoDetails(((DeliveryOrder)object).getId());
+        }
+
     }
 }

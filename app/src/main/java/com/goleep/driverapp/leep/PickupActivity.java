@@ -60,8 +60,8 @@ public class PickupActivity extends ParentAppCompatActivity {
     private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        initialiseTabBar();
         setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
+        initialiseTabBar();
         setWareHouseDetails();
     }
 

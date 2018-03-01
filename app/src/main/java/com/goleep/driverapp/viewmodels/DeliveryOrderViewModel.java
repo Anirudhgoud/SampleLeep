@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
@@ -31,7 +32,7 @@ import java.util.List;
 public class DeliveryOrderViewModel extends AndroidViewModel {
     private Context context;
     protected AppDatabase leepDatabase;
-    private LiveData<List<DeliveryOrder>> deliveryOrders;
+    private LiveData<List<BaseListItem>> deliveryOrders;
 
     public static final String TYPE_CUSTOMER = "customer";
     public static final String TYPE_DRIVER = "driver";
@@ -43,7 +44,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         context = application;
         leepDatabase = RoomDBService.sharedInstance().getDatabase(context);
     }
-    public LiveData<List<DeliveryOrder>> getDeliveryOrders(String type, String status) {
+    public LiveData<List<BaseListItem>> getDeliveryOrders(String type, String status) {
         String doType;
         String doStatus;
         switch (type){
