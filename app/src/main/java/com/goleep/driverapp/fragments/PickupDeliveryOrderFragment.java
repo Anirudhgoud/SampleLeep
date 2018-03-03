@@ -59,7 +59,10 @@ public class PickupDeliveryOrderFragment extends Fragment{
                         PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderItem>>() {
                             @Override
                             public void onChanged(@Nullable List<DeliveryOrderItem> doDetails) {
-                                adapter.addItemsList(doDetails, pos);
+                                List<BaseListItem> baseListItems = new ArrayList<>();
+                                baseListItems.addAll(doDetails);
+                                adapter.addItemsList(BaseListItem.setItemType(baseListItems, BaseListItem.TYPE_DO_ITEM),
+                                        pos, doViewModel.getProducts(doDetails.get(0).getDoId()));
                                 doUpdateMap.put(((DeliveryOrder)adapter.getItemAt(pos)).getId(), true);
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -129,7 +132,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
                     doList.addAll(deliveryOrders);
                     List<BaseListItem> baseListItems = new ArrayList<>();
                     baseListItems.addAll(deliveryOrders);
-                    adapter.upDateList(baseListItems);
+                    adapter.upDateList(BaseListItem.setItemType(baseListItems, BaseListItem.TYPE_HEADER));
                 }
             }
         });
