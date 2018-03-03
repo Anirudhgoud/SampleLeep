@@ -13,6 +13,7 @@ import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.DoDetails;
+import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
@@ -27,16 +28,17 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     private final int TYPE_DO_ITEM = 10;
     private final int TYPE_ITEMS_HEADER = 11;
     private final int TYPE_ORDERS_HEADER = 12;
-    private List<BaseListItem> doList;
+    private List<BaseListItem> doList = new ArrayList<>();
     private View.OnClickListener headerClickListener;
     private List<BaseListItem> recyclerViewListData = new ArrayList<>();
     private List<BaseListItem> headerList = new ArrayList<>();
     private int headerSelectionCount = 0;
     public DoExpandableListAdapter(Context context, List<BaseListItem> doList) {
         super(context);
-        this.doList = doList;
-        setMode(MODE_ACCORDION);
-        setItems(doList);
+        if(doList.size() > 0) {
+            this.doList = doList;
+            setItems(doList);
+        }
     }
 
 //    private List<BaseListItem> getList(ArrayList<DeliveryOrder> doList) {
@@ -80,22 +82,24 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     public void upDateList(List<BaseListItem> deliveryOrders) {
-        this.doList.clear();
-        this.doList.addAll(deliveryOrders);
-        setItems(deliveryOrders);
-        notifyDataSetChanged();
+        if(deliveryOrders.size() >0) {
+            this.doList.clear();
+            this.doList.addAll(deliveryOrders);
+            setItems(deliveryOrders);
+            notifyDataSetChanged();
+        }
     }
 
-    public void updateItems(DoDetails doDetails, int headerPosition) {
+    public void updateItems(List<DeliveryOrderItem> doDetails, int headerPosition, List<Product> products) {
         if(doDetails != null) {
             int index = recyclerViewListData.indexOf(headerList.get(headerPosition));
             recyclerViewListData.clear();
             recyclerViewListData.addAll(doList);
-            addItemsList(doDetails.getDeliveryOrderItems(), index);
+            addItemsList(doDetails, index, products);
         }
     }
 
-    public void addItemsList(List<DeliveryOrderItem> doDetailsObj, int position) {
+    public void addItemsList(List<DeliveryOrderItem> doDetailsObj, int position, List<Product> products) {
         for(int i=0;i<doDetailsObj.size();i++){
             recyclerViewListData.add(position+i+1, doDetailsObj.get(i));
         }
@@ -204,7 +208,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
         public void bind(int position) {
             DeliveryOrderItem doDetails = (DeliveryOrderItem)recyclerViewListData.get(position);
-            //productNameTv.setText(doDetails.getProduct().getName());
+           // productNameTv.setText(doDetails.getProduct().getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
             //productQuantityTv.setText(((DeliveryOrderItem)doDetails).getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));

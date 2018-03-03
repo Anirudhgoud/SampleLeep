@@ -2,8 +2,6 @@ package com.goleep.driverapp.services.room;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.services.room.entities.UserMeta;
 import com.google.gson.Gson;
@@ -53,13 +51,13 @@ public class Converters {
     }
 
     @TypeConverter
-    public static List<DeliveryOrderItem> doItemFromString(String value){
-        Type type = new TypeToken<List<DeliveryOrderItem>>(){}.getType();
+    public static Product productFromString(String value){
+        Type type = new TypeToken<Product>(){}.getType();
         return new Gson().fromJson(value, type);
     }
     @TypeConverter
-    public static String stringFromDoItem(List<DeliveryOrderItem> doItem){
-        return new Gson().toJson(doItem);
+    public static String stringFromProduct(Product products){
+        return new Gson().toJson(products);
     }
 
 

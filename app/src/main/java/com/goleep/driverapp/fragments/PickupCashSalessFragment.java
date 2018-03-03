@@ -23,6 +23,7 @@ import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.leep.PickupConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
+import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.viewmodels.CashSalesViewModel;
 
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     private void initialiseRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>());
+        adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>(), new ArrayList<Product>());
         recyclerView.setAdapter(adapter);
         cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this, PickupCashSalessFragment.this);
     }
@@ -121,7 +122,11 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
         if(object instanceof DeliveryOrder){
             fetchDriverDoDetails(((DeliveryOrder)object).getId());
         } else if(object instanceof List){
-            adapter.updateList((List<DeliveryOrderItem>)object);
+            List<DeliveryOrderItem> deliveryOrderItems = (List<DeliveryOrderItem>)object;
+            if(deliveryOrderItems.size() >0) {
+                List<Product> products = cashSalesViewModel.getProducts(deliveryOrderItems.get(0).getDoId());
+                adapter.updateList(deliveryOrderItems, products);
+            }
         }
 
     }

@@ -1,6 +1,6 @@
 package com.goleep.driverapp.adapters;
 
-import android.content.Context;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +10,11 @@ import android.widget.CompoundButton;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
+import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.utils.AppUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,10 +23,12 @@ import java.util.List;
 
 public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashSalesListAdapter.ViewHolder> {
     private List<DeliveryOrderItem> doDetailsList;
+    private List<Product> products;
     private int selectedCount = 0;
 
-    public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList){
+    public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList, ArrayList<Product> products){
         this.doDetailsList = doDetailsList;
+        this.products = products;
     }
 
     @Override
@@ -36,8 +39,8 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        DeliveryOrderItem doDetails = doDetailsList.get(position);
-        holder.bind(doDetails);
+        if(doDetailsList.size() > 0 && products.size() > 0)
+            holder.bind(doDetailsList.get(position), products.get(position));
     }
 
     @Override
@@ -45,9 +48,11 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
         return doDetailsList.size();
     }
 
-    public void updateList(List<DeliveryOrderItem> deliveryOrderItems) {
+    public void updateList(List<DeliveryOrderItem> deliveryOrderItems, List<Product> productsList) {
         doDetailsList.clear();
         doDetailsList.addAll(deliveryOrderItems);
+        products.clear();
+        products.addAll(productsList);
         notifyDataSetChanged();
     }
 
@@ -63,10 +68,10 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
             productCheckbox = itemView.findViewById(R.id.product_checkbox);
         }
 
-        public void bind(DeliveryOrderItem doDetails) {
-            //productNameTv.setText(doDetails.getProduct().getName());
+        public void bind(DeliveryOrderItem doDetails, Product product) {
+            productNameTv.setText(product.getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
-            //productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
+            productQuantityTv.setText(product.getWeight()+" "+product.getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

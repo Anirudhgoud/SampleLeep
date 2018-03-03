@@ -17,6 +17,7 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
+import com.goleep.driverapp.services.room.entities.Product;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.goleep.driverapp.services.room.entities.DeliveryOrderItem.getDeliveryOrderItemList;
@@ -101,7 +103,8 @@ public class CashSalesViewModel extends AndroidViewModel {
                                     leepDatabase.deliveryOrderItemDao().deleteDeliveryItems(doDetailResponse.getId());
                                     leepDatabase.deliveryOrderItemDao().insertDeliveryOrderItems(
                                             getDeliveryOrderItemList(doDetailResponse));
-                                    leepDatabase.productDao().insertAllProducts(getProductsList(doDetailResponse));
+                                    leepDatabase.productDao().insertAndDeleteInTransaction(doDetailResponse.getId(),
+                                            getProductsList(doDetailResponse));
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
                                 }
@@ -113,5 +116,10 @@ public class CashSalesViewModel extends AndroidViewModel {
                         }
                     }
                 });
+    }
+
+    public List<Product> getProducts(Integer doId) {
+        List<Product> products = leepDatabase.productDao().getAllProducts(doId);
+        return products;
     }
 }
