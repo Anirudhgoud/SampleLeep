@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
@@ -26,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +109,8 @@ public class CashSalesViewModel extends AndroidViewModel {
                                             getProductsList(doDetailResponse));
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
+                                } catch (SQLiteConstraintException e){
+                                    e.printStackTrace();
                                 }
                                 break;
                             case NetworkConstants.UNAUTHORIZED :

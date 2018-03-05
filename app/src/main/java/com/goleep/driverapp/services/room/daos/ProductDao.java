@@ -23,8 +23,8 @@ public abstract class ProductDao {
     @Query("SELECT * FROM Product WHERE doId = :doId")
     public abstract List<Product> getAllProducts(Integer doId);
 
-    @Query("SELECT * FROM Product WHERE doId = :doId")
-    public abstract List<Product> deleteAllProducts(Integer doId);
+    @Query("DELETE FROM Product WHERE doId = :doId")
+    public abstract void deleteAllProducts(Integer doId);
 
     @Transaction
     public void insertAndDeleteInTransaction(Integer doId, List<Product> products) {

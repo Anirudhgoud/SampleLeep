@@ -4,6 +4,8 @@ package com.goleep.driverapp.services.room.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
@@ -23,7 +25,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         parentColumns = "id",
         childColumns = "doId",
         onDelete = CASCADE))
-public class DeliveryOrderItem extends BaseListItem{
+public class DeliveryOrderItem extends BaseListItem implements Parcelable {
     @PrimaryKey
     private Integer id;
 
@@ -94,4 +96,64 @@ public class DeliveryOrderItem extends BaseListItem{
         }
         return deliveryOrderItemList;
     }
+
+    protected DeliveryOrderItem(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        doId = in.readByte() == 0x00 ? null : in.readInt();
+        quantity = in.readByte() == 0x00 ? null : in.readInt();
+        productId = in.readByte() == 0x00 ? null : in.readInt();
+        price = in.readByte() == 0x00 ? null : in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        if (doId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(doId);
+        }
+        if (quantity == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(quantity);
+        }
+        if (productId == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(productId);
+        }
+        if (price == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(price);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<DeliveryOrderItem> CREATOR = new Parcelable.Creator<DeliveryOrderItem>() {
+        @Override
+        public DeliveryOrderItem createFromParcel(Parcel in) {
+            return new DeliveryOrderItem(in);
+        }
+
+        @Override
+        public DeliveryOrderItem[] newArray(int size) {
+            return new DeliveryOrderItem[size];
+        }
+    };
 }

@@ -17,6 +17,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
@@ -45,7 +46,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
     RecyclerView expandableListView;
     @BindView(R.id.confirm_button)
     CustomButton confirmButton;
-
+    private ItemCheckListener itemCheckListener;
     private DoExpandableListAdapter adapter;
     private List<BaseListItem> doList = new ArrayList<>();
     private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
@@ -79,7 +80,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
         }
     };
 
-//    private DoSelectionListener doSelectionListener = new DoSelectionListener() {
+//    private ItemCheckListener doSelectionListener = new ItemCheckListener() {
 //        @Override
 //        public void allDOSelected(boolean allSelected) {
 //            if(allSelected)
@@ -120,6 +121,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
         expandableListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         expandableListView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         adapter = new DoExpandableListAdapter(getActivity(), doList);
+        adapter.setItemCheckListener(itemCheckListener);
         adapter.setHeaderClickListener(headerClickListener);
         expandableListView.setAdapter(adapter);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
@@ -140,5 +142,9 @@ public class PickupDeliveryOrderFragment extends Fragment{
 
     private void fetchDeliveryOrders() {
         doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+    }
+
+    public void setItemSelectionListener(ItemCheckListener itemSelectionListener) {
+        this.itemCheckListener = itemSelectionListener;
     }
 }

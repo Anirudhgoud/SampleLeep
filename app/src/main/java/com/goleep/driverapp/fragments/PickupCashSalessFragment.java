@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.interfaces.DoSelectionListener;
+import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.leep.PickupConfirmationActivity;
@@ -44,7 +44,8 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     CustomButton confirmButton;
     private CashSalesViewModel cashSalesViewModel;
     private PickupCashSalesListAdapter adapter;
-
+    private ArrayList<DeliveryOrderItem> deliveryOrderItems = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
     private UILevelNetworkCallback driverDoCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
@@ -60,14 +61,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
         }
     };
 
-    private DoSelectionListener doSelectionListener = new DoSelectionListener() {
-        @Override
-        public void allDOSelected(boolean allSelected) {
-            if(allSelected)
-                confirmButton.setVisibility(View.VISIBLE);
-            else confirmButton.setVisibility(View.GONE);
-        }
-    };
+    private ItemCheckListener itemCheckListener ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,6 +87,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>(), new ArrayList<Product>());
+        adapter.setItemCheckListener(itemCheckListener);
         recyclerView.setAdapter(adapter);
         cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this, PickupCashSalessFragment.this);
     }
@@ -114,6 +109,8 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
 
     private void startConfirmActivity() {
         Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
+        intent.putParcelableArrayListExtra(AppConstants.CASH_DOITEM_KEY, deliveryOrderItems);
+        intent.putParcelableArrayListExtra(AppConstants.CASH_PRODUCT_KEY, products);
         startActivity(intent);
     }
 
@@ -122,12 +119,16 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
         if(object instanceof DeliveryOrder){
             fetchDriverDoDetails(((DeliveryOrder)object).getId());
         } else if(object instanceof List){
-            List<DeliveryOrderItem> deliveryOrderItems = (List<DeliveryOrderItem>)object;
+            deliveryOrderItems = (ArrayList<DeliveryOrderItem>)object;
             if(deliveryOrderItems.size() >0) {
-                List<Product> products = cashSalesViewModel.getProducts(deliveryOrderItems.get(0).getDoId());
+                products = (ArrayList<Product>) cashSalesViewModel.getProducts(deliveryOrderItems.get(0).getDoId());
                 adapter.updateList(deliveryOrderItems, products);
             }
         }
 
+    }
+
+    public void setItemSelectionListener(ItemCheckListener itemCheckListener) {
+        this.itemCheckListener = itemCheckListener;
     }
 }

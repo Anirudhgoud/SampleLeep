@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.utils.AppUtils;
@@ -26,6 +27,12 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
     private List<Product> products;
     private int selectedCount = 0;
 
+    public void setItemCheckListener(ItemCheckListener itemCheckListener) {
+        this.itemCheckListener = itemCheckListener;
+    }
+
+    private ItemCheckListener itemCheckListener;
+
     public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList, ArrayList<Product> products){
         this.doDetailsList = doDetailsList;
         this.products = products;
@@ -39,8 +46,13 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if(doDetailsList.size() > 0 && products.size() > 0)
-            holder.bind(doDetailsList.get(position), products.get(position));
+        if(doDetailsList.size() > 0 && products.size() > 0) {
+            try {
+                holder.bind(doDetailsList.get(position), products.get(position), position);
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -68,18 +80,24 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
             productCheckbox = itemView.findViewById(R.id.product_checkbox);
         }
 
-        public void bind(DeliveryOrderItem doDetails, Product product) {
+        public void bind(DeliveryOrderItem doDetails, final Product product, int position) {
             productNameTv.setText(product.getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
             productQuantityTv.setText(product.getWeight()+" "+product.getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+            productCheckbox.setTag(position);
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if(isChecked)
+                    int position = (int) compoundButton.getTag();
+                    if(isChecked) {
                         selectedCount++;
-                    else selectedCount = selectedCount == 0 ? 0 : --selectedCount;
+                    }
+                    else {
+                        selectedCount = selectedCount == 0 ? 0 : --selectedCount;
+                    }
+                    itemCheckListener.itemChecked(doDetailsList.get(position), isChecked, products.get(position));
                 }
             });
         }
