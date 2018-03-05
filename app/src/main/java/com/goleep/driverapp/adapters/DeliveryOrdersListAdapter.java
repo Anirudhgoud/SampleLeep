@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.comparators.SortDOByDeliveryTime;
 import com.goleep.driverapp.services.room.entities.comparators.SortDoByPreferredDeliveryDate;
@@ -23,15 +24,20 @@ import java.util.List;
 public class DeliveryOrdersListAdapter extends RecyclerView.Adapter<DeliveryOrdersViewHolder> {
 
     private List<BaseListItem> deliveryOrderList;
+    private DeliveryOrderClickEventListener deliveryOrderClickEventListener;
 
     public DeliveryOrdersListAdapter(List<BaseListItem> deliveryOrderList){
         this.deliveryOrderList = deliveryOrderList;
     }
 
+    public void setDeliveryOrderClickEventListener(DeliveryOrderClickEventListener deliveryOrderClickEventListener){
+        this.deliveryOrderClickEventListener = deliveryOrderClickEventListener;
+    }
+
     @Override
     public DeliveryOrdersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new DeliveryOrdersViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.delivery_order_item, parent, false));
+                .inflate(R.layout.delivery_order_item, parent, false), deliveryOrderClickEventListener);
     }
 
     @Override

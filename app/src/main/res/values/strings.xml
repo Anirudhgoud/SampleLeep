@@ -34,6 +34,7 @@
 
 
     <!--Delivery Orders-->
+    <string name="delivery_orders">Delivery Orders</string>
     <string name="deliver">Deliver</string>
     <string name="items">"Items: "</string>
     <string name="do_number">"DO No. "</string>

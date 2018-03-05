@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
@@ -24,7 +25,7 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
     private final CustomTextView tvAmount;
     private final CustomTextView tvItemsCount;
 
-    public DeliveryOrdersViewHolder(View itemView) {
+    public DeliveryOrdersViewHolder(View itemView, DeliveryOrderClickEventListener deliveryOrderClickEventListener) {
         super(itemView);
         tvCustomerName = itemView.findViewById(R.id.tv_customer_name);
         tvStoreAddress = itemView.findViewById(R.id.tv_store_address);

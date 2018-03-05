@@ -2,6 +2,7 @@ package com.goleep.driverapp.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,9 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DeliveryOrdersListAdapter;
 import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.DropOffDeliveryOrderDetailsActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 
@@ -36,6 +39,13 @@ public class DeliveryOrdersListFragment extends Fragment {
     //UI elements
     private RecyclerView doListRecyclerView;
     private RadioGroup rgFilterRadioGroup;
+
+    private DeliveryOrderClickEventListener deliveryOrderClickEventListener = new DeliveryOrderClickEventListener() {
+        @Override
+        public void onDeliverClicked(Integer orderId) {
+            openDeliveryDetailsActivity(orderId);
+        }
+    };
 
     @Nullable
     @Override
@@ -58,6 +68,7 @@ public class DeliveryOrdersListFragment extends Fragment {
         doListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         doListRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<BaseListItem>());
+        doListAdapter.setDeliveryOrderClickEventListener(deliveryOrderClickEventListener);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
                         DeliveryOrdersListFragment.this, new Observer<List<BaseListItem>>() {
@@ -96,6 +107,12 @@ public class DeliveryOrdersListFragment extends Fragment {
                 doListAdapter.sortList(SortCategoryType.VALUE);
                 break;
         }
+    }
+
+    private void openDeliveryDetailsActivity(Integer deliveryOrderId){
+        Intent doDetailsIntent = new Intent(getActivity(), DropOffDeliveryOrderDetailsActivity.class);
+        doDetailsIntent.putExtra("order_id", deliveryOrderId);
+        startActivity(doDetailsIntent);
     }
 
     private UILevelNetworkCallback deliveryOrderCallBack = new UILevelNetworkCallback() {

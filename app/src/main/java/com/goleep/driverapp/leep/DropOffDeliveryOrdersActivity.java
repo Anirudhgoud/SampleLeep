@@ -39,7 +39,14 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
     public void doInitialSetup() {
         ButterKnife.bind(this);
         viewModel = ViewModelProviders.of(this).get(DropOffDeliveryOrdersViewModel.class);
+        initialiseToolbar();
         initialiseTabBar();
+    }
+
+    private void initialiseToolbar(){
+        setToolBarColor(getResources().getColor(R.color.light_green));
+        setToolbarLeftIcon(R.drawable.ic_back_arrow);
+        setTitleIconAndText(getString(R.string.delivery_orders), R.drawable.ic_drop_off_toolbar);
     }
 
     private void initialiseTabBar() {
@@ -73,7 +80,10 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
 
     @Override
     public void onClickWithId(int resourceId) {
-
+        switch (resourceId){
+            case R.id.left_toolbar_button : finish();
+                break;
+        }
     }
 
 
