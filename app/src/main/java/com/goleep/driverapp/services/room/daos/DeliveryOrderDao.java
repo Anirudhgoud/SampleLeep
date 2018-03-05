@@ -6,7 +6,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 
 import java.util.List;

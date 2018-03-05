@@ -21,7 +21,6 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
@@ -59,7 +58,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
                         PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderItem>>() {
                             @Override
                             public void onChanged(@Nullable List<DeliveryOrderItem> doDetails) {
-                                adapter.addItemsList(doDetails, pos);
+//                                adapter.addItemsList(doDetails, pos);
                                 doUpdateMap.put(((DeliveryOrder)adapter.getItemAt(pos)).getId(), true);
                                 new Handler().postDelayed(new Runnable() {
                                     @Override

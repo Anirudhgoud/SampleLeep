@@ -12,7 +12,6 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;

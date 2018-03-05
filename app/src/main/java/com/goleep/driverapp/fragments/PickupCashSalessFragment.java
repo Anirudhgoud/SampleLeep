@@ -92,7 +92,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     private void initialiseRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>(), new ArrayList<Product>());
+        adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>());
         recyclerView.setAdapter(adapter);
         cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this, PickupCashSalessFragment.this);
     }
@@ -124,8 +124,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
         } else if(object instanceof List){
             List<DeliveryOrderItem> deliveryOrderItems = (List<DeliveryOrderItem>)object;
             if(deliveryOrderItems.size() >0) {
-                List<Product> products = cashSalesViewModel.getProducts(deliveryOrderItems.get(0).getDoId());
-                adapter.updateList(deliveryOrderItems, products);
+                adapter.updateList(deliveryOrderItems);
             }
         }
 

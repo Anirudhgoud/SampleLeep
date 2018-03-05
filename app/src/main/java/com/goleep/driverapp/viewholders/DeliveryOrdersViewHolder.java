@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
@@ -24,6 +25,8 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
     private final CustomTextView tvDeliveryEstimatedTime;
     private final CustomTextView tvAmount;
     private final CustomTextView tvItemsCount;
+    private final CustomButton btDeliver;
+    private DeliveryOrderClickEventListener deliveryOrderClickEventListener;
 
     public DeliveryOrdersViewHolder(View itemView, DeliveryOrderClickEventListener deliveryOrderClickEventListener) {
         super(itemView);
@@ -35,6 +38,8 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
         tvDeliveryEstimatedTime = itemView.findViewById(R.id.tv_estimated_time);
         tvAmount = itemView.findViewById(R.id.tv_amount);
         tvItemsCount = itemView.findViewById(R.id.tv_item_count);
+        btDeliver = itemView.findViewById(R.id.bt_delivery);
+        this.deliveryOrderClickEventListener = deliveryOrderClickEventListener;
     }
 
     public void bindData(DeliveryOrder deliveryOrder){
@@ -46,6 +51,16 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
         tvDeliveryEstimatedTime.setText("-");
         tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
         tvItemsCount.setText(deliveryOrder.getDeliveryOrderItemsCount() == null ? "0" : deliveryOrder.getDeliveryOrderItemsCount().toString());
+        setDeliverButtonClickEvent(deliveryOrder.getId());
+    }
+
+    private void setDeliverButtonClickEvent(final Integer orderId){
+        btDeliver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deliveryOrderClickEventListener.onDeliverClicked(orderId);
+            }
+        });
     }
 
     private String dateToDisplay(String dateString){

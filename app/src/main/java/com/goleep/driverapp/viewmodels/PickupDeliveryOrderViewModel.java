@@ -12,9 +12,7 @@ import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.DoDetails;
 import com.goleep.driverapp.services.room.entities.Driver;
-import com.goleep.driverapp.services.room.entities.Product;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -23,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.goleep.driverapp.services.room.entities.DeliveryOrderItem.getDeliveryOrderItemList;
@@ -73,10 +70,6 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     public LiveData<List<DeliveryOrderItem>> getDoDetails(Integer id) {
         doDetailsLiveData = leepDatabase.deliveryOrderItemDao().getDeliveryOrderItems(id);
         return doDetailsLiveData;
-    }
-
-    public DoDetails getDoDetailsObj(Integer id) {
-        return null;
     }
 
     public String getWareHouseNameAddress(){

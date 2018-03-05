@@ -1,7 +1,6 @@
 package com.goleep.driverapp.services.room.entities;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
@@ -9,55 +8,32 @@ import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseMode
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.arch.persistence.room.ForeignKey.CASCADE;
-
 /**
  * Created by vishalm on 28/02/18.
  */
 @Entity
 public class Product {
     @PrimaryKey
-    private Integer id;
+    private Integer productId;
     private String name;
     private String sku;
     private String weight;
     private String weightUnit;
 
-    public Product(Integer id, String name, String sku, String weight, String weightUnit, Integer doId, Integer doItemId) {
-        this.id = id;
+    public Product(Integer productId, String name, String sku, String weight, String weightUnit) {
+        this.productId = productId;
         this.name = name;
         this.sku = sku;
         this.weight = weight;
         this.weightUnit = weightUnit;
-        this.doId = doId;
-        this.doItemId = doItemId;
     }
 
-    public Integer getDoId() {
-        return doId;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setDoId(Integer doId) {
-        this.doId = doId;
-    }
-
-    public Integer getDoItemId() {
-        return doItemId;
-    }
-
-    public void setDoItemId(Integer doItemId) {
-        this.doItemId = doItemId;
-    }
-
-    private Integer doId;
-    private Integer doItemId;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -99,8 +75,7 @@ public class Product {
             DoDetailResponseModel.DeliveryOrderItem responseDoItem = deliveryOrderItems.get(i);
             DoDetailResponseModel.Product responseProduct = responseDoItem.getProduct();
             Product product = new Product(responseProduct.getId(), responseProduct.getName(),
-                    responseProduct.getSku(), responseProduct.getWeight(), responseProduct.getWeightUnit(),
-                    doDetailResponseModel.getId(), responseDoItem.getId());
+                    responseProduct.getSku(), responseProduct.getWeight(), responseProduct.getWeightUnit());
             products.add(product);
         }
         return products;

@@ -21,14 +21,13 @@ import java.util.List;
  * Created by vishalm on 22/02/18.
  */
 
-public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashSalesListAdapter.ViewHolder> {
+public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
+        PickupCashSalesListAdapter.ViewHolder> {
     private List<DeliveryOrderItem> doDetailsList;
-    private List<Product> products;
     private int selectedCount = 0;
 
-    public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList, ArrayList<Product> products){
+    public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList){
         this.doDetailsList = doDetailsList;
-        this.products = products;
     }
 
     @Override
@@ -39,8 +38,8 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if(doDetailsList.size() > 0 && products.size() > 0)
-            holder.bind(doDetailsList.get(position), products.get(position));
+        if(doDetailsList.size() > 0)
+            holder.bind(doDetailsList.get(position));
     }
 
     @Override
@@ -48,11 +47,9 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
         return doDetailsList.size();
     }
 
-    public void updateList(List<DeliveryOrderItem> deliveryOrderItems, List<Product> productsList) {
+    public void updateList(List<DeliveryOrderItem> deliveryOrderItems) {
         doDetailsList.clear();
         doDetailsList.addAll(deliveryOrderItems);
-        products.clear();
-        products.addAll(productsList);
         notifyDataSetChanged();
     }
 
@@ -68,7 +65,8 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<PickupCashS
             productCheckbox = itemView.findViewById(R.id.product_checkbox);
         }
 
-        public void bind(DeliveryOrderItem doDetails, Product product) {
+        public void bind(DeliveryOrderItem doDetails) {
+            Product product = doDetails.getProduct();
             productNameTv.setText(product.getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
             productQuantityTv.setText(product.getWeight()+" "+product.getWeightUnit());

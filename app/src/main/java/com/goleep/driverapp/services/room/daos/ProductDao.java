@@ -20,15 +20,15 @@ public abstract class ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertAllProducts(List<Product> products);
 
-    @Query("SELECT * FROM Product WHERE doId = :doId")
-    public abstract List<Product> getAllProducts(Integer doId);
+//    @Query("SELECT * FROM Product WHERE doId = :doId")
+//    public abstract List<Product> getAllProducts(Integer doId);
+//
+//    @Query("DELETE FROM Product WHERE doId = :doId")
+//    public abstract List<Product> deleteAllProducts(Integer doId);
 
-    @Query("SELECT * FROM Product WHERE doId = :doId")
-    public abstract List<Product> deleteAllProducts(Integer doId);
-
-    @Transaction
-    public void insertAndDeleteInTransaction(Integer doId, List<Product> products) {
-        deleteAllProducts(doId);
-        insertAllProducts(products);
-    }
+//    @Transaction
+//    public void insertAndDeleteInTransaction(Integer doId, List<Product> products) {
+//        deleteAllProducts(doId);
+//        insertAllProducts(products);
+//    }
 }

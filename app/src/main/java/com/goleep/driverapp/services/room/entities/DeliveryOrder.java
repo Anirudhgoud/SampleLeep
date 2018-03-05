@@ -15,7 +15,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 @Entity
-public class DeliveryOrder extends BaseListItem implements Parcelable {
+public class DeliveryOrder extends BaseListItem{
 
     @PrimaryKey
     @SerializedName("id")
@@ -83,49 +83,6 @@ public class DeliveryOrder extends BaseListItem implements Parcelable {
     @SerializedName("duration_from_current_location")
     private Integer durationFromCurrentLocation = 0;
 
-
-
-    public final static Parcelable.Creator<DeliveryOrder> CREATOR = new Creator<DeliveryOrder>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public DeliveryOrder createFromParcel(Parcel in) {
-            return new DeliveryOrder(in);
-        }
-
-        public DeliveryOrder[] newArray(int size) {
-            return (new DeliveryOrder[size]);
-        }
-
-    }
-            ;
-
-    protected DeliveryOrder(Parcel in) {
-        super(0);
-        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.doNumber = ((String) in.readValue((String.class.getClassLoader())));
-        this.status = ((String) in.readValue((String.class.getClassLoader())));
-        this.type = ((String) in.readValue((String.class.getClassLoader())));
-        this.sourceLocationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.preferredDeliveryDate = ((String) in.readValue((String.class.getClassLoader())));
-        this.actualDeliveryDate = ((String) in.readValue((String.class.getClassLoader())));
-        this.preferredDeliveryTime = ((String) in.readValue((String.class.getClassLoader())));
-        this.sourceLocationName = ((String) in.readValue((String.class.getClassLoader())));
-        this.destinationLocationId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.destinationLocationName = ((String) in.readValue((String.class.getClassLoader())));
-        this.createdAt = ((String) in.readValue((String.class.getClassLoader())));
-        this.assigneeName = ((String) in.readValue((String.class.getClassLoader())));
-        this.customerName = ((String) in.readValue((String.class.getClassLoader())));
-        this.destinationLatitude = ((Float) in.readValue((Float.class.getClassLoader())));
-        this.destinationLongitude = ((Float) in.readValue((Float.class.getClassLoader())));
-        this.destinationAddressLine1 = ((String) in.readValue((String.class.getClassLoader())));
-        this.destinationAddressLine2 = ((String) in.readValue((String.class.getClassLoader())));
-        this.deliveryOrderItemsCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.totalValue = ((Float) in.readValue((Float.class.getClassLoader())));
-        this.durationFromCurrentLocation = ((Integer) in.readValue((Integer.class.getClassLoader())));
-    }
 
     public DeliveryOrder() {
         super(0);
@@ -297,35 +254,6 @@ public class DeliveryOrder extends BaseListItem implements Parcelable {
 
     public void setDurationFromCurrentLocation(Integer durationFromCurrentLocation) {
         this.durationFromCurrentLocation = durationFromCurrentLocation;
-    }
-
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(doNumber);
-        dest.writeValue(status);
-        dest.writeValue(type);
-        dest.writeValue(sourceLocationId);
-        dest.writeValue(preferredDeliveryDate);
-        dest.writeValue(actualDeliveryDate);
-        dest.writeValue(preferredDeliveryTime);
-        dest.writeValue(sourceLocationName);
-        dest.writeValue(destinationLocationId);
-        dest.writeValue(destinationLocationName);
-        dest.writeValue(createdAt);
-        dest.writeValue(assigneeName);
-        dest.writeValue(customerName);
-        dest.writeValue(destinationLatitude);
-        dest.writeValue(destinationLongitude);
-        dest.writeValue(destinationAddressLine1);
-        dest.writeValue(destinationAddressLine2);
-        dest.writeValue(deliveryOrderItemsCount);
-        dest.writeValue(totalValue);
-        dest.writeValue(durationFromCurrentLocation);
-    }
-
-    public int describeContents() {
-        return 0;
     }
 
     public boolean isAllSelected(){

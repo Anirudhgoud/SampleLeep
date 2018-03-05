@@ -1,15 +1,13 @@
 package com.goleep.driverapp.services.room.entities;
 
 
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +25,12 @@ public class DeliveryOrderItem extends BaseListItem{
     @PrimaryKey
     private Integer id;
 
-    public DeliveryOrderItem(Integer id, Integer doId, Integer quantity, Integer productId, Integer price) {
+    public DeliveryOrderItem(Integer id, Integer doId, Integer quantity, Product product, Integer price) {
         super(0);
         this.id = id;
         this.doId = doId;
         this.quantity = quantity;
-        this.productId = productId;
+        this.product = product;
         this.price = price;
     }
 
@@ -47,7 +45,8 @@ public class DeliveryOrderItem extends BaseListItem{
     private Integer doId;
     private Integer quantity;
 
-    private Integer productId;
+    @Embedded
+    private Product product;
     private Integer price;
 
     public Integer getId() {
@@ -66,14 +65,6 @@ public class DeliveryOrderItem extends BaseListItem{
         this.quantity = quantity;
     }
 
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
     public Integer getPrice() {
         return price;
     }
@@ -82,16 +73,29 @@ public class DeliveryOrderItem extends BaseListItem{
         this.price = price;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     public static List<DeliveryOrderItem> getDeliveryOrderItemList(DoDetailResponseModel doDetailResponseModel) {
         List<DeliveryOrderItem> deliveryOrderItemList = new ArrayList<>();
         List<DoDetailResponseModel.DeliveryOrderItem> deliveryOrderItems = doDetailResponseModel.getDeliveryOrderItems();
         for(int i=0;i<deliveryOrderItems.size();i++){
             DoDetailResponseModel.DeliveryOrderItem responseDoItem = deliveryOrderItems.get(i);
+            DoDetailResponseModel.Product responseProduct = responseDoItem.getProduct();
+            Product doProduct = new Product(responseProduct.getId(), responseProduct.getName(),
+                    responseProduct.getSku(), responseProduct.getWeight(), responseProduct.getWeightUnit());
             DeliveryOrderItem deliveryOrderItem =  new DeliveryOrderItem(responseDoItem.getId(),
                     doDetailResponseModel.getId(), responseDoItem.getQuantity(),
-                    responseDoItem.getProduct().getId(), responseDoItem.getPrice());
+                    doProduct, responseDoItem.getPrice());
             deliveryOrderItemList.add(deliveryOrderItem);
         }
         return deliveryOrderItemList;
     }
+
+
 }

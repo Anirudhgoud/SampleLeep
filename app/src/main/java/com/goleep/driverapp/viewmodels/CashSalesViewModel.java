@@ -103,8 +103,8 @@ public class CashSalesViewModel extends AndroidViewModel {
                                     leepDatabase.deliveryOrderItemDao().deleteDeliveryItems(doDetailResponse.getId());
                                     leepDatabase.deliveryOrderItemDao().insertDeliveryOrderItems(
                                             getDeliveryOrderItemList(doDetailResponse));
-                                    leepDatabase.productDao().insertAndDeleteInTransaction(doDetailResponse.getId(),
-                                            getProductsList(doDetailResponse));
+//                                    leepDatabase.productDao().insertAndDeleteInTransaction(doDetailResponse.getId(),
+//                                            getProductsList(doDetailResponse));
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
                                 }
@@ -118,8 +118,8 @@ public class CashSalesViewModel extends AndroidViewModel {
                 });
     }
 
-    public List<Product> getProducts(Integer doId) {
-        List<Product> products = leepDatabase.productDao().getAllProducts(doId);
-        return products;
-    }
+//    public List<Product> getProducts(Integer doId) {
+//        List<Product> products = leepDatabase.productDao().getAllProducts(doId);
+//        return products;
+//    }
 }
