@@ -71,10 +71,12 @@ public class DeliveryOrdersListFragment extends Fragment {
         doListAdapter.setDeliveryOrderClickEventListener(deliveryOrderClickEventListener);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
-                        DeliveryOrdersListFragment.this, new Observer<List<BaseListItem>>() {
+                        DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
-            public void onChanged(@Nullable List<BaseListItem> deliveryOrders) {
-                doListAdapter.updateList(deliveryOrders);
+            public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
+                List<BaseListItem> baseListItems = new ArrayList<>();
+                baseListItems.addAll(deliveryOrders);
+                doListAdapter.updateList(baseListItems);
             }
         });
         doListRecyclerView.setAdapter(doListAdapter);

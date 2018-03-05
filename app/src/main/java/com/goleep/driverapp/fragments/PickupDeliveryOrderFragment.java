@@ -121,13 +121,15 @@ public class PickupDeliveryOrderFragment extends Fragment{
         expandableListView.setAdapter(adapter);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_ASSIGNED).observe(
-                        PickupDeliveryOrderFragment.this, new Observer<List<BaseListItem>>() {
+                        PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrder>>() {
             @Override
-            public void onChanged(@Nullable List<BaseListItem> deliveryOrders) {
+            public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
                 if(deliveryOrders.size() > 0) {
                     doList.clear();
                     doList.addAll(deliveryOrders);
-                    adapter.upDateList(deliveryOrders);
+                    List<BaseListItem> baseListItems = new ArrayList<>();
+                    baseListItems.addAll(deliveryOrders);
+                    adapter.upDateList(baseListItems);
                 }
             }
         });

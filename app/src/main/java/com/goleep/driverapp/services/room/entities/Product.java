@@ -14,10 +14,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 /**
  * Created by vishalm on 28/02/18.
  */
-@Entity(foreignKeys = @ForeignKey(entity = DeliveryOrderItem.class,
-        parentColumns = "id",
-        childColumns = "doItemId",
-        onDelete = CASCADE))
+@Entity
 public class Product {
     @PrimaryKey
     private Integer id;
