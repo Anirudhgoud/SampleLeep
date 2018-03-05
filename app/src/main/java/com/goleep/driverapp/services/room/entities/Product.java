@@ -14,7 +14,7 @@ import java.util.List;
  * Created by vishalm on 28/02/18.
  */
 @Entity
-public class Product implements Parcelable {
+public class Product {
     @PrimaryKey
     private Integer productId;
     private String name;
@@ -83,57 +83,4 @@ public class Product implements Parcelable {
         return products;
     }
 
-    protected Product(Parcel in) {
-        id = in.readByte() == 0x00 ? null : in.readInt();
-        name = in.readString();
-        sku = in.readString();
-        weight = in.readString();
-        weightUnit = in.readString();
-        doId = in.readByte() == 0x00 ? null : in.readInt();
-        doItemId = in.readByte() == 0x00 ? null : in.readInt();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if (id == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(id);
-        }
-        dest.writeString(name);
-        dest.writeString(sku);
-        dest.writeString(weight);
-        dest.writeString(weightUnit);
-        if (doId == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(doId);
-        }
-        if (doItemId == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(doItemId);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
-        }
-    };
 }

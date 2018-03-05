@@ -151,11 +151,11 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
             switch (position) {
                 case 0:
                     PickupDeliveryOrderFragment pickupDeliveryOrderFragment = new PickupDeliveryOrderFragment();
-                    pickupDeliveryOrderFragment.setItemSelectionListener(PickupActivity.this);
+//                    pickupDeliveryOrderFragment.setItemSelectionListener(PickupActivity.this);
                     return pickupDeliveryOrderFragment;
                 case 1:
                     PickupCashSalessFragment pickupCashSalessFragment = new PickupCashSalessFragment();
-                    pickupCashSalessFragment.setItemSelectionListener(PickupActivity.this);
+//                    pickupCashSalessFragment.setItemSelectionListener(PickupActivity.this);
                     return pickupCashSalessFragment;
                 default:
                     return null;

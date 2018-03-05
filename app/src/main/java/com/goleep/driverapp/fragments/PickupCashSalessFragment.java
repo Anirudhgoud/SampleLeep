@@ -16,14 +16,11 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.interfaces.DoSelectionListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.leep.PickupConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.viewmodels.CashSalesViewModel;
 
 import java.util.ArrayList;
@@ -57,15 +54,6 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             if(toLogout)
                 ((PickupActivity)getActivity()).logoutUser();
-        }
-    };
-
-    private DoSelectionListener doSelectionListener = new DoSelectionListener() {
-        @Override
-        public void allDOSelected(boolean allSelected) {
-            if(allSelected)
-                confirmButton.setVisibility(View.VISIBLE);
-            else confirmButton.setVisibility(View.GONE);
         }
     };
 

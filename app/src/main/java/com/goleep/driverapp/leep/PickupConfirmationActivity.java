@@ -43,8 +43,8 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
 
     private void handleIntent() {
         Intent intent = getIntent();
-        cashDoItems = intent.getParcelableArrayListExtra(AppConstants.CASH_DOITEM_KEY);
-        cashProducts = intent.getParcelableArrayListExtra(AppConstants.CASH_PRODUCT_KEY);
+//        cashDoItems = intent.getParcelableArrayListExtra(AppConstants.CASH_DOITEM_KEY);
+//        cashProducts = intent.getParcelableArrayListExtra(AppConstants.CASH_PRODUCT_KEY);
         List<BaseListItem> doItems = new ArrayList<>();
         doItems.addAll(cashDoItems);
         adapter.addItemsList(BaseListItem.setItemType(doItems, BaseListItem.TYPE_CASH_SALES_ITEM), 1, cashProducts);

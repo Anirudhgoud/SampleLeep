@@ -76,11 +76,4 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         Driver driver = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
         return driver.getAddressLine1()+", "+driver.getAddressLine2();
     }
-
-
-    public List<Product> getProducts(Integer doId) {
-        List<Product> products = new ArrayList<>();
-        products = leepDatabase.productDao().getAllProducts(doId);
-        return products;
-    }
 }
