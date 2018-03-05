@@ -53,9 +53,9 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                                     JSONObject obj = (JSONObject) response.get(0);
                                     doDetailResponse = new Gson().fromJson(String.valueOf(obj), doDetailsType);
                                     leepDatabase.deliveryOrderItemDao().deleteDeliveryItems(doDetailResponse.getId());
-                                    leepDatabase.productDao().insertAllProducts(getProductsList(doDetailResponse));
                                     leepDatabase.deliveryOrderItemDao().insertDeliveryOrderItems(
                                             getDeliveryOrderItemList(doDetailResponse));
+                                    leepDatabase.productDao().insertAllProducts(getProductsList(doDetailResponse));
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
                                 }
@@ -78,6 +78,9 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     }
 
 
-
-
+    public List<Product> getProducts(Integer doId) {
+        List<Product> products = new ArrayList<>();
+        products = leepDatabase.productDao().getAllProducts(doId);
+        return products;
+    }
 }

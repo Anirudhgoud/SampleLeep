@@ -18,16 +18,23 @@ import com.goleep.driverapp.fragments.PickupCashSalessFragment;
 import com.goleep.driverapp.fragments.PickupDeliveryOrderFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.services.room.RoomDBService;
+import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
+import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.viewmodels.PickupViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PickupActivity extends ParentAppCompatActivity {
+public class PickupActivity extends ParentAppCompatActivity implements ItemCheckListener{
 
     @BindView(R.id.pickup_view_pager)
     public NonSwipeableViewPager viewPager;
@@ -36,6 +43,8 @@ public class PickupActivity extends ParentAppCompatActivity {
     @BindView(R.id.warehouse_info_text_view)
     CustomTextView wareHouseInfoTextView;
     private PickupViewModel pickupViewModel;
+    private List<Integer> selectedDeliveryOrders = new ArrayList<>();
+    private List<BaseListItem> cashDoItems = new ArrayList<>();
 
     @Override
     public void doInitialSetup() {
@@ -82,7 +91,8 @@ public class PickupActivity extends ParentAppCompatActivity {
         View doTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         CustomTextView textView = doTab.findViewById(R.id.title_text);
         ImageView icon = doTab.findViewById(R.id.icon);
-        doTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        doTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
 
         textView.setText(getString(R.string.delivery_order));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.delivery_orders_tab));
@@ -98,7 +108,8 @@ public class PickupActivity extends ParentAppCompatActivity {
         View cashSalesTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         textView = cashSalesTab.findViewById(R.id.title_text);
         icon = cashSalesTab.findViewById(R.id.icon);
-        cashSalesTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        cashSalesTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.cash_sales));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.cash_sales_tab));
         cashSalesTab.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +125,19 @@ public class PickupActivity extends ParentAppCompatActivity {
         super.logoutUser();
     }
 
+    @Override
+    public void itemChecked(BaseListItem item, boolean checked, Product product) {
+        if(item instanceof DeliveryOrderItem)
+            cashDoItems.add(item);
+        else if(item instanceof DeliveryOrder) {
+            if(checked)
+                selectedDeliveryOrders.add(((DeliveryOrder) item).getId());
+            else if(selectedDeliveryOrders.contains(((DeliveryOrder) item).getId())){
+                selectedDeliveryOrders.remove(((DeliveryOrder) item).getId());
+            }
+        }
+    }
+
     class PickupPagerAdapter extends FragmentPagerAdapter {
 
         private int NUMBER_OF_ITEMS = 2;
@@ -126,9 +150,13 @@ public class PickupActivity extends ParentAppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new PickupDeliveryOrderFragment();
+                    PickupDeliveryOrderFragment pickupDeliveryOrderFragment = new PickupDeliveryOrderFragment();
+                    pickupDeliveryOrderFragment.setItemSelectionListener(PickupActivity.this);
+                    return pickupDeliveryOrderFragment;
                 case 1:
-                    return new PickupCashSalessFragment();
+                    PickupCashSalessFragment pickupCashSalessFragment = new PickupCashSalessFragment();
+                    pickupCashSalessFragment.setItemSelectionListener(PickupActivity.this);
+                    return pickupCashSalessFragment;
                 default:
                     return null;
             }

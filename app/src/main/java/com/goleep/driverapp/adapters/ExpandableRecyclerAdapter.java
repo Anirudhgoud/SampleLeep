@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -186,7 +188,9 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         indexList.clear();
 
         for (int i=0; i<items.size(); i++) {
-            if (items.get(i).ItemType == TYPE_HEADER) {
+            if (items.get(i).ItemType == TYPE_HEADER ||
+                    items.get(i).ItemType == BaseListItem.TYPE_ORDERS_HEADER ||
+                    items.get(i).ItemType == BaseListItem.TYPE_CASH_SALES_ITEM) {
                 indexList.add(i);
                 visibleItems.add(items.get(i));
             }

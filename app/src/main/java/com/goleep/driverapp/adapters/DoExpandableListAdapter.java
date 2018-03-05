@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.Product;
@@ -17,7 +18,9 @@ import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vishalm on 20/02/18.
@@ -32,10 +35,18 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     private List<BaseListItem> recyclerViewListData = new ArrayList<>();
     private List<BaseListItem> headerList = new ArrayList<>();
     private int headerSelectionCount = 0;
+    private Map<Integer, Product> productsMap = new HashMap<>();
+
+    public void setItemCheckListener(ItemCheckListener itemCheckListener) {
+        this.itemCheckListener = itemCheckListener;
+    }
+
+    private ItemCheckListener itemCheckListener;
     public DoExpandableListAdapter(Context context, List<BaseListItem> doList) {
         super(context);
         if(doList.size() > 0) {
             this.doList = doList;
+            this.recyclerViewListData = doList;
             setItems(doList);
         }
     }
@@ -60,6 +71,12 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             case TYPE_HEADER:
                 View headerView = inflate(R.layout.item_header, parent);
                 return new HeaderViewHolder(headerView);
+            case TYPE_ORDERS_HEADER:
+                View ordersHeader = inflate(R.layout.orders_header_layout, parent);
+                return new OrdersHeaderViewHolder(ordersHeader);
+            case BaseListItem.TYPE_CASH_SALES_ITEM :
+                View cashSalesItem = inflate(R.layout.confirm_cash_sales_do_item, parent);
+                return new ItemViewHolder(cashSalesItem);
             case TYPE_DO_ITEM:
             default:
                 View contentView = inflate(R.layout.do_details_list_item, parent);
@@ -73,6 +90,10 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             case TYPE_HEADER:
                 ((HeaderViewHolder) holder).bind(position);
                 break;
+            case TYPE_ORDERS_HEADER:
+                ((OrdersHeaderViewHolder)holder).bind(position);
+                break;
+            case BaseListItem.TYPE_CASH_SALES_ITEM:
             case TYPE_DO_ITEM:
             default:
                 ((ItemViewHolder) holder).bind(position);
@@ -84,26 +105,17 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         if(deliveryOrders.size() >0) {
             this.doList.clear();
             this.doList.addAll(deliveryOrders);
+            recyclerViewListData.addAll(deliveryOrders);
             setItems(deliveryOrders);
-            notifyDataSetChanged();
         }
     }
 
-    public void updateItems(List<DeliveryOrderItem> doDetails, int headerPosition, List<Product> products) {
-        if(doDetails != null) {
-            int index = recyclerViewListData.indexOf(headerList.get(headerPosition));
-            recyclerViewListData.clear();
-            recyclerViewListData.addAll(doList);
-            addItemsList(doDetails, index, products);
-        }
-    }
-
-    public void addItemsList(List<DeliveryOrderItem> doDetailsObj, int position, List<Product> products) {
-        for(int i=0;i<doDetailsObj.size();i++){
-            recyclerViewListData.add(position+i+1, doDetailsObj.get(i));
+    public void addItemsList(List<BaseListItem> baseListItems, int position, List<Product> products) {
+        for(int i=0;i<baseListItems.size();i++){
+            recyclerViewListData.add(position+i+1, baseListItems.get(i));
+            productsMap.put(((DeliveryOrderItem)baseListItems.get(i)).getId(), products.get(i));
         }
         setItems(recyclerViewListData);
-        notifyDataSetChanged();
     }
 
     public BaseListItem getItemAt(int pos) {
@@ -146,10 +158,12 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             if(((DeliveryOrder)recyclerViewListData.get(position)).isAllSelected()) {
                 selectionIcon.setImageResource(R.drawable.ic_do_selected);
                 headerSelectionCount +=1;
+                itemCheckListener.itemChecked(deliveryOrder, true, null);
             }
             else {
                 headerSelectionCount = headerSelectionCount == 0? 0 : --headerSelectionCount;
                 selectionIcon.setImageResource(R.drawable.ic_do_unselected);
+                itemCheckListener.itemChecked(deliveryOrder, false, null);
             }
         }
         private String dateToDisplay(String dateString){
@@ -193,6 +207,18 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
     }
 
+    public class OrdersHeaderViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
+        CustomTextView ordersHeaderTextView;
+        public OrdersHeaderViewHolder(View view) {
+            super(view);
+            ordersHeaderTextView = view.findViewById(R.id.orders_header_text_view);
+        }
+
+        public void bind(int position) {
+            ordersHeaderTextView.setText(recyclerViewListData.get(position).getString());
+        }
+    }
+
     public class ItemViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
         private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
         private CheckBox productCheckbox;
@@ -207,20 +233,22 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
         public void bind(int position) {
             DeliveryOrderItem doDetails = (DeliveryOrderItem)recyclerViewListData.get(position);
-           // productNameTv.setText(doDetails.getProduct().getName());
+            productNameTv.setText(productsMap.get(doDetails.getId()).getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
-            //productQuantityTv.setText(((DeliveryOrderItem)doDetails).getProduct().getWeight()+" "+doDetails.getProduct().getWeightUnit());
+            productQuantityTv.setText(productsMap.get(doDetails.getId()).getWeight()+" "+
+                    productsMap.get(doDetails.getId()).getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
-            productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if(isChecked)
-                        recyclerViewListData.get(0).addSelection(1);
-                    else recyclerViewListData.get(0).addSelection(-1);
-                    notifyDataSetChanged();
-                }
-            });
+            if(productCheckbox != null)
+                productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                        if(isChecked)
+                            recyclerViewListData.get(0).addSelection(1);
+                        else recyclerViewListData.get(0).addSelection(-1);
+                        notifyDataSetChanged();
+                    }
+                });
         }
     }
 }
