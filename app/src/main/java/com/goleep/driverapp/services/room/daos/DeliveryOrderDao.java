@@ -39,7 +39,7 @@ public abstract class DeliveryOrderDao {
     public abstract void insertDeliveryOrders(List<DeliveryOrderEntity> deliveryOrders);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void zinsertDeliveryOrder(DeliveryOrderEntity deliveryOrder);
+    public abstract void insertDeliveryOrder(DeliveryOrderEntity deliveryOrder);
 
     @Query("Delete from DeliveryOrderEntity WHERE type = 'driver'")
     public abstract void deleteDriverDo();

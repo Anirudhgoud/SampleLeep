@@ -9,7 +9,6 @@ import android.arch.persistence.room.RoomDatabase;
 import com.goleep.driverapp.services.room.daos.DeliveryOrderDao;
 import com.goleep.driverapp.services.room.daos.DeliveryOrderItemDao;
 import com.goleep.driverapp.services.room.daos.DriverDao;
-import com.goleep.driverapp.services.room.daos.ProductDao;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
@@ -40,5 +39,4 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract DeliveryOrderDao deliveryOrderDao();
     public abstract DriverDao driverDao();
     public abstract DeliveryOrderItemDao deliveryOrderItemDao();
-    public abstract ProductDao productDao();
 }
