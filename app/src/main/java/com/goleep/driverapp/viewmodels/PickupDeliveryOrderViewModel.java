@@ -9,14 +9,13 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.services.network.NetworkService;
-import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
+import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 import java.util.List;
 
 
@@ -42,15 +41,9 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type){
                             case NetworkConstants.SUCCESS:
-                                try{
-                                    JSONObject obj = (JSONObject) response.get(0);
-                                    DoDetailResponseModel doDetailResponseModel = new DoDetailResponseModel();
-                                    doDetailResponseModel.parseJSON(obj.optJSONArray("delivery_order_items"), doId);
-                                    leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
-                                            doDetailResponseModel.getOrderItemEntities());
-                                }catch (JSONException ex){
-                                    ex.printStackTrace();
-                                }
+                                OrderItemParser orderItemParser = new OrderItemParser();
+                                leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
+                                        orderItemParser.orderItemsByParsingJsonResponse(response, doId));
                                 break;
                         }
                     }
