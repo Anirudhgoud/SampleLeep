@@ -25,7 +25,7 @@ public class OrderItemEntity extends BaseListItem{
     private int quantity;
     @Embedded
     private ProductEntity product;
-    private Double price;
+    private double price;
 
     public OrderItemEntity(){
 
@@ -55,11 +55,11 @@ public class OrderItemEntity extends BaseListItem{
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

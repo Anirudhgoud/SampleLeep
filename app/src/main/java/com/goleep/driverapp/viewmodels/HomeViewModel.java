@@ -63,8 +63,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void getDriverProfile(final UILevelNetworkCallback driverProfileCallback) {
-        String driverId = String.valueOf(RoomDBService.sharedInstance().getDatabase(context).
-                userMetaDao().getUserMeta().getDriver().getDriverId());
+        int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(context, SharedPreferenceKeys.DRIVER_ID);
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
                 UrlConstants.DRIVERS_URL+"/"+driverId,
                 true, new NetworkAPICallback() {

@@ -136,7 +136,6 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     protected void logoutUser(){
         LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(this);
-        RoomDBService.sharedInstance().getDatabase(this).userMetaDao().deleteUserMeta();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

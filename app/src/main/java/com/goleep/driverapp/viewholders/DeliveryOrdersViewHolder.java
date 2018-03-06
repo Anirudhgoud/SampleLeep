@@ -50,7 +50,7 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
         tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
         tvDeliveryEstimatedTime.setText("-");
         tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
-        tvItemsCount.setText(deliveryOrder.getDeliveryOrderItemsCount());
+        tvItemsCount.setText(String.valueOf(deliveryOrder.getDeliveryOrderItemsCount()));
         setDeliverButtonClickEvent(deliveryOrder.getId());
     }
 
