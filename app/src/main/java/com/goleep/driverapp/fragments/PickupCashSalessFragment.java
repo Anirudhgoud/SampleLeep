@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
+import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.leep.PickupConfirmationActivity;
@@ -41,6 +42,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     CustomButton confirmButton;
     private CashSalesViewModel cashSalesViewModel;
     private PickupCashSalesListAdapter adapter;
+    private ItemCheckListener itemCheckListener;
 
     private UILevelNetworkCallback driverDoCallback = new UILevelNetworkCallback() {
         @Override
@@ -81,13 +83,16 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>());
+        adapter.setItemCheckListener(itemCheckListener);
         recyclerView.setAdapter(adapter);
-        cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this, PickupCashSalessFragment.this);
+        cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this,
+                PickupCashSalessFragment.this);
     }
 
     private void fetchDriverDoDetails(Integer id) {
-        cashSalesViewModel.getDriverDoDetails(id).observe(PickupCashSalessFragment.this, PickupCashSalessFragment.this);
-        cashSalesViewModel.fetchDriverDoDetails(String.valueOf(id), driverDoDetailsCallback);
+        cashSalesViewModel.getDriverDoDetails(id).observe(PickupCashSalessFragment.this,
+                PickupCashSalessFragment.this);
+        cashSalesViewModel.fetchDriverDoDetails(id, driverDoDetailsCallback);
     }
 
 
@@ -116,5 +121,9 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
             }
         }
 
+    }
+
+    public void setItemSelectionListener(ItemCheckListener itemCheckListener) {
+        this.itemCheckListener = itemCheckListener;
     }
 }

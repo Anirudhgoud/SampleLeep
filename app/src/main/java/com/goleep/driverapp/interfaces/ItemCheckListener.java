@@ -8,5 +8,5 @@ import com.goleep.driverapp.services.room.entities.Product;
  */
 
 public interface ItemCheckListener {
-    void itemChecked(BaseListItem item, boolean checked, Product product);
+    void itemChecked(BaseListItem item, boolean checked);
 }

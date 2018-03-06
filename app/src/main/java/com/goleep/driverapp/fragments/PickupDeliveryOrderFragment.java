@@ -17,6 +17,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrder;
@@ -48,6 +49,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
     private DoExpandableListAdapter adapter;
     private List<BaseListItem> doList = new ArrayList<>();
     private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
+    private ItemCheckListener itemCheckListener;
     private View.OnClickListener headerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -70,7 +72,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
                             }
                         });
             } else if(!doUpdateMap.containsKey(((DeliveryOrder)adapter.getItemAt(pos)).getId())) {
-                doViewModel.fetchDoItems(String.valueOf(((DeliveryOrder)adapter.getItemAt(pos)).getId()));
+                doViewModel.fetchDoItems(((DeliveryOrder)adapter.getItemAt(pos)).getId());
             }
         }
     };
@@ -136,5 +138,9 @@ public class PickupDeliveryOrderFragment extends Fragment{
 
     private void fetchDeliveryOrders() {
         doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+    }
+
+    public void setItemSelectionListener(ItemCheckListener itemSelectionListener) {
+        this.itemCheckListener = itemSelectionListener;
     }
 }

@@ -7,4 +7,9 @@ package com.goleep.driverapp.constants;
 public interface AppConstants {
     String CASH_DOITEM_KEY = "do_items_cash";
     String CASH_PRODUCT_KEY = "products_cash";
+
+    int TYPE_HEADER = 1000;
+    int TYPE_DO_ITEM = 10;
+    int TYPE_ORDERS_HEADER = 12;
+    int TYPE_CASH_SALES_ITEM = 13;
 }

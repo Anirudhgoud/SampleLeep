@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by vishalm on 20/02/18.
  */
 
-public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdapter.ListItem>
+public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         extends RecyclerView.Adapter<ExpandableRecyclerAdapter.ViewHolder> {
     protected Context mContext;
     protected List<T> allItems = new ArrayList<>();
@@ -27,7 +28,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
     private SparseIntArray expandMap = new SparseIntArray();
     private int mode;
 
-    protected static final int TYPE_HEADER = 1000;
+
 
     private static final int ARROW_ROTATION_DURATION = 150;
 
@@ -36,22 +37,6 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
 
     public ExpandableRecyclerAdapter(Context context) {
         mContext = context;
-    }
-
-    public static class ListItem {
-        public int getItemType() {
-            return ItemType;
-        }
-
-        public void setItemType(int itemType) {
-            ItemType = itemType;
-        }
-        @Ignore
-        public int ItemType;
-
-        public ListItem(int itemType) {
-            ItemType = itemType;
-        }
     }
 
     @Override
@@ -133,7 +118,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         int index = indexList.get(position);
         int insert = position;
 
-        for (int i=index+1; i<allItems.size() && allItems.get(i).ItemType != TYPE_HEADER; i++) {
+        for (int i=index+1; i<allItems.size() && allItems.get(i).getItemType() != AppConstants.TYPE_HEADER; i++) {
             insert++;
             count++;
             visibleItems.add(insert, allItems.get(i));
@@ -154,7 +139,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         int count = 0;
         int index = indexList.get(position);
 
-        for (int i=index+1; i<allItems.size() && allItems.get(i).ItemType != TYPE_HEADER; i++) {
+        for (int i=index+1; i<allItems.size() && allItems.get(i).getItemType() != AppConstants.TYPE_HEADER; i++) {
             count++;
             visibleItems.remove(position + 1);
             indexList.remove(position + 1);
@@ -178,7 +163,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
 
     @Override
     public int getItemViewType(int position) {
-        return visibleItems.get(position).ItemType;
+        return visibleItems.get(position).getItemType();
     }
 
     public void setItems(List<T> items) {
@@ -188,9 +173,9 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
         indexList.clear();
 
         for (int i=0; i<items.size(); i++) {
-            if (items.get(i).ItemType == TYPE_HEADER ||
-                    items.get(i).ItemType == BaseListItem.TYPE_ORDERS_HEADER ||
-                    items.get(i).ItemType == BaseListItem.TYPE_CASH_SALES_ITEM) {
+            if (items.get(i).getItemType() == AppConstants.TYPE_HEADER ||
+                    items.get(i).getItemType() == AppConstants.TYPE_ORDERS_HEADER ||
+                    items.get(i).getItemType() == AppConstants.TYPE_CASH_SALES_ITEM) {
                 indexList.add(i);
                 visibleItems.add(items.get(i));
             }
@@ -248,7 +233,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
 
     public void collapseAllExcept(int position) {
         for (int i=visibleItems.size()-1; i>=0; i--) {
-            if (i != position && getItemViewType(i) == TYPE_HEADER) {
+            if (i != position && getItemViewType(i) == AppConstants.TYPE_HEADER) {
                 if (isExpanded(i)) {
                     collapseItems(i, true);
                 }
@@ -258,7 +243,7 @@ public abstract class ExpandableRecyclerAdapter<T extends ExpandableRecyclerAdap
 
     public void expandAll() {
         for (int i=visibleItems.size()-1; i>=0; i--) {
-            if (getItemViewType(i) == TYPE_HEADER) {
+            if (getItemViewType(i) == AppConstants.TYPE_HEADER) {
                 if (!isExpanded(i)) {
                     expandItems(i, true);
                 }

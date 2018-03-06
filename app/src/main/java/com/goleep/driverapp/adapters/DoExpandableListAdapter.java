@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
@@ -27,13 +28,9 @@ import java.util.Map;
  */
 
 public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListItem>{
-    private final int TYPE_DO_ITEM = 10;
-    private final int TYPE_ITEMS_HEADER = 11;
-    private final int TYPE_ORDERS_HEADER = 12;
     private List<BaseListItem> doList = new ArrayList<>();
     private View.OnClickListener headerClickListener;
     private List<BaseListItem> recyclerViewListData = new ArrayList<>();
-    private List<BaseListItem> headerList = new ArrayList<>();
     private int headerSelectionCount = 0;
     private Map<Integer, Product> productsMap = new HashMap<>();
 
@@ -51,33 +48,19 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
     }
 
-//    private List<BaseListItem> getList(ArrayList<DeliveryOrder> doList) {
-//        recyclerViewListData.clear();
-//        headerList.clear();
-//        List<DeliveryOrder> list = new ArrayList<>();
-//        for (DeliveryOrder deliveryOrder : doList) {
-//            list.add(new BaseListItem(deliveryOrder));
-//        }
-//        headerList.addAll(list);
-//        recyclerViewListData.addAll(list);
-//        return recyclerViewListData;
-//    }
-
-
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case TYPE_HEADER:
+            case AppConstants.TYPE_HEADER:
                 View headerView = inflate(R.layout.item_header, parent);
                 return new HeaderViewHolder(headerView);
-            case TYPE_ORDERS_HEADER:
+            case AppConstants.TYPE_ORDERS_HEADER:
                 View ordersHeader = inflate(R.layout.orders_header_layout, parent);
                 return new OrdersHeaderViewHolder(ordersHeader);
-            case BaseListItem.TYPE_CASH_SALES_ITEM :
+            case AppConstants.TYPE_CASH_SALES_ITEM :
                 View cashSalesItem = inflate(R.layout.confirm_cash_sales_do_item, parent);
                 return new ItemViewHolder(cashSalesItem);
-            case TYPE_DO_ITEM:
+            case AppConstants.TYPE_DO_ITEM:
             default:
                 View contentView = inflate(R.layout.do_details_list_item, parent);
                 return new ItemViewHolder(contentView);
@@ -87,14 +70,14 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     @Override
     public void onBindViewHolder(ExpandableRecyclerAdapter.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case TYPE_HEADER:
+            case AppConstants.TYPE_HEADER:
                 ((HeaderViewHolder) holder).bind(position);
                 break;
-            case TYPE_ORDERS_HEADER:
+            case AppConstants.TYPE_ORDERS_HEADER:
                 ((OrdersHeaderViewHolder)holder).bind(position);
                 break;
-            case BaseListItem.TYPE_CASH_SALES_ITEM:
-            case TYPE_DO_ITEM:
+            case AppConstants.TYPE_CASH_SALES_ITEM:
+            case AppConstants.TYPE_DO_ITEM:
             default:
                 ((ItemViewHolder) holder).bind(position);
                 break;
@@ -150,7 +133,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             super.bind(position);
             DeliveryOrder deliveryOrder = (DeliveryOrder)recyclerViewListData.get(position);
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
-            tvStoreAddress.setText(getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
+            tvStoreAddress.setText(getAddress(deliveryOrder.getDestinationAddressLine1(),
+                    deliveryOrder.getDestinationAddressLine2()));
             tvDoNumber.setText(deliveryOrder.getDoNumber() ==  null ? "-" : deliveryOrder.getDoNumber());
             tvDate.setText(dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
             tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
@@ -158,12 +142,12 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             if(((DeliveryOrder)recyclerViewListData.get(position)).isAllSelected()) {
                 selectionIcon.setImageResource(R.drawable.ic_do_selected);
                 headerSelectionCount +=1;
-                itemCheckListener.itemChecked(deliveryOrder, true, null);
+                itemCheckListener.itemChecked(deliveryOrder, true);
             }
             else {
                 headerSelectionCount = headerSelectionCount == 0? 0 : --headerSelectionCount;
                 selectionIcon.setImageResource(R.drawable.ic_do_unselected);
-                itemCheckListener.itemChecked(deliveryOrder, false, null);
+                itemCheckListener.itemChecked(deliveryOrder, false);
             }
         }
         private String dateToDisplay(String dateString){

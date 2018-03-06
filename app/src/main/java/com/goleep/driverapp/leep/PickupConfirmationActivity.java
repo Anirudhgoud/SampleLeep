@@ -47,7 +47,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
 //        cashProducts = intent.getParcelableArrayListExtra(AppConstants.CASH_PRODUCT_KEY);
         List<BaseListItem> doItems = new ArrayList<>();
         doItems.addAll(cashDoItems);
-        adapter.addItemsList(BaseListItem.setItemType(doItems, BaseListItem.TYPE_CASH_SALES_ITEM), 1, cashProducts);
+        adapter.addItemsList(BaseListItem.setItemType(doItems, AppConstants.TYPE_CASH_SALES_ITEM), 1, cashProducts);
     }
 
     private void initView() {
@@ -64,11 +64,11 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         List<BaseListItem> listItems = new ArrayList<>();
         BaseListItem item = new BaseListItem();
         item.setOrdersHeader("Delivery Orders");
-        item.setItemType(BaseListItem.TYPE_ORDERS_HEADER);
+        item.setItemType(AppConstants.TYPE_ORDERS_HEADER);
         listItems.add(item);
         BaseListItem item2 = new BaseListItem();
         item2.setOrdersHeader("Case Sales");
-        item2.setItemType(BaseListItem.TYPE_ORDERS_HEADER);
+        item2.setItemType(AppConstants.TYPE_ORDERS_HEADER);
         listItems.add(item2);
         adapter = new DoExpandableListAdapter(PickupConfirmationActivity.this, listItems);
         expandableListView.setAdapter(adapter);

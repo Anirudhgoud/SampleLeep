@@ -85,7 +85,7 @@ public class DeliveryOrder extends BaseListItem{
 
 
     public DeliveryOrder() {
-        super(0);
+
     }
 
     public Integer getId() {

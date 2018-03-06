@@ -24,14 +24,14 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 public class DeliveryOrderItem extends BaseListItem{
     @PrimaryKey
     private Integer id;
+    private Integer doId;
+    private Integer quantity;
+    @Embedded
+    private Product product;
+    private Double price;
 
-    public DeliveryOrderItem(Integer id, Integer doId, Integer quantity, Product product, Integer price) {
-        super(0);
-        this.id = id;
-        this.doId = doId;
-        this.quantity = quantity;
-        this.product = product;
-        this.price = price;
+    public DeliveryOrderItem(){
+
     }
 
     public Integer getDoId() {
@@ -41,13 +41,6 @@ public class DeliveryOrderItem extends BaseListItem{
     public void setDoId(Integer doId) {
         this.doId = doId;
     }
-
-    private Integer doId;
-    private Integer quantity;
-
-    @Embedded
-    private Product product;
-    private Integer price;
 
     public Integer getId() {
         return id;
@@ -65,11 +58,11 @@ public class DeliveryOrderItem extends BaseListItem{
         this.quantity = quantity;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -80,22 +73,5 @@ public class DeliveryOrderItem extends BaseListItem{
     public void setProduct(Product product) {
         this.product = product;
     }
-
-    public static List<DeliveryOrderItem> getDeliveryOrderItemList(DoDetailResponseModel doDetailResponseModel) {
-        List<DeliveryOrderItem> deliveryOrderItemList = new ArrayList<>();
-        List<DoDetailResponseModel.DeliveryOrderItem> deliveryOrderItems = doDetailResponseModel.getDeliveryOrderItems();
-        for(int i=0;i<deliveryOrderItems.size();i++){
-            DoDetailResponseModel.DeliveryOrderItem responseDoItem = deliveryOrderItems.get(i);
-            DoDetailResponseModel.Product responseProduct = responseDoItem.getProduct();
-            Product doProduct = new Product(responseProduct.getId(), responseProduct.getName(),
-                    responseProduct.getSku(), responseProduct.getWeight(), responseProduct.getWeightUnit());
-            DeliveryOrderItem deliveryOrderItem =  new DeliveryOrderItem(responseDoItem.getId(),
-                    doDetailResponseModel.getId(), responseDoItem.getQuantity(),
-                    doProduct, responseDoItem.getPrice());
-            deliveryOrderItemList.add(deliveryOrderItem);
-        }
-        return deliveryOrderItemList;
-    }
-
 
 }

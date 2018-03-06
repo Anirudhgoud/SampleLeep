@@ -44,7 +44,7 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
     CustomTextView wareHouseInfoTextView;
     private PickupViewModel pickupViewModel;
     private List<Integer> selectedDeliveryOrders = new ArrayList<>();
-    private List<BaseListItem> cashDoItems = new ArrayList<>();
+    private List<Integer> cashDoItems = new ArrayList<>();
 
     @Override
     public void doInitialSetup() {
@@ -126,9 +126,9 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
     }
 
     @Override
-    public void itemChecked(BaseListItem item, boolean checked, Product product) {
+    public void itemChecked(BaseListItem item, boolean checked) {
         if(item instanceof DeliveryOrderItem)
-            cashDoItems.add(item);
+            cashDoItems.add(((DeliveryOrderItem) item).getId());
         else if(item instanceof DeliveryOrder) {
             if(checked)
                 selectedDeliveryOrders.add(((DeliveryOrder) item).getId());
@@ -151,11 +151,11 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
             switch (position) {
                 case 0:
                     PickupDeliveryOrderFragment pickupDeliveryOrderFragment = new PickupDeliveryOrderFragment();
-//                    pickupDeliveryOrderFragment.setItemSelectionListener(PickupActivity.this);
+                    pickupDeliveryOrderFragment.setItemSelectionListener(PickupActivity.this);
                     return pickupDeliveryOrderFragment;
                 case 1:
                     PickupCashSalessFragment pickupCashSalessFragment = new PickupCashSalessFragment();
-//                    pickupCashSalessFragment.setItemSelectionListener(PickupActivity.this);
+                    pickupCashSalessFragment.setItemSelectionListener(PickupActivity.this);
                     return pickupCashSalessFragment;
                 default:
                     return null;

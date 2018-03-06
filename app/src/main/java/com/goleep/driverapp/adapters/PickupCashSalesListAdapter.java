@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.utils.AppUtils;
@@ -25,7 +26,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
         PickupCashSalesListAdapter.ViewHolder> {
     private List<DeliveryOrderItem> doDetailsList;
     private int selectedCount = 0;
-
+    private ItemCheckListener itemCheckListener;
     public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList){
         this.doDetailsList = doDetailsList;
     }
@@ -53,6 +54,10 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
         notifyDataSetChanged();
     }
 
+    public void setItemCheckListener(ItemCheckListener itemCheckListener) {
+        this.itemCheckListener = itemCheckListener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
         private CheckBox productCheckbox;
@@ -65,7 +70,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             productCheckbox = itemView.findViewById(R.id.product_checkbox);
         }
 
-        public void bind(DeliveryOrderItem doDetails) {
+        public void bind(final DeliveryOrderItem doDetails) {
             Product product = doDetails.getProduct();
             productNameTv.setText(product.getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
@@ -78,6 +83,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
                     if(isChecked)
                         selectedCount++;
                     else selectedCount = selectedCount == 0 ? 0 : --selectedCount;
+                    itemCheckListener.itemChecked(doDetails, isChecked);
                 }
             });
         }

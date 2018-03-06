@@ -2,13 +2,6 @@ package com.goleep.driverapp.services.room.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vishalm on 28/02/18.
@@ -22,12 +15,8 @@ public class Product {
     private String weight;
     private String weightUnit;
 
-    public Product(Integer productId, String name, String sku, String weight, String weightUnit) {
-        this.productId = productId;
-        this.name = name;
-        this.sku = sku;
-        this.weight = weight;
-        this.weightUnit = weightUnit;
+    public Product() {
+
     }
 
     public Integer getProductId() {
@@ -68,19 +57,6 @@ public class Product {
 
     public void setWeightUnit(String weightUnit) {
         this.weightUnit = weightUnit;
-    }
-
-    public static List<Product> getProductsList(DoDetailResponseModel doDetailResponseModel) {
-        List<Product> products = new ArrayList<>();
-        List<DoDetailResponseModel.DeliveryOrderItem> deliveryOrderItems = doDetailResponseModel.getDeliveryOrderItems();
-        for(int i=0;i<deliveryOrderItems.size();i++){
-            DoDetailResponseModel.DeliveryOrderItem responseDoItem = deliveryOrderItems.get(i);
-            DoDetailResponseModel.Product responseProduct = responseDoItem.getProduct();
-            Product product = new Product(responseProduct.getId(), responseProduct.getName(),
-                    responseProduct.getSku(), responseProduct.getWeight(), responseProduct.getWeightUnit());
-            products.add(product);
-        }
-        return products;
     }
 
 }
