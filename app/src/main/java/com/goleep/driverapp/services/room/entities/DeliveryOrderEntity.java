@@ -6,6 +6,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by anurag on 16/02/18.
  */
@@ -28,8 +30,8 @@ public class DeliveryOrderEntity extends BaseListItem{
     private String createdAt;
     private String assigneeName;
     private String customerName;
-    private float destinationLatitude;
-    private float destinationLongitude;
+    private long destinationLatitude;
+    private long destinationLongitude;
     private String destinationAddressLine1;
     private String destinationAddressLine2;
     private int deliveryOrderItemsCount;
@@ -156,19 +158,19 @@ public class DeliveryOrderEntity extends BaseListItem{
         this.customerName = customerName;
     }
 
-    public float getDestinationLatitude() {
+    public long getDestinationLatitude() {
         return destinationLatitude;
     }
 
-    public void setDestinationLatitude(float destinationLatitude) {
+    public void setDestinationLatitude(long destinationLatitude) {
         this.destinationLatitude = destinationLatitude;
     }
 
-    public float getDestinationLongitude() {
+    public long getDestinationLongitude() {
         return destinationLongitude;
     }
 
-    public void setDestinationLongitude(float destinationLongitude) {
+    public void setDestinationLongitude(long destinationLongitude) {
         this.destinationLongitude = destinationLongitude;
     }
 

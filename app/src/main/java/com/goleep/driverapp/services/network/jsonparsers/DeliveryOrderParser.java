@@ -55,8 +55,8 @@ public class DeliveryOrderParser {
         deliveryOrder.setCreatedAt(jsonObject.optString("created_at"));
         deliveryOrder.setAssigneeName(jsonObject.optString("assignee_name"));
         deliveryOrder.setCustomerName(jsonObject.optString("customer_name"));
-        deliveryOrder.setDestinationLatitude((float)jsonObject.optDouble("destination_latitude"));
-        deliveryOrder.setDestinationLongitude((float)jsonObject.optDouble("destination_longitude"));
+        deliveryOrder.setDestinationLatitude(jsonObject.optLong("destination_latitude"));
+        deliveryOrder.setDestinationLongitude(jsonObject.optLong("destination_longitude"));
         deliveryOrder.setDestinationAddressLine1(jsonObject.optString("destination_address_line_1"));
         deliveryOrder.setDestinationAddressLine2(jsonObject.optString("destination_address_line_2"));
         deliveryOrder.setDeliveryOrderItemsCount(jsonObject.optInt("delivery_order_items_count", 0));

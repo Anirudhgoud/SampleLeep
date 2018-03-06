@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
@@ -111,6 +112,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
         expandableListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         expandableListView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         adapter = new DoExpandableListAdapter(getActivity(), doList);
+        adapter.setItemCheckListener(itemCheckListener);
         adapter.setHeaderClickListener(headerClickListener);
         expandableListView.setAdapter(adapter);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
@@ -121,6 +123,7 @@ public class PickupDeliveryOrderFragment extends Fragment{
                 if(deliveryOrders.size() > 0) {
                     doList.clear();
                     doList.addAll(deliveryOrders);
+                    deliveryOrders.get(0).setItemType(AppConstants.TYPE_HEADER);
                     List<BaseListItem> baseListItems = new ArrayList<>();
                     baseListItems.addAll(deliveryOrders);
                     adapter.upDateList(baseListItems);

@@ -68,7 +68,8 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
                         switch (type){
                             case NetworkConstants.SUCCESS:
                                 DeliveryOrderParser deliveryOrderParser = new DeliveryOrderParser();
-                                List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.deliveryOrdersByParsingJsonResponse(response);
+                                List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
+                                        deliveryOrdersByParsingJsonResponse(response);
                                 leepDatabase.deliveryOrderDao().updateAllDeliveryOrders(deliveryOrdersList);
                                 break;
                         }
