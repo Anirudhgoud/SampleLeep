@@ -7,25 +7,22 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
  * Created by vishalm on 27/02/18.
  */
-@Entity(foreignKeys = @ForeignKey(entity = DeliveryOrder.class,
+@Entity(foreignKeys = @ForeignKey(entity = DeliveryOrderEntity.class,
         parentColumns = "id",
         childColumns = "doId",
         onDelete = CASCADE))
 public class DeliveryOrderItem extends BaseListItem{
+
     @PrimaryKey
-    private Integer id;
-    private Integer doId;
-    private Integer quantity;
+    private int id;
+    private int doId;
+    private int quantity;
     @Embedded
     private Product product;
     private Double price;
@@ -34,27 +31,27 @@ public class DeliveryOrderItem extends BaseListItem{
 
     }
 
-    public Integer getDoId() {
+    public int getDoId() {
         return doId;
     }
 
-    public void setDoId(Integer doId) {
+    public void setDoId(int doId) {
         this.doId = doId;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

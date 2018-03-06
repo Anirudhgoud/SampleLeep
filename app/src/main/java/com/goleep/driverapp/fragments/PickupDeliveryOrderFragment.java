@@ -20,7 +20,7 @@ import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
@@ -54,14 +54,16 @@ public class PickupDeliveryOrderFragment extends Fragment{
         @Override
         public void onClick(View view) {
             final int pos = expandableListView.getChildLayoutPosition(view);
-            if(doUpdateMap.containsKey(((DeliveryOrder)adapter.getItemAt(pos)).getId()) &&
-                    !doUpdateMap.get(((DeliveryOrder)adapter.getItemAt(pos)).getId())) {
-                doViewModel.getDoDetails(((DeliveryOrder)adapter.getItemAt(pos)).getId()).observe(
+            if(doUpdateMap.containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()) &&
+                    !doUpdateMap.get(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
+                doViewModel.getDoDetails(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()).observe(
                         PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderItem>>() {
                             @Override
                             public void onChanged(@Nullable List<DeliveryOrderItem> doDetails) {
-//                                adapter.addItemsList(doDetails, pos);
-                                doUpdateMap.put(((DeliveryOrder)adapter.getItemAt(pos)).getId(), true);
+                                List<BaseListItem> listItems = new ArrayList<>();
+                                listItems.addAll(doDetails);
+                                adapter.addItemsList(listItems, pos);
+                                doUpdateMap.put(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId(), true);
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -71,20 +73,11 @@ public class PickupDeliveryOrderFragment extends Fragment{
 
                             }
                         });
-            } else if(!doUpdateMap.containsKey(((DeliveryOrder)adapter.getItemAt(pos)).getId())) {
-                doViewModel.fetchDoItems(((DeliveryOrder)adapter.getItemAt(pos)).getId());
+            } else if(!doUpdateMap.containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
+                doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
             }
         }
     };
-
-//    private DoSelectionListener doSelectionListener = new DoSelectionListener() {
-//        @Override
-//        public void allDOSelected(boolean allSelected) {
-//            if(allSelected)
-//                confirmButton.setVisibility(View.VISIBLE);
-//            else confirmButton.setVisibility(View.GONE);
-//        }
-//    };
 
     private UILevelNetworkCallback deliveryOrderCallBack = new UILevelNetworkCallback() {
 
@@ -122,9 +115,9 @@ public class PickupDeliveryOrderFragment extends Fragment{
         expandableListView.setAdapter(adapter);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_ASSIGNED).observe(
-                        PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrder>>() {
+                        PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderEntity>>() {
             @Override
-            public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
+            public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrders) {
                 if(deliveryOrders.size() > 0) {
                     doList.clear();
                     doList.addAll(deliveryOrders);

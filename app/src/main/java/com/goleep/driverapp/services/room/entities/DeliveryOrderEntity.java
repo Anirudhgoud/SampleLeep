@@ -3,96 +3,52 @@ package com.goleep.driverapp.services.room.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by anurag on 16/02/18.
  */
 
 @Entity
-public class DeliveryOrder extends BaseListItem{
+public class DeliveryOrderEntity extends BaseListItem{
 
     @PrimaryKey
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("do_number")
-    @Expose
+    private int id;
     private String doNumber;
-    @SerializedName("status")
-    @Expose
     private String status;
-    @SerializedName("type")
-    @Expose
     private String type;
-    @SerializedName("source_location_id")
-    @Expose
-    private Integer sourceLocationId;
-    @SerializedName("preferred_delivery_date")
-    @Expose
+    private int sourceLocationId;
     private String preferredDeliveryDate;
-    @SerializedName("actual_delivery_date")
-    @Expose
     private String actualDeliveryDate;
-    @SerializedName("preferred_delivery_time")
-    @Expose
     private String preferredDeliveryTime;
-    @SerializedName("source_location_name")
-    @Expose
     private String sourceLocationName;
-    @SerializedName("destination_location_id")
-    @Expose
-    private Integer destinationLocationId;
-    @SerializedName("destination_location_name")
-    @Expose
+    private int destinationLocationId;
     private String destinationLocationName;
-    @SerializedName("created_at")
-    @Expose
     private String createdAt;
-    @SerializedName("assignee_name")
-    @Expose
     private String assigneeName;
-    @SerializedName("customer_name")
-    @Expose
     private String customerName;
-    @SerializedName("destination_latitude")
-    @Expose
-    private Float destinationLatitude;
-    @SerializedName("destination_longitude")
-    @Expose
-    private Float destinationLongitude;
-    @SerializedName("destination_address_line_1")
-    @Expose
+    private float destinationLatitude;
+    private float destinationLongitude;
     private String destinationAddressLine1;
-    @SerializedName("destination_address_line_2")
-    @Expose
     private String destinationAddressLine2;
-    @SerializedName("delivery_order_items_count")
-    @Expose
-    private Integer deliveryOrderItemsCount;
-    @SerializedName("total_value")
-    @Expose
-    private Float totalValue;
+    private int deliveryOrderItemsCount;
+    private float totalValue;
 
     @Ignore
-    @SerializedName("duration_from_current_location")
-    private Integer durationFromCurrentLocation = 0;
+    private int durationFromCurrentLocation = 0;
 
 
-    public DeliveryOrder() {
+
+    public DeliveryOrderEntity() {
 
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -120,11 +76,11 @@ public class DeliveryOrder extends BaseListItem{
         this.type = type;
     }
 
-    public Integer getSourceLocationId() {
+    public int getSourceLocationId() {
         return sourceLocationId;
     }
 
-    public void setSourceLocationId(Integer sourceLocationId) {
+    public void setSourceLocationId(int sourceLocationId) {
         this.sourceLocationId = sourceLocationId;
     }
 
@@ -160,11 +116,11 @@ public class DeliveryOrder extends BaseListItem{
         this.sourceLocationName = sourceLocationName;
     }
 
-    public Integer getDestinationLocationId() {
+    public int getDestinationLocationId() {
         return destinationLocationId;
     }
 
-    public void setDestinationLocationId(Integer destinationLocationId) {
+    public void setDestinationLocationId(int destinationLocationId) {
         this.destinationLocationId = destinationLocationId;
     }
 
@@ -200,19 +156,19 @@ public class DeliveryOrder extends BaseListItem{
         this.customerName = customerName;
     }
 
-    public Float getDestinationLatitude() {
+    public float getDestinationLatitude() {
         return destinationLatitude;
     }
 
-    public void setDestinationLatitude(Float destinationLatitude) {
+    public void setDestinationLatitude(float destinationLatitude) {
         this.destinationLatitude = destinationLatitude;
     }
 
-    public Float getDestinationLongitude() {
+    public float getDestinationLongitude() {
         return destinationLongitude;
     }
 
-    public void setDestinationLongitude(Float destinationLongitude) {
+    public void setDestinationLongitude(float destinationLongitude) {
         this.destinationLongitude = destinationLongitude;
     }
 
@@ -232,32 +188,27 @@ public class DeliveryOrder extends BaseListItem{
         this.destinationAddressLine2 = destinationAddressLine2;
     }
 
-    public Integer getDeliveryOrderItemsCount() {
+    public int getDeliveryOrderItemsCount() {
         return deliveryOrderItemsCount;
     }
 
-    public void setDeliveryOrderItemsCount(Integer deliveryOrderItemsCount) {
+    public void setDeliveryOrderItemsCount(int deliveryOrderItemsCount) {
         this.deliveryOrderItemsCount = deliveryOrderItemsCount;
     }
 
-    public Float getTotalValue() {
+    public float getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(Float totalValue) {
+    public void setTotalValue(float totalValue) {
         this.totalValue = totalValue;
     }
 
-    public Integer getDurationFromCurrentLocation() {
+    public int getDurationFromCurrentLocation() {
         return durationFromCurrentLocation;
     }
 
-    public void setDurationFromCurrentLocation(Integer durationFromCurrentLocation) {
+    public void setDurationFromCurrentLocation(int durationFromCurrentLocation) {
         this.durationFromCurrentLocation = durationFromCurrentLocation;
     }
-
-    public boolean isAllSelected(){
-        return super.selectedCount == getDeliveryOrderItemsCount();
-    }
-
 }

@@ -9,6 +9,10 @@ import java.util.List;
  */
 
 public class BaseListItem {
+    public int getSelectedCount() {
+        return selectedCount;
+    }
+
     @Ignore
     protected int selectedCount = 0;
 

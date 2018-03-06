@@ -5,12 +5,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
@@ -20,16 +18,10 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
-import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.viewmodels.PickupViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -127,15 +119,15 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
 
     @Override
     public void itemChecked(BaseListItem item, boolean checked) {
-        if(item instanceof DeliveryOrderItem)
-            cashDoItems.add(((DeliveryOrderItem) item).getId());
-        else if(item instanceof DeliveryOrder) {
-            if(checked)
-                selectedDeliveryOrders.add(((DeliveryOrder) item).getId());
-            else if(selectedDeliveryOrders.contains(((DeliveryOrder) item).getId())){
-                selectedDeliveryOrders.remove(((DeliveryOrder) item).getId());
-            }
-        }
+//        if(item instanceof DeliveryOrderItem)
+//            cashDoItems.add(((DeliveryOrderItem) item).getId());
+//        else if(item instanceof DeliveryOrderEntity) {
+//            if(checked)
+//                selectedDeliveryOrders.add(((DeliveryOrder) item).getId());
+//            else if(selectedDeliveryOrders.contains(((DeliveryOrder) item).getId())){
+//                selectedDeliveryOrders.remove(((DeliveryOrder) item).getId());
+//            }
+//        }
     }
 
     class PickupPagerAdapter extends FragmentPagerAdapter {

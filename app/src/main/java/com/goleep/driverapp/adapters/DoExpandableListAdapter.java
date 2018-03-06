@@ -12,7 +12,7 @@ import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.Product;
 import com.goleep.driverapp.utils.AppUtils;
@@ -32,7 +32,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     private View.OnClickListener headerClickListener;
     private List<BaseListItem> recyclerViewListData = new ArrayList<>();
     private int headerSelectionCount = 0;
-    private Map<Integer, Product> productsMap = new HashMap<>();
 
     public void setItemCheckListener(ItemCheckListener itemCheckListener) {
         this.itemCheckListener = itemCheckListener;
@@ -93,10 +92,9 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
     }
 
-    public void addItemsList(List<BaseListItem> baseListItems, int position, List<Product> products) {
+    public void addItemsList(List<BaseListItem> baseListItems, int position) {
         for(int i=0;i<baseListItems.size();i++){
             recyclerViewListData.add(position+i+1, baseListItems.get(i));
-            productsMap.put(((DeliveryOrderItem)baseListItems.get(i)).getId(), products.get(i));
         }
         setItems(recyclerViewListData);
     }
@@ -131,7 +129,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
         public void bind(int position) {
             super.bind(position);
-            DeliveryOrder deliveryOrder = (DeliveryOrder)recyclerViewListData.get(position);
+            DeliveryOrderEntity deliveryOrder = (DeliveryOrderEntity)recyclerViewListData.get(position);
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(getAddress(deliveryOrder.getDestinationAddressLine1(),
                     deliveryOrder.getDestinationAddressLine2()));
@@ -139,7 +137,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             tvDate.setText(dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
             tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
             tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
-            if(((DeliveryOrder)recyclerViewListData.get(position)).isAllSelected()) {
+            if(((DeliveryOrderEntity)recyclerViewListData.get(position)).getDeliveryOrderItemsCount() ==
+                    recyclerViewListData.get(position).getSelectedCount()) {
                 selectionIcon.setImageResource(R.drawable.ic_do_selected);
                 headerSelectionCount +=1;
                 itemCheckListener.itemChecked(deliveryOrder, true);
@@ -217,10 +216,10 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
         public void bind(int position) {
             DeliveryOrderItem doDetails = (DeliveryOrderItem)recyclerViewListData.get(position);
-            productNameTv.setText(productsMap.get(doDetails.getId()).getName());
+            productNameTv.setText(doDetails.getProduct().getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
-            productQuantityTv.setText(productsMap.get(doDetails.getId()).getWeight()+" "+
-                    productsMap.get(doDetails.getId()).getWeightUnit());
+            productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+
+                    doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
             if(productCheckbox != null)
