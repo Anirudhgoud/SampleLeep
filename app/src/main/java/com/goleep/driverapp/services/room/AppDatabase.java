@@ -12,7 +12,7 @@ import com.goleep.driverapp.services.room.daos.DeliveryOrderItemDao;
 import com.goleep.driverapp.services.room.daos.DriverDao;
 import com.goleep.driverapp.services.room.daos.ProductDao;
 import com.goleep.driverapp.services.room.daos.UserMetaDao;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
 import com.goleep.driverapp.services.room.entities.Driver;
 import com.goleep.driverapp.services.room.entities.Product;
@@ -21,7 +21,7 @@ import com.goleep.driverapp.services.room.entities.UserMeta;
 /**
  * Created by vishalm on 09/02/18.
  */
-@Database(entities = {DeliveryOrder.class, UserMeta.class, Driver.class,
+@Database(entities = {DeliveryOrderEntity.class, UserMeta.class, Driver.class,
         DeliveryOrderItem.class, Product.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase{
