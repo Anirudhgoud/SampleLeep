@@ -72,13 +72,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
-            if(toLogout){
-                logoutUser();
-            } else if(errorMessage == null){
-                logoutUser();
-            } else {
-                showNetworkRelatedDialogs(errorMessage);
-            }
+            logoutUser();
         }
     };
 

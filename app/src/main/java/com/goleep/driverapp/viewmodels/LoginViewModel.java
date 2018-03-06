@@ -7,16 +7,15 @@ import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.RequestConstants;
+import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
-import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.UserEntity;
-import com.google.gson.Gson;
+import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import org.json.JSONArray;
-import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,14 +43,16 @@ public class LoginViewModel extends AndroidViewModel {
             public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                 switch (type){
                     case NetworkConstants.SUCCESS:
-                        try{
-                            RoomDBService.sharedInstance().getDatabase(context).userMetaDao().
-                                    insertUserMeta(new Gson().fromJson(String.valueOf(response.get(0)), UserEntity.class));
-//                            LocalStorageService.sharedInstance().getLocalFileStore().store(context,
-//                                    SharedPreferenceKeys.DRIVER_ID, ((JSONObject)response.get(0)).getJSONObject("driver").getString("id"));
-                        }catch (JSONException ex){
-                            ex.printStackTrace();
+                        JSONObject userObj = (JSONObject) response.opt(0);
+                        if(userObj != null){
+                            JSONObject driver = userObj.optJSONObject("driver");
+                            if(driver != null){
+                                int driverId = driver.optInt("id");
+                                LocalStorageService.sharedInstance().getLocalFileStore().store(context,
+                                    SharedPreferenceKeys.DRIVER_ID, driverId);
+                            }
                         }
+
                         loginCallBack.onResponseReceived(null, false, null, false);
                         break;
                     case NetworkConstants.FAILURE:

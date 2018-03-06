@@ -42,9 +42,9 @@ public class OrderItemParser {
         OrderItemEntity orderItem = new OrderItemEntity();
         orderItem.setId(jsonObject.optInt("id"));
         orderItem.setDoId(deliveryOrderId);
-        orderItem.setPrice(jsonObject.optDouble("price"));
+        orderItem.setPrice(jsonObject.optDouble("price", 0));
         orderItem.setProduct(productByParsingJsonResponse(jsonObject.optJSONObject("product")));
-        orderItem.setQuantity(jsonObject.optInt("quantity"));
+        orderItem.setQuantity(jsonObject.optInt("quantity", 0));
         return orderItem;
     }
 

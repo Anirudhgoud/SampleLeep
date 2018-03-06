@@ -9,17 +9,17 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.helpers.uimodels.Summary;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
+import com.goleep.driverapp.services.network.jsonparsers.DriverDataParser;
+import com.goleep.driverapp.services.network.jsonparsers.SummaryParser;
 import com.goleep.driverapp.services.room.RoomDBService;
+import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,8 +63,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void getDriverProfile(final UILevelNetworkCallback driverProfileCallback) {
-        String driverId = String.valueOf(RoomDBService.sharedInstance().getDatabase(context).
-                userMetaDao().getUserMeta().getDriver().getDriverId());
+        int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(context, SharedPreferenceKeys.DRIVER_ID);
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
                 UrlConstants.DRIVERS_URL+"/"+driverId,
                 true, new NetworkAPICallback() {
@@ -73,12 +72,11 @@ public class HomeViewModel extends AndroidViewModel {
                 switch (type){
                     case NetworkConstants.SUCCESS:
                         List<DriverEntity> driverEntities = new ArrayList<>();
-                        try {
-                           DriverEntity driverEntity = new Gson().fromJson(String.valueOf(response.get(0)), DriverEntity.class);
-                            driverEntities.add(driverEntity);
-                            RoomDBService.sharedInstance().getDatabase(context).driverDao().insertDriver(driverEntity);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        DriverDataParser driverDataParser = new DriverDataParser();
+                        DriverEntity driver =  driverDataParser.driverResponseByParsingJsonResponse(response);
+                        if(driver != null){
+                            driverEntities.add(driver);
+                            RoomDBService.sharedInstance().getDatabase(context).driverDao().insertDriver(driver);
                         }
                         driverProfileCallback.onResponseReceived(driverEntities, false, null, false);
                         break;
@@ -103,11 +101,10 @@ public class HomeViewModel extends AndroidViewModel {
                 switch (type){
                     case NetworkConstants.SUCCESS:
                         List<Summary> summaryList = new ArrayList<>();
-                        try {
-                            Summary summary = new Gson().fromJson(String.valueOf(response.get(0)), Summary.class);
+                        SummaryParser summaryParser = new SummaryParser();
+                        Summary summary = summaryParser.summaryResponseByParsingJsonResponse(response);
+                        if(summary != null){
                             summaryList.add(summary);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
                         summaryCallback.onResponseReceived(summaryList, false, null, false);
                         break;

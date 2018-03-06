@@ -31,6 +31,7 @@ public class ResponseValidator {
                 break;
             case 404:
             case 405:
+            case 422:
             case 500:
                 responseObjects[0] = NetworkConstants.FAILURE;
                 responseObjects[1] = null;
@@ -40,6 +41,11 @@ public class ResponseValidator {
                 responseObjects[0] = NetworkConstants.UNAUTHORIZED;
                 responseObjects[1] = null;
                 responseObjects[2] = NetworkStringConstants.UNAUTHORIZED;
+
+            default:
+                responseObjects[0] = NetworkConstants.FAILURE;
+                responseObjects[1] = null;
+                responseObjects[2] = NetworkStringConstants.REQUEST_FAILURE;
 
         }
         return responseObjects;

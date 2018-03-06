@@ -8,95 +8,40 @@ package com.goleep.driverapp.services.room.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 @Entity
 public class DriverEntity {
     @PrimaryKey
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("first_name")
-    @Expose
+    private int id;
     private String firstName;
-    @SerializedName("last_name")
-    @Expose
     private String lastName;
-    @SerializedName("image_url")
-    @Expose
     private String imageUrl;
-    @SerializedName("email")
-    @Expose
     private String email;
-    @SerializedName("licence_type")
-    @Expose
     private String licenceType;
-    @SerializedName("age")
-    @Expose
-    private Integer age;
-    @SerializedName("experience")
-    @Expose
+    private int age;
     private String experience;
-    @SerializedName("insurance")
-    @Expose
-    private Boolean insurance;
-    @SerializedName("date_of_birth")
-    @Expose
+    private boolean insurance;
     private String dateOfBirth;
-    @SerializedName("contact_number")
-    @Expose
     private String contactNumber;
-    @SerializedName("location_id")
-    @Expose
-    private Integer locationId;
-    @SerializedName("licence_number")
-    @Expose
+    private int locationId;
     private String licenceNumber;
-    @SerializedName("vehicle_number")
-    @Expose
     private String vehicleNumber;
-    @SerializedName("licence_expiration_date")
-    @Expose
     private String licenceExpirationDate;
-//    @SerializedName("last_sign_in_at")
-//    @Expose
-//    private Object lastSignInAt;
-    @SerializedName("completed_delivery_orders_count")
-    @Expose
-    private Integer completedDeliveryOrdersCount;
-    @SerializedName("payment_collected")
-    @Expose
-    private Integer paymentCollected;
-    @SerializedName("delivery_locations_count")
-    @Expose
-    private Integer deliveryLocationsCount;
-    @SerializedName("address_line_1")
-    @Expose
+    private int completedDeliveryOrdersCount;
+    private int paymentCollected;
+    private int deliveryLocationsCount;
     private String addressLine1;
-    @SerializedName("address_line_2")
-    @Expose
     private String addressLine2;
-    @SerializedName("city")
-    @Expose
     private String city;
-    @SerializedName("state")
-    @Expose
     private String state;
-    @SerializedName("country_id")
-    @Expose
-    private Integer countryId;
-    @SerializedName("country_name")
-    @Expose
+    private int countryId;
     private String countryName;
-    @SerializedName("pin_code")
-    @Expose
     private String pinCode;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -140,11 +85,11 @@ public class DriverEntity {
         this.licenceType = licenceType;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -156,11 +101,11 @@ public class DriverEntity {
         this.experience = experience;
     }
 
-    public Boolean getInsurance() {
+    public boolean isInsurance() {
         return insurance;
     }
 
-    public void setInsurance(Boolean insurance) {
+    public void setInsurance(boolean insurance) {
         this.insurance = insurance;
     }
 
@@ -180,11 +125,11 @@ public class DriverEntity {
         this.contactNumber = contactNumber;
     }
 
-    public Integer getLocationId() {
+    public int getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(Integer locationId) {
+    public void setLocationId(int locationId) {
         this.locationId = locationId;
     }
 
@@ -212,35 +157,27 @@ public class DriverEntity {
         this.licenceExpirationDate = licenceExpirationDate;
     }
 
-//    public Object getLastSignInAt() {
-//        return lastSignInAt;
-//    }
-//
-//    public void setLastSignInAt(Object lastSignInAt) {
-//        this.lastSignInAt = lastSignInAt;
-//    }
-
-    public Integer getCompletedDeliveryOrdersCount() {
+    public int getCompletedDeliveryOrdersCount() {
         return completedDeliveryOrdersCount;
     }
 
-    public void setCompletedDeliveryOrdersCount(Integer completedDeliveryOrdersCount) {
+    public void setCompletedDeliveryOrdersCount(int completedDeliveryOrdersCount) {
         this.completedDeliveryOrdersCount = completedDeliveryOrdersCount;
     }
 
-    public Integer getPaymentCollected() {
+    public int getPaymentCollected() {
         return paymentCollected;
     }
 
-    public void setPaymentCollected(Integer paymentCollected) {
+    public void setPaymentCollected(int paymentCollected) {
         this.paymentCollected = paymentCollected;
     }
 
-    public Integer getDeliveryLocationsCount() {
+    public int getDeliveryLocationsCount() {
         return deliveryLocationsCount;
     }
 
-    public void setDeliveryLocationsCount(Integer deliveryLocationsCount) {
+    public void setDeliveryLocationsCount(int deliveryLocationsCount) {
         this.deliveryLocationsCount = deliveryLocationsCount;
     }
 
@@ -276,11 +213,11 @@ public class DriverEntity {
         this.state = state;
     }
 
-    public Integer getCountryId() {
+    public int getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(Integer countryId) {
+    public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
 
@@ -299,5 +236,4 @@ public class DriverEntity {
     public void setPinCode(String pinCode) {
         this.pinCode = pinCode;
     }
-
 }

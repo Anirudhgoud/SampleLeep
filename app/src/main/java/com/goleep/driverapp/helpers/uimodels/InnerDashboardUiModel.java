@@ -5,6 +5,34 @@ package com.goleep.driverapp.helpers.uimodels;
  */
 
 public class InnerDashboardUiModel {
+
+    public static final String TAG_PICKUP = "1";
+    public static final String TAG_RETURNS = "2";
+    public static final String TAG_DELIVERY_ORDERS = "3";
+    public static final String TAG_CASH_SALES = "4";
+    public static final String TAG_DROP_OFF = "5";
+    public static final String TAG_STOCKS = "6";
+    public static final String TAG_HISTORY = "7";
+    public static final String TAG_REPORTS = "8";
+
+    private String mainText;
+    private String subText;
+    private String topText;
+    private String topNumber;
+    private int iconResId;
+    private int topColorId;
+
+    public InnerDashboardUiModel(String mainText, String subText, String topText, String topNumber,
+                                 int iconResId, int topColorId, String tag) {
+        this.mainText = mainText;
+        this.subText = subText;
+        this.topText = topText;
+        this.topNumber = topNumber;
+        this.iconResId = iconResId;
+        this.topColorId = topColorId;
+        this.tag = tag;
+    }
+
     public String getMainText() {
         return mainText;
     }
@@ -45,13 +73,6 @@ public class InnerDashboardUiModel {
         this.iconResId = iconResId;
     }
 
-    private String mainText;
-    private String subText;
-    private String topText;
-    private String topNumber;
-    private int iconResId;
-    private int topColorId;
-
     public String getTag() {
         return tag;
     }
@@ -70,24 +91,4 @@ public class InnerDashboardUiModel {
         this.topColorId = topColorId;
     }
 
-    public InnerDashboardUiModel(String mainText, String subText, String topText, String topNumber,
-                                 int iconResId, int topColorId, String tag) {
-        this.mainText = mainText;
-        this.subText = subText;
-        this.topText = topText;
-        this.topNumber = topNumber;
-        this.iconResId = iconResId;
-        this.topColorId = topColorId;
-        this.tag = tag;
-
-    }
-
-    public static final String TAG_PICKUP = "1";
-    public static final String TAG_RETURNS = "2";
-    public static final String TAG_DELIVERY_ORDERS = "3";
-    public static final String TAG_CASH_SALES = "4";
-    public static final String TAG_DROP_OFF = "5";
-    public static final String TAG_STOCKS = "6";
-    public static final String TAG_HISTORY = "7";
-    public static final String TAG_REPORTS = "8";
 }

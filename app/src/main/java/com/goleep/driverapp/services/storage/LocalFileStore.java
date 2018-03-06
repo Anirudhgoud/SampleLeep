@@ -32,6 +32,12 @@ public class LocalFileStore {
         editor.apply();
     }
 
+    public void store(Context context, String key, int value) {
+        SharedPreferences.Editor editor = getSharedPreference(context).edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
     public void store(Context context, String key, boolean value) {
         SharedPreferences.Editor editor = getSharedPreference(context).edit();
         editor.putBoolean(key, value);
@@ -44,6 +50,10 @@ public class LocalFileStore {
 
     public long getLong(Context context, String appKey) {
         return getSharedPreference(context).getLong(appKey, 0);
+    }
+
+    public int getInt(Context context, String appKey) {
+        return getSharedPreference(context).getInt(appKey, 0);
     }
 
     public boolean getBoolean(Context context, String appKey) {

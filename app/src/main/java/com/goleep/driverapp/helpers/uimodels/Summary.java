@@ -1,114 +1,83 @@
 package com.goleep.driverapp.helpers.uimodels;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by vishalm on 15/02/18.
  */
 
 public class Summary {
 
-    @SerializedName("pick_up_from_warehouse")
-    @Expose
-    private Integer pickUpFromWarehouse;
-    @SerializedName("returns_from_customers")
-    @Expose
-    private Integer returnsFromCustomers;
-    @SerializedName("drop_off_delivery_orders_count")
-    @Expose
-    private Integer dropOffDeliveryOrdersCount;
-    @SerializedName("drop_off_cash_sales")
-    @Expose
-    private Integer dropOffCashSales;
-    @SerializedName("drop_off_to_warehouse")
-    @Expose
-    private Integer dropOffToWarehouse;
-    @SerializedName("information_stocks")
-    @Expose
-    private Integer informationStocks;
-    @SerializedName("information_on_history")
-    @Expose
-    private Integer informationOnHistory;
-    @SerializedName("information_on_reports")
-    @Expose
-    private Integer informationOnReports;
+    private int pickUpFromWarehouse = 0;
+    private int returnsFromCustomers = 0;
+    private int dropOffDeliveryOrdersCount = 0;
+    private int dropOffCashSales = 0;
+    private int dropOffToWarehouse = 0;
+    private int informationStocks = 0;
+    private int informationOnHistory = 0;
+    private int informationOnReports = 0;
 
-    public Summary(){
-        this.dropOffCashSales = 0;
-        this.dropOffDeliveryOrdersCount = 0;
-        this.dropOffToWarehouse = 0;
-        this.pickUpFromWarehouse = 0;
-        this.returnsFromCustomers = 0;
-        this.informationOnHistory = 0;
-        this.informationOnReports = 0;
-        this.informationStocks = 0;
-    }
-
-    public Integer getPickUpFromWarehouse() {
+    public int getPickUpFromWarehouse() {
         return pickUpFromWarehouse;
     }
 
-    public void setPickUpFromWarehouse(Integer pickUpFromWarehouse) {
+    public void setPickUpFromWarehouse(int pickUpFromWarehouse) {
         this.pickUpFromWarehouse = pickUpFromWarehouse;
     }
 
-    public Integer getReturnsFromCustomers() {
+    public int getReturnsFromCustomers() {
         return returnsFromCustomers;
     }
 
-    public void setReturnsFromCustomers(Integer returnsFromCustomers) {
+    public void setReturnsFromCustomers(int returnsFromCustomers) {
         this.returnsFromCustomers = returnsFromCustomers;
     }
 
-    public Integer getDropOffDeliveryOrdersCount() {
+    public int getDropOffDeliveryOrdersCount() {
         return dropOffDeliveryOrdersCount;
     }
 
-    public void setDropOffDeliveryOrdersCount(Integer dropOffDeliveryOrdersCount) {
+    public void setDropOffDeliveryOrdersCount(int dropOffDeliveryOrdersCount) {
         this.dropOffDeliveryOrdersCount = dropOffDeliveryOrdersCount;
     }
 
-    public Integer getDropOffCashSales() {
+    public int getDropOffCashSales() {
         return dropOffCashSales;
     }
 
-    public void setDropOffCashSales(Integer dropOffCashSales) {
+    public void setDropOffCashSales(int dropOffCashSales) {
         this.dropOffCashSales = dropOffCashSales;
     }
 
-    public Integer getDropOffToWarehouse() {
+    public int getDropOffToWarehouse() {
         return dropOffToWarehouse;
     }
 
-    public void setDropOffToWarehouse(Integer dropOffToWarehouse) {
+    public void setDropOffToWarehouse(int dropOffToWarehouse) {
         this.dropOffToWarehouse = dropOffToWarehouse;
     }
 
-    public Integer getInformationStocks() {
+    public int getInformationStocks() {
         return informationStocks;
     }
 
-    public void setInformationStocks(Integer informationStocks) {
+    public void setInformationStocks(int informationStocks) {
         this.informationStocks = informationStocks;
     }
 
-    public Integer getInformationOnHistory() {
+    public int getInformationOnHistory() {
         return informationOnHistory;
     }
 
-    public void setInformationOnHistory(Integer informationOnHistory) {
+    public void setInformationOnHistory(int informationOnHistory) {
         this.informationOnHistory = informationOnHistory;
     }
 
-    public Integer getInformationOnReports() {
+    public int getInformationOnReports() {
         return informationOnReports;
     }
 
-    public void setInformationOnReports(Integer informationOnReports) {
+    public void setInformationOnReports(int informationOnReports) {
         this.informationOnReports = informationOnReports;
     }
-
 }
 
 
