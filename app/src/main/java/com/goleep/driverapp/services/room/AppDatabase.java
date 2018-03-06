@@ -5,7 +5,6 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.DatabaseConfiguration;
 import android.arch.persistence.room.InvalidationTracker;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
 
 import com.goleep.driverapp.services.room.daos.DeliveryOrderDao;
 import com.goleep.driverapp.services.room.daos.DeliveryOrderItemDao;
@@ -21,7 +20,7 @@ import com.goleep.driverapp.services.room.entities.ProductEntity;
  */
 @Database(entities = {DeliveryOrderEntity.class, DriverEntity.class,
         OrderItemEntity.class, ProductEntity.class}, version = 1)
-@TypeConverters({Converters.class})
+//@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase{
 
     AppDatabase(){

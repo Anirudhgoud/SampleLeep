@@ -9,9 +9,6 @@ import java.util.List;
  */
 
 public class BaseListItem {
-    public int getSelectedCount() {
-        return selectedCount;
-    }
 
     @Ignore
     protected int selectedCount = 0;
@@ -19,21 +16,19 @@ public class BaseListItem {
     @Ignore
     private Integer itemType = 0;
 
+    @Ignore
+    private String ordersHeader;
+
+    public int getSelectedCount() {
+        return selectedCount;
+    }
+
     public void setOrdersHeader(String ordersHeader) {
         this.ordersHeader = ordersHeader;
     }
 
-    @Ignore
-    private String ordersHeader;
-
     public void addSelection(int selection){
         selectedCount = selectedCount + selection;
-    }
-
-    public static List<BaseListItem> setItemType(List<BaseListItem> baseListItems, int itemType){
-        for(BaseListItem baseListItem:baseListItems)
-            baseListItem.setItemType(itemType);
-        return baseListItems;
     }
 
     public void setItemType(int itemType) {
@@ -46,5 +41,11 @@ public class BaseListItem {
 
     public int getItemType() {
         return itemType;
+    }
+
+    public static List<BaseListItem> setItemType(List<BaseListItem> baseListItems, int itemType){
+        for(BaseListItem baseListItem:baseListItems)
+            baseListItem.setItemType(itemType);
+        return baseListItems;
     }
 }
