@@ -6,8 +6,11 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
+import android.database.sqlite.SQLiteConstraintException;
+import android.text.TextUtils;
 
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.utils.LogUtils;
 
 import java.util.List;
 
@@ -30,7 +33,12 @@ public abstract class DeliveryOrderItemDao {
 
     @Transaction
     public void deleteAndInsertItems(Integer doId, List<OrderItemEntity> items) {
-        deleteDeliveryItems(doId);
-        insertDeliveryOrderItems(items);
+        try {
+            deleteDeliveryItems(doId);
+            insertDeliveryOrderItems(items);
+        }catch (SQLiteConstraintException e){
+            e.printStackTrace();
+            LogUtils.error("ForeignKey", TextUtils.join(", ", items));
+        }
     }
 }

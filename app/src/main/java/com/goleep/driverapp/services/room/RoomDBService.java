@@ -17,7 +17,7 @@ public class RoomDBService {
 
     }
 
-    public static RoomDBService sharedInstance(){
+    public static synchronized RoomDBService sharedInstance(){
         if(roomDBService == null)
             roomDBService = new RoomDBService();
         return roomDBService;

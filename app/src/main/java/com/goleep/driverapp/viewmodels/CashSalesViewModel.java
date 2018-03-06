@@ -57,10 +57,10 @@ public class CashSalesViewModel extends AndroidViewModel {
                         switch (type){
                             case NetworkConstants.SUCCESS:
                                 DeliveryOrderParser deliveryOrderParser = new DeliveryOrderParser();
-                                List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.deliveryOrdersByParsingJsonResponse(response);
+                                List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
+                                        deliveryOrdersByParsingJsonResponse(response);
                                 if(deliveryOrdersList.size() > 0){
                                     DeliveryOrderEntity driverDO = deliveryOrdersList.get(0);
-                                    leepDatabase.deliveryOrderDao().deleteDriverDo();
                                     leepDatabase.deliveryOrderDao().insertDeliveryOrder(driverDO);
                                 }
                                 break;

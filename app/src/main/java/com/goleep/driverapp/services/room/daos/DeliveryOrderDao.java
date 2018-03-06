@@ -6,9 +6,12 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
+import android.database.sqlite.SQLiteDatabaseLockedException;
+import android.text.TextUtils;
 
 
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.utils.LogUtils;
 
 
 import java.util.List;
@@ -36,7 +39,7 @@ public abstract class DeliveryOrderDao {
     public abstract void insertDeliveryOrders(List<DeliveryOrderEntity> deliveryOrders);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insertDeliveryOrder(DeliveryOrderEntity deliveryOrder);
+    public abstract void zinsertDeliveryOrder(DeliveryOrderEntity deliveryOrder);
 
     @Query("Delete from DeliveryOrderEntity WHERE type = 'driver'")
     public abstract void deleteDriverDo();
@@ -46,8 +49,13 @@ public abstract class DeliveryOrderDao {
 
     @Transaction
     public void updateAllDeliveryOrders(List<DeliveryOrderEntity> deliveryOrderEntities) {
-        deleteAllDeliveryOrders();
-        insertDeliveryOrders(deliveryOrderEntities);
+        try {
+            deleteAllDeliveryOrders();
+            insertDeliveryOrders(deliveryOrderEntities);
+        }catch (SQLiteDatabaseLockedException e){
+            e.printStackTrace();
+            LogUtils.error("SQLiteDatabaseLockedException", "");
+        }
     }
 
 }
