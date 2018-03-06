@@ -8,7 +8,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.comparators.SortDOByDeliveryTime;
 import com.goleep.driverapp.services.room.entities.comparators.SortDoByPreferredDeliveryDate;
 import com.goleep.driverapp.services.room.entities.comparators.SortDoByTotalValue;
@@ -42,7 +42,7 @@ public class DeliveryOrdersListAdapter extends RecyclerView.Adapter<DeliveryOrde
 
     @Override
     public void onBindViewHolder(DeliveryOrdersViewHolder holder, int position) {
-        DeliveryOrder deliveryOrder = (DeliveryOrder)deliveryOrderList.get(position);
+        DeliveryOrderEntity deliveryOrder = (DeliveryOrderEntity)deliveryOrderList.get(position);
         holder.bindData(deliveryOrder);
     }
 

@@ -21,7 +21,7 @@ import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.DropOffDeliveryOrderDetailsActivity;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 
 import java.util.ArrayList;
@@ -71,9 +71,9 @@ public class DeliveryOrdersListFragment extends Fragment {
         doListAdapter.setDeliveryOrderClickEventListener(deliveryOrderClickEventListener);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
-                        DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrder>>() {
+                        DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrderEntity>>() {
             @Override
-            public void onChanged(@Nullable List<DeliveryOrder> deliveryOrders) {
+            public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrders) {
                 List<BaseListItem> baseListItems = new ArrayList<>();
                 baseListItems.addAll(deliveryOrders);
                 doListAdapter.updateList(baseListItems);

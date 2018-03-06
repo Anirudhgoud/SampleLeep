@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
  * Created by vishalm on 28/02/18.
  */
 @Entity
-public class Product {
+public class ProductEntity {
     @PrimaryKey
     private Integer productId;
     private String name;
@@ -15,7 +15,7 @@ public class Product {
     private String weight;
     private String weightUnit;
 
-    public Product() {
+    public ProductEntity() {
 
     }
 

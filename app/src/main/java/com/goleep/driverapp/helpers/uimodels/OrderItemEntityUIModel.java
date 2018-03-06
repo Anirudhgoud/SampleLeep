@@ -1,20 +1,17 @@
 package com.goleep.driverapp.helpers.uimodels;
 
 import com.goleep.driverapp.interfaces.ParentListItem;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.Product;
-
-import org.json.JSONObject;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 
 /**
  * Created by vishalm on 05/03/18.
  */
 
-public class DeliveryOrderItemUIModel extends DeliveryOrderItem implements ParentListItem {
+public class OrderItemEntityUIModel extends OrderItemEntity implements ParentListItem {
 
     private Integer itemType;
 
-    public  DeliveryOrderItemUIModel(){
+    public OrderItemEntityUIModel(){
 
     }
 

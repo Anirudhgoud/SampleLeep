@@ -5,7 +5,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.goleep.driverapp.services.room.entities.Driver;
+import com.goleep.driverapp.services.room.entities.DriverEntity;
 
 /**
  * Created by vishalm on 22/02/18.
@@ -13,8 +13,8 @@ import com.goleep.driverapp.services.room.entities.Driver;
 @Dao
 public interface DriverDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertDriver(Driver driver);
+    void insertDriver(DriverEntity driverEntity);
 
-    @Query("SELECT * FROM Driver")
-    Driver getDriver();
+    @Query("SELECT * FROM DriverEntity")
+    DriverEntity getDriver();
 }

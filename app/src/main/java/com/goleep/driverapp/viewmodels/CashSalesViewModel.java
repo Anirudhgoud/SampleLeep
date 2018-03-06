@@ -14,8 +14,8 @@ import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,8 +31,8 @@ import java.util.List;
  */
 
 public class CashSalesViewModel extends AndroidViewModel {
-    private LiveData<DeliveryOrder> driverDO;
-    private LiveData<List<DeliveryOrderItem>> driverDoDetails;
+    private LiveData<DeliveryOrderEntity> driverDO;
+    private LiveData<List<OrderItemEntity>> driverDoDetails;
     private Context context;
     private  AppDatabase leepDatabase;
 
@@ -42,12 +42,12 @@ public class CashSalesViewModel extends AndroidViewModel {
         leepDatabase = RoomDBService.sharedInstance().getDatabase(context);
     }
 
-    public LiveData<DeliveryOrder> getDriverDo(){
+    public LiveData<DeliveryOrderEntity> getDriverDo(){
         driverDO = leepDatabase.deliveryOrderDao().getDriverDo();
         return driverDO;
     }
 
-    public LiveData<List<DeliveryOrderItem>> getDriverDoDetails(Integer id) {
+    public LiveData<List<OrderItemEntity>> getDriverDoDetails(Integer id) {
         driverDoDetails = leepDatabase.deliveryOrderItemDao().getDriverDoItems(id);
         return driverDoDetails;
     }
@@ -60,9 +60,9 @@ public class CashSalesViewModel extends AndroidViewModel {
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type){
                             case NetworkConstants.SUCCESS:
-                                DeliveryOrder driverDO;
+                                DeliveryOrderEntity driverDO;
                                 try{
-                                    Type listType = new TypeToken<DeliveryOrder>() {}.getType();
+                                    Type listType = new TypeToken<DeliveryOrderEntity>() {}.getType();
                                     JSONObject obj = (JSONObject) response.get(0);
                                     driverDO = new Gson().fromJson(String.valueOf(
                                             obj.getJSONArray("data").get(0)), listType);
@@ -94,7 +94,7 @@ public class CashSalesViewModel extends AndroidViewModel {
                                     DoDetailResponseModel responseModel = new DoDetailResponseModel();
                                     responseModel.parseJSON(obj.optJSONArray("delivery_order_items"), doId);
                                     leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
-                                            responseModel.getDeliveryOrderItems());
+                                            responseModel.getOrderItemEntities());
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
                                 }

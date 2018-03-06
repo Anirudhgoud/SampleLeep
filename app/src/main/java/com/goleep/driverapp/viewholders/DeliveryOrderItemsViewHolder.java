@@ -7,8 +7,7 @@ import android.widget.CheckBox;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
-import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 
 /**
  * Created by anurag on 28/02/18.
@@ -31,7 +30,7 @@ public class DeliveryOrderItemsViewHolder extends RecyclerView.ViewHolder {
         productCheckbox = itemView.findViewById(R.id.product_checkbox);
     }
 
-    public void bindData(DeliveryOrderItem deliveryOrder){
+    public void bindData(OrderItemEntity deliveryOrder){
 
     }
 }

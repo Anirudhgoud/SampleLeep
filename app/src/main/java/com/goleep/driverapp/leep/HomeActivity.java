@@ -18,14 +18,13 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
-import com.goleep.driverapp.services.room.entities.Driver;
+import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.helpers.uimodels.InnerDashboardUiModel;
 import com.goleep.driverapp.helpers.uimodels.Summary;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.viewmodels.HomeViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -92,7 +91,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     HomeActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            displayDriverProfile((Driver)uiModels.get(0));
+                            displayDriverProfile((DriverEntity)uiModels.get(0));
                         }
                     });
                 }
@@ -118,18 +117,18 @@ public class HomeActivity extends ParentAppCompatActivity {
         }
     };
 
-    private void displayDriverProfile(Driver driver) {
+    private void displayDriverProfile(DriverEntity driverEntity) {
         View view = findViewById(R.id.profile_layout);
-        ((CustomTextView)view.findViewById(R.id.name_textView)).setText(driver.getFirstName()+" "+driver.getLastName());
-        ((CustomTextView)view.findViewById(R.id.place_text_view)).setText(driver.getCity()+", "+driver.getCountryName());
-        ((CustomTextView)view.findViewById(R.id.deliveries_value_textview)).setText(driver.getCompletedDeliveryOrdersCount()+"");
-        ((CustomTextView)view.findViewById(R.id.payment_collected_values_textview)).setText(driver.getPaymentCollected()+"");
-        ((CustomTextView)view.findViewById(R.id.locations_layout_value_textview)).setText(driver.getDeliveryLocationsCount()+"");
-        ((CustomTextView)view.findViewById(R.id.contact_text_view)).setText(driver.getContactNumber());
-        ((CustomTextView)view.findViewById(R.id.address_text_view)).setText(driver.getAddressLine1()+"\n"+driver.getAddressLine2());
-        ((CustomTextView)view.findViewById(R.id.driver_licence_text_view)).setText(driver.getLicenceNumber());
-        ((CustomTextView)view.findViewById(R.id.register_number_text_view)).setText(driver.getVehicleNumber());
-        setToolbarRightText(driver.getFirstName()+" "+driver.getLastName());
+        ((CustomTextView)view.findViewById(R.id.name_textView)).setText(driverEntity.getFirstName()+" "+ driverEntity.getLastName());
+        ((CustomTextView)view.findViewById(R.id.place_text_view)).setText(driverEntity.getCity()+", "+ driverEntity.getCountryName());
+        ((CustomTextView)view.findViewById(R.id.deliveries_value_textview)).setText(driverEntity.getCompletedDeliveryOrdersCount()+"");
+        ((CustomTextView)view.findViewById(R.id.payment_collected_values_textview)).setText(driverEntity.getPaymentCollected()+"");
+        ((CustomTextView)view.findViewById(R.id.locations_layout_value_textview)).setText(driverEntity.getDeliveryLocationsCount()+"");
+        ((CustomTextView)view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
+        ((CustomTextView)view.findViewById(R.id.address_text_view)).setText(driverEntity.getAddressLine1()+"\n"+ driverEntity.getAddressLine2());
+        ((CustomTextView)view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
+        ((CustomTextView)view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
+        setToolbarRightText(driverEntity.getFirstName()+" "+ driverEntity.getLastName());
     }
 
     @Override

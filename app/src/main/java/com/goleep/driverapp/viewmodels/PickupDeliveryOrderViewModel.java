@@ -11,8 +11,8 @@ import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.responsemodels.DoDetailResponseModel;
 import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.Driver;
+import com.goleep.driverapp.services.room.entities.DriverEntity;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +27,7 @@ import java.util.List;
 
 public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel {
     private Context context;
-    private LiveData<List<DeliveryOrderItem>> doDetailsLiveData;
+    private LiveData<List<OrderItemEntity>> doDetailsLiveData;
 
     public PickupDeliveryOrderViewModel(@NonNull Application application) {
         super(application);
@@ -47,7 +47,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                                     DoDetailResponseModel doDetailResponseModel = new DoDetailResponseModel();
                                     doDetailResponseModel.parseJSON(obj.optJSONArray("delivery_order_items"), doId);
                                     leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
-                                            doDetailResponseModel.getDeliveryOrderItems());
+                                            doDetailResponseModel.getOrderItemEntities());
                                 }catch (JSONException ex){
                                     ex.printStackTrace();
                                 }
@@ -59,13 +59,13 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
 
 
-    public LiveData<List<DeliveryOrderItem>> getDoDetails(Integer id) {
+    public LiveData<List<OrderItemEntity>> getDoDetails(Integer id) {
         doDetailsLiveData = leepDatabase.deliveryOrderItemDao().getDeliveryOrderItems(id);
         return doDetailsLiveData;
     }
 
     public String getWareHouseNameAddress(){
-        Driver driver = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
-        return driver.getAddressLine1()+", "+driver.getAddressLine2();
+        DriverEntity driverEntity = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
+        return driverEntity.getAddressLine1()+", "+ driverEntity.getAddressLine2();
     }
 }

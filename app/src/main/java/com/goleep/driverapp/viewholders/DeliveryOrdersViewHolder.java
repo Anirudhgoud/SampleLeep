@@ -7,7 +7,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
@@ -42,7 +42,7 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
         this.deliveryOrderClickEventListener = deliveryOrderClickEventListener;
     }
 
-    public void bindData(DeliveryOrder deliveryOrder){
+    public void bindData(DeliveryOrderEntity deliveryOrder){
         tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
         tvStoreAddress.setText(getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
         tvDoNumber.setText(deliveryOrder.getDoNumber() ==  null ? "-" : deliveryOrder.getDoNumber());
@@ -50,7 +50,7 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
         tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
         tvDeliveryEstimatedTime.setText("-");
         tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
-        tvItemsCount.setText(deliveryOrder.getDeliveryOrderItemsCount() == null ? "0" : deliveryOrder.getDeliveryOrderItemsCount().toString());
+        tvItemsCount.setText(deliveryOrder.getDeliveryOrderItemsCount());
         setDeliverButtonClickEvent(deliveryOrder.getId());
     }
 

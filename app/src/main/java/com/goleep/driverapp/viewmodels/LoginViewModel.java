@@ -12,7 +12,7 @@ import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.UserMeta;
+import com.goleep.driverapp.services.room.entities.UserEntity;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -46,7 +46,7 @@ public class LoginViewModel extends AndroidViewModel {
                     case NetworkConstants.SUCCESS:
                         try{
                             RoomDBService.sharedInstance().getDatabase(context).userMetaDao().
-                                    insertUserMeta(new Gson().fromJson(String.valueOf(response.get(0)), UserMeta.class));
+                                    insertUserMeta(new Gson().fromJson(String.valueOf(response.get(0)), UserEntity.class));
 //                            LocalStorageService.sharedInstance().getLocalFileStore().store(context,
 //                                    SharedPreferenceKeys.DRIVER_ID, ((JSONObject)response.get(0)).getJSONObject("driver").getString("id"));
                         }catch (JSONException ex){

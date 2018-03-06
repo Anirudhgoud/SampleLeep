@@ -4,9 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
-import com.goleep.driverapp.services.room.entities.UserMeta;
-
+import com.goleep.driverapp.services.room.entities.UserEntity;
 
 
 /**
@@ -15,11 +13,11 @@ import com.goleep.driverapp.services.room.entities.UserMeta;
 @Dao
 public interface UserMetaDao {
     @Insert
-    void insertUserMeta(UserMeta userMeta);
+    void insertUserMeta(UserEntity userEntity);
 
-    @Query("SELECT * FROM UserMeta")
-    UserMeta  getUserMeta();
+    @Query("SELECT * FROM UserEntity")
+    UserEntity getUserMeta();
 
-    @Query("DELETE FROM UserMeta")
+    @Query("DELETE FROM UserEntity")
     void deleteUserMeta();
 }

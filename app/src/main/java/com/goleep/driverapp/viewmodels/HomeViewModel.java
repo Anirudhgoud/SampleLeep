@@ -9,7 +9,7 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.services.room.entities.Driver;
+import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.helpers.uimodels.Summary;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -72,15 +72,15 @@ public class HomeViewModel extends AndroidViewModel {
             public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                 switch (type){
                     case NetworkConstants.SUCCESS:
-                        List<Driver> drivers = new ArrayList<>();
+                        List<DriverEntity> driverEntities = new ArrayList<>();
                         try {
-                           Driver driver = new Gson().fromJson(String.valueOf(response.get(0)), Driver.class);
-                            drivers.add(driver);
-                            RoomDBService.sharedInstance().getDatabase(context).driverDao().insertDriver(driver);
+                           DriverEntity driverEntity = new Gson().fromJson(String.valueOf(response.get(0)), DriverEntity.class);
+                            driverEntities.add(driverEntity);
+                            RoomDBService.sharedInstance().getDatabase(context).driverDao().insertDriver(driverEntity);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        driverProfileCallback.onResponseReceived(drivers, false, null, false);
+                        driverProfileCallback.onResponseReceived(driverEntities, false, null, false);
                         break;
                     case NetworkConstants.FAILURE:
                         driverProfileCallback.onResponseReceived(null, false, errorMessage, false);

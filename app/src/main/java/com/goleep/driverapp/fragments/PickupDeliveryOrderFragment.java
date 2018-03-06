@@ -21,7 +21,7 @@ import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
@@ -57,9 +57,9 @@ public class PickupDeliveryOrderFragment extends Fragment{
             if(doUpdateMap.containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()) &&
                     !doUpdateMap.get(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
                 doViewModel.getDoDetails(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()).observe(
-                        PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderItem>>() {
+                        PickupDeliveryOrderFragment.this, new Observer<List<OrderItemEntity>>() {
                             @Override
-                            public void onChanged(@Nullable List<DeliveryOrderItem> doDetails) {
+                            public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
                                 List<BaseListItem> listItems = new ArrayList<>();
                                 listItems.addAll(doDetails);
                                 adapter.addItemsList(listItems, pos);

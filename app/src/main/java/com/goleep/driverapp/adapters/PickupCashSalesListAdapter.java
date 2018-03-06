@@ -11,11 +11,10 @@ import android.widget.CompoundButton;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.Product;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,10 +23,10 @@ import java.util.List;
 
 public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
         PickupCashSalesListAdapter.ViewHolder> {
-    private List<DeliveryOrderItem> doDetailsList;
+    private List<OrderItemEntity> doDetailsList;
     private int selectedCount = 0;
     private ItemCheckListener itemCheckListener;
-    public PickupCashSalesListAdapter(List<DeliveryOrderItem> doDetailsList){
+    public PickupCashSalesListAdapter(List<OrderItemEntity> doDetailsList){
         this.doDetailsList = doDetailsList;
     }
 
@@ -48,9 +47,9 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
         return doDetailsList.size();
     }
 
-    public void updateList(List<DeliveryOrderItem> deliveryOrderItems) {
+    public void updateList(List<OrderItemEntity> orderItemEntities) {
         doDetailsList.clear();
-        doDetailsList.addAll(deliveryOrderItems);
+        doDetailsList.addAll(orderItemEntities);
         notifyDataSetChanged();
     }
 
@@ -70,11 +69,11 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             productCheckbox = itemView.findViewById(R.id.product_checkbox);
         }
 
-        public void bind(final DeliveryOrderItem doDetails) {
-            Product product = doDetails.getProduct();
-            productNameTv.setText(product.getName());
+        public void bind(final OrderItemEntity doDetails) {
+            ProductEntity productEntity = doDetails.getProduct();
+            productNameTv.setText(productEntity.getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
-            productQuantityTv.setText(product.getWeight()+" "+product.getWeightUnit());
+            productQuantityTv.setText(productEntity.getWeight()+" "+ productEntity.getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

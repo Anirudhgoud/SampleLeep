@@ -2,8 +2,8 @@ package com.goleep.driverapp.services.room;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.goleep.driverapp.services.room.entities.Product;
-import com.goleep.driverapp.services.room.entities.UserMeta;
+import com.goleep.driverapp.services.room.entities.ProductEntity;
+import com.goleep.driverapp.services.room.entities.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,47 +16,47 @@ import java.util.List;
 
 public class Converters {
     @TypeConverter
-    public static List<UserMeta.Location> fromString(String value) {
-        Type listType = new TypeToken<List<UserMeta.Location>>() {}.getType();
+    public static List<UserEntity.Location> fromString(String value) {
+        Type listType = new TypeToken<List<UserEntity.Location>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String fromArrayList(List<UserMeta.Location> list) {
+    public static String fromArrayList(List<UserEntity.Location> list) {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         return json;
     }
 
     @TypeConverter
-    public static UserMeta.Driver driverFromString(String value){
-        Type type = new TypeToken<UserMeta.Driver>(){}.getType();
+    public static UserEntity.Driver driverFromString(String value){
+        Type type = new TypeToken<UserEntity.Driver>(){}.getType();
         return new Gson().fromJson(value, type);
     }
 
     @TypeConverter
-    public static String stringFromDriver(UserMeta.Driver driver){
+    public static String stringFromDriver(UserEntity.Driver driver){
         return new Gson().toJson(driver);
     }
 
     @TypeConverter
-    public static UserMeta.Permissions permissionsFromString(String value){
-        Type type = new TypeToken<UserMeta.Permissions>(){}.getType();
+    public static UserEntity.Permissions permissionsFromString(String value){
+        Type type = new TypeToken<UserEntity.Permissions>(){}.getType();
         return new Gson().fromJson(value, type);
     }
 
     @TypeConverter
-    public static String stringFromPermissions(UserMeta.Permissions permissions){
+    public static String stringFromPermissions(UserEntity.Permissions permissions){
         return new Gson().toJson(permissions);
     }
 
     @TypeConverter
-    public static Product productFromString(String value){
-        Type type = new TypeToken<Product>(){}.getType();
+    public static ProductEntity productFromString(String value){
+        Type type = new TypeToken<ProductEntity>(){}.getType();
         return new Gson().fromJson(value, type);
     }
     @TypeConverter
-    public static String stringFromProduct(Product products){
+    public static String stringFromProduct(ProductEntity products){
         return new Gson().toJson(products);
     }
 

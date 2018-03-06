@@ -13,15 +13,12 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.Product;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by vishalm on 20/02/18.
@@ -215,7 +212,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
 
         public void bind(int position) {
-            DeliveryOrderItem doDetails = (DeliveryOrderItem)recyclerViewListData.get(position);
+            OrderItemEntity doDetails = (OrderItemEntity)recyclerViewListData.get(position);
             productNameTv.setText(doDetails.getProduct().getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
             productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+

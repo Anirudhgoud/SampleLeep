@@ -17,17 +17,17 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         parentColumns = "id",
         childColumns = "doId",
         onDelete = CASCADE))
-public class DeliveryOrderItem extends BaseListItem{
+public class OrderItemEntity extends BaseListItem{
 
     @PrimaryKey
     private int id;
     private int doId;
     private int quantity;
     @Embedded
-    private Product product;
+    private ProductEntity product;
     private Double price;
 
-    public DeliveryOrderItem(){
+    public OrderItemEntity(){
 
     }
 
@@ -63,11 +63,11 @@ public class DeliveryOrderItem extends BaseListItem{
         this.price = price;
     }
 
-    public Product getProduct() {
+    public ProductEntity getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductEntity product) {
         this.product = product;
     }
 

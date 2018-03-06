@@ -6,7 +6,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.Driver;
+import com.goleep.driverapp.services.room.entities.DriverEntity;
 
 /**
  * Created by vishalm on 21/02/18.
@@ -20,7 +20,7 @@ public class PickupViewModel extends AndroidViewModel {
     }
 
     public String getWareHouseNameAddress(){
-        Driver driver = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
-        return driver.getAddressLine1()+", "+driver.getAddressLine2();
+        DriverEntity driverEntity = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
+        return driverEntity.getAddressLine1()+", "+ driverEntity.getAddressLine2();
      }
 }

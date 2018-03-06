@@ -12,8 +12,8 @@ import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.Product;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
     RecyclerView expandableListView;
     private DoExpandableListAdapter adapter;
     private PickupDeliveryOrderViewModel pickupDeliveryOrderViewModel;
-    ArrayList<DeliveryOrderItem> cashDoItems = new ArrayList<>();
-    ArrayList<Product> cashProducts = new ArrayList<>();
+    ArrayList<OrderItemEntity> cashDoItems = new ArrayList<>();
+    ArrayList<ProductEntity> cashProductEntities = new ArrayList<>();
 
     @Override
     public void doInitialSetup() {
@@ -47,7 +47,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
 //        cashProducts = intent.getParcelableArrayListExtra(AppConstants.CASH_PRODUCT_KEY);
         List<BaseListItem> doItems = new ArrayList<>();
         doItems.addAll(cashDoItems);
-        adapter.addItemsList(BaseListItem.setItemType(doItems, AppConstants.TYPE_CASH_SALES_ITEM), 1, cashProducts);
+        adapter.addItemsList(BaseListItem.setItemType(doItems, AppConstants.TYPE_CASH_SALES_ITEM), 1);
     }
 
     private void initView() {

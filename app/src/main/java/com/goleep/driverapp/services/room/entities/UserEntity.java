@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @Entity
-public class UserMeta {
+public class UserEntity {
 
     @SerializedName("id")
     @Expose
@@ -55,7 +55,7 @@ public class UserMeta {
     @Expose
     private Driver driver;
 
-    public UserMeta(){
+    public UserEntity(){
 
     }
 

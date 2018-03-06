@@ -1,10 +1,7 @@
 package com.goleep.driverapp.services.network.responsemodels;
 
-import com.goleep.driverapp.helpers.uimodels.DeliveryOrderItemUIModel;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
-import com.goleep.driverapp.services.room.entities.Product;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.ProductEntity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,7 +16,7 @@ import java.util.List;
 public class DoDetailResponseModel {
     private Integer doID;
 
-    private List<DeliveryOrderItem> deliveryOrderItems = new ArrayList<>();
+    private List<OrderItemEntity> orderItemEntities = new ArrayList<>();
 
     public Integer getId() {
         return doID;
@@ -30,46 +27,46 @@ public class DoDetailResponseModel {
     }
 
 
-    public List<DeliveryOrderItem> getDeliveryOrderItems() {
-        return deliveryOrderItems;
+    public List<OrderItemEntity> getOrderItemEntities() {
+        return orderItemEntities;
     }
 
-    public void setDeliveryOrderItems(List<DeliveryOrderItem> deliveryOrderItems) {
-        this.deliveryOrderItems = deliveryOrderItems;
+    public void setOrderItemEntities(List<OrderItemEntity> orderItemEntities) {
+        this.orderItemEntities = orderItemEntities;
     }
 
     public void parseJSON(JSONArray itemsArray, Integer doId){
         this.doID = doId;
-        List<DeliveryOrderItem> deliveryOrderItems = new ArrayList<>();
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>();
         for(int i=0;i<itemsArray.length();i++){
             JSONObject itemJSON = itemsArray.optJSONObject(i);
             Integer id = itemJSON.optInt("id");
-            Product product = parseProduct(itemJSON.optJSONObject("product"));
+            ProductEntity productEntity = parseProduct(itemJSON.optJSONObject("product"));
             Integer quantity = itemJSON.optInt("quantity");
             Double price = itemJSON.optDouble("price");
-            DeliveryOrderItem item = new DeliveryOrderItem();
+            OrderItemEntity item = new OrderItemEntity();
             item.setId(id);
             item.setDoId(doId);
             item.setPrice(price);
-            item.setProduct(product);
+            item.setProduct(productEntity);
             item.setQuantity(quantity);
-            deliveryOrderItems.add(item);
+            orderItemEntities.add(item);
         }
-        this.deliveryOrderItems = deliveryOrderItems;
+        this.orderItemEntities = orderItemEntities;
     }
 
-    private Product parseProduct(JSONObject productJSON) {
+    private ProductEntity parseProduct(JSONObject productJSON) {
         Integer productId = productJSON.optInt("id");
         String name = productJSON.optString("name");
         String sku = productJSON.optString("sku");
         String weight = productJSON.optString("weight");
         String weightUnit = productJSON.optString("weight_unit");
-        Product product = new Product();
-        product.setProductId(productId);
-        product.setName(name);
-        product.setSku(sku);
-        product.setWeight(weight);
-        product.setWeightUnit(weightUnit);
-        return product;
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setProductId(productId);
+        productEntity.setName(name);
+        productEntity.setSku(sku);
+        productEntity.setWeight(weight);
+        productEntity.setWeightUnit(weightUnit);
+        return productEntity;
     }
 }

@@ -20,8 +20,8 @@ import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.leep.PickupConfirmationActivity;
-import com.goleep.driverapp.services.room.entities.DeliveryOrder;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderItem;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.viewmodels.CashSalesViewModel;
 
 import java.util.ArrayList;
@@ -82,7 +82,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     private void initialiseRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        adapter = new PickupCashSalesListAdapter(new ArrayList<DeliveryOrderItem>());
+        adapter = new PickupCashSalesListAdapter(new ArrayList<OrderItemEntity>());
         adapter.setItemCheckListener(itemCheckListener);
         recyclerView.setAdapter(adapter);
         cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this,
@@ -112,12 +112,12 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onChanged(@Nullable Object object) {
-        if(object instanceof DeliveryOrder){
-            fetchDriverDoDetails(((DeliveryOrder)object).getId());
+        if(object instanceof DeliveryOrderEntity){
+            fetchDriverDoDetails(((DeliveryOrderEntity)object).getId());
         } else if(object instanceof List){
-            List<DeliveryOrderItem> deliveryOrderItems = (List<DeliveryOrderItem>)object;
-            if(deliveryOrderItems.size() >0) {
-                adapter.updateList(deliveryOrderItems);
+            List<OrderItemEntity> orderItemEntities = (List<OrderItemEntity>)object;
+            if(orderItemEntities.size() >0) {
+                adapter.updateList(orderItemEntities);
             }
         }
 
