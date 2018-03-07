@@ -60,7 +60,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         return deliveryOrders;
     }
 
-    public void fetchAllDeliveryOrders(final UILevelNetworkCallback doCallBack){
+    public void fetchAllDeliveryOrders(final UILevelNetworkCallback doNetworkCallBack){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context, UrlConstants.DELIVERY_ORDERS_URL,
                 true, new NetworkAPICallback() {
                     @Override
@@ -72,6 +72,17 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
                                         deliveryOrdersByParsingJsonResponse(response);
                                 leepDatabase.deliveryOrderDao().updateAllDeliveryOrders(deliveryOrdersList);
                                 break;
+
+                            case NetworkConstants.FAILURE:
+                            case NetworkConstants.NETWORK_ERROR:
+                                doNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                                break;
+
+                            case NetworkConstants.UNAUTHORIZED:
+                                doNetworkCallBack.onResponseReceived(null,
+                                        false, errorMessage, true);
+                                break;
+
                         }
                     }
                 });

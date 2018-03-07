@@ -42,6 +42,10 @@
     <string name="distance">Distance</string>
     <string name="preferred_time">"Preferred Time: "</string>
 
+    <!--Order Items-->
+    <string name="weight_with_units">%s %s</string>
+    <string name="value_with_currency_symbol">%s%s</string>
+
     <string name="value">Value</string>
     <string name="units">Units</string>
     <string name="from_top">From:</string>

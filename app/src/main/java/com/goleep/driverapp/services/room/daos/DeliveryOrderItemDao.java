@@ -23,13 +23,13 @@ public abstract class DeliveryOrderItemDao {
     abstract void insertDeliveryOrderItems(List<OrderItemEntity> orderItemEntities);
 
     @Query("SELECT * FROM OrderItemEntity WHERE doId = :id")
-    public abstract LiveData<List<OrderItemEntity>> getDeliveryOrderItems(Integer id);
+    public abstract LiveData<List<OrderItemEntity>> getDeliveryOrderItems(int id);
 
     @Query("DELETE FROM OrderItemEntity WHERE id = :doId")
     abstract void deleteDeliveryItems(Integer doId);
 
     @Query("SELECT * FROM OrderItemEntity WHERE doId = :id")
-    public abstract LiveData<List<OrderItemEntity>> getDriverDoItems(Integer id);
+    public abstract LiveData<List<OrderItemEntity>> getDriverDoItems(int id);
 
     @Transaction
     public void deleteAndInsertItems(Integer doId, List<OrderItemEntity> items) {
