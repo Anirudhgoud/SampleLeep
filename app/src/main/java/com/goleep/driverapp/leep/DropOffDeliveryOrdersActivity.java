@@ -86,6 +86,13 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
         }
     }
 
+    public void logout(){
+        super.logoutUser();
+    }
+
+    public void showErrorDialog(String message){
+        super.showNetworkRelatedDialogs(message);
+    }
 
     class DeliveryOrderPagerAdapter extends FragmentPagerAdapter {
 

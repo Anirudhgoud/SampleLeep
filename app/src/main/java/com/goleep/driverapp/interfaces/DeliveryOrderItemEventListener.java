@@ -5,6 +5,6 @@ package com.goleep.driverapp.interfaces;
  */
 
 public interface DeliveryOrderItemEventListener {
-    void onUnitsTap(Integer itemId, Integer currentUnits);
-    void onCheckboxTap(Integer itemId, boolean isChecked);
+    void onUnitsTap(int itemId, int currentUnits);
+    void onCheckboxTap(int itemId, boolean isChecked);
 }

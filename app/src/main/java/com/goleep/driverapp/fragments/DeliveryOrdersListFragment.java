@@ -21,6 +21,7 @@ import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.DropOffDeliveryOrderDetailsActivity;
+import com.goleep.driverapp.leep.DropOffDeliveryOrdersActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 
@@ -113,7 +114,7 @@ public class DeliveryOrdersListFragment extends Fragment {
 
     private void openDeliveryDetailsActivity(Integer deliveryOrderId){
         Intent doDetailsIntent = new Intent(getActivity(), DropOffDeliveryOrderDetailsActivity.class);
-        doDetailsIntent.putExtra("order_id", deliveryOrderId);
+        doDetailsIntent.putExtra("delivery_order_id", deliveryOrderId);
         startActivity(doDetailsIntent);
     }
 
@@ -121,7 +122,14 @@ public class DeliveryOrdersListFragment extends Fragment {
 
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-
+            if(uiModels == null){
+                DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity)getActivity());
+                if(toLogout){
+                    dropOffDeliveryOrdersActivity.logout();
+                }else {
+                    dropOffDeliveryOrdersActivity.showErrorDialog(errorMessage);
+                }
+            }
         }
     };
 }
