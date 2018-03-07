@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dashboard_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/pickup_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@drawable/dashboard_item_bg"
+        android:elevation="5dp"
+        android:layout_marginBottom="25dp"
+        android:tag="0">
+
+        <LinearLayout
+            android:id="@+id/pickup_icon_layout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="22dp"
+            android:background="@drawable/pickup_icon_bg"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/pickup_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                app:srcCompat="@drawable/ic_pickup_dashboard" />
+        </LinearLayout>
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/pickup_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/pickup_icon_layout"
+            android:text="@string/pickup"
+            android:textColor="@color/text_black"
+            android:textSize="22sp"
+            app:typeface="NotoSans-Regular" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/drop_off_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginBottom="25dp"
+        android:tag="1"
+        android:background="@drawable/dashboard_item_bg"
+        android:elevation="5dp">
+
+        <LinearLayout
+            android:id="@+id/drop_off_icon_layout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="22dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/drop_off_icon_bg"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/drop_off_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                app:srcCompat="@drawable/ic_drop_off_dashboard" />
+        </LinearLayout>
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/drop_off_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/drop_off_icon_layout"
+            android:text="@string/dropoff"
+            android:textColor="@color/text_black"
+            android:textSize="22sp"
+            app:typeface="NotoSans-Regular" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/information_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginBottom="25dp"
+        android:tag="2"
+        android:background="@drawable/dashboard_item_bg"
+        android:elevation="5dp">
+
+        <LinearLayout
+            android:id="@+id/info_icon_layout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="22sp"
+            android:background="@drawable/info_icon_bg"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/info_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                app:srcCompat="@drawable/ic_info_dashboard" />
+        </LinearLayout>
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/information_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/info_icon_layout"
+            android:layout_centerVertical="true"
+            android:text="@string/information"
+            android:textColor="@color/text_black"
+            android:textSize="22sp"
+            app:typeface="NotoSans-Regular" />
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+

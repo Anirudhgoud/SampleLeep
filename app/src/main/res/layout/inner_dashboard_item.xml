@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:background="@drawable/dashboard_item_bg"
+    android:elevation="5dp">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center_vertical">
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/top_label_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/light_grey"
+            app:typeface="NotoSans-Regular"
+            android:text="" />
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/top_value_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:typeface="NotoSans-Regular"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_return" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/text_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/main_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text=""
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                app:typeface="NotoSans-Regular" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/sub_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="7"
+                android:text=""
+                android:textColor="@color/text_black"
+                android:textSize="14sp"
+                app:typeface="NotoSans-Regular" />
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Leep</string>
+    <string name="network_error_message">Network Error</string>
+    <string name="error">Error</string>
+    <string name="phone_hint">Phone Number</string>
+    <string name="log_in_text">Log In</string>
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="password_hint">Password</string>
+    <string name="edit">Edit</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="email">Email</string>
+    <string name="submit">Submit</string>
+    <string name="list">List</string>
+    <string name="map">Map</string>
+    <string name="forgot_password_success">Email submitted successfully</string>
+    <string name="pickup">Pick Up</string>
+    <string name="dropoff">Drop Off</string>
+    <string name="information">Information</string>
+    <string name="deliveries">Deliveries</string>
+    <string name="payment_collected">Payment Collected</string>
+    <string name="locations">Locations</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="address">Address</string>
+    <string name="driver_licence_number">Driver Licence No.</string>
+    <string name="vehicle_reg_no">Vehicle Registration No.</string>
+    <string name="employee_no">Employee No.</string>
+    <string name="india_code">+91</string>
+
+    <string name="delivery_order">Delivery Order</string>
+    <string name="cash_sales">Cash Sales</string>
+    <string name="orders">Orders</string>
+    <string name="items_label">Items</string>
+    <string name="confirm_pickup">Confirm Pick Up</string>
+
+
+    <!--Delivery Orders-->
+    <string name="delivery_orders">Delivery Orders</string>
+    <string name="deliver">Deliver</string>
+    <string name="items">"Items: "</string>
+    <string name="do_number">"DO No. "</string>
+    <string name="date">Date</string>
+    <string name="distance">Distance</string>
+    <string name="preferred_time">"Preferred Time: "</string>
+
+    <string name="value">Value</string>
+    <string name="units">Units</string>
+    <string name="from_top">From:</string>
+    <string name="pickup_stock">Pick Up Stock</string>
+    <string name="confirm">Confirm</string>
+    <string name="next">Next</string>
+</resources>
