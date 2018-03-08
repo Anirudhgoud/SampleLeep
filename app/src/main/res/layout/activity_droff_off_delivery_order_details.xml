@@ -107,26 +107,16 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/tv_item_count"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0"
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:id="@+id/tv_item_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="50000"
-                android:textColor="@color/doTabTextColor"
-                android:textSize="18sp"
-                app:typeface="NotoSans-Regular" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:padding="16dp"
+            android:text="50000"
+            android:textColor="@color/doTabTextColor"
+            android:textSize="18sp"
+            app:typeface="NotoSans-Regular" />
 
     </LinearLayout>
 
@@ -198,6 +188,7 @@
             android:orientation="horizontal">
 
             <com.goleep.driverapp.helpers.customfont.CustomButton
+                android:id="@+id/bt_skip_payment"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
@@ -208,6 +199,7 @@
                 app:typeface="NotoSans-Regular" />
 
             <com.goleep.driverapp.helpers.customfont.CustomButton
+                android:id="@+id/bt_collect_payment"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"

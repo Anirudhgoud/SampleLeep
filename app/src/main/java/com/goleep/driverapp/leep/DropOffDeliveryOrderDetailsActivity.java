@@ -38,6 +38,8 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private CustomTextView tvDate;
     private CustomTextView tvSchedule;
     private CustomTextView tvItemsCount;
+    private CustomButton btSkipPayment;
+    private CustomButton btCollectPayment;
 
     private LinearLayout updateQuantityLayout;
     private CustomEditText etUnits;
@@ -82,6 +84,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         fetchDeliveryOrderData();
         fetchDeliveryOrderItems();
         updateDeliveryOrderUI();
+        setCLickListenersOnButtons();
     }
 
     private void connectUIElements(){
@@ -93,6 +96,8 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         tvSchedule = findViewById(R.id.tv_schedule);
         tvItemsCount = findViewById(R.id.tv_item_count);
         orderItemsRecyclerView = findViewById(R.id.order_items_recyclerview);
+        btSkipPayment = findViewById(R.id.bt_skip_payment);
+        btCollectPayment = findViewById(R.id.bt_collect_payment);
 
         updateQuantityLayout = findViewById(R.id.update_quantity_view);
         tvProductName = findViewById(R.id.product_name_text_view);
@@ -229,5 +234,15 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private void hideUpdateQuantityView(){
         updateQuantityLayout.setVisibility(View.GONE);
         selectedOrderItem = null;
+    }
+
+    private void setCLickListenersOnButtons() {
+        btSkipPayment.setOnClickListener(v -> {
+
+        });
+
+        btCollectPayment.setOnClickListener(v -> {
+
+        });
     }
 }
