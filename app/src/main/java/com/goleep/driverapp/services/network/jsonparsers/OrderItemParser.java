@@ -45,6 +45,7 @@ public class OrderItemParser {
         orderItem.setPrice(jsonObject.optDouble("price", 0));
         orderItem.setProduct(productByParsingJsonResponse(jsonObject.optJSONObject("product")));
         orderItem.setQuantity(jsonObject.optInt("quantity", 0));
+        orderItem.setMaxQuantity(orderItem.getQuantity());
         return orderItem;
     }
 

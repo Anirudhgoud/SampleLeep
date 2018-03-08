@@ -9,6 +9,7 @@
     android:orientation="vertical">
 
     <com.goleep.driverapp.helpers.customfont.CustomButton
+        android:id="@+id/bt_update"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/green"
@@ -50,6 +51,7 @@
         android:inputType="number"
         android:cursorVisible="false"
         android:textColor="@color/doTabTextColor"
+        android:imeOptions="actionDone"
         android:textSize="32sp"
         app:typeface="NotoSans-Regular" />
 

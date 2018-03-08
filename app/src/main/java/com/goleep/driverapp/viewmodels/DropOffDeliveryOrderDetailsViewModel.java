@@ -46,6 +46,14 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
         return leepDatabase.deliveryOrderItemDao().getDeliveryOrderItems(deliveryOrderId);
     }
 
+    public OrderItemEntity orderItem(int orderItemId){
+        return leepDatabase.deliveryOrderItemDao().getOrderItem(orderItemId);
+    }
+
+    public void updateOrderItemQuantity(int orderItemId, int updatedQuantity){
+        leepDatabase.deliveryOrderItemDao().updateOrderItemQuantity(orderItemId, updatedQuantity);
+    }
+
     public void fetchDeliveryOrderItems(final int doId, final UILevelNetworkCallback orderItemNetworkCallBack){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, new NetworkAPICallback() {
@@ -87,14 +95,6 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
             }
         }
         return "-";
-    }
-
-    public String amountToDisplay(Float amountString){
-        String currencySymbol = AppUtils.userCurrencySymbol();
-        if (amountString != null){
-            return currencySymbol + " " + Math.round(amountString);
-        }
-        return currencySymbol + " 0";
     }
 
     public String getAddress(String line1, String line2){

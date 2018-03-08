@@ -25,7 +25,7 @@ public class AppUtils {
         return b;
     }
 
-    public static void showKeyboard(View view, Context context){
+    public static void toggleKeyboard(View view, Context context){
         InputMethodManager inputMethodManager =
                 (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if(inputMethodManager != null){

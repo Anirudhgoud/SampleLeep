@@ -7,18 +7,24 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
+import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrderDetailsViewModel;
@@ -37,22 +43,31 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
 
     private LinearLayout updateQuantityLayout;
     private CustomEditText etUnits;
+    private CustomTextView tvProductName;
+    private CustomTextView invalidQuantityError;
+    private CustomButton btUpdate;
 
     private DropOffDeliveryOrderDetailsViewModel viewModel;
     private RecyclerView orderItemsRecyclerView;
     private OrderItemsListAdapter orderItemsListAdapter;
     private int deliveryOrderId;
     private DeliveryOrderEntity deliveryOrder;
+    private OrderItemEntity selectedOrderItem;
+    private List<Integer> selectedItemIds = new ArrayList<>();
 
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener = new DeliveryOrderItemEventListener() {
         @Override
-        public void onUnitsTap(int itemId, int currentUnits) {
-            displayUpdateQuantityView();
+        public void onUnitsTap(int itemId, int maxUnits) {
+            displayUpdateQuantityView(itemId, maxUnits);
         }
 
         @Override
         public void onCheckboxTap(int itemId, boolean isChecked) {
-
+            if(isChecked && !selectedItemIds.contains(itemId)){
+                selectedItemIds.add(itemId);
+            }else if(!isChecked){
+                selectedItemIds.remove(itemId);
+            }
         }
     };
 
@@ -69,7 +84,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         initialiseToolbar();
         initialiseRecyclerView();
         fetchDeliveryOrderData();
-        fetchDeliveriOrderItems();
+        fetchDeliveryOrderItems();
         updateDeliveryOrderUI();
     }
 
@@ -84,13 +99,11 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         orderItemsRecyclerView = findViewById(R.id.order_items_recyclerview);
 
         updateQuantityLayout = findViewById(R.id.update_quantity_view);
+        tvProductName = findViewById(R.id.product_name_text_view);
         etUnits = findViewById(R.id.et_units);
-        etUnits.setKeyImeChangeListener(new CustomEditText.KeyImeChange() {
-            @Override
-            public void onKeyIme(int keyCode, KeyEvent event) {
-                updateQuantityLayout.setVisibility(View.GONE);
-            }
-        });
+        invalidQuantityError = findViewById(R.id.invalid_quantity_error);
+        btUpdate = findViewById(R.id.bt_update);
+        initialiseUpdateQuantityView();
     }
 
     private void initialiseToolbar(){
@@ -104,10 +117,11 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         orderItemsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         orderItemsListAdapter = new OrderItemsListAdapter(new ArrayList<OrderItemEntity>());
         orderItemsListAdapter.setOrderItemClickEventListener(deliveryOrderItemEventListener);
-        viewModel.deliveryOrderItems(deliveryOrderId).observe(this, new Observer<List<OrderItemEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<OrderItemEntity> orderItemEntities) {
-                orderItemsListAdapter.updateList(orderItemEntities);
+        viewModel.deliveryOrderItems(deliveryOrderId).observe(this, orderItemEntities -> {
+            orderItemsListAdapter.updateList(orderItemEntities);
+            selectedItemIds.clear();
+            for (OrderItemEntity entity : orderItemEntities){
+                selectedItemIds.add(entity.getId());
             }
         });
         orderItemsRecyclerView.setAdapter(orderItemsListAdapter);
@@ -117,7 +131,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         deliveryOrder = viewModel.deliveryOrder(deliveryOrderId);
     }
 
-    private void fetchDeliveriOrderItems(){
+    private void fetchDeliveryOrderItems(){
         viewModel.fetchDeliveryOrderItems(deliveryOrderId, orderItemNetworkCallBack);
     }
 
@@ -132,7 +146,6 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         }else {
             LogUtils.error(this.getLocalClassName(), "--------Delivery order is null--------");
         }
-
     }
 
     @Override
@@ -150,17 +163,71 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
             if(uiModels == null){
                 if(toLogout){
                     logoutUser();
-                }else {
+                }else if(isDialogToBeShown) {
                     showNetworkRelatedDialogs(errorMessage);
                 }
             }
         }
     };
 
-    private void displayUpdateQuantityView(){
-        etUnits.requestFocus();
+    private void initialiseUpdateQuantityView(){
+        etUnits.setKeyImeChangeListener((keyCode, event) -> hideUpdateQuantityView());
+        etUnits.setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                hideUpdateQuantityView();
+                AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+            }
+            return true;
+        });
+        etUnits.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
-        updateQuantityLayout.setVisibility(View.VISIBLE);
-        AppUtils.showKeyboard(etUnits, getApplicationContext());
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(selectedOrderItem != null){
+                    int maxUnits = selectedOrderItem.getMaxQuantity();
+                    String newUnitsText = etUnits.getText().toString();
+                    if(newUnitsText.length() > 0){
+                        int newUnits = Integer.valueOf(newUnitsText);
+                        boolean isValid = newUnits <= maxUnits;
+                        invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
+                        btUpdate.setEnabled(isValid);
+                    }else{
+                        btUpdate.setEnabled(false);
+                    }
+                }
+            }
+        });
+
+        btUpdate.setOnClickListener(v -> {
+            if(selectedOrderItem != null){
+                viewModel.updateOrderItemQuantity(selectedOrderItem.getId(), Integer.valueOf(etUnits.getText().toString()));
+                hideUpdateQuantityView();
+                AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+            }
+        });
+    }
+
+    private void displayUpdateQuantityView(int itemId, int currentUnits){
+        etUnits.requestFocus();
+        selectedOrderItem = viewModel.orderItem(itemId);
+        if(selectedOrderItem != null && selectedOrderItem.getProduct() != null){
+            ProductEntity product = selectedOrderItem.getProduct();
+            tvProductName.setText(product.getName() + " " + product.getWeight() + product.getWeightUnit());
+            etUnits.setText("");
+            etUnits.setHint(String.valueOf(currentUnits));
+            updateQuantityLayout.setVisibility(View.VISIBLE);
+            invalidQuantityError.setVisibility(View.INVISIBLE);
+            btUpdate.setEnabled(false);
+            AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+        }
+    }
+
+    private void hideUpdateQuantityView(){
+        updateQuantityLayout.setVisibility(View.GONE);
+        selectedOrderItem = null;
     }
 }

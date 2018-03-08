@@ -51,20 +51,10 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
 
         if(productCheckbox != null){
-            productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    deliveryOrderItemEventListener.onCheckboxTap(orderItem.getId(), isChecked);
-                }
-            });
+            productCheckbox.setOnCheckedChangeListener((compoundButton, isChecked) -> deliveryOrderItemEventListener.onCheckboxTap(orderItem.getId(), isChecked));
         }
 
-        tvUnits.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deliveryOrderItemEventListener.onUnitsTap(orderItem.getId(), orderItem.getQuantity());
-            }
-        });
+        tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(orderItem.getId(), orderItem.getMaxQuantity()));
     }
 
     private String itemTotalPriceText(double value){

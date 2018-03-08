@@ -123,11 +123,11 @@ public class DeliveryOrdersListFragment extends Fragment {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             if(uiModels == null){
-                DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity)getActivity());
+                DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity)DeliveryOrdersListFragment.this.getActivity());
                 if(toLogout){
-                    dropOffDeliveryOrdersActivity.logout();
+//                    dropOffDeliveryOrdersActivity.logout();
                 }else {
-                    dropOffDeliveryOrdersActivity.showErrorDialog(errorMessage);
+//                    dropOffDeliveryOrdersActivity.showErrorDialog(errorMessage);
                 }
             }
         }
