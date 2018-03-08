@@ -1,9 +1,7 @@
 package com.goleep.driverapp.leep;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
@@ -46,6 +43,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private CustomTextView tvProductName;
     private CustomTextView invalidQuantityError;
     private CustomButton btUpdate;
+    private LinearLayout llBottomButtons;
 
     private DropOffDeliveryOrderDetailsViewModel viewModel;
     private RecyclerView orderItemsRecyclerView;
@@ -65,9 +63,10 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         public void onCheckboxTap(int itemId, boolean isChecked) {
             if(isChecked && !selectedItemIds.contains(itemId)){
                 selectedItemIds.add(itemId);
-            }else if(!isChecked){
-                selectedItemIds.remove(itemId);
+            } else if (!isChecked && selectedItemIds.contains(itemId)) {
+                selectedItemIds.remove(Integer.valueOf(itemId));
             }
+            llBottomButtons.setVisibility(selectedItemIds.size() == 0 ? View.GONE : View.VISIBLE);
         }
     };
 
@@ -103,6 +102,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         etUnits = findViewById(R.id.et_units);
         invalidQuantityError = findViewById(R.id.invalid_quantity_error);
         btUpdate = findViewById(R.id.bt_update);
+        llBottomButtons = findViewById(R.id.ll_bottom_buttons);
         initialiseUpdateQuantityView();
     }
 
@@ -123,6 +123,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
             for (OrderItemEntity entity : orderItemEntities){
                 selectedItemIds.add(entity.getId());
             }
+            llBottomButtons.setVisibility(selectedItemIds.size() == 0 ? View.GONE : View.VISIBLE);
         });
         orderItemsRecyclerView.setAdapter(orderItemsListAdapter);
     }
