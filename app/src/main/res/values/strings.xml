@@ -45,6 +45,10 @@
     <!--Order Items-->
     <string name="weight_with_units">%s %s</string>
     <string name="value_with_currency_symbol">%s%s</string>
+    <string name="skip_payment">Skip Payment</string>
+    <string name="collect_payment">Collect Payment</string>
+    <string name="update">Update</string>
+    <string name="enter_quantity">Enter Quantity</string>
 
     <string name="value">Value</string>
     <string name="units">Units</string>
@@ -52,4 +56,7 @@
     <string name="pickup_stock">Pick Up Stock</string>
     <string name="confirm">Confirm</string>
     <string name="next">Next</string>
+
+    <!--Error Messages-->
+    <string name="invalid_quantity_error">You can only reduce the quantity</string>
 </resources>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include
@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
+                android:inputType="number"
                 android:textColor="@color/doTabTextColor"
                 android:textSize="18sp"
                 app:typeface="NotoSans-Regular" />
@@ -157,11 +158,12 @@
         <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:gravity="center_vertical"
+            android:layout_weight="6"
+            android:gravity="center_vertical|center_horizontal"
             android:text="@string/units"
             android:textColor="@color/doTabTextColor"
             android:textSize="14sp"
+            android:layout_marginRight="8dp"
             app:typeface="NotoSans-Regular" />
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
@@ -172,6 +174,7 @@
             android:text="@string/value"
             android:textColor="@color/doTabTextColor"
             android:textSize="14sp"
+            android:layout_marginLeft="16dp"
             app:typeface="NotoSans-Regular" />
     </LinearLayout>
 
@@ -185,5 +188,38 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal">
+
+        <include
+            layout="@layout/update_quantity_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.goleep.driverapp.helpers.customfont.CustomButton
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="@string/skip_payment"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:background="@color/blue"
+            app:typeface="NotoSans-Regular"/>
+
+        <com.goleep.driverapp.helpers.customfont.CustomButton
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="@string/collect_payment"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:background="@color/green"
+            app:typeface="NotoSans-Regular"/>
+
+    </LinearLayout>
 
 </LinearLayout>

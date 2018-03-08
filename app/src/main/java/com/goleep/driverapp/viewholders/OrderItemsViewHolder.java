@@ -13,7 +13,7 @@ import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 
-import java.text.DecimalFormat;
+import java.util.Locale;
 
 /**
  * Created by anurag on 28/02/18.
@@ -36,6 +36,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvUnits = itemView.findViewById(R.id.units_text_view);
         productCheckbox = itemView.findViewById(R.id.product_checkbox);
         productCheckbox.setChecked(true);
+        tvUnits.setBackground(context.getResources().getDrawable(R.drawable.rounded_border_green));
     }
 
     public void bindData(final OrderItemEntity orderItem){
@@ -57,13 +58,17 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
                 }
             });
         }
+
+        tvUnits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deliveryOrderItemEventListener.onUnitsTap(orderItem.getId(), orderItem.getQuantity());
+            }
+        });
     }
 
     private String itemTotalPriceText(double value){
-        return String.format("%.02f", value);
-//        DecimalFormat decimalFormat = new DecimalFormat();
-//        decimalFormat.setMaximumFractionDigits(2);
-//        return decimalFormat.format(value);
+        return String.format(Locale.getDefault(), "%.02f", value);
     }
 
 }

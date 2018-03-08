@@ -7,14 +7,19 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
+import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrderDetailsViewModel;
 
@@ -30,6 +35,9 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private CustomTextView tvSchedule;
     private CustomTextView tvItemsCount;
 
+    private LinearLayout updateQuantityLayout;
+    private CustomEditText etUnits;
+
     private DropOffDeliveryOrderDetailsViewModel viewModel;
     private RecyclerView orderItemsRecyclerView;
     private OrderItemsListAdapter orderItemsListAdapter;
@@ -39,7 +47,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener = new DeliveryOrderItemEventListener() {
         @Override
         public void onUnitsTap(int itemId, int currentUnits) {
-
+            displayUpdateQuantityView();
         }
 
         @Override
@@ -67,12 +75,22 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
 
     private void connectUIElements(){
         tvCustomerName = findViewById(R.id.tv_customer_name);
+        tvCustomerName.requestFocus();
         tvStoreAddress = findViewById(R.id.tv_store_address);
         tvDoNumber = findViewById(R.id.tv_do_number);
         tvDate = findViewById(R.id.tv_date);
         tvSchedule = findViewById(R.id.tv_schedule);
         tvItemsCount = findViewById(R.id.tv_item_count);
         orderItemsRecyclerView = findViewById(R.id.order_items_recyclerview);
+
+        updateQuantityLayout = findViewById(R.id.update_quantity_view);
+        etUnits = findViewById(R.id.et_units);
+        etUnits.setKeyImeChangeListener(new CustomEditText.KeyImeChange() {
+            @Override
+            public void onKeyIme(int keyCode, KeyEvent event) {
+                updateQuantityLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void initialiseToolbar(){
@@ -138,4 +156,11 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
             }
         }
     };
+
+    private void displayUpdateQuantityView(){
+        etUnits.requestFocus();
+
+        updateQuantityLayout.setVisibility(View.VISIBLE);
+        AppUtils.showKeyboard(etUnits, getApplicationContext());
+    }
 }

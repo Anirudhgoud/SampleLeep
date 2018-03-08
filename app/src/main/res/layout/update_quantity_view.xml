@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/update_quantity_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/tabBackgroundGreyColor"
+    android:visibility="gone"
+    android:orientation="vertical">
+
+    <com.goleep.driverapp.helpers.customfont.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/green"
+        android:text="@string/update"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:id="@+id/product_name_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="@string/enter_quantity"
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:text="@string/enter_quantity"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="18sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomEditText
+        android:id="@+id/et_units"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/white_rect_with_grey_border"
+        android:gravity="center"
+        android:inputType="number"
+        android:cursorVisible="false"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="32sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:id="@+id/invalid_quantity_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:text="@string/invalid_quantity_error"
+        android:textColor="@color/red"
+        android:textSize="11sp"
+        android:visibility="invisible"
+        app:typeface="NotoSans-Regular" />
+
+</LinearLayout>
