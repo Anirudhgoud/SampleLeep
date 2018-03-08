@@ -31,6 +31,9 @@ public abstract class DeliveryOrderItemDao {
     @Query("UPDATE OrderItemEntity SET quantity = :updatedQuantity WHERE id = :orderItemId")
     public abstract void updateOrderItemQuantity(int orderItemId, int updatedQuantity);
 
+    @Query("UPDATE OrderItemEntity SET selected = :checked WHERE id = :orderItemId")
+    public abstract void updateOrderItemSelectionStatus(int orderItemId, boolean checked);
+
     @Query("DELETE FROM OrderItemEntity WHERE id = :doId")
     abstract void deleteDeliveryItems(Integer doId);
 

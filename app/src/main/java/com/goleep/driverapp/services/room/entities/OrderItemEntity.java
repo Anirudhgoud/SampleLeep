@@ -24,6 +24,7 @@ public class OrderItemEntity extends BaseListItem{
     private int doId;
     private int quantity;
     private int maxQuantity;
+    private boolean selected;
     @Embedded
     private ProductEntity product;
     private double price;
@@ -78,5 +79,13 @@ public class OrderItemEntity extends BaseListItem{
 
     public void setMaxQuantity(int maxQuantity) {
         this.maxQuantity = maxQuantity;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

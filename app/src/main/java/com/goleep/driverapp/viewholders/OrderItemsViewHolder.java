@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
@@ -35,7 +34,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvAmount = itemView.findViewById(R.id.amount_text_view);
         tvUnits = itemView.findViewById(R.id.units_text_view);
         productCheckbox = itemView.findViewById(R.id.product_checkbox);
-        productCheckbox.setChecked(true);
+
         tvUnits.setBackground(context.getResources().getDrawable(R.drawable.rounded_border_green));
     }
 
@@ -50,10 +49,8 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         double value = orderItem.getQuantity() * orderItem.getPrice();
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
 
-        if(productCheckbox != null){
-            productCheckbox.setOnCheckedChangeListener((compoundButton, isChecked) -> deliveryOrderItemEventListener.onCheckboxTap(orderItem.getId(), isChecked));
-        }
-
+        productCheckbox.setChecked(orderItem.isSelected());
+        productCheckbox.setOnClickListener(v -> deliveryOrderItemEventListener.onCheckboxTap(orderItem.getId(), productCheckbox.isChecked()));
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(orderItem.getId(), orderItem.getMaxQuantity()));
     }
 

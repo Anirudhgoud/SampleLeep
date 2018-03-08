@@ -108,10 +108,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:gravity="right"
             android:orientation="horizontal"
             android:padding="16dp">
@@ -121,17 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lines="1"
-                android:text="0"
-                android:textColor="@color/doTabTextColor"
-                android:textSize="18sp"
-                app:typeface="NotoSans-Bold" />
-
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:lines="1"
-                android:text="@string/items_label"
+                android:text="50000"
                 android:textColor="@color/doTabTextColor"
                 android:textSize="18sp"
                 app:typeface="NotoSans-Regular" />

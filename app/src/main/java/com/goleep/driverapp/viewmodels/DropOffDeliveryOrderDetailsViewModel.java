@@ -17,7 +17,6 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
 import org.json.JSONArray;
@@ -52,6 +51,10 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
 
     public void updateOrderItemQuantity(int orderItemId, int updatedQuantity){
         leepDatabase.deliveryOrderItemDao().updateOrderItemQuantity(orderItemId, updatedQuantity);
+    }
+
+    public void updateOrderItemSelectionStatus(int orderItemId, boolean checked) {
+        leepDatabase.deliveryOrderItemDao().updateOrderItemSelectionStatus(orderItemId, checked);
     }
 
     public void fetchDeliveryOrderItems(final int doId, final UILevelNetworkCallback orderItemNetworkCallBack){

@@ -6,6 +6,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -51,7 +52,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private int deliveryOrderId;
     private DeliveryOrderEntity deliveryOrder;
     private OrderItemEntity selectedOrderItem;
-    private List<Integer> selectedItemIds = new ArrayList<>();
+    private int selectedItemCount = 0;
 
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener = new DeliveryOrderItemEventListener() {
         @Override
@@ -61,12 +62,8 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
 
         @Override
         public void onCheckboxTap(int itemId, boolean isChecked) {
-            if(isChecked && !selectedItemIds.contains(itemId)){
-                selectedItemIds.add(itemId);
-            } else if (!isChecked && selectedItemIds.contains(itemId)) {
-                selectedItemIds.remove(Integer.valueOf(itemId));
-            }
-            llBottomButtons.setVisibility(selectedItemIds.size() == 0 ? View.GONE : View.VISIBLE);
+//            llBottomButtons.setVisibility(selectedItemCount == 0 ? View.GONE : View.VISIBLE);
+            viewModel.updateOrderItemSelectionStatus(itemId, isChecked);
         }
     };
 
@@ -115,15 +112,16 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private void initialiseRecyclerView(){
         orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderItemsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        orderItemsListAdapter = new OrderItemsListAdapter(new ArrayList<OrderItemEntity>());
+        orderItemsListAdapter = new OrderItemsListAdapter(new ArrayList<>());
         orderItemsListAdapter.setOrderItemClickEventListener(deliveryOrderItemEventListener);
         viewModel.deliveryOrderItems(deliveryOrderId).observe(this, orderItemEntities -> {
             orderItemsListAdapter.updateList(orderItemEntities);
-            selectedItemIds.clear();
+            selectedItemCount = 0;
             for (OrderItemEntity entity : orderItemEntities){
-                selectedItemIds.add(entity.getId());
+                if (entity.isSelected()) selectedItemCount++;
             }
-            llBottomButtons.setVisibility(selectedItemIds.size() == 0 ? View.GONE : View.VISIBLE);
+            LogUtils.error(this.getLocalClassName(), "-----SelectedCount" + selectedItemCount);
+            llBottomButtons.setVisibility(selectedItemCount == 0 ? View.GONE : View.VISIBLE);
         });
         orderItemsRecyclerView.setAdapter(orderItemsListAdapter);
     }
@@ -143,7 +141,8 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
             tvDoNumber.setText(deliveryOrder.getDoNumber() ==  null ? "-" : deliveryOrder.getDoNumber());
             tvDate.setText(viewModel.dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
             tvSchedule.setText(viewModel.timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
-            tvItemsCount.setText(String.valueOf(deliveryOrder.getDeliveryOrderItemsCount()));
+            int deliveryOrderCount = deliveryOrder.getDeliveryOrderItemsCount();
+            tvItemsCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, deliveryOrderCount, deliveryOrderCount)));
         }else {
             LogUtils.error(this.getLocalClassName(), "--------Delivery order is null--------");
         }
@@ -193,7 +192,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
                     String newUnitsText = etUnits.getText().toString();
                     if(newUnitsText.length() > 0){
                         int newUnits = Integer.valueOf(newUnitsText);
-                        boolean isValid = newUnits <= maxUnits;
+                        boolean isValid = newUnits <= maxUnits && newUnits != 0;
                         invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
                         btUpdate.setEnabled(isValid);
                     }else{
