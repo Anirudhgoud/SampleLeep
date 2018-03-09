@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DeliveryOrdersListAdapter;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
@@ -114,7 +115,7 @@ public class DeliveryOrdersListFragment extends Fragment {
 
     private void openDeliveryDetailsActivity(Integer deliveryOrderId){
         Intent doDetailsIntent = new Intent(getActivity(), DropOffDeliveryOrderDetailsActivity.class);
-        doDetailsIntent.putExtra("delivery_order_id", deliveryOrderId);
+        doDetailsIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, deliveryOrderId);
         startActivity(doDetailsIntent);
     }
 

@@ -25,14 +25,18 @@ import java.util.List;
 
 public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
     private AppDatabase leepDatabase;
+    private int deliveryOrderId;
+    private DeliveryOrderEntity deliveryOrder;
+    private OrderItemEntity selectedOrderItem;
+    private int selectedItemCount = 0;
 
     public DropOffDeliveryOrderDetailsViewModel(@NonNull Application application) {
         super(application);
         leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
 
-    public DeliveryOrderEntity deliveryOrder(int deliveryOrderId){
-        return leepDatabase.deliveryOrderDao().deliveryOrder(deliveryOrderId);
+    public void deliveryOrder(int deliveryOrderId) {
+        deliveryOrder = leepDatabase.deliveryOrderDao().deliveryOrder(deliveryOrderId);
     }
 
     public LiveData<List<OrderItemEntity>> deliveryOrderItems(int deliveryOrderId){
@@ -103,5 +107,37 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
             address = address + line2;
         }
         return address;
+    }
+
+    public int getDeliveryOrderId() {
+        return deliveryOrderId;
+    }
+
+    public void setDeliveryOrderId(int deliveryOrderId) {
+        this.deliveryOrderId = deliveryOrderId;
+    }
+
+    public DeliveryOrderEntity getDeliveryOrder() {
+        return deliveryOrder;
+    }
+
+    public void setDeliveryOrder(DeliveryOrderEntity deliveryOrder) {
+        this.deliveryOrder = deliveryOrder;
+    }
+
+    public OrderItemEntity getSelectedOrderItem() {
+        return selectedOrderItem;
+    }
+
+    public void setSelectedOrderItem(OrderItemEntity selectedOrderItem) {
+        this.selectedOrderItem = selectedOrderItem;
+    }
+
+    public int getSelectedItemCount() {
+        return selectedItemCount;
+    }
+
+    public void setSelectedItemCount(int selectedItemCount) {
+        this.selectedItemCount = selectedItemCount;
     }
 }

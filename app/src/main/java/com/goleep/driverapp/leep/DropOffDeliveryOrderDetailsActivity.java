@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
@@ -51,10 +52,6 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private DropOffDeliveryOrderDetailsViewModel viewModel;
     private RecyclerView orderItemsRecyclerView;
     private OrderItemsListAdapter orderItemsListAdapter;
-    private int deliveryOrderId;
-    private DeliveryOrderEntity deliveryOrder;
-    private OrderItemEntity selectedOrderItem;
-    private int selectedItemCount = 0;
 
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener = new DeliveryOrderItemEventListener() {
         @Override
@@ -64,14 +61,12 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
 
         @Override
         public void onCheckboxTap(int itemId, boolean isChecked) {
-//            llBottomButtons.setVisibility(selectedItemCount == 0 ? View.GONE : View.VISIBLE);
             viewModel.updateOrderItemSelectionStatus(itemId, isChecked);
         }
     };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        deliveryOrderId = getIntent().getExtras().getInt("delivery_order_id");
         super.setResources(R.layout.activity_droff_off_delivery_order_details);
     }
 
@@ -79,6 +74,9 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     public void doInitialSetup() {
         connectUIElements();
         viewModel = ViewModelProviders.of(this).get(DropOffDeliveryOrderDetailsViewModel.class);
+        if (getIntent().getExtras() != null) {
+            viewModel.setDeliveryOrderId(getIntent().getExtras().getInt(IntentConstants.DELIVERY_ORDER_ID));
+        }
         initialiseToolbar();
         initialiseRecyclerView();
         fetchDeliveryOrderData();
@@ -119,27 +117,29 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         orderItemsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         orderItemsListAdapter = new OrderItemsListAdapter(new ArrayList<>());
         orderItemsListAdapter.setOrderItemClickEventListener(deliveryOrderItemEventListener);
-        viewModel.deliveryOrderItems(deliveryOrderId).observe(this, orderItemEntities -> {
+        viewModel.deliveryOrderItems(viewModel.getDeliveryOrderId()).observe(this, orderItemEntities -> {
             orderItemsListAdapter.updateList(orderItemEntities);
-            selectedItemCount = 0;
+            viewModel.setSelectedItemCount(0);
             for (OrderItemEntity entity : orderItemEntities){
-                if (entity.isSelected()) selectedItemCount++;
+                if (entity.isSelected())
+                    viewModel.setSelectedItemCount(viewModel.getSelectedItemCount() + 1);
             }
-            LogUtils.error(this.getLocalClassName(), "-----SelectedCount" + selectedItemCount);
-            llBottomButtons.setVisibility(selectedItemCount == 0 ? View.GONE : View.VISIBLE);
+            LogUtils.error(this.getLocalClassName(), "-----SelectedCount" + viewModel.getSelectedItemCount());
+            llBottomButtons.setVisibility(viewModel.getSelectedItemCount() == 0 ? View.GONE : View.VISIBLE);
         });
         orderItemsRecyclerView.setAdapter(orderItemsListAdapter);
     }
 
     private void fetchDeliveryOrderData(){
-        deliveryOrder = viewModel.deliveryOrder(deliveryOrderId);
+        viewModel.deliveryOrder(viewModel.getDeliveryOrderId());
     }
 
     private void fetchDeliveryOrderItems(){
-        viewModel.fetchDeliveryOrderItems(deliveryOrderId, orderItemNetworkCallBack);
+        viewModel.fetchDeliveryOrderItems(viewModel.getDeliveryOrderId(), orderItemNetworkCallBack);
     }
 
     private void updateDeliveryOrderUI(){
+        DeliveryOrderEntity deliveryOrder = viewModel.getDeliveryOrder();
         if(deliveryOrder != null){
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(viewModel.getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
@@ -192,8 +192,8 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(selectedOrderItem != null){
-                    int maxUnits = selectedOrderItem.getMaxQuantity();
+                if (viewModel.getSelectedOrderItem() != null) {
+                    int maxUnits = viewModel.getSelectedOrderItem().getMaxQuantity();
                     String newUnitsText = etUnits.getText().toString();
                     if(newUnitsText.length() > 0){
                         int newUnits = Integer.valueOf(newUnitsText);
@@ -208,8 +208,8 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         });
 
         btUpdate.setOnClickListener(v -> {
-            if(selectedOrderItem != null){
-                viewModel.updateOrderItemQuantity(selectedOrderItem.getId(), Integer.valueOf(etUnits.getText().toString()));
+            if (viewModel.getSelectedOrderItem() != null) {
+                viewModel.updateOrderItemQuantity(viewModel.getSelectedOrderItem().getId(), Integer.valueOf(etUnits.getText().toString()));
                 hideUpdateQuantityView();
                 AppUtils.toggleKeyboard(etUnits, getApplicationContext());
             }
@@ -218,7 +218,8 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
 
     private void displayUpdateQuantityView(int itemId, int currentUnits){
         etUnits.requestFocus();
-        selectedOrderItem = viewModel.orderItem(itemId);
+        OrderItemEntity selectedOrderItem = viewModel.orderItem(itemId);
+        viewModel.setSelectedOrderItem(selectedOrderItem);
         if(selectedOrderItem != null && selectedOrderItem.getProduct() != null){
             ProductEntity product = selectedOrderItem.getProduct();
             tvProductName.setText(product.getName() + " " + product.getWeight() + product.getWeightUnit());
@@ -233,7 +234,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
 
     private void hideUpdateQuantityView(){
         updateQuantityLayout.setVisibility(View.GONE);
-        selectedOrderItem = null;
+        viewModel.setSelectedOrderItem(null);
     }
 
     private void setCLickListenersOnButtons() {
