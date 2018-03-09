@@ -4,12 +4,10 @@ package com.goleep.driverapp.viewmodels;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
@@ -19,8 +17,6 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
-import org.json.JSONArray;
-
 import java.util.List;
 
 /**
@@ -28,13 +24,11 @@ import java.util.List;
  */
 
 public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
-    private Context context;
     private AppDatabase leepDatabase;
 
     public DropOffDeliveryOrderDetailsViewModel(@NonNull Application application) {
         super(application);
-        context = application;
-        leepDatabase = RoomDBService.sharedInstance().getDatabase(context);
+        leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
 
     public DeliveryOrderEntity deliveryOrder(int deliveryOrderId){
@@ -58,27 +52,24 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
     }
 
     public void fetchDeliveryOrderItems(final int doId, final UILevelNetworkCallback orderItemNetworkCallBack){
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
-                UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                OrderItemParser orderItemParser = new OrderItemParser();
-                                leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
-                                        orderItemParser.orderItemsByParsingJsonResponse(response, doId));
-                                break;
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
+                UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            OrderItemParser orderItemParser = new OrderItemParser();
+                            leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
+                                    orderItemParser.orderItemsByParsingJsonResponse(response, doId));
+                            break;
 
-                            case NetworkConstants.FAILURE:
-                            case NetworkConstants.NETWORK_ERROR:
-                                orderItemNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
+                        case NetworkConstants.FAILURE:
+                        case NetworkConstants.NETWORK_ERROR:
+                            orderItemNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
 
-                            case NetworkConstants.UNAUTHORIZED :
-                                orderItemNetworkCallBack.onResponseReceived(null,
-                                        false, errorMessage, true);
-                                break;
-                        }
+                        case NetworkConstants.UNAUTHORIZED:
+                            orderItemNetworkCallBack.onResponseReceived(null,
+                                    false, errorMessage, true);
+                            break;
                     }
                 });
     }
