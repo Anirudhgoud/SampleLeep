@@ -9,7 +9,11 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -71,7 +75,19 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     }
 
     protected void showProgressDialog(){
+        progressBar = new ProgressDialog(ParentAppCompatActivity.this, R.style.MyTheme);
+        progressBar.setCancelable(false);
+        progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        progressBar.getWindow().setGravity(Gravity.CENTER);
+        progressBar.show();
+    }
 
+    protected void dismissProgressDialog(){
+        try{
+            progressBar.hide();
+        }catch (Exception e){
+
+        }
     }
 
     private void closeAllNetworkDialogs() {

@@ -80,7 +80,9 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
-            if(errorMessage == null){
+            if(toLogout)
+                logoutUser();
+            else if(errorMessage == null){
                 if(uiModels.size() > 0){
                     HomeActivity.this.runOnUiThread(new Runnable() {
                         @Override

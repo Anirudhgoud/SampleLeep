@@ -31,6 +31,9 @@
     <string name="orders">Orders</string>
     <string name="items_label">Items</string>
     <string name="confirm_pickup">Confirm Pick Up</string>
+    <string name="do_header_label">Delivery Orders (%1d)</string>
+    <string name="total_product_label">Total Product: %d</string>
+    <string name="total_value_label">Total Value: %1s</string>
 
 
     <!--Delivery Orders-->

@@ -23,6 +23,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
@@ -38,7 +39,7 @@ import butterknife.ButterKnife;
  * Created by vishalm on 19/02/18.
  */
 
-public class PickupDeliveryOrderFragment extends Fragment{
+public class PickupDeliveryOrderFragment extends Fragment implements Observer<List<OrderItemEntity>>{
 
     private PickupDeliveryOrderViewModel doViewModel;
 
@@ -51,29 +52,17 @@ public class PickupDeliveryOrderFragment extends Fragment{
     private List<BaseListItem> doList = new ArrayList<>();
     private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
     private ItemCheckListener itemCheckListener;
+    private Map<Integer, Integer> positionMap = new HashMap<>();
+    private Map<Integer, List<OrderItemEntity>> orderItemMap = new HashMap<>();
+
     private View.OnClickListener headerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             final int pos = expandableListView.getChildLayoutPosition(view);
+            positionMap.put(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId(), pos);
             if(doUpdateMap.containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()) &&
                     !doUpdateMap.get(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
-                doViewModel.getDoDetails(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()).observe(
-                        PickupDeliveryOrderFragment.this, new Observer<List<OrderItemEntity>>() {
-                            @Override
-                            public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
-                                List<BaseListItem> listItems = new ArrayList<>();
-                                listItems.addAll(doDetails);
-                                adapter.addItemsList(listItems, pos);
-                                doUpdateMap.put(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId(), true);
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
-                                    }
-                                }, 5);
-
-                            }
-                        });
+                doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
             } else if(!doUpdateMap.containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
                 doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
             }
@@ -127,6 +116,8 @@ public class PickupDeliveryOrderFragment extends Fragment{
                     List<BaseListItem> baseListItems = new ArrayList<>();
                     baseListItems.addAll(deliveryOrders);
                     adapter.upDateList(baseListItems);
+                    doViewModel.getDoDetails(deliveryOrders.get(0).getId()).observe(
+                            PickupDeliveryOrderFragment.this, PickupDeliveryOrderFragment.this);
                 }
             }
         });
@@ -138,5 +129,26 @@ public class PickupDeliveryOrderFragment extends Fragment{
 
     public void setItemSelectionListener(ItemCheckListener itemSelectionListener) {
         this.itemCheckListener = itemSelectionListener;
+    }
+
+    @Override
+    public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
+        if (doDetails != null && doDetails.size() > 0 && positionMap.containsKey(doDetails.get(0).getDoId())) {
+            final int pos = positionMap.get(doDetails.get(0).getDoId());
+            List<BaseListItem> listItems = new ArrayList<>();
+            listItems.addAll(doDetails);
+            adapter.addItemsList(listItems, pos);
+            doUpdateMap.put(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId(), true);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
+                    }catch (NullPointerException e){
+
+                    }
+                }
+            }, 5);
+        }
     }
 }

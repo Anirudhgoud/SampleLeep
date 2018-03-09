@@ -9,12 +9,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -49,8 +52,17 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
 
     public void updateList(List<OrderItemEntity> orderItemEntities) {
         doDetailsList.clear();
-        doDetailsList.addAll(orderItemEntities);
+        doDetailsList.addAll(setItemType(orderItemEntities));
         notifyDataSetChanged();
+    }
+
+    private List<OrderItemEntity> setItemType(List<OrderItemEntity> orderItemEntities) {
+        List<OrderItemEntity> orderItemEntityList = new ArrayList<>();
+        for(OrderItemEntity orderItemEntity : orderItemEntities){
+            orderItemEntity.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
+            orderItemEntityList.add(orderItemEntity);
+        }
+        return orderItemEntityList;
     }
 
     public void setItemCheckListener(ItemCheckListener itemCheckListener) {
@@ -76,6 +88,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             productQuantityTv.setText(productEntity.getWeight()+" "+ productEntity.getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+            productCheckbox.setVisibility(View.VISIBLE);
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {

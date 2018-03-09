@@ -59,6 +59,7 @@
         android:id="@+id/product_checkbox"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:visibility="gone"
         android:button="@drawable/do_item_checkbox_bg"
         android:layout_gravity="end|center_vertical"/>
 

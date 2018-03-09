@@ -7,7 +7,7 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:paddingLeft="15dp"
-    android:layout_height="45dp">
+    android:layout_height="wrap_content">
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:layout_width="wrap_content"

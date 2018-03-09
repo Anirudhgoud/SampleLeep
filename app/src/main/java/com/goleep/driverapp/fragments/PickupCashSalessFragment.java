@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -107,6 +108,10 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
 
     private void startConfirmActivity() {
         Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
+        intent.putIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY,
+                (ArrayList<Integer>) ((PickupActivity)getActivity()).getSelectedCashSalesIds());
+        intent.putIntegerArrayListExtra(AppConstants.DO_IDS_KEY,
+                (ArrayList<Integer>) ((PickupActivity)getActivity()).getSelectedDoIds());
         startActivity(intent);
     }
 

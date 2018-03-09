@@ -11,6 +11,7 @@ import android.text.TextUtils;
 
 
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.LogUtils;
 
 
@@ -33,7 +34,7 @@ public abstract class DeliveryOrderDao {
     public abstract void deleteAllDeliveryOrders();
 
     @Query("Select * from DeliveryOrderEntity where id =:id")
-    public abstract DeliveryOrderEntity deliveryOrder(int id);
+    public abstract DeliveryOrderEntity getDeliveryOrder(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertDeliveryOrders(List<DeliveryOrderEntity> deliveryOrders);
@@ -57,5 +58,6 @@ public abstract class DeliveryOrderDao {
             LogUtils.error("SQLiteDatabaseLockedException", "");
         }
     }
+
 
 }
