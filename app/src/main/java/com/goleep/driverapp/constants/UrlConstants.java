@@ -21,5 +21,5 @@ public interface UrlConstants {
     String DELIVERY_ORDERS_URL = BASE_URL + "/delivery_orders";
 
     //PickupConfirmation
-    String PICKUP_CONFIRMATION = BASE_URL + "/in_transit";
+    String PICKUP_CONFIRMATION = DELIVERY_ORDERS_URL + "/in_transit";
 }

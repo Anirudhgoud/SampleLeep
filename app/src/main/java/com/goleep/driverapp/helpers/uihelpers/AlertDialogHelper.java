@@ -6,6 +6,7 @@ import android.view.View;
 
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 
@@ -48,6 +49,8 @@ public class AlertDialogHelper {
                     dialog.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            activity.setResult(AppConstants.ACTIVITY_SUCCESS_RESULT);
+                            activity.finish();
                             dialog.dismiss();
                         }
                     });
@@ -55,6 +58,8 @@ public class AlertDialogHelper {
                     dialog.findViewById(R.id.close_layout).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            activity.setResult(AppConstants.ACTIVITY_SUCCESS_RESULT);
+                            activity.finish();
                             dialog.dismiss();
                         }
                     });

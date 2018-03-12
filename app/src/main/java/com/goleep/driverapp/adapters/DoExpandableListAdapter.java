@@ -75,7 +75,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
     @Override
     public void onBindViewHolder(ExpandableRecyclerAdapter.ViewHolder holder, int position) {
-        int type = getItemViewType(position);
         switch (getItemViewType(position)) {
             case AppConstants.TYPE_HEADER:
                 ((HeaderViewHolder) holder).bind(position);

@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -119,6 +120,15 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
 
     public void logoutUser(){
         super.logoutUser();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 101) {
+            if (resultCode == AppConstants.ACTIVITY_SUCCESS_RESULT) {
+                finish();
+            }
+        }
     }
 
     @Override

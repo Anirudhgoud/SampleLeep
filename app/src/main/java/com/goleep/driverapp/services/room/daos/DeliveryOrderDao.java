@@ -59,5 +59,6 @@ public abstract class DeliveryOrderDao {
         }
     }
 
-
+    @Query("Delete from DeliveryOrderEntity WHERE id = :doId")
+    public abstract void deleteDeliveryOrder(Integer doId);
 }

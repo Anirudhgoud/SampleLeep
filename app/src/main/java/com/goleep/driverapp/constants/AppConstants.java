@@ -15,4 +15,6 @@ public interface AppConstants {
     int TYPE_ITEMS_HEADER = 14;
     int TYPE_SALES_INFO = 15;
     String DO_IDS_KEY = "do_selected";
+
+    int ACTIVITY_SUCCESS_RESULT = 101;
 }

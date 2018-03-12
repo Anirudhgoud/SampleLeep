@@ -36,13 +36,14 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
     private PickupDeliveryOrderViewModel pickupDeliveryOrderViewModel;
     private ArrayList<Integer> cashDoItems = new ArrayList<>();
     private ArrayList<Integer> selectedDeliveryOrders = new ArrayList<>();
-    private List<OrderItemEntity> cashCalesItems = new ArrayList<>();
+    private List<OrderItemEntity> cashSalesItems = new ArrayList<>();
 
     private UILevelNetworkCallback pickupConfirmCallBack = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage,
                                        boolean toLogout) {
             if(!isDialogToBeShown && errorMessage == null && !toLogout){
+                pickupDeliveryOrderViewModel.deleteDeliveryOrders(selectedDeliveryOrders, cashSalesItems);
                 showSuccessDialog(getString(R.string.pickup_success));
             }
         }
@@ -95,20 +96,20 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         for(int cashSalesId : cashDoItems){
             OrderItemEntity csOrderItem = pickupDeliveryOrderViewModel.getDeliveryOrderItem(cashSalesId);
             csOrderItem.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
-            cashCalesItems.add(csOrderItem);
+            cashSalesItems.add(csOrderItem);
             totalValue += csOrderItem.getQuantity() * csOrderItem.getPrice();
         }
         BaseListItem cashSalesHeader = new BaseListItem();
         cashSalesHeader.setOrdersHeader(getString(R.string.cash_sales));
         cashSalesHeader.setItemType(AppConstants.TYPE_ORDERS_HEADER);
         baseListItems.add(cashSalesHeader);
-        BaseListItem cashSalesInfo = new CashSalesInfo(cashCalesItems.size(), totalValue);
+        BaseListItem cashSalesInfo = new CashSalesInfo(cashSalesItems.size(), totalValue);
         cashSalesInfo.setItemType(AppConstants.TYPE_SALES_INFO);
         baseListItems.add(cashSalesInfo);
         BaseListItem itemsHeader = new BaseListItem();
         itemsHeader.setItemType(AppConstants.TYPE_ITEMS_HEADER);
         baseListItems.add(itemsHeader);
-        baseListItems.addAll(cashCalesItems);
+        baseListItems.addAll(cashSalesItems);
         return baseListItems;
     }
 
@@ -145,7 +146,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
             case R.id.left_toolbar_button : finish();
                 break;
             case R.id.confirm_button :
-                pickupDeliveryOrderViewModel.confirmPickup(cashCalesItems, selectedDeliveryOrders, pickupConfirmCallBack);
+                pickupDeliveryOrderViewModel.confirmPickup(cashSalesItems, selectedDeliveryOrders, pickupConfirmCallBack);
                 break;
         }
     }

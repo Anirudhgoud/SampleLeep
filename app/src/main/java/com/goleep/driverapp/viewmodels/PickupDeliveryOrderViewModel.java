@@ -82,14 +82,18 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                               final UILevelNetworkCallback pickupConfirmCallBack) {
         Map<String, Object> requestBody = new HashMap<>();
         try {
-            requestBody.put("delivery_order_ids", selectedDeliveryOrders.toArray());
+            JSONArray selectedDeliveryOrdersArray = new JSONArray();
+            for(Integer doId:selectedDeliveryOrders){
+                selectedDeliveryOrdersArray.put(doId);
+            }
+            requestBody.put("delivery_order_ids", selectedDeliveryOrdersArray);
             JSONObject cashSalesObject = new JSONObject();
             cashSalesObject.put("id", cashDoItems.get(0).getDoId());
             JSONArray itemsArray = new JSONArray();
             for(OrderItemEntity orderItemEntity: cashDoItems){
                 JSONObject itemObject = new JSONObject();
                 itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
-                itemObject.put("_destroy", true);
+                itemObject.put("_destroy", false);
                 itemsArray.put(itemObject);
             }
             cashSalesObject.put("cash_sales_items", itemsArray);
@@ -124,5 +128,12 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                     });
         }
 
+    }
+
+    public void deleteDeliveryOrders(ArrayList<Integer> selectedDeliveryOrders, List<OrderItemEntity> cashSalesItems) {
+        for(Integer doId : selectedDeliveryOrders)
+            leepDatabase.deliveryOrderDao().deleteDeliveryOrder(doId);
+        if(cashSalesItems.size() > 0)
+            leepDatabase.deliveryOrderDao().deleteDeliveryOrder(cashSalesItems.get(0).getDoId());
     }
 }

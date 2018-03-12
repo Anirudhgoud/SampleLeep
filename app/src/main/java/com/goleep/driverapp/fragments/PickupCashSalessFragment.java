@@ -44,6 +44,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     private CashSalesViewModel cashSalesViewModel;
     private PickupCashSalesListAdapter adapter;
     private ItemCheckListener itemCheckListener;
+    private final int CONFIRM_ACTIVITY_REQUEST_CODE = 101;
 
     private UILevelNetworkCallback driverDoCallback = new UILevelNetworkCallback() {
         @Override
@@ -112,7 +113,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
                 (ArrayList<Integer>) ((PickupActivity)getActivity()).getSelectedCashSalesIds());
         intent.putIntegerArrayListExtra(AppConstants.DO_IDS_KEY,
                 (ArrayList<Integer>) ((PickupActivity)getActivity()).getSelectedDoIds());
-        startActivity(intent);
+        getActivity().startActivityForResult(intent, CONFIRM_ACTIVITY_REQUEST_CODE);
     }
 
     @Override
