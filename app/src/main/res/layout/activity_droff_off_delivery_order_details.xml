@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:padding="16dp"
-            android:text="50000"
+            android:gravity="end"
             android:textColor="@color/doTabTextColor"
             android:textSize="18sp"
             app:typeface="NotoSans-Regular" />

@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,11 +73,11 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
 
     @Override
     public void doInitialSetup() {
-        connectUIElements();
         viewModel = ViewModelProviders.of(this).get(DropOffDeliveryOrderDetailsViewModel.class);
         if (getIntent().getExtras() != null) {
             viewModel.setDeliveryOrderId(getIntent().getExtras().getInt(IntentConstants.DELIVERY_ORDER_ID));
         }
+        connectUIElements();
         initialiseToolbar();
         initialiseRecyclerView();
         fetchDeliveryOrderData();
@@ -243,7 +244,9 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         });
 
         btCollectPayment.setOnClickListener(v -> {
-
+            Intent doCollectPaymentIntent = new Intent(DropOffDeliveryOrderDetailsActivity.this, DropOffPaymentCollectActivity.class);
+            doCollectPaymentIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, viewModel.getDeliveryOrderId());
+            startActivity(doCollectPaymentIntent);
         });
     }
 }

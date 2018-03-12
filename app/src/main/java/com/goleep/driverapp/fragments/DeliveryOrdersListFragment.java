@@ -42,12 +42,7 @@ public class DeliveryOrdersListFragment extends Fragment {
     private RecyclerView doListRecyclerView;
     private RadioGroup rgFilterRadioGroup;
 
-    private DeliveryOrderClickEventListener deliveryOrderClickEventListener = new DeliveryOrderClickEventListener() {
-        @Override
-        public void onDeliverClicked(Integer orderId) {
-            openDeliveryDetailsActivity(orderId);
-        }
-    };
+    private DeliveryOrderClickEventListener deliveryOrderClickEventListener = orderId -> openDeliveryDetailsActivity(orderId);
 
     @Nullable
     @Override

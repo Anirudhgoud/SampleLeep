@@ -19,4 +19,6 @@ public interface UrlConstants {
 
     //Delivery Orders
     String DELIVERY_ORDERS_URL = BASE_URL + "/delivery_orders";
+    String CONSUMER_LOCATIONS_URL = BASE_URL + "/locations";
+    String BUSINESS_LOCATIONS_URL = BASE_URL + "/businesses";
 }

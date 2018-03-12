@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_item_summary_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/item_list"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="22sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:id="@+id/tv_item_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:lines="1"
+        android:text="0 items"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="12sp"
+        app:typeface="NotoSans-Regular" />
+
+    <ImageView
+        android:id="@+id/iv_expandable_indicator"
+        android:layout_width="16dp"
+        android:layout_height="10dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_expandable_indicator_open" />
+
+</LinearLayout>

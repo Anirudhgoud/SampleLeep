@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/current_sale"
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:id="@+id/tv_current_sales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="24sp"
+        app:typeface="NotoSans-Light" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/outstanding_balance"
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:id="@+id/tv_outstanding_balance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="24sp"
+        app:typeface="NotoSans-Light" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/grand_total"
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:id="@+id/tv_grand_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="24sp"
+        app:typeface="NotoSans-Light" />
+
+
+</LinearLayout>

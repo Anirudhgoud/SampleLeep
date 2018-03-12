@@ -54,6 +54,13 @@
     <string name="update">Update</string>
     <string name="enter_quantity">Enter Quantity</string>
 
+    <!--Collect Payment-->
+    <string name="item_list">Item List</string>
+    <string name="current_sale">Current Sale</string>
+    <string name="outstanding_balance">Outstanding Balance</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="done">Done</string>
+
     <string name="value">Value</string>
     <string name="units">Units</string>
     <string name="from_top">From:</string>
