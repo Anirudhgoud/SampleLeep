@@ -1,5 +1,6 @@
 package com.goleep.driverapp.leep;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -39,7 +40,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     private NetworkChangeListener networkChangeListener;
     private AlertDialogHelper alertDialogHelper;
-    private ProgressDialog progressBar;
+    private Dialog progressBar;
 
     private BroadcastReceiver connectivityChangeReceiver = new BroadcastReceiver() {
         @Override
@@ -75,9 +76,11 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     }
 
     protected void showProgressDialog(){
-        progressBar = new ProgressDialog(ParentAppCompatActivity.this, R.style.MyTheme);
+        progressBar = new Dialog(ParentAppCompatActivity.this);
+        progressBar.setContentView(LayoutInflater.from(this).inflate(
+                R.layout.progress_dialog_layout, null, false), new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         progressBar.setCancelable(false);
-        progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
         progressBar.getWindow().setGravity(Gravity.CENTER);
         progressBar.show();
     }

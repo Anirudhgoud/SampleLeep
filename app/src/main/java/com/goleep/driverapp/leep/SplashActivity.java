@@ -24,7 +24,7 @@ public class SplashActivity extends ParentAppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //performNextActivity();
+                performNextActivity();
             }
         }, 1000);
     }
