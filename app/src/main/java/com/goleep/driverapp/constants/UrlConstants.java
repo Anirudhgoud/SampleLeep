@@ -19,4 +19,7 @@ public interface UrlConstants {
 
     //Delivery Orders
     String DELIVERY_ORDERS_URL = BASE_URL + "/delivery_orders";
+
+    //PickupConfirmation
+    String PICKUP_CONFIRMATION = BASE_URL + "/in_transit";
 }

@@ -75,6 +75,11 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
     }
 
+    protected void showSuccessDialog(String message){
+        alertDialogHelper = new AlertDialogHelper();
+        alertDialogHelper.showSuccessDialog(this, message);
+    }
+
     protected void showProgressDialog(){
         progressBar = new Dialog(ParentAppCompatActivity.this);
         progressBar.setContentView(LayoutInflater.from(this).inflate(
@@ -119,6 +124,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     @Override
     protected void onDestroy(){
         super.onDestroy();
+        dismissProgressDialog();
         unregisterReceiverForNetworkChange();
     }
 

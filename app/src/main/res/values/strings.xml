@@ -34,6 +34,8 @@
     <string name="do_header_label">Delivery Orders (%1d)</string>
     <string name="total_product_label">Total Product: %d</string>
     <string name="total_value_label">Total Value: %1s</string>
+    <string name="pickup_success">Pick Up Successful</string>
+    <string name="ok">OK</string>
 
 
     <!--Delivery Orders-->
