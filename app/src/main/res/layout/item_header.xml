@@ -150,7 +150,7 @@
     <ImageView
         android:id="@+id/img_arrow"
         android:layout_width="16dp"
-        android:layout_height="9dp"
+        android:layout_height="10dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

@@ -44,7 +44,6 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     private CashSalesViewModel cashSalesViewModel;
     private PickupCashSalesListAdapter adapter;
     private ItemCheckListener itemCheckListener;
-    private final int CONFIRM_ACTIVITY_REQUEST_CODE = 101;
 
     private UILevelNetworkCallback driverDoCallback = new UILevelNetworkCallback() {
         @Override
@@ -97,8 +96,6 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
         cashSalesViewModel.fetchDriverDoDetails(id, driverDoDetailsCallback);
     }
 
-
-
     @Override
     public void onClick(View view) {
        switch (view.getId()){
@@ -108,12 +105,15 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     }
 
     private void startConfirmActivity() {
-        Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
-        intent.putIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY,
-                (ArrayList<Integer>) ((PickupActivity)getActivity()).getSelectedCashSalesIds());
-        intent.putIntegerArrayListExtra(AppConstants.DO_IDS_KEY,
-                (ArrayList<Integer>) ((PickupActivity)getActivity()).getSelectedDoIds());
-        getActivity().startActivityForResult(intent, CONFIRM_ACTIVITY_REQUEST_CODE);
+        if(((PickupActivity)getActivity()).getSelectedCashSalesIds().size() > 0 ||
+                ((PickupActivity)getActivity()).getSelectedDoIds().size() >0) {
+            Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
+            intent.putIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY,
+                    (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedCashSalesIds());
+            intent.putIntegerArrayListExtra(AppConstants.DO_IDS_KEY,
+                    (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedDoIds());
+            getActivity().startActivityForResult(intent, 101);
+        }
     }
 
     @Override

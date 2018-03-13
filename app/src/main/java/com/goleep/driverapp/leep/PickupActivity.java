@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
@@ -39,6 +40,8 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
     TabLayout tabLayout;
     @BindView(R.id.warehouse_info_text_view)
     CustomTextView wareHouseInfoTextView;
+    @BindView(R.id.map_button)
+    LinearLayout mapButton;
     private PickupViewModel pickupViewModel;
     private List<Integer> selectedDeliveryOrders = new ArrayList<>();
     private List<Integer> cashDoItems = new ArrayList<>();
@@ -60,7 +63,15 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         switch (resourceId){
             case R.id.left_toolbar_button : finish();
             break;
+            case R.id.map_button :
+                startMapActivity();
+                break;
         }
+    }
+
+    private void startMapActivity() {
+        Intent mapIntent = new Intent(PickupActivity.this, PickupMapActivity.class);
+        startActivity(mapIntent);
     }
 
     private void initView() {
@@ -69,6 +80,7 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
         initialiseTabBar();
         setWareHouseDetails();
+        mapButton.setOnClickListener(this);
     }
 
     private void setWareHouseDetails() {

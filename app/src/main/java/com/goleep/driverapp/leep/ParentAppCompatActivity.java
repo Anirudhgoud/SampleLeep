@@ -1,7 +1,6 @@
 package com.goleep.driverapp.leep;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -24,7 +22,6 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.AlertDialogHelper;
 import com.goleep.driverapp.interfaces.NetworkChangeListener;
 import com.goleep.driverapp.services.network.NetworkChecker;
-import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import java.util.Vector;
@@ -40,7 +37,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     private NetworkChangeListener networkChangeListener;
     private AlertDialogHelper alertDialogHelper;
-    private Dialog progressBar;
+    private Dialog progressBarDialog;
 
     private BroadcastReceiver connectivityChangeReceiver = new BroadcastReceiver() {
         @Override
@@ -81,18 +78,22 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     }
 
     protected void showProgressDialog(){
-        progressBar = new Dialog(ParentAppCompatActivity.this);
-        progressBar.setContentView(LayoutInflater.from(this).inflate(
+        progressBarDialog = new Dialog(ParentAppCompatActivity.this, R.style.ProgressBarTheme);
+        progressBarDialog.setContentView(LayoutInflater.from(this).inflate(
                 R.layout.progress_dialog_layout, null, false), new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        progressBar.setCancelable(false);
-        progressBar.getWindow().setGravity(Gravity.CENTER);
-        progressBar.show();
+        progressBarDialog.setCancelable(false);
+        ProgressBar progressBar = progressBarDialog.findViewById(R.id.progress_bar);
+        progressBar.getIndeterminateDrawable().setColorFilter(
+                getResources().getColor(R.color.green),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+        progressBarDialog.getWindow().setGravity(Gravity.CENTER);
+        progressBarDialog.show();
     }
 
     protected void dismissProgressDialog(){
         try{
-            progressBar.hide();
+            progressBarDialog.hide();
         }catch (Exception e){
 
         }

@@ -19,7 +19,7 @@
 
 
 
-    <style name="MyTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="ProgressBarTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
         <item name="colorAccent">@color/green</item>
         <item name="android:windowBackground">@color/transparent</item>

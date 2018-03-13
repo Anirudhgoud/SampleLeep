@@ -20,8 +20,6 @@ public class SplashActivity extends ParentAppCompatActivity {
         super.setResources(R.layout.activity_splash);
         context = this;
         final Handler handler = new Handler();
-        //showProgressDialog();
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
