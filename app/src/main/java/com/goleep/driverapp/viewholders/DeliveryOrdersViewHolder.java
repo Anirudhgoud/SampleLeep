@@ -55,12 +55,7 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setDeliverButtonClickEvent(final Integer orderId){
-        btDeliver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deliveryOrderClickEventListener.onDeliverClicked(orderId);
-            }
-        });
+        btDeliver.setOnClickListener(v -> deliveryOrderClickEventListener.onDeliverClicked(orderId));
     }
 
     private String dateToDisplay(String dateString){

@@ -34,7 +34,7 @@ public abstract class DeliveryOrderDao {
     public abstract void deleteAllDeliveryOrders();
 
     @Query("Select * from DeliveryOrderEntity where id =:id")
-    public abstract DeliveryOrderEntity getDeliveryOrder(int id);
+    public abstract DeliveryOrderEntity deliveryOrder(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insertDeliveryOrders(List<DeliveryOrderEntity> deliveryOrders);

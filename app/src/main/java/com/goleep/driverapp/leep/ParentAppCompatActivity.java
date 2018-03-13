@@ -53,6 +53,81 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         }
     };
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        onActivityCreated(savedInstanceState);
+    }
+
+    protected void setResources(int resourceIdentifier) {
+        setContentView(resourceIdentifier);
+        doInitialSetup();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        dismissProgressDialog();
+        unregisterReceiverForNetworkChange();
+    }
+
+    protected void setToolbarLeftIcon(int resId){
+        CustomButton leftToolbarButton = findViewById(R.id.left_toolbar_button);
+        leftToolbarButton.setVisibility(View.VISIBLE);
+        leftToolbarButton.setOnClickListener(this);
+        leftToolbarButton.setBackgroundResource(resId);
+    }
+
+    protected void setTitleIconAndText(String title, int resId){
+        findViewById(R.id.title_layout).setVisibility(View.VISIBLE);
+        ((CustomTextView)findViewById(R.id.activity_title)).setText(title);
+        findViewById(R.id.title_icon).setBackgroundResource(resId);
+    }
+
+    protected void setToolbarRightText(String text){
+        CustomTextView leftToolbarButton = findViewById(R.id.right_toolbar_text);
+        leftToolbarButton.setText(text);
+        leftToolbarButton.setVisibility(View.VISIBLE);
+        leftToolbarButton.setOnClickListener(this);
+    }
+
+    protected void setToolBarColor(int colorId){
+        RelativeLayout toolbarContainer = findViewById(R.id.toolbar_container);
+        toolbarContainer.setBackgroundColor(colorId);
+
+    }
+
+    protected void logoutUser(){
+        LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(this);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    protected void requestLocationsPermission(){
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    100);
+        }
+    }
+
+    protected boolean isLocationsPremissionGranted(){
+        return (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED);
+    }
+
+    @Override
+    public void onClick(View view) {
+        onClickWithId(view.getId());
+    }
+
     private void registerReceiverForNetworkChange(){
         registerReceiver(connectivityChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
@@ -117,80 +192,5 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
             }
             alertDialogHelper = null;
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        dismissProgressDialog();
-        unregisterReceiverForNetworkChange();
-    }
-
-    protected void setResources(int resourceIdentifier) {
-        setContentView(resourceIdentifier);
-        doInitialSetup();
-    }
-
-    protected void setToolbarLeftIcon(int resId){
-        CustomButton leftToolbarButton = findViewById(R.id.left_toolbar_button);
-        leftToolbarButton.setVisibility(View.VISIBLE);
-        leftToolbarButton.setOnClickListener(this);
-        leftToolbarButton.setBackgroundResource(resId);
-    }
-
-    protected void setTitleIconAndText(String title, int resId){
-        findViewById(R.id.title_layout).setVisibility(View.VISIBLE);
-        ((CustomTextView)findViewById(R.id.activity_title)).setText(title);
-        findViewById(R.id.title_icon).setBackgroundResource(resId);
-    }
-
-    protected void setToolbarRightText(String text){
-        CustomTextView leftToolbarButton = findViewById(R.id.right_toolbar_text);
-        leftToolbarButton.setText(text);
-        leftToolbarButton.setVisibility(View.VISIBLE);
-        leftToolbarButton.setOnClickListener(this);
-    }
-
-    protected void setToolBarColor(int colorId){
-        RelativeLayout toolbarContainer = findViewById(R.id.toolbar_container);
-        toolbarContainer.setBackgroundColor(colorId);
-
-    }
-
-    protected void logoutUser(){
-        LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(this);
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    protected void requestLocationsPermission(){
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    100);
-        }
-    }
-
-    protected boolean isLocationsPremissionGranted(){
-        return (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED);
-    }
-
-    @Override
-    public void onClick(View view) {
-        onClickWithId(view.getId());
     }
 }

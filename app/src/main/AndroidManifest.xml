@@ -52,8 +52,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.DropOffDeliveryOrderDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".leep.PickupMapActivity"></activity>
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".leep.PickupMapActivity"
+            android:screenOrientation="portrait"/>
+
+
     </application>
 
 </manifest>

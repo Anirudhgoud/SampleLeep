@@ -78,7 +78,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     }
 
     public DeliveryOrderEntity getDeliveryOrder(int doId) {
-        return leepDatabase.deliveryOrderDao().getDeliveryOrder(doId);
+        return leepDatabase.deliveryOrderDao().deliveryOrder(doId);
     }
 
     public OrderItemEntity getDeliveryOrderItem(int doItemId) {
