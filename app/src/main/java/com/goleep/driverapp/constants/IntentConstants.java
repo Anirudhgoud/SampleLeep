@@ -6,4 +6,8 @@ package com.goleep.driverapp.constants;
 
 public interface IntentConstants {
     String DELIVERY_ORDER_ID = "delivery_order_id";
+    String CURRENT_SALE = "current_sale";
+    String OUTSTANDING_BALANCE = "outstanding_balance";
+    String PAYMENT_COLLECTED = "payment_collected";
+    String BUSINESS_ADDRESS = "business_address";
 }

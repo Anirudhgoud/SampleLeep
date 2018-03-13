@@ -56,10 +56,14 @@
 
     <!--Collect Payment-->
     <string name="item_list">Item List</string>
+    <string name="view_item_list">View Item List</string>
     <string name="current_sale">Current Sale</string>
     <string name="outstanding_balance">Outstanding Balance</string>
     <string name="grand_total">Grand Total</string>
     <string name="done">Done</string>
+    <string name="continue_text">Continue</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="cash">Cash</string>
 
     <string name="value">Value</string>
     <string name="units">Units</string>

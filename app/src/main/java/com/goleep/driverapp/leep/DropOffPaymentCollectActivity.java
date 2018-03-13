@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -56,9 +57,9 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
         if (getIntent().getExtras() != null) {
             viewModel.setDeliveryOrderId(getIntent().getExtras().getInt(IntentConstants.DELIVERY_ORDER_ID));
         }
+        initialiseToolbar();
         connectUIElements();
         addListeners();
-        initialiseToolbar();
         fetchDeliveryOrderData();
         fetchDeliveryOrderItems();
         updateDeliveryOrderUI();
@@ -90,7 +91,6 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -172,14 +172,10 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
     private void updateSalesValues() {
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, viewModel.getOrderItems().size(), viewModel.getOrderItems().size())));
         ((CustomTextView) findViewById(R.id.tv_collected_amount_currency)).setText(AppUtils.userCurrencySymbol());
-        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.currrentSales())));
+        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.currentSales())));
         tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getOutstandingBalance())));
-        double total = viewModel.currrentSales() + viewModel.getOutstandingBalance();
+        double total = viewModel.currentSales() + viewModel.getOutstandingBalance();
         tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(total)));
-    }
-
-    private void addOnEditListener() {
-
     }
 
     @Override
@@ -195,8 +191,19 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
                 break;
 
             case R.id.bt_done:
+                gotoPaymentMethodScreen();
                 break;
         }
+    }
+
+    private void gotoPaymentMethodScreen() {
+        Intent paymentMethodIntent = new Intent(DropOffPaymentCollectActivity.this, DropOffCollectPaymentMethodActivity.class);
+        paymentMethodIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, viewModel.getDeliveryOrderId());
+        paymentMethodIntent.putExtra(IntentConstants.BUSINESS_ADDRESS, viewModel.getAddress(viewModel.getBusinessLocation()));
+        paymentMethodIntent.putExtra(IntentConstants.CURRENT_SALE, viewModel.currentSales());
+        paymentMethodIntent.putExtra(IntentConstants.OUTSTANDING_BALANCE, viewModel.getOutstandingBalance());
+        paymentMethodIntent.putExtra(IntentConstants.PAYMENT_COLLECTED, Double.valueOf(etPaymentCollected.getText().toString()));
+        startActivity(paymentMethodIntent);
     }
 
     private void fetchLocationDetails() {

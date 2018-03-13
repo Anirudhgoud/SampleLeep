@@ -48,7 +48,7 @@ public class DropOffPaymentCollectViewModel extends AndroidViewModel {
         return leepDatabase.deliveryOrderItemDao().getSelectedOrderItems(deliveryOrderId);
     }
 
-    public double currrentSales() {
+    public double currentSales() {
         double total = 0;
         for (OrderItemEntity orderItem : orderItems) {
             total += orderItem.getQuantity() * orderItem.getPrice();
