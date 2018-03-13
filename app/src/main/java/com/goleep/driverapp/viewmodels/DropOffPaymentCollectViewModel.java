@@ -1,7 +1,6 @@
 package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
@@ -10,42 +9,24 @@ import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
-import com.goleep.driverapp.services.room.AppDatabase;
-import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by anurag on 09/03/18.
  */
 
-public class DropOffPaymentCollectViewModel extends AndroidViewModel {
+public class DropOffPaymentCollectViewModel extends DropOffDoBaseViewModel {
 
-    protected AppDatabase leepDatabase;
-
-    private DeliveryOrderEntity deliveryOrder;
-    private int deliveryOrderId;
-    private List<OrderItemEntity> orderItems;
     private Location businessLocation;
     private double outstandingBalance;
 
     public DropOffPaymentCollectViewModel(@NonNull Application application) {
         super(application);
-        leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
-    }
-
-    public DeliveryOrderEntity deliveryOrder(int deliveryOrderId) {
-        return leepDatabase.deliveryOrderDao().deliveryOrder(deliveryOrderId);
-    }
-
-    public List<OrderItemEntity> getSelectedOrderItems() {
-        return leepDatabase.deliveryOrderItemDao().getSelectedOrderItems(deliveryOrderId);
     }
 
     public double currentSales() {
@@ -124,30 +105,6 @@ public class DropOffPaymentCollectViewModel extends AndroidViewModel {
 
 
     //Getters and Setters
-    public int getDeliveryOrderId() {
-        return deliveryOrderId;
-    }
-
-    public void setDeliveryOrderId(int deliveryOrderId) {
-        this.deliveryOrderId = deliveryOrderId;
-    }
-
-    public DeliveryOrderEntity getDeliveryOrder() {
-        return deliveryOrder;
-    }
-
-    public void setDeliveryOrder(DeliveryOrderEntity deliveryOrder) {
-        this.deliveryOrder = deliveryOrder;
-    }
-
-    public List<OrderItemEntity> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItemEntity> orderItems) {
-        this.orderItems = orderItems;
-    }
-
     public Location getBusinessLocation() {
         return businessLocation;
     }
