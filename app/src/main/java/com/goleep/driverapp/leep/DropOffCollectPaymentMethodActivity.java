@@ -101,7 +101,7 @@ public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(viewModel.getBusinessAddress());
             tvDoNumber.setText(deliveryOrder.getDoNumber() == null ? "-" : deliveryOrder.getDoNumber());
-            tvDate.setText(viewModel.dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
+            tvDate.setText(viewModel.currentDateToDisplay());
             tvTime.setText(viewModel.currentTimeToDisplay());
         }
     }
@@ -138,8 +138,12 @@ public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity
                 break;
 
             case R.id.bt_continue:
-
+                gotoPaymentConfirmationScreen();
                 break;
         }
+    }
+
+    private void gotoPaymentConfirmationScreen() {
+
     }
 }

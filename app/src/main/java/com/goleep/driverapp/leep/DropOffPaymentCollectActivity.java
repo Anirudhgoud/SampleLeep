@@ -122,7 +122,7 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText("");
             tvDoNumber.setText(deliveryOrder.getDoNumber() == null ? "-" : deliveryOrder.getDoNumber());
-            tvDate.setText(viewModel.dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
+            tvDate.setText(viewModel.currentDateToDisplay());
             tvTime.setText(viewModel.currentTimeToDisplay());
         }
     }

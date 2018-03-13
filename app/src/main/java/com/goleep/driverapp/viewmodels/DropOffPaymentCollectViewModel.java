@@ -39,7 +39,11 @@ public class DropOffPaymentCollectViewModel extends DropOffDoBaseViewModel {
 
     public String dateToDisplay(String dateString) {
         return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, "yyyy-MM-dd", "dd MMM, yyyy");
+    }
 
+    public String currentDateToDisplay() {
+        Date now = new Date();
+        return DateTimeUtils.convertedDate(now, "dd MMM, yyyy");
     }
 
     public String currentTimeToDisplay() {
