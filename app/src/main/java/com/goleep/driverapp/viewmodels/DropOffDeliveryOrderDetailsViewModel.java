@@ -17,7 +17,6 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
 import org.json.JSONArray;
@@ -44,6 +43,18 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
 
     public LiveData<List<OrderItemEntity>> deliveryOrderItems(int deliveryOrderId){
         return leepDatabase.deliveryOrderItemDao().getDeliveryOrderItems(deliveryOrderId);
+    }
+
+    public OrderItemEntity orderItem(int orderItemId){
+        return leepDatabase.deliveryOrderItemDao().getOrderItem(orderItemId);
+    }
+
+    public void updateOrderItemQuantity(int orderItemId, int updatedQuantity){
+        leepDatabase.deliveryOrderItemDao().updateOrderItemQuantity(orderItemId, updatedQuantity);
+    }
+
+    public void updateOrderItemSelectionStatus(int orderItemId, boolean checked) {
+        leepDatabase.deliveryOrderItemDao().updateOrderItemSelectionStatus(orderItemId, checked);
     }
 
     public void fetchDeliveryOrderItems(final int doId, final UILevelNetworkCallback orderItemNetworkCallBack){
@@ -87,14 +98,6 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
             }
         }
         return "-";
-    }
-
-    public String amountToDisplay(Float amountString){
-        String currencySymbol = AppUtils.userCurrencySymbol();
-        if (amountString != null){
-            return currencySymbol + " " + Math.round(amountString);
-        }
-        return currencySymbol + " 0";
     }
 
     public String getAddress(String line1, String line2){

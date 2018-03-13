@@ -22,6 +22,10 @@ android {
             buildConfigField 'String', 'BASE_URL', '"http://leep.cybrilla.io/v1"'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {

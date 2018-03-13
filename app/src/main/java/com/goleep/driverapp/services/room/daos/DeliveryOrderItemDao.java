@@ -25,6 +25,15 @@ public abstract class DeliveryOrderItemDao {
     @Query("SELECT * FROM OrderItemEntity WHERE doId = :id")
     public abstract LiveData<List<OrderItemEntity>> getDeliveryOrderItems(int id);
 
+    @Query("SELECT * FROM OrderItemEntity WHERE id = :itemId")
+    public abstract OrderItemEntity getOrderItem(int itemId);
+
+    @Query("UPDATE OrderItemEntity SET quantity = :updatedQuantity WHERE id = :orderItemId")
+    public abstract void updateOrderItemQuantity(int orderItemId, int updatedQuantity);
+
+    @Query("UPDATE OrderItemEntity SET selected = :checked WHERE id = :orderItemId")
+    public abstract void updateOrderItemSelectionStatus(int orderItemId, boolean checked);
+
     @Query("DELETE FROM OrderItemEntity WHERE id = :doId")
     abstract void deleteDeliveryItems(Integer doId);
 

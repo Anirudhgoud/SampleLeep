@@ -43,8 +43,16 @@
     <string name="preferred_time">"Preferred Time: "</string>
 
     <!--Order Items-->
+    <plurals name="item_count_text">
+        <item quantity="one">&lt;b>%d&lt;/b> Item</item>
+        <item quantity="other">&lt;b>%d&lt;/b> Items</item>
+    </plurals>
     <string name="weight_with_units">%s %s</string>
     <string name="value_with_currency_symbol">%s%s</string>
+    <string name="skip_payment">Skip Payment</string>
+    <string name="collect_payment">Collect Payment</string>
+    <string name="update">Update</string>
+    <string name="enter_quantity">Enter Quantity</string>
 
     <string name="value">Value</string>
     <string name="units">Units</string>
@@ -52,4 +60,7 @@
     <string name="pickup_stock">Pick Up Stock</string>
     <string name="confirm">Confirm</string>
     <string name="next">Next</string>
+
+    <!--Error Messages-->
+    <string name="invalid_quantity_error">You can only reduce the units and it should be greater than 0</string>
 </resources>
