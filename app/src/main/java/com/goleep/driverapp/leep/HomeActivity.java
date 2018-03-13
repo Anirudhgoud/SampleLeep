@@ -41,7 +41,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     @BindView(R.id.dashboard_viewpager)
     NonSwipeableViewPager viewPager;
     @BindView(R.id.signout) CustomButton signOutButton;
-    private Summary summary = new Summary();
+    //private Summary summary = new Summary();
 
     View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
@@ -103,11 +103,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                                        String errorMessage, boolean toLogout) {
             if(toLogout){
                 logoutUser();
-            } else if(errorMessage == null){
-                if(uiModels.size() > 0){
-                    summary = (Summary) uiModels.get(0);
-                }
-            } else if(isDialogToBeShown){
+            }else if(isDialogToBeShown){
                 showNetworkRelatedDialogs(errorMessage);
             }
         }
@@ -209,13 +205,13 @@ public class HomeActivity extends ParentAppCompatActivity {
     private void setupInformationDashboard() {
         List<InnerDashboardUiModel> innerDashboardUiModels = new ArrayList<>();
         innerDashboardUiModels.add(new InnerDashboardUiModel("Stocks", "",
-                "Items", String.valueOf(summary.getInformationStocks()), R.drawable.ic_stocks,
+                "Items", String.valueOf(viewModel.getSummary().getInformationStocks()), R.drawable.ic_stocks,
                 R.drawable.rounded_rect_orange, InnerDashboardUiModel.TAG_STOCKS));
         innerDashboardUiModels.add(new InnerDashboardUiModel("History", "",
-                "Dos", String.valueOf(summary.getInformationOnHistory()), R.drawable.ic_history,
+                "Dos", String.valueOf(viewModel.getSummary().getInformationOnHistory()), R.drawable.ic_history,
                 R.drawable.rounded_rect_bahama_blue, InnerDashboardUiModel.TAG_HISTORY));
         innerDashboardUiModels.add(new InnerDashboardUiModel("Reports", "",
-                "Invoices", String.valueOf(summary.getInformationOnReports()), R.drawable.ic_reports,
+                "Invoices", String.valueOf(viewModel.getSummary().getInformationOnReports()), R.drawable.ic_reports,
                 R.drawable.rounded_rect_olive, InnerDashboardUiModel.TAG_REPORTS));
         populateInnerDashboard(innerDashboardUiModels);
 
@@ -224,13 +220,13 @@ public class HomeActivity extends ParentAppCompatActivity {
     private void setUpReturnsDashboard() {
         List<InnerDashboardUiModel> innerDashboardUiModels = new ArrayList<>();
         innerDashboardUiModels.add(new InnerDashboardUiModel("Delivery Orders", "",
-                "Items", String.valueOf(summary.getDropOffDeliveryOrdersCount()), R.drawable.ic_delivery_orders,
+                "Items", String.valueOf(viewModel.getSummary().getDropOffDeliveryOrdersCount()), R.drawable.ic_delivery_orders,
                 R.drawable.rounded_rect_green, InnerDashboardUiModel.TAG_DELIVERY_ORDERS));
         innerDashboardUiModels.add(new InnerDashboardUiModel("Cash Sales", "Sellable Items",
-                "Today", String.valueOf(summary.getDropOffCashSales()), R.drawable.ic_cash_sales, R.drawable.rounded_rect_red,
+                "Today", String.valueOf(viewModel.getSummary().getDropOffCashSales()), R.drawable.ic_cash_sales, R.drawable.rounded_rect_red,
                 InnerDashboardUiModel.TAG_CASH_SALES));
         innerDashboardUiModels.add(new InnerDashboardUiModel("Drop Off", "To Warehouse",
-                "Items", String.valueOf(summary.getDropOffToWarehouse()), R.drawable.ic_drop_off_warehouse,
+                "Items", String.valueOf(viewModel.getSummary().getDropOffToWarehouse()), R.drawable.ic_drop_off_warehouse,
                 R.drawable.rounded_rect_purple, InnerDashboardUiModel.TAG_DROP_OFF));
         populateInnerDashboard(innerDashboardUiModels);
     }
@@ -238,10 +234,10 @@ public class HomeActivity extends ParentAppCompatActivity {
     private void setUpPickupDashboard() {
         List<InnerDashboardUiModel> innerDashboardUiModels = new ArrayList<>();
         innerDashboardUiModels.add(new InnerDashboardUiModel("Pick Up", "From Warehouse",
-                "Items", String.valueOf(summary.getPickUpFromWarehouse()), R.drawable.ic_pickup_warehouse,
+                "Items", String.valueOf(viewModel.getSummary().getPickUpFromWarehouse()), R.drawable.ic_pickup_warehouse,
                 R.drawable.rounded_rect_blue, InnerDashboardUiModel.TAG_PICKUP));
         innerDashboardUiModels.add(new InnerDashboardUiModel("Returns", "From Customer",
-                "Today", String.valueOf(summary.getReturnsFromCustomers()), R.drawable.ic_returns_customers,
+                "Today", String.valueOf(viewModel.getSummary().getReturnsFromCustomers()), R.drawable.ic_returns_customers,
                 R.drawable.rounded_rect_red, InnerDashboardUiModel.TAG_RETURNS));
         populateInnerDashboard(innerDashboardUiModels);
     }

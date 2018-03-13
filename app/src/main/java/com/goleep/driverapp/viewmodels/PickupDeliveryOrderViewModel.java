@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
@@ -33,6 +34,12 @@ import java.util.Map;
 public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel {
     private Context context;
     private LiveData<List<OrderItemEntity>> doDetailsLiveData;
+
+    private List<BaseListItem> doList = new ArrayList<>();
+    private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
+    private Map<Integer, Integer> positionMap = new HashMap<>();
+
+
 
     public PickupDeliveryOrderViewModel(@NonNull Application application) {
         super(application);
@@ -76,6 +83,30 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     public OrderItemEntity getDeliveryOrderItem(int doItemId) {
         return leepDatabase.deliveryOrderItemDao().getDeliveryOrderItem(doItemId);
+    }
+
+    public List<BaseListItem> getDoList() {
+        return doList;
+    }
+
+    public void setDoList(List<BaseListItem> doList) {
+        this.doList = doList;
+    }
+
+    public Map<Integer, Boolean> getDoUpdateMap() {
+        return doUpdateMap;
+    }
+
+    public void setDoUpdateMap(Map<Integer, Boolean> doUpdateMap) {
+        this.doUpdateMap = doUpdateMap;
+    }
+
+    public Map<Integer, Integer> getPositionMap() {
+        return positionMap;
+    }
+
+    public void setPositionMap(Map<Integer, Integer> positionMap) {
+        this.positionMap = positionMap;
     }
 
     public void confirmPickup(List<OrderItemEntity> cashDoItems, ArrayList<Integer> selectedDeliveryOrders,

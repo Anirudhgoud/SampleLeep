@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 
 public class PickupMapActivity extends ParentAppCompatActivity implements OnMapReadyCallback {
     private GoogleMap googleMap;
+
     private PickupMapViewModel pickupMapViewModel;
 
     @BindView(R.id.warehouse_info_text_view)
@@ -39,7 +40,7 @@ public class PickupMapActivity extends ParentAppCompatActivity implements OnMapR
     @BindView(R.id.location_address_tv)
     CustomTextView locationAddress;
     @BindView(R.id.time_to_reach_tv)
-    CustomTextView timeToreach;
+    CustomTextView timeToReach;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -88,7 +89,6 @@ public class PickupMapActivity extends ParentAppCompatActivity implements OnMapR
     }
 
     private Bitmap getMarkerBitmapFromView(String timeToReach) {
-
         View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
                 inflate(R.layout.map_marker_title_layout, null);
         ((CustomTextView)customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);

@@ -20,6 +20,7 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,13 +170,14 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             super.bind(position);
             DeliveryOrderEntity deliveryOrder = (DeliveryOrderEntity)visibleItems.get(position);
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
-            tvStoreAddress.setText(getAddress(deliveryOrder.getDestinationAddressLine1(),
+            tvStoreAddress.setText(StringUtils.getAddress(deliveryOrder.getDestinationAddressLine1(),
                     deliveryOrder.getDestinationAddressLine2()));
-            tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
+            tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue()));
             doNumberLayout.setVisibility(View.GONE);
             if(((Activity)context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
-                tvDate.setText(dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
-                tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
+                tvDate.setText(DateTimeUtils.convertdDate(deliveryOrder.getPreferredDeliveryDate(),
+                        "yyyy-MM-dd", "dd MMM yyyy"));
+                tvSchedule.setText(StringUtils.timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
                 dateLayout.setVisibility(View.VISIBLE);
                 timeLayout.setVisibility(View.VISIBLE);
                 selectionIcon.setVisibility(View.VISIBLE);
@@ -226,7 +228,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 totalProductsTv.setText(String.format(context.getResources().getString(R.string.total_product_label),
                         cashSalesInfo.getTotalProducts()));
                 totalValueTv.setText(String.format(context.getResources().getString(R.string.total_value_label),
-                        amountToDisplay((float) cashSalesInfo.getTotalValue())));
+                        StringUtils.amountToDisplay((float) cashSalesInfo.getTotalValue())));
             }
         }
     }
@@ -265,46 +267,4 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             }}
         }
     }
-
-
-    private String dateToDisplay(String dateString){
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
-                "yyyy-MM-dd", "dd MMM, yyyy");
-
-    }
-
-    private String timeToDisplay(String timeString){
-        if (timeString != null){
-            String[] times = timeString.split(" - ");
-            if(times.length == 2){
-                String startTime = DateTimeUtils.convertdDate(times[0].trim(), "HH:mm", "hh:mma");
-                String endTime = DateTimeUtils.convertdDate(times[1].trim(), "HH:mm", "hh:mma");
-                return startTime + " - " + endTime;
-            }
-        }
-        return "-";
-    }
-
-    private String amountToDisplay(Float amountString){
-        String currencySymbol = AppUtils.userCurrencySymbol();
-        if (amountString != null){
-            return currencySymbol + " " + Math.round(amountString);
-        }
-        return currencySymbol + " 0";
-    }
-
-    private String getAddress(String line1, String line2){
-        String address = "";
-        if(line1 != null){
-            address = line1;
-        }
-        if(line2 != null){
-            if(line1 != null){
-                address += ", ";
-            }
-            address = address + line2;
-        }
-        return address;
-    }
-
 }

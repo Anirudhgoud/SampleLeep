@@ -32,6 +32,8 @@ import java.util.Map;
 
 public class HomeViewModel extends AndroidViewModel {
     private Context context;
+
+    private Summary summary = new Summary();
     public HomeViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
@@ -93,6 +95,10 @@ public class HomeViewModel extends AndroidViewModel {
         });
     }
 
+    public Summary getSummary() {
+        return summary;
+    }
+
     public void getSummary(final UILevelNetworkCallback summaryCallback) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context, UrlConstants.SUMMARY_URL,
                 true, new NetworkAPICallback() {
@@ -102,7 +108,7 @@ public class HomeViewModel extends AndroidViewModel {
                     case NetworkConstants.SUCCESS:
                         List<Summary> summaryList = new ArrayList<>();
                         SummaryParser summaryParser = new SummaryParser();
-                        Summary summary = summaryParser.summaryResponseByParsingJsonResponse(response);
+                        summary = summaryParser.summaryResponseByParsingJsonResponse(response);
                         if(summary != null){
                             summaryList.add(summary);
                         }

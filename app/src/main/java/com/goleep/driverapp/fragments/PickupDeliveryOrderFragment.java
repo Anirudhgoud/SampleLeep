@@ -48,22 +48,18 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     @BindView(R.id.confirm_button)
     CustomButton confirmButton;
 
-    private DoExpandableListAdapter adapter;
-    private List<BaseListItem> doList = new ArrayList<>();
-    private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
     private ItemCheckListener itemCheckListener;
-    private Map<Integer, Integer> positionMap = new HashMap<>();
-    private Map<Integer, List<OrderItemEntity>> orderItemMap = new HashMap<>();
+    private DoExpandableListAdapter adapter;
 
     private View.OnClickListener headerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             final int pos = expandableListView.getChildLayoutPosition(view);
-            positionMap.put(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId(), pos);
-            if(doUpdateMap.containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()) &&
-                    !doUpdateMap.get(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
+            doViewModel.getPositionMap().put(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId(), pos);
+            if(doViewModel.getDoUpdateMap().containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()) &&
+                    !doViewModel.getDoUpdateMap().get(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
                 doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
-            } else if(!doUpdateMap.containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
+            } else if(!doViewModel.getDoUpdateMap().containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
                 doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
             }
         }
@@ -100,7 +96,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     private void initRecyclerView() {
         expandableListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         expandableListView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        adapter = new DoExpandableListAdapter(getActivity(), doList);
+        adapter = new DoExpandableListAdapter(getActivity(), doViewModel.getDoList());
         adapter.setItemCheckListener(itemCheckListener);
         adapter.setHeaderClickListener(headerClickListener);
         expandableListView.setAdapter(adapter);
@@ -110,8 +106,8 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
             @Override
             public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrders) {
                 if(deliveryOrders.size() > 0) {
-                    doList.clear();
-                    doList.addAll(deliveryOrders);
+                    doViewModel.getDoList().clear();
+                    doViewModel.getDoList().addAll(deliveryOrders);
                     deliveryOrders.get(0).setItemType(AppConstants.TYPE_HEADER);
                     List<BaseListItem> baseListItems = new ArrayList<>();
                     baseListItems.addAll(deliveryOrders);
@@ -133,12 +129,12 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     @Override
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
-        if (doDetails != null && doDetails.size() > 0 && positionMap.containsKey(doDetails.get(0).getDoId())) {
-            final int pos = positionMap.get(doDetails.get(0).getDoId());
+        if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().containsKey(doDetails.get(0).getDoId())) {
+            final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getDoId());
             List<BaseListItem> listItems = new ArrayList<>();
             listItems.addAll(doDetails);
             adapter.addItemsList(listItems, pos);
-            doUpdateMap.put(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId(), true);
+            doViewModel.getDoUpdateMap().put(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId(), true);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
