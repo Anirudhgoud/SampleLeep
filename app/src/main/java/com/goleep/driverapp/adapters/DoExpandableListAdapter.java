@@ -106,13 +106,9 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     public void addItemsList(List<BaseListItem> baseListItems, int position) {
         int listSize = recyclerViewListData.size();
         for(int j = position+1; j < listSize; j++){
-            try {
-                if (!(recyclerViewListData.get(position + 1) instanceof DeliveryOrderEntity)) {
-                    recyclerViewListData.remove(position + 1);
-                } else break;
-            }catch (IndexOutOfBoundsException ex){
-                break;
-            }
+            if (!(recyclerViewListData.get(position + 1) instanceof DeliveryOrderEntity)) {
+                recyclerViewListData.remove(position + 1);
+            } else break;
         }
         BaseListItem itemsHeader = new BaseListItem();
         itemsHeader.setItemType(AppConstants.TYPE_ITEMS_HEADER);
@@ -154,7 +150,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         LinearLayout doNumberLayout;
 
         public HeaderViewHolder(View itemView) {
-            super(itemView, (ImageView) itemView.findViewById(R.id.img_arrow), headerClickListener);
+            super(itemView, itemView.findViewById(R.id.img_arrow), headerClickListener);
             tvCustomerName = itemView.findViewById(R.id.tv_customer_name);
             tvStoreAddress = itemView.findViewById(R.id.tv_store_address);
             tvDate = itemView.findViewById(R.id.tv_date);
