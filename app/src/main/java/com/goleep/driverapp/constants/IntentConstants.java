@@ -10,4 +10,5 @@ public interface IntentConstants {
     String OUTSTANDING_BALANCE = "outstanding_balance";
     String PAYMENT_COLLECTED = "payment_collected";
     String BUSINESS_ADDRESS = "business_address";
+    String GRAND_TOTAL = "grand_total";
 }

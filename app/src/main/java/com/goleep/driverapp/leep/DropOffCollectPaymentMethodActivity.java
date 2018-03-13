@@ -2,11 +2,15 @@ package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.DropOffCollectPaymentMethodViewModel;
@@ -109,6 +113,18 @@ public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity
         tvPaymentCollected.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getPaymentCollected())));
     }
 
+    private void showItemListDialog() {
+        String fragmentTag = ItemListDialogFragment.class.getSimpleName();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(fragmentTag);
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+        DialogFragment itemListDialogFragment = ItemListDialogFragment.newInstance(viewModel.getDeliveryOrderId(), viewModel.getGrandTotal());
+        itemListDialogFragment.show(fragmentTransaction, fragmentTag);
+    }
+
     @Override
     public void onClickWithId(int resourceId) {
         switch (resourceId) {
@@ -118,7 +134,7 @@ public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity
 
             case R.id.bt_view_item_list:
                 fetchDeliveryOrderItems();
-                //display popup
+                showItemListDialog();
                 break;
 
             case R.id.bt_continue:

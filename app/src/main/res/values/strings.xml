@@ -64,6 +64,7 @@
     <string name="continue_text">Continue</string>
     <string name="payment_method">Payment Method</string>
     <string name="cash">Cash</string>
+    <string name="close">Close</string>
 
     <string name="value">Value</string>
     <string name="units">Units</string>

@@ -177,7 +177,12 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     };
 
     private void initialiseUpdateQuantityView(){
-        etUnits.setKeyImeChangeListener((keyCode, event) -> hideUpdateQuantityView());
+        etUnits.setKeyImeChangeListener(new CustomEditText.KeyImeChange() {
+            @Override
+            public void onDoneButtonPress() {
+                hideUpdateQuantityView();
+            }
+        });
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 hideUpdateQuantityView();
