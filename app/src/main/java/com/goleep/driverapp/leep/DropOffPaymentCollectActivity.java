@@ -18,8 +18,6 @@ import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.helpers.uimodels.Location;
-import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
@@ -54,9 +52,7 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
     @Override
     public void doInitialSetup() {
         viewModel = ViewModelProviders.of(this).get(DropOffPaymentCollectViewModel.class);
-        if (getIntent().getExtras() != null) {
-            viewModel.setDeliveryOrderId(getIntent().getExtras().getInt(IntentConstants.DELIVERY_ORDER_ID));
-        }
+        getIntentExtras();
         initialiseToolbar();
         connectUIElements();
         addListeners();
@@ -65,7 +61,16 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
         updateDeliveryOrderUI();
         addItemViewsToLayout();
         updateSalesValues();
-        fetchLocationDetails();
+    }
+
+    private void getIntentExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            viewModel.setDeliveryOrderId(bundle.getInt(IntentConstants.DELIVERY_ORDER_ID));
+            viewModel.setBusinessAddress(bundle.getString(IntentConstants.BUSINESS_ADDRESS));
+            viewModel.setCurrentSales(bundle.getDouble(IntentConstants.CURRENT_SALE));
+            viewModel.setOutstandingBalance(bundle.getDouble(IntentConstants.OUTSTANDING_BALANCE));
+        }
     }
 
     private void connectUIElements() {
@@ -91,6 +96,7 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
@@ -120,7 +126,7 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
         DeliveryOrderEntity deliveryOrder = viewModel.getDeliveryOrder();
         if (deliveryOrder != null) {
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
-            tvStoreAddress.setText("");
+            tvStoreAddress.setText(viewModel.getBusinessAddress());
             tvDoNumber.setText(deliveryOrder.getDoNumber() == null ? "-" : deliveryOrder.getDoNumber());
             tvDate.setText(viewModel.currentDateToDisplay());
             tvTime.setText(viewModel.currentTimeToDisplay());
@@ -172,9 +178,9 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
     private void updateSalesValues() {
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, viewModel.getOrderItems().size(), viewModel.getOrderItems().size())));
         ((CustomTextView) findViewById(R.id.tv_collected_amount_currency)).setText(AppUtils.userCurrencySymbol());
-        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.currentSales())));
+        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getCurrentSales())));
         tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getOutstandingBalance())));
-        double total = viewModel.currentSales() + viewModel.getOutstandingBalance();
+        double total = viewModel.getCurrentSales() + viewModel.getOutstandingBalance();
         tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(total)));
     }
 
@@ -199,63 +205,10 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
     private void gotoPaymentMethodScreen() {
         Intent paymentMethodIntent = new Intent(DropOffPaymentCollectActivity.this, DropOffCollectPaymentMethodActivity.class);
         paymentMethodIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, viewModel.getDeliveryOrderId());
-        paymentMethodIntent.putExtra(IntentConstants.BUSINESS_ADDRESS, viewModel.getAddress(viewModel.getBusinessLocation()));
-        paymentMethodIntent.putExtra(IntentConstants.CURRENT_SALE, viewModel.currentSales());
+        paymentMethodIntent.putExtra(IntentConstants.BUSINESS_ADDRESS, viewModel.getBusinessAddress());
+        paymentMethodIntent.putExtra(IntentConstants.CURRENT_SALE, viewModel.getCurrentSales());
         paymentMethodIntent.putExtra(IntentConstants.OUTSTANDING_BALANCE, viewModel.getOutstandingBalance());
         paymentMethodIntent.putExtra(IntentConstants.PAYMENT_COLLECTED, Double.valueOf(etPaymentCollected.getText().toString()));
         startActivity(paymentMethodIntent);
     }
-
-    private void fetchLocationDetails() {
-        DeliveryOrderEntity deliveryOrder = viewModel.getDeliveryOrder();
-        if (deliveryOrder != null) {
-            viewModel.fetchDestinationBusinessId(deliveryOrder.getSourceLocationId(), deliveryOrder.getDestinationLocationId(), businessIdCallBack);
-        }
-
-    }
-
-    private UILevelNetworkCallback businessIdCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
-        if (uiModels == null) {
-            if (toLogout) {
-                logoutUser();
-            } else {
-                showNetworkRelatedDialogs(errorMessage);
-            }
-        } else {
-            if (uiModels != null && uiModels.size() > 0) {
-                Integer businessId = (Integer) uiModels.get(0);
-                getDestinationBusinessLocation(businessId);
-            }
-        }
-    };
-
-    private void getDestinationBusinessLocation(Integer businessId) {
-        DeliveryOrderEntity deliveryOrder = viewModel.getDeliveryOrder();
-        if (deliveryOrder != null) {
-            viewModel.fetchBusinessLocation(businessId, deliveryOrder.getDestinationLocationId(), locationCallBack);
-        }
-
-    }
-
-    private UILevelNetworkCallback locationCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
-        if (uiModels == null) {
-            if (toLogout) {
-                logoutUser();
-            } else {
-                showNetworkRelatedDialogs(errorMessage);
-            }
-        } else {
-            if (uiModels.size() > 0) {
-                runOnUiThread(() -> {
-                    Location location = (Location) uiModels.get(0);
-                    viewModel.setBusinessLocation(location);
-                    viewModel.setOutstandingBalance(location.getOutstandingBalance());
-                    tvStoreAddress.setText(viewModel.getAddress(location));
-                    updateSalesValues();
-                });
-
-            }
-        }
-    };
-
 }

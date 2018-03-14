@@ -20,6 +20,7 @@ import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
@@ -125,7 +126,6 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
                 if (entity.isSelected())
                     viewModel.setSelectedItemCount(viewModel.getSelectedItemCount() + 1);
             }
-            LogUtils.error(this.getLocalClassName(), "-----SelectedCount" + viewModel.getSelectedItemCount());
             llBottomButtons.setVisibility(viewModel.getSelectedItemCount() == 0 ? View.GONE : View.VISIBLE);
         });
         orderItemsRecyclerView.setAdapter(orderItemsListAdapter);
@@ -172,6 +172,27 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
                 }else if(isDialogToBeShown) {
                     showNetworkRelatedDialogs(errorMessage);
                 }
+            } else if (uiModels.size() > 0) {
+                viewModel.fetchBusinessLocation((Integer) uiModels.get(0), viewModel.getDeliveryOrder().getDestinationLocationId(), locationNetworkCallBack);
+            }
+        }
+    };
+
+    private UILevelNetworkCallback locationNetworkCallBack = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            if (uiModels == null) {
+                if (toLogout) {
+                    logoutUser();
+                } else if (isDialogToBeShown) {
+                    showNetworkRelatedDialogs(errorMessage);
+                }
+            } else if (uiModels.size() > 0) {
+                runOnUiThread(() -> {
+                    Location location = (Location) uiModels.get(0);
+                    viewModel.setBusinessAddress(viewModel.getAddress(location));
+                    viewModel.setOutstandingBalance(location.getOutstandingBalance());
+                });
             }
         }
     };
@@ -244,14 +265,27 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     }
 
     private void setCLickListenersOnButtons() {
-        btSkipPayment.setOnClickListener(v -> {
+        btSkipPayment.setOnClickListener(v -> gotoPaymentConfirmationScreen());
 
-        });
+        btCollectPayment.setOnClickListener(v -> gotoPaymentCollectScreen());
+    }
 
-        btCollectPayment.setOnClickListener(v -> {
-            Intent doCollectPaymentIntent = new Intent(DropOffDeliveryOrderDetailsActivity.this, DropOffPaymentCollectActivity.class);
-            doCollectPaymentIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, viewModel.getDeliveryOrderId());
-            startActivity(doCollectPaymentIntent);
-        });
+    private void gotoPaymentConfirmationScreen() {
+        Intent paymentConfirmationIntent = new Intent(DropOffDeliveryOrderDetailsActivity.this, DropOffPaymentConfirmationActivity.class);
+        paymentConfirmationIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, viewModel.getDeliveryOrderId());
+        paymentConfirmationIntent.putExtra(IntentConstants.BUSINESS_ADDRESS, viewModel.getBusinessAddress());
+        paymentConfirmationIntent.putExtra(IntentConstants.CURRENT_SALE, viewModel.currentSales());
+        paymentConfirmationIntent.putExtra(IntentConstants.OUTSTANDING_BALANCE, viewModel.getOutstandingBalance());
+        paymentConfirmationIntent.putExtra(IntentConstants.PAYMENT_COLLECTED, 0.0);
+        startActivity(paymentConfirmationIntent);
+    }
+
+    private void gotoPaymentCollectScreen() {
+        Intent doCollectPaymentIntent = new Intent(DropOffDeliveryOrderDetailsActivity.this, DropOffPaymentCollectActivity.class);
+        doCollectPaymentIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, viewModel.getDeliveryOrderId());
+        doCollectPaymentIntent.putExtra(IntentConstants.BUSINESS_ADDRESS, viewModel.getBusinessAddress());
+        doCollectPaymentIntent.putExtra(IntentConstants.CURRENT_SALE, viewModel.currentSales());
+        doCollectPaymentIntent.putExtra(IntentConstants.OUTSTANDING_BALANCE, viewModel.getOutstandingBalance());
+        startActivity(doCollectPaymentIntent);
     }
 }
