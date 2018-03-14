@@ -16,13 +16,13 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
     private double grandTotal;
     private double previousBalance;
     private String paymentMethod;
+    private boolean signatureAdded = false;
 
     public DropOffPaymentConfirmationViewModel(@NonNull Application application) {
         super(application);
     }
 
     //Getters and setters
-
     public String getBusinessAddress() {
         return businessAddress;
     }
@@ -77,5 +77,13 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public boolean isSignatureAdded() {
+        return signatureAdded;
+    }
+
+    public void setSignatureAdded(boolean signatureAdded) {
+        this.signatureAdded = signatureAdded;
     }
 }

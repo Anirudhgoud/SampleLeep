@@ -18,6 +18,7 @@ public class PaintView extends View {
     private int paintColor = Color.BLACK;
     private Paint drawPaint;
     private Path path = new Path();
+    private boolean signatureAdded = false;
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -60,7 +61,12 @@ public class PaintView extends View {
             default:
                 return false;
         }
+        signatureAdded = true;
         postInvalidate();
         return true;
+    }
+
+    public boolean isSignatureAdded() {
+        return signatureAdded;
     }
 }

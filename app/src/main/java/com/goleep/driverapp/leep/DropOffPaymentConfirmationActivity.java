@@ -1,11 +1,16 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
@@ -14,11 +19,13 @@ import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
+import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
+import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.DropOffPaymentConfirmationViewModel;
 
-public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity {
+public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
 
     private CustomTextView tvCustomerName;
     private CustomTextView tvStoreAddress;
@@ -33,7 +40,13 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     private CustomTextView tvPreviousBalance;
     private CustomButton btConfirm;
     private CustomButton btViewItemList;
+    private EditText etReceivedFrom;
+    private EditText etContactNumber;
+    private ImageView ivSignature;
     private LinearLayout llCollectPayment;
+
+    //Error views
+    private CustomTextView tvReceivedFromError, tvContactNumberError, tvSignatureError;
 
     private DropOffPaymentConfirmationViewModel viewModel;
 
@@ -69,11 +82,20 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         btConfirm = findViewById(R.id.bt_confirm);
         btViewItemList = findViewById(R.id.bt_view_item_list);
         llCollectPayment = findViewById(R.id.ll_collect_payment_view);
+        ivSignature = findViewById(R.id.iv_signature);
+        etReceivedFrom = findViewById(R.id.et_received_from);
+        etContactNumber = findViewById(R.id.et_contact_number);
+        tvReceivedFromError = findViewById(R.id.tv_received_from_error);
+        tvContactNumberError = findViewById(R.id.tv_contact_number_error);
+        tvSignatureError = findViewById(R.id.tv_signature_error);
     }
 
     private void addListeners() {
         btViewItemList.setOnClickListener(this);
         btConfirm.setOnClickListener(this);
+        ivSignature.setOnClickListener(this);
+        etReceivedFrom.addTextChangedListener(this);
+        etContactNumber.addTextChangedListener(this);
     }
 
 
@@ -138,6 +160,25 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         itemListDialogFragment.show(fragmentTransaction, fragmentTag);
     }
 
+    private void showSignatureDialog() {
+        String fragmentTag = SignatureDialogFragment.class.getSimpleName();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(fragmentTag);
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+        SignatureDialogFragment signatureDialogFragment = new SignatureDialogFragment();
+        signatureDialogFragment.show(fragmentTransaction, fragmentTag);
+    }
+
+    @Override
+    public void onSignatureAdded(Bitmap signatureBitmap) {
+        ivSignature.setImageBitmap(signatureBitmap);
+        viewModel.setSignatureAdded(true);
+        tvSignatureError.setVisibility(View.GONE);
+    }
+
     @Override
     public void onClickWithId(int resourceId) {
         switch (resourceId) {
@@ -150,8 +191,43 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
                 showItemListDialog();
                 break;
 
-            case R.id.bt_continue:
+            case R.id.iv_signature:
+                showSignatureDialog();
                 break;
+
+            case R.id.bt_confirm:
+                if (checkValidations()) {
+                    //Goto next screen
+                }
+                break;
+        }
+    }
+
+    private boolean checkValidations() {
+        tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
+        int contactNumberLength = etContactNumber.getText().length();
+        tvContactNumberError.setVisibility(contactNumberLength > 0 ? (contactNumberLength == 10 ? View.GONE : View.VISIBLE) : View.GONE);
+        tvSignatureError.setVisibility(viewModel.isSignatureAdded() ? View.GONE : View.VISIBLE);
+        if (etReceivedFrom.getText().length() > 0 && viewModel.isSignatureAdded()) {
+            return contactNumberLength == 0 ? true : contactNumberLength == 10;
+        }
+        return false;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (editable == etReceivedFrom.getEditableText()) {
+            tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
+        } else if (editable == etContactNumber.getEditableText()) {
+            tvContactNumberError.setVisibility(etContactNumber.getText().length() == 10 ? View.GONE : View.VISIBLE);
         }
     }
 }
