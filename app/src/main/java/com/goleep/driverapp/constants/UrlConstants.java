@@ -22,4 +22,10 @@ public interface UrlConstants {
 
     //PickupConfirmation
     String PICKUP_CONFIRMATION = DELIVERY_ORDERS_URL + "/in_transit";
+
+    //Update profile image
+    String UPDATE_PROFILE_IMAGE = BASE_URL + "/users/";
+
+    //Maps base url
+    String DISTANCE_MATRIX_API = "https://maps.googleapis.com/maps/api/distancematrix/json?";
 }

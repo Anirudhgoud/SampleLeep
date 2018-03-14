@@ -58,6 +58,8 @@
     <string name="collect_payment">Collect Payment</string>
     <string name="update">Update</string>
     <string name="enter_quantity">Enter Quantity</string>
+    <string name="storage_permission_denied">Please provide external storage permissions</string>
+    <string name="image_picker">"Select Image From Gallery"</string>
 
     <string name="value">Value</string>
     <string name="units">Units</string>

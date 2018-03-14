@@ -1,6 +1,5 @@
 package com.goleep.driverapp.leep;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,6 +23,7 @@ import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.AlertDialogHelper;
 import com.goleep.driverapp.interfaces.NetworkChangeListener;
+import com.goleep.driverapp.interfaces.OnPermissionResult;
 import com.goleep.driverapp.services.network.NetworkChecker;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
@@ -41,6 +41,11 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     private NetworkChangeListener networkChangeListener;
     private AlertDialogHelper alertDialogHelper;
     private Dialog progressBarDialog;
+
+    private OnPermissionResult permissionResult;
+
+    private final int STORAGE_PERMISSION_REQUEST_CODE = 102;
+    private final int LOCATIONS_PERMISSION_REQUEST_CODE = 100;
 
     private BroadcastReceiver connectivityChangeReceiver = new BroadcastReceiver() {
         @Override
@@ -105,23 +110,24 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         finish();
     }
 
-    protected void requestLocationsPermission(){
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    100);
-        }
-    }
-
-    protected boolean isLocationsPremissionGranted(){
-        return (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED);
-    }
+//    protected void requestLocationsPermission(OnPermissionResult permissionResult){
+//        this.permissionResult = permissionResult;
+//        if (ActivityCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+//                    LOCATIONS_PERMISSION_REQUEST_CODE);
+//        }
+//    }
+//
+//    protected boolean isLocationsPremissionGranted(){
+//        return (ActivityCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+//                        != PackageManager.PERMISSION_GRANTED);
+//    }
 
     @Override
     public void onClick(View view) {
@@ -193,4 +199,33 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
             alertDialogHelper = null;
         }
     }
+
+    protected boolean isPermissionGranted(String[] permissions){
+        for(String permission : permissions){
+            if(ActivityCompat.checkSelfPermission(this,
+                    permission) != PackageManager.PERMISSION_GRANTED){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected void requestPermission(String[] permissions, OnPermissionResult permissionResult){
+        this.permissionResult = permissionResult;
+        if(!isPermissionGranted(permissions)){
+            ActivityCompat.requestPermissions(this,
+                    permissions, 100);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            permissionResult.onPermissionGranted();
+        } else {
+            permissionResult.onPermissionDenied();
+        }
+    }
+
 }

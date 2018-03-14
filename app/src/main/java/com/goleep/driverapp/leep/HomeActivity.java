@@ -1,7 +1,12 @@
 package com.goleep.driverapp.leep;
 
+import android.Manifest;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -13,22 +18,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
+import com.goleep.driverapp.interfaces.OnPermissionResult;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.helpers.uimodels.InnerDashboardUiModel;
-import com.goleep.driverapp.helpers.uimodels.Summary;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.viewmodels.HomeViewModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends ParentAppCompatActivity {
     HomeViewModel viewModel;
@@ -41,7 +50,10 @@ public class HomeActivity extends ParentAppCompatActivity {
     @BindView(R.id.dashboard_viewpager)
     NonSwipeableViewPager viewPager;
     @BindView(R.id.signout) CustomButton signOutButton;
-    //private Summary summary = new Summary();
+    @BindView(R.id.edit_profile_imageview)
+    CircleImageView profileImage;
+
+    final int START_GALLERY_REQUEST_CODE = 101;
 
     View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
@@ -121,6 +133,12 @@ public class HomeActivity extends ParentAppCompatActivity {
         ((CustomTextView)view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
         ((CustomTextView)view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
         setToolbarRightText(driverEntity.getFirstName()+" "+ driverEntity.getLastName());
+        view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
+        if(driverEntity.getImageUrl() != null) {
+//            Glide.with(HomeActivity.this).load(driverEntity.getImageUrl()).
+//                    apply(RequestOptions.circleCropTransform())
+//                    .into(profileImage);
+        }
     }
 
     @Override
@@ -184,7 +202,36 @@ public class HomeActivity extends ParentAppCompatActivity {
             case R.id.signout:
                 viewModel.signout(logoutCallback);
                 break;
+            case R.id.edit_profile_pic_layout:
+                openGallery();
+                break;
         }
+    }
+
+    private void openGallery() {
+        if(isPermissionGranted(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
+            startGallery();
+        } else {
+            requestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},new OnPermissionResult() {
+                @Override
+                public void onPermissionGranted() {
+                    startGallery();
+                }
+
+                @Override
+                public void onPermissionDenied() {
+                    Toast.makeText(HomeActivity.this, getString(R.string.storage_permission_denied),
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    private void startGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.image_picker)), START_GALLERY_REQUEST_CODE);
     }
 
     private void setupInnerDashboard(String tag) {
@@ -313,5 +360,30 @@ public class HomeActivity extends ParentAppCompatActivity {
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if(requestCode == START_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri uri = intent.getData();
+            File sourceFile = new File(getRealPathFromURI(uri));
+            profileImage.setImageURI(uri);
+            viewModel.uploadProfileImage(sourceFile);
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 }

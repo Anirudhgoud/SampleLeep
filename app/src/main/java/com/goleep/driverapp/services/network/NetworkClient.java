@@ -126,16 +126,20 @@ public class NetworkClient {
         RequestBody formBody = builder.build();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .addHeader("Authorization", "Bearer " + authToken)
+                .addHeader("Authorization", authToken)
                 .url(url)
                 .put(formBody)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {}
+            public void onFailure(Call call, IOException e) {
+                System.out.print("");
+            }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                System.out.print("");
+                Object[] objects = responseValidator.validateResponse(response);
                 LogUtils.error("response", response.toString());
             }
         });

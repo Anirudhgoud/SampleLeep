@@ -40,6 +40,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     private UILevelNetworkCallback loginCallBack = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            dismissProgressDialog();
             handleLoginResponse(uiModels, isDialogToBeShown, errorMessage);
         }
     };
@@ -116,7 +117,6 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void handleLoginResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
-        dismissProgressDialog();
         if(errorMessage != null)
             showNetworkRelatedDialogs(errorMessage);
         else

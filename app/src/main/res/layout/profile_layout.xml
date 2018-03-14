@@ -20,21 +20,19 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:id="@+id/edit_profile_pic_layout">
-            <ImageView
+
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/edit_profile_imageview"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                app:srcCompat="@drawable/ic_edit_profile"/>
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/edit"
-                android:layout_centerHorizontal="true"
-                app:typeface="NotoSans-Regular"
-                android:layout_marginTop="5dp"
-                android:textSize="6sp"
-                android:layout_marginBottom="8dp"
-                android:layout_alignBottom="@id/edit_profile_imageview"/>
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:src="@drawable/profile_image_placeholder" />
+           <ImageView
+               android:layout_width="24dp"
+               android:layout_height="24dp"
+               app:srcCompat="@drawable/ic_edit_icon_profile_pic"
+               android:layout_alignRight="@id/edit_profile_imageview"
+               android:layout_alignBottom="@id/edit_profile_imageview"
+               android:layout_marginBottom="4dp"/>
         </RelativeLayout>
 
         <ImageView
@@ -160,7 +158,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/contact_layout"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="15dp">
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -183,7 +181,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/address_layout"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="15dp">
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -206,7 +204,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/driver_licence_layout"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="15dp">
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -229,7 +227,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/register_number__layout"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="15dp">
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -252,7 +250,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/employee_number_layout"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="15dp">
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
