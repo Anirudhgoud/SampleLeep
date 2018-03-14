@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/received_from"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomEditText
+        android:id="@+id/et_received_from"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_rect_with_grey_border"
+        android:paddingLeft="8dp"
+        android:textColor="@color/doTabTextColor"
+        android:textCursorDrawable="@null"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/contact_number"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomEditText
+        android:id="@+id/et_contact_number"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_rect_with_grey_border"
+        android:paddingLeft="8dp"
+        android:textColor="@color/doTabTextColor"
+        android:textCursorDrawable="@null"
+        android:textSize="14sp"
+        android:inputType="phone"
+        app:typeface="NotoSans-Regular" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/signature"
+        android:textColor="@color/doTabTextColor"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
+
+    <ImageView
+        android:id="@+id/iv_signature"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@drawable/rounded_rect_with_grey_border"
+        android:src="@color/tabBackgroundGreyColor" />
+
+</LinearLayout>
