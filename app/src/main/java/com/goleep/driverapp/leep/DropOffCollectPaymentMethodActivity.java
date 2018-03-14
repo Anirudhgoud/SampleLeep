@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
+import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
@@ -144,6 +146,13 @@ public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity
     }
 
     private void gotoPaymentConfirmationScreen() {
-
+        Intent paymentMethodIntent = new Intent(DropOffCollectPaymentMethodActivity.this, DropOffPaymentConfirmationActivity.class);
+        paymentMethodIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, viewModel.getDeliveryOrderId());
+        paymentMethodIntent.putExtra(IntentConstants.BUSINESS_ADDRESS, viewModel.getBusinessAddress());
+        paymentMethodIntent.putExtra(IntentConstants.CURRENT_SALE, viewModel.getCurrentSale());
+        paymentMethodIntent.putExtra(IntentConstants.OUTSTANDING_BALANCE, viewModel.getOutstandingBalance());
+        paymentMethodIntent.putExtra(IntentConstants.PAYMENT_COLLECTED, viewModel.getPaymentCollected());
+        paymentMethodIntent.putExtra(IntentConstants.PAYMENT_METHOD, PaymentMethod.CASH);
+        startActivity(paymentMethodIntent);
     }
 }

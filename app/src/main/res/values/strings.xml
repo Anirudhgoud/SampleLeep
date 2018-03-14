@@ -55,16 +55,21 @@
     <string name="enter_quantity">Enter Quantity</string>
 
     <!--Collect Payment-->
+    <string name="do_payment_title">DO > Payment</string>
     <string name="item_list">Item List</string>
     <string name="view_item_list">View Item List</string>
     <string name="current_sale">Current Sale</string>
     <string name="outstanding_balance">Outstanding Balance</string>
+    <string name="previous_balance">Previous Balance</string>
     <string name="grand_total">Grand Total</string>
     <string name="done">Done</string>
     <string name="continue_text">Continue</string>
     <string name="payment_method">Payment Method</string>
     <string name="cash">Cash</string>
     <string name="close">Close</string>
+    <string name="received_from">Received From</string>
+    <string name="signature">Signature</string>
+
 
     <string name="value">Value</string>
     <string name="units">Units</string>
