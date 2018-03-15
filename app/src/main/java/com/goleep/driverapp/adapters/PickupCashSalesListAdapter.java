@@ -17,7 +17,6 @@ import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -58,7 +57,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
 
     private List<OrderItemEntity> setItemType(List<OrderItemEntity> orderItemEntities) {
         List<OrderItemEntity> orderItemEntityList = new ArrayList<>();
-        for(OrderItemEntity orderItemEntity : orderItemEntities){
+        for (OrderItemEntity orderItemEntity : orderItemEntities) {
             orderItemEntity.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
             orderItemEntityList.add(orderItemEntity);
         }

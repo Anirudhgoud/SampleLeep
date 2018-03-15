@@ -42,7 +42,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage,
                                        boolean toLogout) {
-            if(!isDialogToBeShown && errorMessage == null && !toLogout){
+            if (!isDialogToBeShown && errorMessage == null && !toLogout) {
                 pickupDeliveryOrderViewModel.deleteDeliveryOrders(selectedDeliveryOrders, cashSalesItems);
                 showSuccessDialog(getString(R.string.pickup_success));
             }
@@ -70,7 +70,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         List<BaseListItem> baseListItems = new ArrayList<>();
 
         List<DeliveryOrderEntity> deliveryOrderEntities = new ArrayList<>();
-        for(int doId : selectedDeliveryOrders){
+        for (int doId : selectedDeliveryOrders) {
             deliveryOrderEntities.add(pickupDeliveryOrderViewModel.getDeliveryOrder(doId));
         }
         BaseListItem deliveryOrderHeader = new BaseListItem();
@@ -78,7 +78,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
                 deliveryOrderEntities.size()));
         deliveryOrderHeader.setItemType(AppConstants.TYPE_ORDERS_HEADER);
         baseListItems.add(deliveryOrderHeader);
-        for(DeliveryOrderEntity deliveryOrderEntity : deliveryOrderEntities){
+        for (DeliveryOrderEntity deliveryOrderEntity : deliveryOrderEntities) {
             deliveryOrderEntity.setItemType(AppConstants.TYPE_HEADER);
             baseListItems.add(deliveryOrderEntity);
 
@@ -87,13 +87,13 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
             BaseListItem itemsHeader = new BaseListItem();
             itemsHeader.setItemType(AppConstants.TYPE_ITEMS_HEADER);
             baseListItems.add(itemsHeader);
-            for(OrderItemEntity orderItemEntity : orderItemEntities){
+            for (OrderItemEntity orderItemEntity : orderItemEntities) {
                 orderItemEntity.setItemType(AppConstants.TYPE_DO_ITEM);
                 baseListItems.add(orderItemEntity);
             }
         }
         int totalValue = 0;
-        for(int cashSalesId : cashDoItems){
+        for (int cashSalesId : cashDoItems) {
             OrderItemEntity csOrderItem = pickupDeliveryOrderViewModel.getDeliveryOrderItem(cashSalesId);
             csOrderItem.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
             cashSalesItems.add(csOrderItem);
@@ -145,7 +145,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         switch (resourceId){
             case R.id.left_toolbar_button : finish();
                 break;
-            case R.id.confirm_button :
+            case R.id.confirm_button:
                 pickupDeliveryOrderViewModel.confirmPickup(cashSalesItems, selectedDeliveryOrders, pickupConfirmCallBack);
                 break;
         }

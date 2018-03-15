@@ -105,7 +105,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         finish();
     }
 
-    protected void requestLocationsPermission(){
+    protected void requestLocationsPermission() {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -116,7 +116,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         }
     }
 
-    protected boolean isLocationsPremissionGranted(){
+    protected boolean isLocationsPremissionGranted() {
         return (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -150,7 +150,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
     }
 
-    protected void showSuccessDialog(String message){
+    protected void showSuccessDialog(String message) {
         alertDialogHelper = new AlertDialogHelper();
         alertDialogHelper.showSuccessDialog(this, message);
     }
@@ -169,10 +169,10 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         progressBarDialog.show();
     }
 
-    protected void dismissProgressDialog(){
-        try{
+    protected void dismissProgressDialog() {
+        try {
             progressBarDialog.hide();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }

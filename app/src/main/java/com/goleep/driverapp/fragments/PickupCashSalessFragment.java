@@ -105,8 +105,8 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     }
 
     private void startConfirmActivity() {
-        if(((PickupActivity)getActivity()).getSelectedCashSalesIds().size() > 0 ||
-                ((PickupActivity)getActivity()).getSelectedDoIds().size() >0) {
+        if (((PickupActivity) getActivity()).getSelectedCashSalesIds().size() > 0 ||
+                ((PickupActivity) getActivity()).getSelectedDoIds().size() > 0) {
             Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
             intent.putIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY,
                     (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedCashSalesIds());

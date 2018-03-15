@@ -52,8 +52,8 @@ public class NetworkClient {
     }
 
     public void makeJsonPutRequest(Context context, String requestUrl, boolean isAuthRequired,
-                                    Map<String, Object> bodyParams,
-                                    final NetworkAPICallback networkAPICallback){
+                                   Map<String, Object> bodyParams,
+                                   final NetworkAPICallback networkAPICallback) {
         requestHandler(context, requestUrl, isAuthRequired, bodyParams, RequestConstants.CONTENT_TYPE_JSON,
                 NetworkConstants.PUT_REQUEST, networkAPICallback, null);
     }

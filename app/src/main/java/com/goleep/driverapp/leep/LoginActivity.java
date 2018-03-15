@@ -2,12 +2,9 @@ package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-
 import android.os.Bundle;
 
-
 import com.goleep.driverapp.R;
-
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
@@ -91,7 +88,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void performLoginOperation() {
-        if(isValidUsernamePassword()) {
+        if (isValidUsernamePassword()) {
             loginViewModel.login(phoneEditText.getText().toString(), passwordEditText.getText().toString(),
                     "+91", loginCallBack);
             showProgressDialog();

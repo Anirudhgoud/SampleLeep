@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000">
@@ -11,6 +10,6 @@
         android:layout_centerInParent="true"
         android:id="@+id/progress_bar"
         android:progressTint="@color/green"
-        android:progressTintMode="multiply"/>
+        android:progressTintMode="multiply" />
 
 </RelativeLayout>
