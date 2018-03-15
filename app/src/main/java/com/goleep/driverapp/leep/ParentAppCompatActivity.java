@@ -44,9 +44,6 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     private OnPermissionResult permissionResult;
 
-    private final int STORAGE_PERMISSION_REQUEST_CODE = 102;
-    private final int LOCATIONS_PERMISSION_REQUEST_CODE = 100;
-
     private BroadcastReceiver connectivityChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -110,24 +107,6 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         finish();
     }
 
-//    protected void requestLocationsPermission(OnPermissionResult permissionResult){
-//        this.permissionResult = permissionResult;
-//        if (ActivityCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-//                    LOCATIONS_PERMISSION_REQUEST_CODE);
-//        }
-//    }
-//
-//    protected boolean isLocationsPremissionGranted(){
-//        return (ActivityCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-//                        != PackageManager.PERMISSION_GRANTED);
-//    }
 
     @Override
     public void onClick(View view) {
@@ -177,7 +156,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     protected void dismissProgressDialog(){
         try{
-            progressBarDialog.hide();
+            progressBarDialog.dismiss();
         }catch (Exception e){
 
         }

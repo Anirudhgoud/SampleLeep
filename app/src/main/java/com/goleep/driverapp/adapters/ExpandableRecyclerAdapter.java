@@ -25,11 +25,10 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     protected List<T> visibleItems = new ArrayList<>();
     private List<Integer> indexList = new ArrayList<>();
     private SparseIntArray expandMap = new SparseIntArray();
-    private int mode;
+    private int mode = 1;
 
     private static final int ARROW_ROTATION_DURATION = 150;
 
-    public static final int MODE_NORMAL = 0;
     public static final int MODE_ACCORDION = 1;
 
     public ExpandableRecyclerAdapter(Context context) {
@@ -102,11 +101,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             return false;
         } else {
             expandItems(position, notify);
-
-            if (mode == MODE_ACCORDION) {
-               collapseAllExcept(position);
-            }
-
+            collapseAllExcept(position);
             return true;
         }
     }
@@ -123,14 +118,10 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             indexList.add(insert, i);
         }
 
-        notifyItemRangeInserted(position + 1, count);
+        notifyDataSetChanged();
 
         int allItemsPosition = indexList.get(position);
         expandMap.put(allItemsPosition, 1);
-
-        if (notify) {
-            notifyItemChanged(position);
-        }
     }
 
     public void collapseItems(int position, boolean notify) {
@@ -145,14 +136,10 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             } else break;
         }
 
-        notifyItemRangeRemoved(position + 1, count);
+       notifyDataSetChanged();
 
         int allItemsPosition = indexList.get(position);
         expandMap.delete(allItemsPosition);
-
-        if (notify) {
-            notifyItemChanged(position);
-        }
     }
 
     private boolean isHeader(BaseListItem baseListItem) {
