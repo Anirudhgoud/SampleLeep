@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/custom_marker_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_marker"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/marker_label_bg"
+            android:paddingBottom="3dp"
+            android:paddingTop="2dp"
+            android:orientation="horizontal">
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/time_to_reach_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xxx"
+                android:textColor="@color/dark_grey_text"
+                android:textSize="14sp"
+                app:typeface="NotoSans-Bold" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="min"
+                android:textColor="@color/dark_grey_text"
+                android:textSize="12sp"
+                app:typeface="NotoSans-Regular" />
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

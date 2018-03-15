@@ -41,7 +41,7 @@ public class ResponseValidator {
                 responseObjects[0] = NetworkConstants.UNAUTHORIZED;
                 responseObjects[1] = null;
                 responseObjects[2] = NetworkStringConstants.UNAUTHORIZED;
-
+                break;
             default:
                 responseObjects[0] = NetworkConstants.FAILURE;
                 responseObjects[1] = null;

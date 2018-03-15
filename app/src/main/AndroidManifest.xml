@@ -63,6 +63,9 @@
         <activity
             android:name=".leep.DropOffPaymentConfirmationActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".leep.PickupMapActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

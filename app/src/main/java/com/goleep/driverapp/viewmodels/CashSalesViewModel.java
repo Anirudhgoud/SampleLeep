@@ -44,7 +44,7 @@ public class CashSalesViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<OrderItemEntity>> getDriverDoDetails(Integer id) {
-        driverDoDetails = leepDatabase.deliveryOrderItemDao().getDriverDoItems(id);
+        driverDoDetails = leepDatabase.deliveryOrderItemDao().getDeliveryOrderItems(id);
         return driverDoDetails;
     }
 

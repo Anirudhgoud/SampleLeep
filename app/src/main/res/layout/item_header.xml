@@ -1,154 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/selection_icon"
-        android:layout_centerVertical="true"
-        app:srcCompat="@drawable/ic_do_unselected"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-
-
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_toRightOf="@id/selection_icon"
-        android:layout_toEndOf="@id/selection_icon"
-        android:layout_toLeftOf="@id/tv_amount"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_toStartOf="@id/tv_amount"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:paddingLeft="16dp"
-        android:paddingBottom="5dp"
-        android:paddingTop="10dp">
+        android:layout_toLeftOf="@id/tv_amount"
+        android:layout_centerVertical="true">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
-            android:id="@+id/tv_customer_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lines="1"
-            android:ellipsize="end"
-            android:textColor="@color/doTabTextColor"
-            android:textSize="18sp"
-            app:typeface="NotoSans-Bold" />
+        <ImageView
+            android:id="@+id/selection_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="12dp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_do_unselected" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
-            android:id="@+id/tv_store_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/doTabTextColor"
-            android:textSize="12sp"
-            android:maxLines="2"
-            app:typeface="NotoSans-Regular" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:gravity="left"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingTop="10dp">
 
             <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_customer_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/do_number"
+                android:ellipsize="end"
+                android:lines="1"
                 android:textColor="@color/doTabTextColor"
-                android:textSize="12sp"
+                android:textSize="18sp"
                 app:typeface="NotoSans-Bold" />
 
             <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:id="@+id/tv_do_number"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_store_address"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
+                android:maxLines="2"
                 android:textColor="@color/doTabTextColor"
                 android:textSize="12sp"
                 app:typeface="NotoSans-Regular" />
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginRight="8dp"
-                app:srcCompat="@drawable/ic_calender" />
-
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:id="@+id/tv_date"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/do_number_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:lines="1"
-                android:textColor="@color/doTabTextColor"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/do_number"
+                    android:textColor="@color/doTabTextColor"
+                    android:textSize="12sp"
+                    app:typeface="NotoSans-Bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    android:id="@+id/tv_do_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:textColor="@color/doTabTextColor"
+                    android:textSize="12sp"
+                    app:typeface="NotoSans-Regular" />
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginRight="8dp"
-                app:srcCompat="@drawable/ic_time_slot" />
+            </LinearLayout>
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:id="@+id/tv_schedule"
-                android:layout_width="0dp"
+
+            <LinearLayout
+                android:id="@+id/date_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:lines="1"
-                android:textColor="@color/doTabTextColor"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginRight="8dp"
+                    app:srcCompat="@drawable/ic_calender" />
+
+                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lines="1"
+                    android:textColor="@color/doTabTextColor"
+                    android:textSize="12sp"
+                    app:typeface="NotoSans-Bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginRight="8dp"
+                    app:srcCompat="@drawable/ic_time_slot" />
+
+                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    android:id="@+id/tv_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lines="1"
+                    android:textColor="@color/doTabTextColor"
+                    android:textSize="12sp"
+                    app:typeface="NotoSans-Bold" />
+
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
-
     <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:id="@+id/tv_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_amount"
-        android:text=""
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/img_arrow"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="40dp"
-        app:typeface="NotoSans-Regular"
-        android:textSize="14sp"/>
-
+        android:layout_toLeftOf="@id/img_arrow"
+        android:text=""
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular" />
 
 
     <ImageView
         android:id="@+id/img_arrow"
         android:layout_width="16dp"
-        android:layout_height="9dp"
-        android:layout_alignParentRight="true"
+        android:layout_height="10dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/ic_expandable_indicator_open" />

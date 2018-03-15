@@ -1,6 +1,5 @@
 package com.goleep.driverapp.adapters;
 
-import android.arch.persistence.room.Ignore;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseIntArray;
@@ -27,8 +26,6 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     private List<Integer> indexList = new ArrayList<>();
     private SparseIntArray expandMap = new SparseIntArray();
     private int mode;
-
-
 
     private static final int ARROW_ROTATION_DURATION = 150;
 
@@ -79,7 +76,8 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clickListener.onClick(v);
+                    if(clickListener != null)
+                        clickListener.onClick(v);
                     handleClick();
                 }
             });
@@ -118,7 +116,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         int index = indexList.get(position);
         int insert = position;
 
-        for (int i=index+1; i<allItems.size() && allItems.get(i).getItemType() != AppConstants.TYPE_HEADER; i++) {
+        for (int i = index+1; i<allItems.size() && !isHeader(allItems.get(i)); i++) {
             insert++;
             count++;
             visibleItems.add(insert, allItems.get(i));
@@ -139,10 +137,12 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         int count = 0;
         int index = indexList.get(position);
 
-        for (int i=index+1; i<allItems.size() && allItems.get(i).getItemType() != AppConstants.TYPE_HEADER; i++) {
-            count++;
-            visibleItems.remove(position + 1);
-            indexList.remove(position + 1);
+        for (int i=index+1; i<allItems.size() ; i++) {
+            if(!isHeader(allItems.get(i))) {
+                count++;
+                visibleItems.remove(position + 1);
+                indexList.remove(position + 1);
+            } else break;
         }
 
         notifyItemRangeRemoved(position + 1, count);
@@ -153,6 +153,15 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         if (notify) {
             notifyItemChanged(position);
         }
+    }
+
+    private boolean isHeader(BaseListItem baseListItem) {
+        if(baseListItem.getItemType() == AppConstants.TYPE_HEADER ||
+                baseListItem.getItemType() == AppConstants.TYPE_ORDERS_HEADER ||
+                baseListItem.getItemType() == AppConstants.TYPE_CASH_SALES_ITEM ||
+                baseListItem.getItemType() == AppConstants.TYPE_SALES_INFO)
+            return true;
+        else return false;
     }
 
 
@@ -175,7 +184,8 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         for (int i=0; i<items.size(); i++) {
             if (items.get(i).getItemType() == AppConstants.TYPE_HEADER ||
                     items.get(i).getItemType() == AppConstants.TYPE_ORDERS_HEADER ||
-                    items.get(i).getItemType() == AppConstants.TYPE_CASH_SALES_ITEM) {
+                    items.get(i).getItemType() == AppConstants.TYPE_CASH_SALES_ITEM ||
+                    items.get(i).getItemType() == AppConstants.TYPE_SALES_INFO) {
                 indexList.add(i);
                 visibleItems.add(items.get(i));
             }
@@ -184,7 +194,6 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         this.visibleItems = visibleItems;
         notifyDataSetChanged();
     }
-
 
 
     protected void removeItemAt(int visiblePosition) {

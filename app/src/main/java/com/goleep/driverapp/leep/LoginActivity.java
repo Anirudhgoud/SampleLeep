@@ -91,9 +91,11 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void performLoginOperation() {
-        if(isValidUsernamePassword())
+        if(isValidUsernamePassword()) {
             loginViewModel.login(phoneEditText.getText().toString(), passwordEditText.getText().toString(),
-                "+91", loginCallBack);
+                    "+91", loginCallBack);
+            showProgressDialog();
+        }
     }
 
     private boolean isValidUsernamePassword() {
@@ -114,6 +116,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void handleLoginResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
+        dismissProgressDialog();
         if(errorMessage != null)
             showNetworkRelatedDialogs(errorMessage);
         else
