@@ -21,6 +21,7 @@ import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import org.json.JSONArray;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +94,15 @@ public class HomeViewModel extends AndroidViewModel {
                 }
             }
         });
+    }
+
+    public void uploadProfileImage(File imageFile){
+        String authToken = LocalStorageService.sharedInstance().getLocalFileStore().
+                getString(getApplication().getApplicationContext(), SharedPreferenceKeys.AUTH_TOKEN);
+        String userId = LocalStorageService.sharedInstance().getLocalFileStore().
+                getString(getApplication().getApplicationContext(), SharedPreferenceKeys.USER_ID);
+        NetworkService.sharedInstance().getNetworkClient().uploadImage(authToken, UrlConstants.UPDATE_PROFILE_IMAGE+userId,
+                imageFile, "profile_image.jpg");
     }
 
     public Summary getSummary() {

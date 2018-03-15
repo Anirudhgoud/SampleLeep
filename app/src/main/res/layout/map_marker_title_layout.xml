@@ -30,18 +30,9 @@
                 android:id="@+id/time_to_reach_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="xxx"
                 android:textColor="@color/dark_grey_text"
                 android:textSize="14sp"
                 app:typeface="NotoSans-Bold" />
-
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="min"
-                android:textColor="@color/dark_grey_text"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Regular" />
 
         </LinearLayout>
     </LinearLayout>

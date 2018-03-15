@@ -1,5 +1,6 @@
 package com.goleep.driverapp.fragments;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -105,14 +106,17 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     }
 
     private void startConfirmActivity() {
-        if (((PickupActivity) getActivity()).getSelectedCashSalesIds().size() > 0 ||
-                ((PickupActivity) getActivity()).getSelectedDoIds().size() > 0) {
-            Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
-            intent.putIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY,
-                    (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedCashSalesIds());
-            intent.putIntegerArrayListExtra(AppConstants.DO_IDS_KEY,
-                    (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedDoIds());
-            getActivity().startActivityForResult(intent, 101);
+        Activity activity = getActivity();
+        if(activity != null && !activity.isFinishing()) {
+            if (((PickupActivity) getActivity()).getSelectedCashSalesIds().size() > 0 ||
+                    ((PickupActivity) getActivity()).getSelectedDoIds().size() > 0) {
+                Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
+                intent.putIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY,
+                        (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedCashSalesIds());
+                intent.putIntegerArrayListExtra(AppConstants.DO_IDS_KEY,
+                        (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedDoIds());
+                getActivity().startActivityForResult(intent, 101);
+            }
         }
     }
 

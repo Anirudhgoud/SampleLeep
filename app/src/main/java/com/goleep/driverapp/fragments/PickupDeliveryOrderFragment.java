@@ -52,11 +52,12 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         @Override
         public void onClick(View view) {
             final int pos = expandableListView.getChildLayoutPosition(view);
-            doViewModel.getPositionMap().put(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId(), pos);
-            if (doViewModel.getDoUpdateMap().containsKey(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId()) &&
-                    !doViewModel.getDoUpdateMap().get(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId())) {
-                doViewModel.fetchDoItems(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId());
-            } else if (!doViewModel.getDoUpdateMap().containsKey(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId())) {
+            int doId = ((DeliveryOrderEntity)adapter.getItemAt(pos)).getId();
+            doViewModel.getPositionMap().put(doId, pos);
+            if(doViewModel.getDoUpdateMap().containsKey(doId) &&
+                    !doViewModel.getDoUpdateMap().get(doId)) {
+                doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
+            } else if(!doViewModel.getDoUpdateMap().containsKey(doId)) {
                 doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
             }
         }
@@ -135,11 +136,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
-                    } catch (NullPointerException e) {
-
-                    }
+                    expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
                 }
             }, 5);
         }

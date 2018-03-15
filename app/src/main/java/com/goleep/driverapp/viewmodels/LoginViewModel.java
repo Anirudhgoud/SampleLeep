@@ -44,6 +44,10 @@ public class LoginViewModel extends AndroidViewModel {
                 switch (type){
                     case NetworkConstants.SUCCESS:
                         JSONObject userObj = (JSONObject) response.opt(0);
+                        LocalStorageService.sharedInstance().getLocalFileStore().store(context,
+                                SharedPreferenceKeys.PROFILE_URL, userObj.optString("profile_image_url"));
+                        LocalStorageService.sharedInstance().getLocalFileStore().store(context,
+                                SharedPreferenceKeys.USER_ID, userObj.optString("id"));
                         if(userObj != null){
                             JSONObject driver = userObj.optJSONObject("driver");
                             if(driver != null){
