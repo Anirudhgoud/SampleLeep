@@ -21,9 +21,12 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.DropOffPaymentConfirmationViewModel;
+
+import java.util.List;
 
 public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
 
@@ -197,12 +200,25 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
             case R.id.bt_confirm:
                 if (checkValidations()) {
-//                    viewModel.editDeliveryOrderWithSelectedProducts();
-                    //Goto next screen
+                    viewModel.editDeliveryOrderWithSelectedProducts(editOrderNetworkCallback);
                 }
                 break;
         }
     }
+
+    private UILevelNetworkCallback editOrderNetworkCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+
+        }
+    };
+
+    private UILevelNetworkCallback deliverOrderNetworkCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+
+        }
+    };
 
     private boolean checkValidations() {
         tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
