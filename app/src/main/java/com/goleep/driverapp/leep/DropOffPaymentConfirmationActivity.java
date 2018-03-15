@@ -197,6 +197,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
             case R.id.bt_confirm:
                 if (checkValidations()) {
+//                    viewModel.editDeliveryOrderWithSelectedProducts();
                     //Goto next screen
                 }
                 break;
@@ -209,7 +210,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         tvContactNumberError.setVisibility(contactNumberLength > 0 ? (contactNumberLength == 10 ? View.GONE : View.VISIBLE) : View.GONE);
         tvSignatureError.setVisibility(viewModel.isSignatureAdded() ? View.GONE : View.VISIBLE);
         if (etReceivedFrom.getText().length() > 0 && viewModel.isSignatureAdded()) {
-            return contactNumberLength == 0 ? true : contactNumberLength == 10;
+            return contactNumberLength == 0 || contactNumberLength == 10;
         }
         return false;
     }
