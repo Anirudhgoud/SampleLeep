@@ -89,7 +89,11 @@ public class DeliveryOrdersListFragment extends Fragment {
     }
 
     private void fetchDeliveryOrders(){
-        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+        DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity) getActivity());
+        if (dropOffDeliveryOrdersActivity != null) {
+            dropOffDeliveryOrdersActivity.showLoading();
+            doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+        }
     }
 
     private void onRadioSelectionChange(int checkedId){
@@ -118,13 +122,14 @@ public class DeliveryOrdersListFragment extends Fragment {
 
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if(uiModels == null){
-                DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity)DeliveryOrdersListFragment.this.getActivity());
-                if(toLogout){
-//                    dropOffDeliveryOrdersActivity.logout();
-                }else {
-//                    dropOffDeliveryOrdersActivity.showErrorDialog(errorMessage);
-                }
+            DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity) getActivity());
+            if (dropOffDeliveryOrdersActivity == null) return;
+            dropOffDeliveryOrdersActivity.hideLoading();
+
+            if (toLogout) {
+                dropOffDeliveryOrdersActivity.logout();
+            } else if (isDialogToBeShown) {
+                dropOffDeliveryOrdersActivity.showErrorDialog(errorMessage);
             }
         }
     };

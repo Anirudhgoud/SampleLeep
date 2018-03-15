@@ -74,7 +74,7 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
     }
 
     private List<Map<String, Object>> getDeliveryOrderItemsMap() {
-        List<OrderItemEntity> orderItems = leepDatabase.deliveryOrderItemDao().getDOItemsList(deliveryOrderId);
+        List<OrderItemEntity> orderItems = leepDatabase.deliveryOrderItemDao().getDOrderItemssList(deliveryOrderId);
         List<Map<String, Object>> orderItemMapList = new ArrayList<>();
         for (OrderItemEntity orderItem : orderItems) {
             Map<String, Object> orderItemMap = new HashMap<>();

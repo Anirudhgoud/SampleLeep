@@ -136,6 +136,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     }
 
     private void fetchDeliveryOrderItems(){
+        showProgressDialog();
         viewModel.fetchDeliveryOrderItems(viewModel.getDeliveryOrderId(), orderItemNetworkCallBack);
     }
 
@@ -167,6 +168,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             if(uiModels == null){
+                runOnUiThread(() -> dismissProgressDialog());
                 if(toLogout){
                     logoutUser();
                 }else if(isDialogToBeShown) {
@@ -181,6 +183,9 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private UILevelNetworkCallback locationNetworkCallBack = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            runOnUiThread(() -> {
+                dismissProgressDialog();
+            });
             if (uiModels == null) {
                 if (toLogout) {
                     logoutUser();

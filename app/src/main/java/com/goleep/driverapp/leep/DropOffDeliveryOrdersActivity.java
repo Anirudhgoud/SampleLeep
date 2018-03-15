@@ -94,6 +94,14 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
         super.showNetworkRelatedDialogs(message);
     }
 
+    public void showLoading() {
+        showProgressDialog();
+    }
+
+    public void hideLoading() {
+        dismissProgressDialog();
+    }
+
     class DeliveryOrderPagerAdapter extends FragmentPagerAdapter {
 
         private int NUMBER_OF_ITEMS = 2;

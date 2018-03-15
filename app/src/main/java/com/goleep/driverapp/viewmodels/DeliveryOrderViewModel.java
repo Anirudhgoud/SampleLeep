@@ -14,6 +14,7 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,6 +64,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
                             List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
                                     deliveryOrdersByParsingJsonResponse(response);
                             leepDatabase.deliveryOrderDao().updateAllDeliveryOrders(deliveryOrdersList);
+                            doNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
                             break;
 
                         case NetworkConstants.FAILURE:
