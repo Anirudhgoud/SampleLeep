@@ -1,15 +1,21 @@
 package com.goleep.driverapp.leep;
 
-import android.app.ProgressDialog;
+import android.Manifest;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -19,7 +25,6 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.AlertDialogHelper;
 import com.goleep.driverapp.interfaces.NetworkChangeListener;
 import com.goleep.driverapp.services.network.NetworkChecker;
-import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import java.util.Vector;
@@ -35,7 +40,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     private NetworkChangeListener networkChangeListener;
     private AlertDialogHelper alertDialogHelper;
-    private ProgressDialog progressBar;
+    private Dialog progressBarDialog;
 
     private BroadcastReceiver connectivityChangeReceiver = new BroadcastReceiver() {
         @Override
@@ -62,6 +67,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     @Override
     protected void onDestroy(){
         super.onDestroy();
+        dismissProgressDialog();
         unregisterReceiverForNetworkChange();
     }
 
@@ -99,6 +105,24 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         finish();
     }
 
+    protected void requestLocationsPermission(){
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    100);
+        }
+    }
+
+    protected boolean isLocationsPremissionGranted(){
+        return (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED);
+    }
+
     @Override
     public void onClick(View view) {
         onClickWithId(view.getId());
@@ -126,8 +150,31 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
     }
 
-    protected void showProgressDialog(){
+    protected void showSuccessDialog(String message){
+        alertDialogHelper = new AlertDialogHelper();
+        alertDialogHelper.showSuccessDialog(this, message);
+    }
 
+    protected void showProgressDialog(){
+        progressBarDialog = new Dialog(ParentAppCompatActivity.this, R.style.ProgressBarTheme);
+        progressBarDialog.setContentView(LayoutInflater.from(this).inflate(
+                R.layout.progress_dialog_layout, null, false), new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        progressBarDialog.setCancelable(false);
+        ProgressBar progressBar = progressBarDialog.findViewById(R.id.progress_bar);
+        progressBar.getIndeterminateDrawable().setColorFilter(
+                getResources().getColor(R.color.green),
+                android.graphics.PorterDuff.Mode.SRC_IN);
+        progressBarDialog.getWindow().setGravity(Gravity.CENTER);
+        progressBarDialog.show();
+    }
+
+    protected void dismissProgressDialog(){
+        try{
+            progressBarDialog.hide();
+        }catch (Exception e){
+
+        }
     }
 
     private void closeAllNetworkDialogs() {

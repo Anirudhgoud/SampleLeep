@@ -42,6 +42,7 @@ public class DriverDataParser {
         driverEntity.setCompletedDeliveryOrdersCount(jsonObject.optInt("completed_delivery_orders_count", 0));
         driverEntity.setPaymentCollected(jsonObject.optInt("payment_collected", 0));
         driverEntity.setDeliveryLocationsCount(jsonObject.optInt("delivery_locations_count", 0));
+        jsonObject = jsonObject.optJSONObject("work_location");
         driverEntity.setAddressLine1(jsonObject.optString("address_line_1"));
         driverEntity.setAddressLine2(jsonObject.optString("address_line_2"));
         driverEntity.setCity(jsonObject.optString("city"));
@@ -49,6 +50,9 @@ public class DriverDataParser {
         driverEntity.setCountryId(jsonObject.optInt("country_id"));
         driverEntity.setCountryName(jsonObject.optString("country_name"));
         driverEntity.setPinCode(jsonObject.optString("pin_code"));
+        driverEntity.setWorkLocationLat(jsonObject.optDouble("latitude", 0.0));
+        driverEntity.setWorkLocationLng(jsonObject.optDouble("longitude", 0.0));
+        driverEntity.setLocationName(jsonObject.optString("name"));
         return driverEntity;
     }
 }

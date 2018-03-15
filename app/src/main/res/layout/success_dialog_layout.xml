@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:paddingTop="18dp"
+        android:id="@+id/close_layout"
+        android:paddingEnd="18sp"
+        android:paddingRight="18sp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_close"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/success_icon"
+        app:srcCompat="@drawable/ic_dialog_success"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/close_layout"
+        android:layout_marginTop="32dp"/>
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textSize="24sp"
+        android:id="@+id/message"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/success_icon"
+        android:layout_marginTop="22dp"
+        android:textColor="@color/text_black"
+        android:text="xxx"/>
+
+    <com.goleep.driverapp.helpers.customfont.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/ok_button"
+        android:layout_below="@id/message"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="36dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/success_dialog_ok_bg"
+        android:text="@string/ok"/>
+    
+
+
+</RelativeLayout>

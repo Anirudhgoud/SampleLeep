@@ -36,6 +36,9 @@ public class DriverEntity {
     private int countryId;
     private String countryName;
     private String pinCode;
+    private String locationName;
+    private double workLocationLat;
+    private double workLocationLng;
 
     public int getId() {
         return id;
@@ -235,5 +238,29 @@ public class DriverEntity {
 
     public void setPinCode(String pinCode) {
         this.pinCode = pinCode;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public double getWorkLocationLat() {
+        return workLocationLat;
+    }
+
+    public void setWorkLocationLat(double workLocationLat) {
+        this.workLocationLat = workLocationLat;
+    }
+
+    public double getWorkLocationLng() {
+        return workLocationLng;
+    }
+
+    public void setWorkLocationLng(double workLocationLng) {
+        this.workLocationLng = workLocationLng;
     }
 }

@@ -10,10 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
+import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.helpers.uimodels.CashSalesInfo;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
@@ -27,27 +30,87 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
     CustomTextView wareHouseInfoTextView;
     @BindView(R.id.expandable_list)
     RecyclerView expandableListView;
+    @BindView(R.id.confirm_button)
+    CustomButton confirmButton;
     private DoExpandableListAdapter adapter;
     private PickupDeliveryOrderViewModel pickupDeliveryOrderViewModel;
-    ArrayList<OrderItemEntity> cashDoItems = new ArrayList<>();
-    ArrayList<ProductEntity> cashProductEntities = new ArrayList<>();
+    private ArrayList<Integer> cashDoItems = new ArrayList<>();
+    private ArrayList<Integer> selectedDeliveryOrders = new ArrayList<>();
+    private List<OrderItemEntity> cashSalesItems = new ArrayList<>();
+
+    private UILevelNetworkCallback pickupConfirmCallBack = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage,
+                                       boolean toLogout) {
+            if(!isDialogToBeShown && errorMessage == null && !toLogout){
+                pickupDeliveryOrderViewModel.deleteDeliveryOrders(selectedDeliveryOrders, cashSalesItems);
+                showSuccessDialog(getString(R.string.pickup_success));
+            }
+        }
+    };
 
     @Override
     public void doInitialSetup() {
         ButterKnife.bind(this);
         pickupDeliveryOrderViewModel = ViewModelProviders.of(
                 PickupConfirmationActivity.this).get(PickupDeliveryOrderViewModel.class);
-        initView();
         handleIntent();
+        initView();
+
     }
 
     private void handleIntent() {
         Intent intent = getIntent();
-//        cashDoItems = intent.getParcelableArrayListExtra(AppConstants.CASH_DOITEM_KEY);
-//        cashProducts = intent.getParcelableArrayListExtra(AppConstants.CASH_PRODUCT_KEY);
-        List<BaseListItem> doItems = new ArrayList<>();
-        doItems.addAll(cashDoItems);
-        adapter.addItemsList(BaseListItem.setItemType(doItems, AppConstants.TYPE_CASH_SALES_ITEM), 1);
+        cashDoItems = intent.getIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY);
+        selectedDeliveryOrders = intent.getIntegerArrayListExtra(AppConstants.DO_IDS_KEY);
+    }
+
+    private List<BaseListItem> generateAdapterItemList(ArrayList<Integer> cashDoItems,
+                                                       ArrayList<Integer> selectedDeliveryOrders) {
+        List<BaseListItem> baseListItems = new ArrayList<>();
+
+        List<DeliveryOrderEntity> deliveryOrderEntities = new ArrayList<>();
+        for(int doId : selectedDeliveryOrders){
+            deliveryOrderEntities.add(pickupDeliveryOrderViewModel.getDeliveryOrder(doId));
+        }
+        BaseListItem deliveryOrderHeader = new BaseListItem();
+        deliveryOrderHeader.setOrdersHeader(String.format(getString(R.string.do_header_label),
+                deliveryOrderEntities.size()));
+        deliveryOrderHeader.setItemType(AppConstants.TYPE_ORDERS_HEADER);
+        baseListItems.add(deliveryOrderHeader);
+        for(DeliveryOrderEntity deliveryOrderEntity : deliveryOrderEntities){
+            deliveryOrderEntity.setItemType(AppConstants.TYPE_HEADER);
+            baseListItems.add(deliveryOrderEntity);
+
+            List<OrderItemEntity> orderItemEntities = pickupDeliveryOrderViewModel.
+                    getOrderItemsList(deliveryOrderEntity.getId());
+            BaseListItem itemsHeader = new BaseListItem();
+            itemsHeader.setItemType(AppConstants.TYPE_ITEMS_HEADER);
+            baseListItems.add(itemsHeader);
+            for(OrderItemEntity orderItemEntity : orderItemEntities){
+                orderItemEntity.setItemType(AppConstants.TYPE_DO_ITEM);
+                baseListItems.add(orderItemEntity);
+            }
+        }
+        int totalValue = 0;
+        for(int cashSalesId : cashDoItems){
+            OrderItemEntity csOrderItem = pickupDeliveryOrderViewModel.getDeliveryOrderItem(cashSalesId);
+            csOrderItem.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
+            cashSalesItems.add(csOrderItem);
+            totalValue += csOrderItem.getQuantity() * csOrderItem.getPrice();
+        }
+        BaseListItem cashSalesHeader = new BaseListItem();
+        cashSalesHeader.setOrdersHeader(getString(R.string.cash_sales));
+        cashSalesHeader.setItemType(AppConstants.TYPE_ORDERS_HEADER);
+        baseListItems.add(cashSalesHeader);
+        BaseListItem cashSalesInfo = new CashSalesInfo(cashSalesItems.size(), totalValue);
+        cashSalesInfo.setItemType(AppConstants.TYPE_SALES_INFO);
+        baseListItems.add(cashSalesInfo);
+        BaseListItem itemsHeader = new BaseListItem();
+        itemsHeader.setItemType(AppConstants.TYPE_ITEMS_HEADER);
+        baseListItems.add(itemsHeader);
+        baseListItems.addAll(cashSalesItems);
+        return baseListItems;
     }
 
     private void initView() {
@@ -56,22 +119,16 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
         setWareHouseDetails();
         initRecyclerView();
+        confirmButton.setOnClickListener(this);
     }
 
     private void initRecyclerView() {
         expandableListView.setLayoutManager(new LinearLayoutManager(PickupConfirmationActivity.this));
-        expandableListView.addItemDecoration(new DividerItemDecoration(PickupConfirmationActivity.this, DividerItemDecoration.VERTICAL));
-        List<BaseListItem> listItems = new ArrayList<>();
-        BaseListItem item = new BaseListItem();
-        item.setOrdersHeader("Delivery Orders");
-        item.setItemType(AppConstants.TYPE_ORDERS_HEADER);
-        listItems.add(item);
-        BaseListItem item2 = new BaseListItem();
-        item2.setOrdersHeader("Case Sales");
-        item2.setItemType(AppConstants.TYPE_ORDERS_HEADER);
-        listItems.add(item2);
-        adapter = new DoExpandableListAdapter(PickupConfirmationActivity.this, listItems);
+        expandableListView.addItemDecoration(new DividerItemDecoration(PickupConfirmationActivity.this,
+                DividerItemDecoration.VERTICAL));
+        adapter = new DoExpandableListAdapter(PickupConfirmationActivity.this, new ArrayList<BaseListItem>());
         expandableListView.setAdapter(adapter);
+        adapter.addCombinedListItems(generateAdapterItemList(cashDoItems, selectedDeliveryOrders));
     }
 
     private void setWareHouseDetails() {
@@ -87,6 +144,9 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
     public void onClickWithId(int resourceId) {
         switch (resourceId){
             case R.id.left_toolbar_button : finish();
+                break;
+            case R.id.confirm_button :
+                pickupDeliveryOrderViewModel.confirmPickup(cashSalesItems, selectedDeliveryOrders, pickupConfirmCallBack);
                 break;
         }
     }

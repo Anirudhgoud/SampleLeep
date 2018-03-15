@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingRight="40dp"
+    android:paddingEnd="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular"
+        android:layout_toLeftOf="@id/total_value_tv"
+        android:layout_toStartOf="@id/total_value_tv"
+        android:id="@+id/total_products_tv"/>
+
+    <com.goleep.driverapp.helpers.customfont.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="14sp"
+        app:typeface="NotoSans-Regular"
+        android:id="@+id/total_value_tv"/>
+
+</RelativeLayout>

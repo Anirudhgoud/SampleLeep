@@ -21,6 +21,6 @@ public class PickupViewModel extends AndroidViewModel {
 
     public String getWareHouseNameAddress(){
         DriverEntity driverEntity = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
-        return driverEntity.getAddressLine1()+", "+ driverEntity.getAddressLine2();
+        return driverEntity.getLocationName()+", "+driverEntity.getAddressLine1()+", "+ driverEntity.getAddressLine2();
      }
 }

@@ -20,7 +20,7 @@ public class BaseListItem {
     private String ordersHeader;
 
     public int getSelectedCount() {
-        return selectedCount;
+        return (selectedCount < 1) ? 0 :selectedCount;
     }
 
     public void setOrdersHeader(String ordersHeader) {
@@ -35,7 +35,7 @@ public class BaseListItem {
         this.itemType = itemType;
     }
 
-    public String getString() {
+    public String getOrdersHeader() {
         return ordersHeader;
     }
 

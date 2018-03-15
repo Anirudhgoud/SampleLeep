@@ -12,4 +12,9 @@ public interface AppConstants {
     int TYPE_DO_ITEM = 10;
     int TYPE_ORDERS_HEADER = 12;
     int TYPE_CASH_SALES_ITEM = 13;
+    int TYPE_ITEMS_HEADER = 14;
+    int TYPE_SALES_INFO = 15;
+    String DO_IDS_KEY = "do_selected";
+
+    int ACTIVITY_SUCCESS_RESULT = 101;
 }

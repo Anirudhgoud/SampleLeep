@@ -38,7 +38,8 @@ public abstract class DeliveryOrderItemDao {
     abstract void deleteDeliveryItems(Integer doId);
 
     @Query("SELECT * FROM OrderItemEntity WHERE doId = :id")
-    public abstract LiveData<List<OrderItemEntity>> getDriverDoItems(int id);
+    public abstract List<OrderItemEntity> getDOrderItemssList(Integer id);
+
 
     @Transaction
     public void deleteAndInsertItems(Integer doId, List<OrderItemEntity> items) {
@@ -50,4 +51,7 @@ public abstract class DeliveryOrderItemDao {
             LogUtils.error("ForeignKey", TextUtils.join(", ", items));
         }
     }
+
+    @Query("SELECT * FROM OrderItemEntity WHERE  id = :doItemId")
+    public abstract OrderItemEntity getDeliveryOrderItem(int doItemId);
 }

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 
 
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.LogUtils;
 
 
@@ -58,4 +59,6 @@ public abstract class DeliveryOrderDao {
         }
     }
 
+    @Query("Delete from DeliveryOrderEntity WHERE id = :doId")
+    public abstract void deleteDeliveryOrder(Integer doId);
 }
