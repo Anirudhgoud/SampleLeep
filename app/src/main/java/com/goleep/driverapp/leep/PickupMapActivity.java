@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
@@ -71,7 +70,7 @@ public class PickupMapActivity extends ParentAppCompatActivity implements OnMapR
     public void onMapReady(GoogleMap googleMap) {
         PickupMapActivity.this.googleMap = googleMap;
         LatLng warehouseLatLng = pickupMapViewModel.getWarehouseLatLng();
-        if(warehouseLatLng != null) {
+        if (warehouseLatLng != null) {
             CameraPosition cameraPosition = new CameraPosition.Builder().target(
                     warehouseLatLng).zoom(15).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -129,8 +128,9 @@ public class PickupMapActivity extends ParentAppCompatActivity implements OnMapR
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.left_toolbar_button : finish();
+        switch (resourceId) {
+            case R.id.left_toolbar_button:
+                finish();
                 break;
             case R.id.navigate_iv : openMaps();
             break;
@@ -149,7 +149,7 @@ public class PickupMapActivity extends ParentAppCompatActivity implements OnMapR
     private Bitmap getMarkerBitmapFromView(String timeToReach) {
         View customMarkerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
                 inflate(R.layout.map_marker_title_layout, null);
-        ((CustomTextView)customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);
+        ((CustomTextView) customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);
         customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
         customMarkerView.buildDrawingCache();

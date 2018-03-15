@@ -13,32 +13,32 @@
         android:gravity="center_vertical"
         android:layout_height="44dp">
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
-        android:layout_width="0dp"
-        android:layout_weight="5"
-        android:gravity="left"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        app:typeface ="NotoSans-Bold"
-        android:text="@string/items_label"
-        android:textColor="@color/light_grey"/>
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="left"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            app:typeface="NotoSans-Bold"
+            android:text="@string/items_label"
+            android:textColor="@color/light_grey" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
-        android:layout_width="0dp"
-        android:layout_weight="2"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        app:typeface ="NotoSans-Bold"
-        android:text="@string/units"
-        android:textColor="@color/light_grey"/>
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            app:typeface="NotoSans-Bold"
+            android:text="@string/units"
+            android:textColor="@color/light_grey" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
-        android:layout_width="0dp"
-        android:layout_weight="3"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        app:typeface ="NotoSans-Bold"
-        android:text="@string/value"
-        android:textColor="@color/light_grey"/>
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            app:typeface="NotoSans-Bold"
+            android:text="@string/value"
+            android:textColor="@color/light_grey" />
     </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="com.goleep.driverapp.leep.DropOffPaymentCollectActivity">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/delivery_order_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <include
+        layout="@layout/item_list_summary_layout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
+
+    <include
+        layout="@layout/divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_item_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical" />
+
+            <include
+                layout="@layout/amount_summary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="16dp"
+                android:text="@string/payment_collected"
+                android:textColor="@color/light_grey"
+                android:textSize="14sp"
+                app:typeface="NotoSans-Regular" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp">
+
+                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    android:id="@+id/tv_collected_amount_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="₹"
+                    android:textColor="@color/light_grey"
+                    android:textSize="32sp"
+                    app:typeface="NotoSans-Regular" />
+
+                <com.goleep.driverapp.helpers.customfont.CustomEditText
+                    android:id="@+id/et_payment_collected"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="25,000"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/doTabTextColor"
+                    android:textCursorDrawable="@null"
+                    android:textSize="32sp"
+                    app:typeface="NotoSans-Light" />
+
+            </LinearLayout>
+
+            <include
+                layout="@layout/divider_view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/light_grey_text" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.goleep.driverapp.helpers.customfont.CustomButton
+        android:id="@+id/bt_done"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/green"
+        android:text="@string/done"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:typeface="NotoSans-Regular" />
+
+</LinearLayout>

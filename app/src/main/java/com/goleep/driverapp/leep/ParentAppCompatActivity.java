@@ -108,6 +108,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     }
 
 
+
     @Override
     public void onClick(View view) {
         onClickWithId(view.getId());
@@ -135,30 +136,32 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
     }
 
-    protected void showSuccessDialog(String message){
+    protected void showSuccessDialog(String message) {
         alertDialogHelper = new AlertDialogHelper();
         alertDialogHelper.showSuccessDialog(this, message);
     }
 
     protected void showProgressDialog(){
-        progressBarDialog = new Dialog(ParentAppCompatActivity.this, R.style.ProgressBarTheme);
-        progressBarDialog.setContentView(LayoutInflater.from(this).inflate(
-                R.layout.progress_dialog_layout, null, false), new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        progressBarDialog.setCancelable(false);
-        ProgressBar progressBar = progressBarDialog.findViewById(R.id.progress_bar);
-        progressBar.getIndeterminateDrawable().setColorFilter(
-                getResources().getColor(R.color.green),
-                android.graphics.PorterDuff.Mode.SRC_IN);
-        progressBarDialog.getWindow().setGravity(Gravity.CENTER);
-        progressBarDialog.show();
+        if (progressBarDialog == null) {
+            progressBarDialog = new Dialog(ParentAppCompatActivity.this, R.style.ProgressBarTheme);
+            progressBarDialog.setContentView(LayoutInflater.from(this).inflate(
+                    R.layout.progress_dialog_layout, null, false), new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            progressBarDialog.setCancelable(false);
+            ProgressBar progressBar = progressBarDialog.findViewById(R.id.progress_bar);
+            progressBar.getIndeterminateDrawable().setColorFilter(
+                    getResources().getColor(R.color.green),
+                    android.graphics.PorterDuff.Mode.SRC_IN);
+            progressBarDialog.getWindow().setGravity(Gravity.CENTER);
+            progressBarDialog.show();
+        }
     }
 
-    protected void dismissProgressDialog(){
-        try{
-            progressBarDialog.dismiss();
-        }catch (Exception e){
 
+    protected void dismissProgressDialog() {
+        if (progressBarDialog != null) {
+            progressBarDialog.dismiss();
+            progressBarDialog = null;
         }
     }
 

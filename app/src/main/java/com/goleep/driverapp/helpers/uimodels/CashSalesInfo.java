@@ -4,7 +4,7 @@ package com.goleep.driverapp.helpers.uimodels;
  * Created by vishalm on 09/03/18.
  */
 
-public class CashSalesInfo extends BaseListItem{
+public class CashSalesInfo extends BaseListItem {
     public int getTotalProducts() {
         return totalProducts;
     }

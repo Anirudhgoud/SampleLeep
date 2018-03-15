@@ -16,10 +16,11 @@
         android:paddingEnd="18sp"
         android:paddingRight="18sp"
         android:gravity="center">
+
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:srcCompat="@drawable/ic_close"/>
+            app:srcCompat="@drawable/ic_close" />
     </LinearLayout>
 
     <ImageView
@@ -29,7 +30,7 @@
         app:srcCompat="@drawable/ic_dialog_success"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/close_layout"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="32dp" />
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:layout_width="wrap_content"
@@ -42,7 +43,7 @@
         android:layout_below="@id/success_icon"
         android:layout_marginTop="22dp"
         android:textColor="@color/text_black"
-        android:text="xxx"/>
+        android:text="xxx" />
 
     <com.goleep.driverapp.helpers.customfont.CustomButton
         android:layout_width="match_parent"
@@ -55,8 +56,7 @@
         android:layout_marginBottom="36dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/success_dialog_ok_bg"
-        android:text="@string/ok"/>
-    
+        android:text="@string/ok" />
 
 
 </RelativeLayout>

@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DeliveryOrdersListAdapter;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
@@ -41,12 +42,7 @@ public class DeliveryOrdersListFragment extends Fragment {
     private RecyclerView doListRecyclerView;
     private RadioGroup rgFilterRadioGroup;
 
-    private DeliveryOrderClickEventListener deliveryOrderClickEventListener = new DeliveryOrderClickEventListener() {
-        @Override
-        public void onDeliverClicked(Integer orderId) {
-            openDeliveryDetailsActivity(orderId);
-        }
-    };
+    private DeliveryOrderClickEventListener deliveryOrderClickEventListener = orderId -> openDeliveryDetailsActivity(orderId);
 
     @Nullable
     @Override
@@ -93,7 +89,11 @@ public class DeliveryOrdersListFragment extends Fragment {
     }
 
     private void fetchDeliveryOrders(){
-        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+        DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity) getActivity());
+        if (dropOffDeliveryOrdersActivity != null) {
+            dropOffDeliveryOrdersActivity.showLoading();
+            doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+        }
     }
 
     private void onRadioSelectionChange(int checkedId){
@@ -114,7 +114,7 @@ public class DeliveryOrdersListFragment extends Fragment {
 
     private void openDeliveryDetailsActivity(Integer deliveryOrderId){
         Intent doDetailsIntent = new Intent(getActivity(), DropOffDeliveryOrderDetailsActivity.class);
-        doDetailsIntent.putExtra("delivery_order_id", deliveryOrderId);
+        doDetailsIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, deliveryOrderId);
         startActivity(doDetailsIntent);
     }
 
@@ -122,13 +122,14 @@ public class DeliveryOrdersListFragment extends Fragment {
 
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if(uiModels == null){
-                DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity)DeliveryOrdersListFragment.this.getActivity());
-                if(toLogout){
-//                    dropOffDeliveryOrdersActivity.logout();
-                }else {
-//                    dropOffDeliveryOrdersActivity.showErrorDialog(errorMessage);
-                }
+            DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity) getActivity());
+            if (dropOffDeliveryOrdersActivity == null) return;
+            dropOffDeliveryOrdersActivity.hideLoading();
+
+            if (toLogout) {
+                dropOffDeliveryOrdersActivity.logout();
+            } else if (isDialogToBeShown) {
+                dropOffDeliveryOrdersActivity.showErrorDialog(errorMessage);
             }
         }
     };

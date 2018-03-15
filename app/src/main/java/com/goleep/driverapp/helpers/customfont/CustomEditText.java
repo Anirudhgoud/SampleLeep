@@ -52,13 +52,13 @@ public class CustomEditText extends AppCompatEditText {
     }
 
     public interface KeyImeChange {
-        void onKeyIme(int keyCode, KeyEvent event);
+        void onDoneButtonPress();
     }
 
     @Override
     public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         if (keyImeChangeListener != null) {
-            keyImeChangeListener.onKeyIme(keyCode, event);
+            keyImeChangeListener.onDoneButtonPress();
         }
         return false;
     }

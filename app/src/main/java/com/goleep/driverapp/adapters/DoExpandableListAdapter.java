@@ -64,7 +64,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             case AppConstants.TYPE_CASH_SALES_ITEM :
                 View cashSalesItem = inflate(R.layout.confirm_cash_sales_do_item, parent);
                 return new ItemViewHolder(cashSalesItem);
-            case AppConstants.TYPE_SALES_INFO :
+            case AppConstants.TYPE_SALES_INFO:
                 View cashSalesInfo = inflate(R.layout.sales_info_layout, parent);
                 return new CashSalesInfoViewHolder(cashSalesInfo);
             case AppConstants.TYPE_DO_ITEM:
@@ -84,7 +84,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 ((OrdersHeaderViewHolder)holder).bind(position);
                 break;
             case AppConstants.TYPE_SALES_INFO:
-                ((CashSalesInfoViewHolder)holder).bind(position);
+                ((CashSalesInfoViewHolder) holder).bind(position);
                 break;
             case AppConstants.TYPE_CASH_SALES_ITEM:
             case AppConstants.TYPE_DO_ITEM:
@@ -105,7 +105,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
     public void addItemsList(List<BaseListItem> baseListItems, int position) {
         int listSize = recyclerViewListData.size();
-        for(int j = position+1; j < listSize; j++){
+        for (int j = position + 1; j < listSize; j++) {
             if (!(recyclerViewListData.get(position + 1) instanceof DeliveryOrderEntity)) {
                 recyclerViewListData.remove(position + 1);
             } else break;
@@ -114,10 +114,10 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         itemsHeader.setItemType(AppConstants.TYPE_ITEMS_HEADER);
         recyclerViewListData.add(itemsHeader);
         position += 2;                          //Insert after Header and ItemsHeader
-        for(int i = 0;i < baseListItems.size();i++){
+        for (int i = 0; i < baseListItems.size(); i++) {
             BaseListItem baseListItem = baseListItems.get(i);
             baseListItem.setItemType(AppConstants.TYPE_DO_ITEM);
-            recyclerViewListData.add(position+i, baseListItem);
+            recyclerViewListData.add(position + i, baseListItem);
         }
         setItems(recyclerViewListData);
     }
@@ -131,7 +131,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     public void addCombinedListItems(List<BaseListItem> baseListItems) {
-        if(baseListItems.size() >0) {
+        if (baseListItems.size() > 0) {
             recyclerViewListData.clear();
             recyclerViewListData.addAll(baseListItems);
             setItems(recyclerViewListData);
@@ -164,13 +164,13 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
         public void bind(int position) {
             super.bind(position);
-            DeliveryOrderEntity deliveryOrder = (DeliveryOrderEntity)visibleItems.get(position);
+            DeliveryOrderEntity deliveryOrder = (DeliveryOrderEntity) visibleItems.get(position);
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(StringUtils.getAddress(deliveryOrder.getDestinationAddressLine1(),
                     deliveryOrder.getDestinationAddressLine2()));
             tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue()));
             doNumberLayout.setVisibility(View.GONE);
-            if(((Activity)context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
+            if (((Activity) context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
                 tvDate.setText(DateTimeUtils.convertdDate(deliveryOrder.getPreferredDeliveryDate(),
                         "yyyy-MM-dd", "dd MMM yyyy"));
                 tvSchedule.setText(StringUtils.timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
@@ -204,23 +204,25 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         public void bind(int position) {
             try {
                 ordersHeaderTextView.setText(visibleItems.get(position).getOrdersHeader());
-            }catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
 
             }
         }
     }
 
-    private class CashSalesInfoViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
+    private class CashSalesInfoViewHolder extends ExpandableRecyclerAdapter.ViewHolder {
         private CustomTextView totalProductsTv;
         private CustomTextView totalValueTv;
+
         public CashSalesInfoViewHolder(View view) {
             super(view);
             totalProductsTv = view.findViewById(R.id.total_products_tv);
             totalValueTv = view.findViewById(R.id.total_value_tv);
         }
-        public void bind(int position){
+
+        public void bind(int position) {
             CashSalesInfo cashSalesInfo = (CashSalesInfo) visibleItems.get(position);
-            if(cashSalesInfo != null) {
+            if (cashSalesInfo != null) {
                 totalProductsTv.setText(String.format(context.getResources().getString(R.string.total_product_label),
                         cashSalesInfo.getTotalProducts()));
                 totalValueTv.setText(String.format(context.getResources().getString(R.string.total_value_label),
@@ -242,25 +244,27 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
 
         public void bind(int position) {
-            OrderItemEntity doDetails = (OrderItemEntity)visibleItems.get(position);
+            OrderItemEntity doDetails = (OrderItemEntity) visibleItems.get(position);
             productNameTv.setText(doDetails.getProduct().getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
             productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+
                     doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
-            if(((Activity)context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {{
-                productCheckbox.setVisibility(View.VISIBLE);
-                productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                        if(isChecked)
-                            recyclerViewListData.get(0).addSelection(1);
-                        else recyclerViewListData.get(0).addSelection(-1);
-                        notifyDataSetChanged();
-                    }
-                });
-            }}
+            if (((Activity) context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
+                {
+                    productCheckbox.setVisibility(View.VISIBLE);
+                    productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if (isChecked)
+                                recyclerViewListData.get(0).addSelection(1);
+                            else recyclerViewListData.get(0).addSelection(-1);
+                            notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
         }
     }
 }

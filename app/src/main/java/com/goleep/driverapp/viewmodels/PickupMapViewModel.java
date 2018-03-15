@@ -35,19 +35,19 @@ public class PickupMapViewModel extends AndroidViewModel {
     private LocationManager locationManager;
     private LatLng userCurrentLatLng;
 
-    public PickupMapViewModel(@NonNull Application application){
+    public PickupMapViewModel(@NonNull Application application) {
         super(application);
         leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
         locationManager = (LocationManager) application.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
-    public String getWareHouseNameAddress(){
+    public String getWareHouseNameAddress() {
         DriverEntity driverEntity = RoomDBService.sharedInstance().getDatabase(
                 this.getApplication().getApplicationContext()).driverDao().getDriver();
-        return driverEntity.getLocationName()+", "+driverEntity.getAddressLine1()+", "+ driverEntity.getAddressLine2();
+        return driverEntity.getLocationName() + ", " + driverEntity.getAddressLine1() + ", " + driverEntity.getAddressLine2();
     }
 
-    public String getWareHouseName(){
+    public String getWareHouseName() {
         DriverEntity driverEntity = RoomDBService.sharedInstance().getDatabase(
                 this.getApplication().getApplicationContext()).driverDao().getDriver();
         return driverEntity.getLocationName();
@@ -55,17 +55,17 @@ public class PickupMapViewModel extends AndroidViewModel {
 
     public LatLng getWarehouseLatLng() {
         DriverEntity driverEntity = leepDatabase.driverDao().getDriver();
-        if(driverEntity.getWorkLocationLat() != 0.0 || driverEntity.getWorkLocationLng() != 0.0)
+        if (driverEntity.getWorkLocationLat() != 0.0 || driverEntity.getWorkLocationLng() != 0.0)
             return new LatLng(driverEntity.getWorkLocationLat(),
-                driverEntity.getWorkLocationLng());
+                    driverEntity.getWorkLocationLng());
         return null;
     }
 
     public String getWarehouseAddress() {
         DriverEntity driverEntity = RoomDBService.sharedInstance().getDatabase(
                 this.getApplication().getApplicationContext()).driverDao().getDriver();
-        return driverEntity.getAddressLine1()+", "+ driverEntity.getAddressLine2()+", "+
-                driverEntity.getCity()+", "+driverEntity.getState()+" - "+driverEntity.getPinCode();
+        return driverEntity.getAddressLine1() + ", " + driverEntity.getAddressLine2() + ", " +
+                driverEntity.getCity() + ", " + driverEntity.getState() + " - " + driverEntity.getPinCode();
     }
 
     public void getTimeToReach(LatLng source, LatLng destination, UILevelNetworkCallback timeToReachCallback){

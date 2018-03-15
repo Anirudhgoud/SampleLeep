@@ -15,7 +15,7 @@
             android:layout_height="30dp"
             app:srcCompat="@drawable/ic_marker"
             android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"/>
+            android:layout_marginEnd="5dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"

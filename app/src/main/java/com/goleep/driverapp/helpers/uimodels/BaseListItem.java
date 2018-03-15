@@ -20,7 +20,7 @@ public class BaseListItem {
     private String ordersHeader;
 
     public int getSelectedCount() {
-        return (selectedCount < 1) ? 0 :selectedCount;
+        return (selectedCount < 1) ? 0 : selectedCount;
     }
 
     public void setOrdersHeader(String ordersHeader) {

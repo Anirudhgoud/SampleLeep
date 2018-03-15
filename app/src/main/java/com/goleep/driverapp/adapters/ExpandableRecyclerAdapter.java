@@ -75,7 +75,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(clickListener != null)
+                    if (clickListener != null)
                         clickListener.onClick(v);
                     handleClick();
                 }
@@ -111,7 +111,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         int index = indexList.get(position);
         int insert = position;
 
-        for (int i = index+1; i<allItems.size() && !isHeader(allItems.get(i)); i++) {
+        for (int i = index + 1; i < allItems.size() && !isHeader(allItems.get(i)); i++) {
             insert++;
             count++;
             visibleItems.add(insert, allItems.get(i));
@@ -128,8 +128,8 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         int count = 0;
         int index = indexList.get(position);
 
-        for (int i=index+1; i<allItems.size() ; i++) {
-            if(!isHeader(allItems.get(i))) {
+        for (int i = index + 1; i < allItems.size(); i++) {
+            if (!isHeader(allItems.get(i))) {
                 count++;
                 visibleItems.remove(position + 1);
                 indexList.remove(position + 1);
@@ -143,7 +143,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     }
 
     private boolean isHeader(BaseListItem baseListItem) {
-        if(baseListItem.getItemType() == AppConstants.TYPE_HEADER ||
+        if (baseListItem.getItemType() == AppConstants.TYPE_HEADER ||
                 baseListItem.getItemType() == AppConstants.TYPE_ORDERS_HEADER ||
                 baseListItem.getItemType() == AppConstants.TYPE_CASH_SALES_ITEM ||
                 baseListItem.getItemType() == AppConstants.TYPE_SALES_INFO)

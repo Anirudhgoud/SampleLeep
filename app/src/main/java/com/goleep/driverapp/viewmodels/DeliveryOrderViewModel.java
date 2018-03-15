@@ -3,12 +3,10 @@ package com.goleep.driverapp.viewmodels;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DeliveryOrderParser;
@@ -16,8 +14,7 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 
-import org.json.JSONArray;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +22,6 @@ import java.util.List;
  */
 
 public class DeliveryOrderViewModel extends AndroidViewModel {
-    private Context context;
     protected AppDatabase leepDatabase;
     private LiveData<List<DeliveryOrderEntity>> deliveryOrders;
 
@@ -36,8 +32,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
 
     public DeliveryOrderViewModel(@NonNull Application application) {
         super(application);
-        context = application;
-        leepDatabase = RoomDBService.sharedInstance().getDatabase(context);
+        leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
     public LiveData<List<DeliveryOrderEntity>> getDeliveryOrders(String type, String status) {
         String doType;
@@ -61,29 +56,27 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
     }
 
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doNetworkCallBack){
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context, UrlConstants.DELIVERY_ORDERS_URL,
-                true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                DeliveryOrderParser deliveryOrderParser = new DeliveryOrderParser();
-                                List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
-                                        deliveryOrdersByParsingJsonResponse(response);
-                                leepDatabase.deliveryOrderDao().updateAllDeliveryOrders(deliveryOrdersList);
-                                break;
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(), UrlConstants.DELIVERY_ORDERS_URL,
+                true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            DeliveryOrderParser deliveryOrderParser = new DeliveryOrderParser();
+                            List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
+                                    deliveryOrdersByParsingJsonResponse(response);
+                            leepDatabase.deliveryOrderDao().updateAllDeliveryOrders(deliveryOrdersList);
+                            doNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
+                            break;
 
-                            case NetworkConstants.FAILURE:
-                            case NetworkConstants.NETWORK_ERROR:
-                                doNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
+                        case NetworkConstants.FAILURE:
+                        case NetworkConstants.NETWORK_ERROR:
+                            doNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
 
-                            case NetworkConstants.UNAUTHORIZED:
-                                doNetworkCallBack.onResponseReceived(null,
-                                        false, errorMessage, true);
-                                break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            doNetworkCallBack.onResponseReceived(null,
+                                    false, errorMessage, true);
+                            break;
 
-                        }
                     }
                 });
     }

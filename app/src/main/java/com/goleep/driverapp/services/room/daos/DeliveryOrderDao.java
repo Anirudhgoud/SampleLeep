@@ -7,13 +7,9 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.database.sqlite.SQLiteDatabaseLockedException;
-import android.text.TextUtils;
-
 
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.LogUtils;
-
 
 import java.util.List;
 

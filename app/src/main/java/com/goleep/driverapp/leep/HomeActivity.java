@@ -6,12 +6,12 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +20,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
-import com.goleep.driverapp.interfaces.OnPermissionResult;
-import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.helpers.uimodels.InnerDashboardUiModel;
+import com.goleep.driverapp.interfaces.OnPermissionResult;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.viewmodels.HomeViewModel;
 
 import java.io.File;
@@ -92,9 +91,9 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
-            if(toLogout)
+            if (toLogout)
                 logoutUser();
-            else if(errorMessage == null){
+            else if (errorMessage == null) {
                 if(uiModels.size() > 0){
                     HomeActivity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -115,7 +114,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                                        String errorMessage, boolean toLogout) {
             if(toLogout){
                 logoutUser();
-            }else if(isDialogToBeShown){
+            } else if (isDialogToBeShown) {
                 showNetworkRelatedDialogs(errorMessage);
             }
         }
