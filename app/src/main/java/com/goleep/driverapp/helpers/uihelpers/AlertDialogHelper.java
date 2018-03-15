@@ -49,18 +49,18 @@ public class AlertDialogHelper {
                     dialog.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            dialog.dismiss();
                             activity.setResult(AppConstants.ACTIVITY_SUCCESS_RESULT);
                             activity.finish();
-                            dialog.dismiss();
                         }
                     });
 
                     dialog.findViewById(R.id.close_layout).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            dialog.dismiss();
                             activity.setResult(AppConstants.ACTIVITY_SUCCESS_RESULT);
                             activity.finish();
-                            dialog.dismiss();
                         }
                     });
                     ((CustomTextView)dialog.findViewById(R.id.message)).setText(message);
