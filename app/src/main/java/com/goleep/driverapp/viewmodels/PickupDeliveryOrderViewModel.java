@@ -63,7 +63,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                 });
     }
 
-    public List<OrderItemEntity> getOrderItemsList(int doId){
+    public List<OrderItemEntity> getOrderItemsList(int doId) {
         return leepDatabase.deliveryOrderItemDao().getDOrderItemssList(doId);
     }
 
@@ -74,7 +74,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     public String getWareHouseNameAddress(){
         DriverEntity driverEntity = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
-        return driverEntity.getLocationName()+", "+driverEntity.getAddressLine1()+", "+ driverEntity.getAddressLine2();
+        return driverEntity.getLocationName() + ", " + driverEntity.getAddressLine1() + ", " + driverEntity.getAddressLine2();
     }
 
     public DeliveryOrderEntity getDeliveryOrder(int doId) {
@@ -114,14 +114,14 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         Map<String, Object> requestBody = new HashMap<>();
         try {
             JSONArray selectedDeliveryOrdersArray = new JSONArray();
-            for(Integer doId:selectedDeliveryOrders){
+            for (Integer doId : selectedDeliveryOrders) {
                 selectedDeliveryOrdersArray.put(doId);
             }
             requestBody.put("delivery_order_ids", selectedDeliveryOrdersArray);
             JSONObject cashSalesObject = new JSONObject();
             cashSalesObject.put("id", cashDoItems.get(0).getDoId());
             JSONArray itemsArray = new JSONArray();
-            for(OrderItemEntity orderItemEntity: cashDoItems){
+            for (OrderItemEntity orderItemEntity : cashDoItems) {
                 JSONObject itemObject = new JSONObject();
                 itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
                 itemObject.put("_destroy", false);
@@ -129,16 +129,16 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
             }
             cashSalesObject.put("cash_sales_items", itemsArray);
             requestBody.put("cash_sales", cashSalesObject);
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        if(requestBody.containsKey("delivery_order_ids") || requestBody.containsKey("cash_sales")){
+        if (requestBody.containsKey("delivery_order_ids") || requestBody.containsKey("cash_sales")) {
             NetworkService.sharedInstance().getNetworkClient().makeJsonPutRequest(
                     getApplication().getApplicationContext(), UrlConstants.PICKUP_CONFIRMATION, true,
                     requestBody, new NetworkAPICallback() {
                         @Override
                         public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                            switch (type){
+                            switch (type) {
                                 case NetworkConstants.SUCCESS:
                                     pickupConfirmCallBack.onResponseReceived(null,
                                             false, null, false);
@@ -162,9 +162,9 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     }
 
     public void deleteDeliveryOrders(ArrayList<Integer> selectedDeliveryOrders, List<OrderItemEntity> cashSalesItems) {
-        for(Integer doId : selectedDeliveryOrders)
+        for (Integer doId : selectedDeliveryOrders)
             leepDatabase.deliveryOrderDao().deleteDeliveryOrder(doId);
-        if(cashSalesItems.size() > 0)
+        if (cashSalesItems.size() > 0)
             leepDatabase.deliveryOrderDao().deleteDeliveryOrder(cashSalesItems.get(0).getDoId());
     }
 }

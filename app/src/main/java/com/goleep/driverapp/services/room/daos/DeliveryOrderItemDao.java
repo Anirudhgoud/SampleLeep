@@ -28,6 +28,9 @@ public abstract class DeliveryOrderItemDao {
     @Query("SELECT * FROM OrderItemEntity WHERE id = :itemId")
     public abstract OrderItemEntity getOrderItem(int itemId);
 
+    @Query("SELECT * FROM OrderItemEntity WHERE doId = :id AND selected = 1")
+    public abstract List<OrderItemEntity> getSelectedOrderItems(int id);
+
     @Query("UPDATE OrderItemEntity SET quantity = :updatedQuantity WHERE id = :orderItemId")
     public abstract void updateOrderItemQuantity(int orderItemId, int updatedQuantity);
 

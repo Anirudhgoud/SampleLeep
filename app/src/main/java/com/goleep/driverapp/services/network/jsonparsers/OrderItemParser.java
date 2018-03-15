@@ -62,4 +62,17 @@ public class OrderItemParser {
         product.setWeightUnit(jsonObject.optString("weight_unit"));
         return product;
     }
+
+    public int getDestinationBusinessIdParsingDoDetailsJson(JSONArray jsonArray) {
+        JSONObject jsonObject = (JSONObject) jsonArray.opt(0);
+        if (jsonObject == null) {
+            return -1;
+        }
+        JSONObject destinationLocation = jsonObject.optJSONObject("destination_location");
+        if (destinationLocation != null) {
+            return destinationLocation.optInt("business_id");
+        } else {
+            return -1;
+        }
+    }
 }

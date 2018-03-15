@@ -22,6 +22,7 @@
     <color name="tab_light_grey">#ECECEC</color>
 
     <color name="tabBackgroundGreyColor">#F2F2F2</color>
+    <color name="divider_grey">#ECECEC</color>
     <color name="inner_dashboard_blue">#1400FF</color>
     <color name="inner_dashboard_red">#FF6464</color>
     <color name="inner_dashboard_green">#28DC76</color>

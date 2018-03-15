@@ -19,7 +19,7 @@
         app:typeface="NotoSans-Regular"
         android:layout_toLeftOf="@id/total_value_tv"
         android:layout_toStartOf="@id/total_value_tv"
-        android:id="@+id/total_products_tv"/>
+        android:id="@+id/total_products_tv" />
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:layout_width="wrap_content"
@@ -28,6 +28,6 @@
         android:layout_alignParentEnd="true"
         android:textSize="14sp"
         app:typeface="NotoSans-Regular"
-        android:id="@+id/total_value_tv"/>
+        android:id="@+id/total_value_tv" />
 
 </RelativeLayout>

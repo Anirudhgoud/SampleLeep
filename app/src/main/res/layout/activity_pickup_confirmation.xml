@@ -70,7 +70,7 @@
         android:layout_height="3dp"
         android:id="@+id/top_separator"
         android:background="@color/inner_dashboard_blue"
-        android:layout_below="@id/top_information_layout"/>
+        android:layout_below="@id/top_information_layout" />
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:layout_width="wrap_content"
@@ -91,6 +91,7 @@
         android:layout_below="@id/confirm_pickup_text_view"
         android:layout_above="@id/confirm_button"
         android:layout_height="wrap_content" />
+
     <com.goleep.driverapp.helpers.customfont.CustomButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,6 +102,6 @@
         android:textSize="18sp"
         android:visibility="visible"
         android:textColor="@color/white"
-        android:background="@color/green"/>
+        android:background="@color/green" />
 
 </RelativeLayout>

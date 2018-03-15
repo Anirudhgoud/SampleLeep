@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
-
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 
 import java.util.Vector;
@@ -37,8 +35,8 @@ public class AlertDialogHelper {
         }
     }
 
-    public void showSuccessDialog(final Activity activity, final String message){
-        if(activity != null && !activity.isFinishing()){
+    public void showSuccessDialog(final Activity activity, final String message) {
+        if (activity != null && !activity.isFinishing()) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -63,7 +61,7 @@ public class AlertDialogHelper {
                             dialog.dismiss();
                         }
                     });
-                    ((CustomTextView)dialog.findViewById(R.id.message)).setText(message);
+                    ((CustomTextView) dialog.findViewById(R.id.message)).setText(message);
                 }
             });
         }

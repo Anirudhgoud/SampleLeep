@@ -2,11 +2,11 @@ package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +63,7 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         switch (resourceId){
             case R.id.left_toolbar_button : finish();
             break;
-            case R.id.map_button :
+            case R.id.map_button:
                 startMapActivity();
                 break;
         }
@@ -145,22 +145,19 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
 
     @Override
     public void itemChecked(BaseListItem item, boolean checked) {
-        if(item instanceof OrderItemEntity) {
-            if(checked && !cashDoItems.contains(((OrderItemEntity) item).getId()) && item.getItemType()
+        if (item instanceof OrderItemEntity) {
+            if (checked && !cashDoItems.contains(((OrderItemEntity) item).getId()) && item.getItemType()
                     == AppConstants.TYPE_CASH_SALES_ITEM) {
                 cashDoItems.add(((OrderItemEntity) item).getId());
-            }
-            else if(!checked && cashDoItems.contains(((OrderItemEntity) item).getId()) && item.getItemType()
-                    == AppConstants.TYPE_CASH_SALES_ITEM){
+            } else if (!checked && cashDoItems.contains(((OrderItemEntity) item).getId()) && item.getItemType()
+                    == AppConstants.TYPE_CASH_SALES_ITEM) {
                 cashDoItems.removeAll(Arrays.asList(((OrderItemEntity) item).getId()));
             }
-        }
-        else if(item instanceof DeliveryOrderEntity) {
-                if(checked) {
-                    selectedDeliveryOrders.add(((DeliveryOrderEntity) item).getId());
-                    item.addSelection(1);
-                }
-            else if(selectedDeliveryOrders.contains(((DeliveryOrderEntity) item).getId())){
+        } else if (item instanceof DeliveryOrderEntity) {
+            if (checked) {
+                selectedDeliveryOrders.add(((DeliveryOrderEntity) item).getId());
+                item.addSelection(1);
+            } else if (selectedDeliveryOrders.contains(((DeliveryOrderEntity) item).getId())) {
                 selectedDeliveryOrders.removeAll(Arrays.asList(((DeliveryOrderEntity) item).getId()));
                 item.addSelection(-1);
             }

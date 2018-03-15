@@ -23,14 +23,11 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +36,7 @@ import butterknife.ButterKnife;
  * Created by vishalm on 19/02/18.
  */
 
-public class PickupDeliveryOrderFragment extends Fragment implements Observer<List<OrderItemEntity>>{
+public class PickupDeliveryOrderFragment extends Fragment implements Observer<List<OrderItemEntity>> {
 
     private PickupDeliveryOrderViewModel doViewModel;
 
@@ -55,11 +52,11 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         @Override
         public void onClick(View view) {
             final int pos = expandableListView.getChildLayoutPosition(view);
-            doViewModel.getPositionMap().put(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId(), pos);
-            if(doViewModel.getDoUpdateMap().containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId()) &&
-                    !doViewModel.getDoUpdateMap().get(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
-                doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
-            } else if(!doViewModel.getDoUpdateMap().containsKey(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId())) {
+            doViewModel.getPositionMap().put(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId(), pos);
+            if (doViewModel.getDoUpdateMap().containsKey(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId()) &&
+                    !doViewModel.getDoUpdateMap().get(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId())) {
+                doViewModel.fetchDoItems(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId());
+            } else if (!doViewModel.getDoUpdateMap().containsKey(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId())) {
                 doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
             }
         }
@@ -140,7 +137,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                 public void run() {
                     try {
                         expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
-                    }catch (NullPointerException e){
+                    } catch (NullPointerException e) {
 
                     }
                 }

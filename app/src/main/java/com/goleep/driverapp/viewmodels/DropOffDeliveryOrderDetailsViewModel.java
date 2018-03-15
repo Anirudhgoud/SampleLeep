@@ -4,14 +4,14 @@ package com.goleep.driverapp.viewmodels;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
+import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
+import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
@@ -19,8 +19,8 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
-import org.json.JSONArray;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,17 +28,21 @@ import java.util.List;
  */
 
 public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
-    private Context context;
     private AppDatabase leepDatabase;
+    private int deliveryOrderId;
+    private DeliveryOrderEntity deliveryOrder;
+    private OrderItemEntity selectedOrderItem;
+    private int selectedItemCount = 0;
+    private String businessAddress;
+    private double outstandingBalance;
 
     public DropOffDeliveryOrderDetailsViewModel(@NonNull Application application) {
         super(application);
-        context = application;
-        leepDatabase = RoomDBService.sharedInstance().getDatabase(context);
+        leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
 
-    public DeliveryOrderEntity deliveryOrder(int deliveryOrderId){
-        return leepDatabase.deliveryOrderDao().deliveryOrder(deliveryOrderId);
+    public void deliveryOrder(int deliveryOrderId) {
+        deliveryOrder = leepDatabase.deliveryOrderDao().deliveryOrder(deliveryOrderId);
     }
 
     public LiveData<List<OrderItemEntity>> deliveryOrderItems(int deliveryOrderId){
@@ -57,30 +61,12 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
         leepDatabase.deliveryOrderItemDao().updateOrderItemSelectionStatus(orderItemId, checked);
     }
 
-    public void fetchDeliveryOrderItems(final int doId, final UILevelNetworkCallback orderItemNetworkCallBack){
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
-                UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                OrderItemParser orderItemParser = new OrderItemParser();
-                                leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
-                                        orderItemParser.orderItemsByParsingJsonResponse(response, doId));
-                                break;
-
-                            case NetworkConstants.FAILURE:
-                            case NetworkConstants.NETWORK_ERROR:
-                                orderItemNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-
-                            case NetworkConstants.UNAUTHORIZED :
-                                orderItemNetworkCallBack.onResponseReceived(null,
-                                        false, errorMessage, true);
-                                break;
-                        }
-                    }
-                });
+    public double currentSales() {
+        double total = 0;
+        for (OrderItemEntity orderItem : leepDatabase.deliveryOrderItemDao().getSelectedOrderItems(deliveryOrderId)) {
+            total += orderItem.getQuantity() * orderItem.getPrice();
+        }
+        return total;
     }
 
     public String dateToDisplay(String dateString){
@@ -112,5 +98,113 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
             address = address + line2;
         }
         return address;
+    }
+
+    public String getAddress(Location location) {
+        String address = "";
+        if (location == null) {
+            return address;
+        }
+        address = location.getAddressLine1() + ",\n" + location.getAddressLine2() + ",\n" + location.getCity() + ", " + location.getState() + " " + location.getPincode();
+        return address;
+    }
+
+    //API calls
+    public void fetchDeliveryOrderItems(final int doId, final UILevelNetworkCallback orderItemNetworkCallBack) {
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
+                UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            OrderItemParser orderItemParser = new OrderItemParser();
+                            leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
+                                    orderItemParser.orderItemsByParsingJsonResponse(response, doId));
+                            int businessId = orderItemParser.getDestinationBusinessIdParsingDoDetailsJson(response);
+                            orderItemNetworkCallBack.onResponseReceived(new ArrayList<>(Arrays.asList(businessId)), false, null, false);
+                            break;
+
+                        case NetworkConstants.FAILURE:
+                        case NetworkConstants.NETWORK_ERROR:
+                            orderItemNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+
+                        case NetworkConstants.UNAUTHORIZED:
+                            orderItemNetworkCallBack.onResponseReceived(null,
+                                    false, errorMessage, true);
+                            break;
+                    }
+                });
+    }
+
+    public void fetchBusinessLocation(int businessId, int destinationLocationId, final UILevelNetworkCallback locationCallBack) {
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
+                UrlConstants.BUSINESS_LOCATIONS_URL + "/" + businessId + "/locations/" + destinationLocationId, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            LocationParser locationParser = new LocationParser();
+                            Location location = locationParser.getBusinessLocation(response);
+                            locationCallBack.onResponseReceived(new ArrayList<>(Arrays.asList(location)), false, null, false);
+                            break;
+
+                        case NetworkConstants.FAILURE:
+                        case NetworkConstants.NETWORK_ERROR:
+                            locationCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+
+                        case NetworkConstants.UNAUTHORIZED:
+                            locationCallBack.onResponseReceived(null,
+                                    false, errorMessage, true);
+                            break;
+                    }
+                });
+    }
+
+
+    //Getters and setters
+    public int getDeliveryOrderId() {
+        return deliveryOrderId;
+    }
+
+    public void setDeliveryOrderId(int deliveryOrderId) {
+        this.deliveryOrderId = deliveryOrderId;
+    }
+
+    public DeliveryOrderEntity getDeliveryOrder() {
+        return deliveryOrder;
+    }
+
+    public void setDeliveryOrder(DeliveryOrderEntity deliveryOrder) {
+        this.deliveryOrder = deliveryOrder;
+    }
+
+    public OrderItemEntity getSelectedOrderItem() {
+        return selectedOrderItem;
+    }
+
+    public void setSelectedOrderItem(OrderItemEntity selectedOrderItem) {
+        this.selectedOrderItem = selectedOrderItem;
+    }
+
+    public int getSelectedItemCount() {
+        return selectedItemCount;
+    }
+
+    public void setSelectedItemCount(int selectedItemCount) {
+        this.selectedItemCount = selectedItemCount;
+    }
+
+    public double getOutstandingBalance() {
+        return outstandingBalance;
+    }
+
+    public void setOutstandingBalance(double outstandingBalance) {
+        this.outstandingBalance = outstandingBalance;
+    }
+
+    public String getBusinessAddress() {
+        return businessAddress;
+    }
+
+    public void setBusinessAddress(String businessAddress) {
+        this.businessAddress = businessAddress;
     }
 }

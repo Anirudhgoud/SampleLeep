@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="com.goleep.driverapp.leep.DropOffPaymentConfirmationActivity">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/delivery_order_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.goleep.driverapp.helpers.customfont.CustomButton
+        android:id="@+id/bt_view_item_list"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_border_green"
+        android:text="@string/view_item_list"
+        android:textColor="@color/doTabTextColor"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:textSize="18sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/final_amount_summary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true" />
+
+            <LinearLayout
+                android:id="@+id/ll_collect_payment_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+
+                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_collected"
+                    android:textColor="@color/light_grey"
+                    android:textSize="14sp"
+                    app:typeface="NotoSans-Regular" />
+
+                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    android:id="@+id/tv_payment_collected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/doTabTextColor"
+                    android:textSize="32sp"
+                    app:typeface="NotoSans-Light" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_method"
+                        android:textColor="@color/light_grey"
+                        android:textSize="14sp"
+                        app:typeface="NotoSans-Regular" />
+
+                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="@color/light_grey"
+                        android:textSize="14sp"
+                        android:layout_marginRight="4dp"
+                        app:typeface="NotoSans-Regular" />
+
+                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/tv_payment_method"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/doTabTextColor"
+                        android:textSize="14sp"
+                        app:typeface="NotoSans-Regular" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <include
+                layout="@layout/signature_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.goleep.driverapp.helpers.customfont.CustomButton
+        android:id="@+id/bt_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/green"
+        android:text="@string/confirm"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:typeface="NotoSans-Regular" />
+
+</LinearLayout>

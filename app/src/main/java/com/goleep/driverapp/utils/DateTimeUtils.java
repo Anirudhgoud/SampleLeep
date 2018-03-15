@@ -27,6 +27,12 @@ public class DateTimeUtils {
         return "";
     }
 
+    public static String convertedDate(Date date, String requiredFormat) {
+        DateFormat requiredDateFormat = new SimpleDateFormat(requiredFormat);
+        requiredDateFormat.setLenient(false);
+        return requiredDateFormat.format(date);
+    }
+
     public static Date dateFrom(String dateString, String dateFormatString){
         if(dateString == null || dateFormatString == null){
             return  null;
