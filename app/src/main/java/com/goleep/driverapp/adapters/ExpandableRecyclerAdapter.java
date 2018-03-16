@@ -10,8 +10,10 @@ import android.widget.ImageView;
 
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     protected List<T> visibleItems = new ArrayList<>();
     private List<Integer> indexList = new ArrayList<>();
     private SparseIntArray expandMap = new SparseIntArray();
+    protected Map<Integer,Integer> doPositionMap = new HashMap<>();
     private int mode;
     int expandedPosition = -1;
 
@@ -186,10 +189,11 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
                     items.get(i).getItemType() == AppConstants.TYPE_CASH_SALES_ITEM ||
                     items.get(i).getItemType() == AppConstants.TYPE_SALES_INFO) {
                 indexList.add(i);
+                if(items.get(i).getItemType() == AppConstants.TYPE_HEADER){
+                    doPositionMap.put(((DeliveryOrderEntity)items.get(i)).getId(), i);
+                }
                 visibleItems.add(items.get(i));
             }
-
-
         }
 
         this.visibleItems = visibleItems;

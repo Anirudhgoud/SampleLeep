@@ -12,9 +12,11 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
+import com.goleep.driverapp.services.network.jsonparsers.DistanceMatrixResponseParser;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
@@ -81,24 +83,15 @@ public class PickupMapViewModel extends AndroidViewModel {
                         switch (type){
                             case NetworkConstants.SUCCESS:
                                 List<String> result = new ArrayList<>();
-                                result.add(parseDistanceMatrixResponse(response.optJSONObject(0)));
+                                List<Distance> timeToReachList = new DistanceMatrixResponseParser().
+                                        parseDistanceMatrixResponse(response.optJSONObject(0));
+                                if(timeToReachList.size() >0)
+                                    result.add(timeToReachList.get(0).getDurationText());
                                 timeToReachCallback.onResponseReceived(result, false, null, false);
                                 break;
                         }
                     }
                 });
-    }
-
-    private String parseDistanceMatrixResponse(JSONObject response) {
-        String timeToReach = "";
-        if(response.optString("status", "").equalsIgnoreCase("ok")){
-            JSONArray elements = response.optJSONArray("rows").
-                    optJSONObject(0).optJSONArray("elements");
-            if(elements.optJSONObject(0).optString("status").equalsIgnoreCase("ok")){
-                timeToReach = elements.optJSONObject(0).optJSONObject("duration").optString("text");
-            }
-        }
-        return timeToReach;
     }
 
     @SuppressLint("MissingPermission")

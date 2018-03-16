@@ -246,12 +246,15 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 {
                     if(productCheckbox != null) {
                         productCheckbox.setVisibility(View.VISIBLE);
+                        productCheckbox.setTag(doDetails.getDoId());
                         productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
                             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                                 if (isChecked)
-                                    visibleItems.get(0).addSelection(1);
-                                else visibleItems.get(0).addSelection(-1);
+                                    visibleItems.get(doPositionMap.get(
+                                            compoundButton.getTag())).addSelection(1);
+                                else visibleItems.get(doPositionMap.get(
+                                        compoundButton.getTag())).addSelection(-1);
                                 notifyDataSetChanged();
                             }
                         });
