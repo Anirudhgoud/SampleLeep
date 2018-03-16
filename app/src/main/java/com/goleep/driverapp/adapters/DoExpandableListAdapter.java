@@ -197,7 +197,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
 
         public void bind(int position) {
-            ordersHeaderTextView.setText(visibleItems.get(position).getOrdersHeader());
+            if(position < visibleItems.size())
+                ordersHeaderTextView.setText(visibleItems.get(position).getOrdersHeader());
         }
     }
 

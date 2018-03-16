@@ -29,26 +29,10 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     private List<Integer> indexList = new ArrayList<>();
     private SparseIntArray expandMap = new SparseIntArray();
     protected Map<Integer,Integer> doPositionMap = new HashMap<>();
-    private int mode;
-    int expandedPosition = -1;
-
-    protected static final int TYPE_HEADER = 1000;
-
+    private int mode = 1;
     private static final int ARROW_ROTATION_DURATION = 150;
-
-    public static final int MODE_NORMAL = 0;
-    public static final int MODE_ACCORDION = 1;
-
     public ExpandableRecyclerAdapter(Context context) {
         mContext = context;
-    }
-
-    public static class ListItem {
-        public int ItemType;
-
-        public ListItem(int itemType) {
-            ItemType = itemType;
-        }
     }
 
     @Override
@@ -142,14 +126,13 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         if (notify) {
             notifyItemChanged(position);
         }
-        expandedPosition = position;
     }
 
     public void collapseItems(int position, boolean notify) {
         int count = 0;
         int index = indexList.get(position);
 
-        for (int i=index+1; i<allItems.size() && !isHeader(allItems.get(i)); i++) {
+        for (int i = index + 1; i < allItems.size() && !isHeader(allItems.get(i)); i++) {
             count++;
             visibleItems.remove(position + 1);
             indexList.remove(position + 1);
@@ -163,7 +146,6 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         if (notify) {
             notifyItemChanged(position);
         }
-        expandedPosition = -1;
     }
 
 
@@ -248,7 +230,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
 
     public void collapseAllExcept(int position) {
         for (int i=visibleItems.size()-1; i>=0; i--) {
-            if (i != position && getItemViewType(i) == TYPE_HEADER) {
+            if (i != position && getItemViewType(i) == AppConstants.TYPE_HEADER) {
                 if (isExpanded(i)) {
                     collapseItems(i, true);
                 }
