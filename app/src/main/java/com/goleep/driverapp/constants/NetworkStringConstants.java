@@ -9,5 +9,5 @@ public interface NetworkStringConstants {
     String REQUEST_FAILURE = "Something went wrong. Please try again!";
     String BAD_REQUEST = "Bad Request";
     String SERVER_ERROR = "Server Error";
-    String UNAUTHORIZED = "Unauthorized request";
+    String UNAUTHORIZED = "Session expired!";
 }
