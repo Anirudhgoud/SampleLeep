@@ -30,7 +30,6 @@ import java.util.List;
  */
 
 public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListItem>{
-    private List<BaseListItem> doList = new ArrayList<>();
     private View.OnClickListener headerClickListener;
     private List<BaseListItem> recyclerViewListData = new ArrayList<>();
     private Context context;
@@ -42,7 +41,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     public DoExpandableListAdapter(Context context, List<BaseListItem> doList) {
         super(context);
         if(doList.size() > 0) {
-            this.doList = doList;
             this.recyclerViewListData = doList;
             setItems(doList);
         }
@@ -95,8 +93,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
     public void upDateList(List<BaseListItem> deliveryOrders) {
         if(deliveryOrders.size() >0) {
-            this.doList.clear();
-            this.doList.addAll(deliveryOrders);
             recyclerViewListData.clear();
             recyclerViewListData.addAll(deliveryOrders);
             setItems(recyclerViewListData);
@@ -112,8 +108,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
         BaseListItem itemsHeader = new BaseListItem();
         itemsHeader.setItemType(AppConstants.TYPE_ITEMS_HEADER);
-        recyclerViewListData.add(itemsHeader);
-        position += 2;                          //Insert after Header and ItemsHeader
+        recyclerViewListData.add(++position, itemsHeader);
+        position += 1;                          //Insert after Header and ItemsHeader
         for (int i = 0; i < baseListItems.size(); i++) {
             BaseListItem baseListItem = baseListItems.get(i);
             baseListItem.setItemType(AppConstants.TYPE_DO_ITEM);
@@ -123,7 +119,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     public BaseListItem getItemAt(int pos) {
-        return doList.get(pos);
+        return visibleItems.get(pos);
     }
 
     public void setHeaderClickListener(View.OnClickListener headerClickListener) {
@@ -177,8 +173,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 dateLayout.setVisibility(View.VISIBLE);
                 timeLayout.setVisibility(View.VISIBLE);
                 selectionIcon.setVisibility(View.VISIBLE);
-                if (((DeliveryOrderEntity) recyclerViewListData.get(position)).getDeliveryOrderItemsCount() ==
-                        recyclerViewListData.get(position).getSelectedCount()) {
+                if (((DeliveryOrderEntity) visibleItems.get(position)).getDeliveryOrderItemsCount() ==
+                        visibleItems.get(position).getSelectedCount()) {
                     selectionIcon.setImageResource(R.drawable.ic_do_selected);
                     itemCheckListener.itemChecked(deliveryOrder, true);
                 } else {
@@ -190,7 +186,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 timeLayout.setVisibility(View.GONE);
                 selectionIcon.setVisibility(View.GONE);
             }
-
         }
     }
 
@@ -202,11 +197,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
 
         public void bind(int position) {
-            try {
-                ordersHeaderTextView.setText(visibleItems.get(position).getOrdersHeader());
-            } catch (IndexOutOfBoundsException e) {
-
-            }
+            ordersHeaderTextView.setText(visibleItems.get(position).getOrdersHeader());
         }
     }
 
@@ -258,8 +249,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                         @Override
                         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                             if (isChecked)
-                                recyclerViewListData.get(0).addSelection(1);
-                            else recyclerViewListData.get(0).addSelection(-1);
+                                visibleItems.get(0).addSelection(1);
+                            else visibleItems.get(0).addSelection(-1);
                             notifyDataSetChanged();
                         }
                     });

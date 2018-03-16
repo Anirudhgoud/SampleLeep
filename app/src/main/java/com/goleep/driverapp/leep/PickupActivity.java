@@ -130,6 +130,14 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         tabLayout.getTabAt(1).setCustomView(cashSalesTab);
     }
 
+    public void showProgressDialog(){
+      //  showProgressDialog();
+    }
+
+    public void dismissProgressDialog(){
+       // dismissProgressDialog();
+    }
+
     public void logoutUser(){
         super.logoutUser();
     }

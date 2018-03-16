@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
+import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
@@ -13,6 +14,7 @@ import com.goleep.driverapp.services.network.jsonparsers.DeliveryOrderParser;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +58,10 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
     }
 
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doNetworkCallBack){
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(), UrlConstants.DELIVERY_ORDERS_URL,
+        int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
+                getApplication().getApplicationContext(),SharedPreferenceKeys.DRIVER_ID);
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
+                UrlConstants.DELIVERY_ORDERS_URL+"?assignees="+driverId,
                 true, (type, response, errorMessage) -> {
                     switch (type) {
                         case NetworkConstants.SUCCESS:
