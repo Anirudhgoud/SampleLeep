@@ -27,6 +27,7 @@ import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import butterknife.BindView;

@@ -87,7 +87,8 @@ public class PickupMapViewModel extends AndroidViewModel {
                                         parseDistanceMatrixResponse(response.optJSONObject(0));
                                 if(timeToReachList.size() >0)
                                     result.add(timeToReachList.get(0).getDurationText());
-                                timeToReachCallback.onResponseReceived(result, false, null, false);
+                                timeToReachCallback.onResponseReceived(result, false,
+                                        null, false);
                                 break;
                         }
                     }
