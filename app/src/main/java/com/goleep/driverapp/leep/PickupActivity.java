@@ -130,6 +130,14 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         tabLayout.getTabAt(1).setCustomView(cashSalesTab);
     }
 
+    public void showProgressDialog(){
+      //  showProgressDialog();
+    }
+
+    public void dismissProgressDialog(){
+       // dismissProgressDialog();
+    }
+
     public void logoutUser(){
         super.logoutUser();
     }
@@ -156,10 +164,8 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         } else if (item instanceof DeliveryOrderEntity) {
             if (checked) {
                 selectedDeliveryOrders.add(((DeliveryOrderEntity) item).getId());
-                item.addSelection(1);
             } else if (selectedDeliveryOrders.contains(((DeliveryOrderEntity) item).getId())) {
                 selectedDeliveryOrders.removeAll(Arrays.asList(((DeliveryOrderEntity) item).getId()));
-                item.addSelection(-1);
             }
         }
     }

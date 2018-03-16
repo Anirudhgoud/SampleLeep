@@ -4,9 +4,11 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
+import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -17,6 +19,7 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import org.json.JSONArray;
 
@@ -49,8 +52,10 @@ public class CashSalesViewModel extends AndroidViewModel {
     }
 
     public void fetchDriverDo(final UILevelNetworkCallback driverDOCallback){
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
-                UrlConstants.DELIVERY_ORDERS_URL + "?type=driver&assignees=1&statuses=assigned",
+        int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
+                getApplication().getApplicationContext(), SharedPreferenceKeys.DRIVER_ID);
+        String url = UrlConstants.DELIVERY_ORDERS_URL + "?type=driver&assignees="+"1"+"&statuses=assigned";
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context, url,
                 true, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
