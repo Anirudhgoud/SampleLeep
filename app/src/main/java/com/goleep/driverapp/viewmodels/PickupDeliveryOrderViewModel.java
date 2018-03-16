@@ -2,6 +2,8 @@ package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -33,7 +35,7 @@ import java.util.Map;
 
 public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel {
     private Context context;
-    private LiveData<List<OrderItemEntity>> doDetailsLiveData;
+    private LiveData<List<OrderItemEntity>> doDetailsLiveData = new MutableLiveData<>();
 
     private List<BaseListItem> doList = new ArrayList<>();
     private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
@@ -46,7 +48,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         context = application;
     }
 
-    public void fetchDoItems(final int doId){
+    public void fetchDoItems(final int doId, Observer<List<OrderItemEntity>> orderItemsObserver){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true,
                 new NetworkAPICallback() {
@@ -55,8 +57,9 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                         switch (type){
                             case NetworkConstants.SUCCESS:
                                 OrderItemParser orderItemParser = new OrderItemParser();
-                                leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
-                                        orderItemParser.orderItemsByParsingJsonResponse(response, doId));
+                                List<OrderItemEntity> orderItems = orderItemParser.orderItemsByParsingJsonResponse(response, doId);
+                                leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId, orderItems);
+                                orderItemsObserver.onChanged(orderItems);
                                 break;
                         }
                     }
@@ -69,6 +72,10 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     public LiveData<List<OrderItemEntity>> getDoDetails(Integer id) {
         doDetailsLiveData = leepDatabase.deliveryOrderItemDao().getDeliveryOrderItems(id);
+        return doDetailsLiveData;
+    }
+
+    public LiveData<List<OrderItemEntity>> getOrderItemsLiveData(){
         return doDetailsLiveData;
     }
 
@@ -118,17 +125,19 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                 selectedDeliveryOrdersArray.put(doId);
             }
             requestBody.put("delivery_order_ids", selectedDeliveryOrdersArray);
-            JSONObject cashSalesObject = new JSONObject();
-            cashSalesObject.put("id", cashDoItems.get(0).getDoId());
-            JSONArray itemsArray = new JSONArray();
-            for (OrderItemEntity orderItemEntity : cashDoItems) {
-                JSONObject itemObject = new JSONObject();
-                itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
-                itemObject.put("_destroy", false);
-                itemsArray.put(itemObject);
+            if(cashDoItems.size() > 0) {
+                JSONObject cashSalesObject = new JSONObject();
+                cashSalesObject.put("id", cashDoItems.get(0).getDoId());
+                JSONArray itemsArray = new JSONArray();
+                for (OrderItemEntity orderItemEntity : cashDoItems) {
+                    JSONObject itemObject = new JSONObject();
+                    itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
+                    itemObject.put("_destroy", false);
+                    itemsArray.put(itemObject);
+                }
+                cashSalesObject.put("cash_sales_items", itemsArray);
+                requestBody.put("cash_sales", cashSalesObject);
             }
-            cashSalesObject.put("cash_sales_items", itemsArray);
-            requestBody.put("cash_sales", cashSalesObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -27,6 +27,7 @@ import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,11 +55,8 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
             final int pos = expandableListView.getChildLayoutPosition(view);
             int doId = ((DeliveryOrderEntity)adapter.getItemAt(pos)).getId();
             doViewModel.getPositionMap().put(doId, pos);
-            if(doViewModel.getDoUpdateMap().containsKey(doId) &&
-                    !doViewModel.getDoUpdateMap().get(doId)) {
-                doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
-            } else if(!doViewModel.getDoUpdateMap().containsKey(doId)) {
-                doViewModel.fetchDoItems(((DeliveryOrderEntity)adapter.getItemAt(pos)).getId());
+            if(!doViewModel.getDoUpdateMap().containsKey(doId)) {
+                doViewModel.fetchDoItems(doId, PickupDeliveryOrderFragment.this);
             }
         }
     };
@@ -105,16 +103,18 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
             public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrders) {
                 if(deliveryOrders.size() > 0) {
                     doViewModel.getDoList().clear();
-                    doViewModel.getDoList().addAll(deliveryOrders);
-                    deliveryOrders.get(0).setItemType(AppConstants.TYPE_HEADER);
+                    for(DeliveryOrderEntity deliveryOrderEntity : deliveryOrders) {
+                        deliveryOrderEntity.setItemType(AppConstants.TYPE_HEADER);
+                        doViewModel.getDoList().add(deliveryOrderEntity);
+                    }
                     List<BaseListItem> baseListItems = new ArrayList<>();
                     baseListItems.addAll(deliveryOrders);
                     adapter.upDateList(baseListItems);
-                    doViewModel.getDoDetails(deliveryOrders.get(0).getId()).observe(
-                            PickupDeliveryOrderFragment.this, PickupDeliveryOrderFragment.this);
                 }
             }
         });
+        doViewModel.getOrderItemsLiveData().observe(PickupDeliveryOrderFragment.this,
+                PickupDeliveryOrderFragment.this);
     }
 
     private void fetchDeliveryOrders() {
@@ -130,15 +130,22 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().containsKey(doDetails.get(0).getDoId())) {
             final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getDoId());
             List<BaseListItem> listItems = new ArrayList<>();
-            listItems.addAll(doDetails);
-            adapter.addItemsList(listItems, pos);
-            doViewModel.getDoUpdateMap().put(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId(), true);
-            new Handler().postDelayed(new Runnable() {
+            for(OrderItemEntity orderItemEntity : doDetails){
+                orderItemEntity.setItemType(AppConstants.TYPE_DO_ITEM);
+                listItems.add(orderItemEntity);
+            }
+            getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
+                    adapter.addItemsList(listItems, pos);
+                    if(expandableListView.findViewHolderForAdapterPosition(pos)!= null &&
+                            expandableListView.findViewHolderForAdapterPosition(pos).itemView != null) {
+                        expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
+                        expandableListView.scrollToPosition(pos);
+                    }
                 }
-            }, 5);
+            });
+            doViewModel.getDoUpdateMap().put(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId(), true);
         }
     }
 }

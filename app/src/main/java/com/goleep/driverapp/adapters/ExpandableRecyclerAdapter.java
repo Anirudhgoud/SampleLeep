@@ -10,9 +10,12 @@ import android.widget.ImageView;
 
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vishalm on 20/02/18.
@@ -25,12 +28,9 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     protected List<T> visibleItems = new ArrayList<>();
     private List<Integer> indexList = new ArrayList<>();
     private SparseIntArray expandMap = new SparseIntArray();
+    protected Map<Integer,Integer> doPositionMap = new HashMap<>();
     private int mode = 1;
-
     private static final int ARROW_ROTATION_DURATION = 150;
-
-    public static final int MODE_ACCORDION = 1;
-
     public ExpandableRecyclerAdapter(Context context) {
         mContext = context;
     }
@@ -75,7 +75,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (clickListener != null)
+                    if(clickListener != null)
                         clickListener.onClick(v);
                     handleClick();
                 }
@@ -100,8 +100,8 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             collapseItems(position, notify);
             return false;
         } else {
-            expandItems(position, notify);
             collapseAllExcept(position);
+            expandItems(position, notify);
             return true;
         }
     }
@@ -111,44 +111,41 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         int index = indexList.get(position);
         int insert = position;
 
-        for (int i = index + 1; i < allItems.size() && !isHeader(allItems.get(i)); i++) {
+        for (int i=index+1; i<allItems.size() && !isHeader(allItems.get(i)); i++) {
             insert++;
             count++;
             visibleItems.add(insert, allItems.get(i));
             indexList.add(insert, i);
         }
 
-        notifyDataSetChanged();
+        notifyItemRangeInserted(position + 1, count);
 
         int allItemsPosition = indexList.get(position);
         expandMap.put(allItemsPosition, 1);
+
+        if (notify) {
+            notifyItemChanged(position);
+        }
     }
 
     public void collapseItems(int position, boolean notify) {
         int count = 0;
         int index = indexList.get(position);
 
-        for (int i = index + 1; i < allItems.size(); i++) {
-            if (!isHeader(allItems.get(i))) {
-                count++;
-                visibleItems.remove(position + 1);
-                indexList.remove(position + 1);
-            } else break;
+        for (int i = index + 1; i < allItems.size() && !isHeader(allItems.get(i)); i++) {
+            count++;
+            visibleItems.remove(position + 1);
+            indexList.remove(position + 1);
         }
 
-       notifyDataSetChanged();
+        notifyItemRangeRemoved(position + 1, count);
 
         int allItemsPosition = indexList.get(position);
         expandMap.delete(allItemsPosition);
-    }
 
-    private boolean isHeader(BaseListItem baseListItem) {
-        if (baseListItem.getItemType() == AppConstants.TYPE_HEADER ||
-                baseListItem.getItemType() == AppConstants.TYPE_ORDERS_HEADER ||
-                baseListItem.getItemType() == AppConstants.TYPE_CASH_SALES_ITEM ||
-                baseListItem.getItemType() == AppConstants.TYPE_SALES_INFO)
-            return true;
-        else return false;
+        if (notify) {
+            notifyItemChanged(position);
+        }
     }
 
 
@@ -174,6 +171,9 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
                     items.get(i).getItemType() == AppConstants.TYPE_CASH_SALES_ITEM ||
                     items.get(i).getItemType() == AppConstants.TYPE_SALES_INFO) {
                 indexList.add(i);
+                if(items.get(i).getItemType() == AppConstants.TYPE_HEADER){
+                    doPositionMap.put(((DeliveryOrderEntity)items.get(i)).getId(), i);
+                }
                 visibleItems.add(items.get(i));
             }
         }
@@ -181,6 +181,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         this.visibleItems = visibleItems;
         notifyDataSetChanged();
     }
+
 
 
     protected void removeItemAt(int visiblePosition) {
@@ -237,15 +238,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         }
     }
 
-    public void expandAll() {
-        for (int i=visibleItems.size()-1; i>=0; i--) {
-            if (getItemViewType(i) == AppConstants.TYPE_HEADER) {
-                if (!isExpanded(i)) {
-                    expandItems(i, true);
-                }
-            }
-        }
-    }
+
 
     public static void openArrow(View view) {
         view.animate().setDuration(ARROW_ROTATION_DURATION).rotation(180);
@@ -262,5 +255,14 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
 
     public void setMode(int mode) {
         this.mode = mode;
+    }
+
+    private boolean isHeader(BaseListItem baseListItem) {
+        if (baseListItem.getItemType() == AppConstants.TYPE_HEADER ||
+                baseListItem.getItemType() == AppConstants.TYPE_ORDERS_HEADER ||
+                baseListItem.getItemType() == AppConstants.TYPE_CASH_SALES_ITEM ||
+                baseListItem.getItemType() == AppConstants.TYPE_SALES_INFO)
+            return true;
+        else return false;
     }
 }
