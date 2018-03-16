@@ -36,6 +36,7 @@ public class LeepSuccessDialog extends Dialog implements View.OnClickListener {
         setContentView(R.layout.success_dialog_layout);
         btPrint = findViewById(R.id.bt_print);
         ((CustomTextView) findViewById(R.id.message)).setText(message);
+        setCanceledOnTouchOutside(false);
         findViewById(R.id.ok_button).setOnClickListener(this);
         findViewById(R.id.close_layout).setOnClickListener(this);
         btPrint.setOnClickListener(this);
