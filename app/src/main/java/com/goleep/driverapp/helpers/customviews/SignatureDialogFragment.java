@@ -80,7 +80,7 @@ public class SignatureDialogFragment extends DialogFragment implements View.OnCl
         switch (v.getId()) {
             case R.id.bt_done:
                 if (pvSignature.isSignatureAdded()) {
-                    Bitmap signature = AppUtils.bitmapFromView(pvSignature, pvSignature.getWidth(), pvSignature.getHeight());
+                    Bitmap signature = AppUtils.bitmapFromView(pvSignature, pvSignature.getWidth() - 2, pvSignature.getHeight() - 2);
                     addSignatureListener.onSignatureAdded(signature);
                     getDialog().cancel();
                 } else {

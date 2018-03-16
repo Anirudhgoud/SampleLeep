@@ -38,7 +38,7 @@ public abstract class DeliveryOrderItemDao {
     public abstract void updateOrderItemSelectionStatus(int orderItemId, boolean checked);
 
     @Query("DELETE FROM OrderItemEntity WHERE id = :doId")
-    abstract void deleteDeliveryItems(Integer doId);
+    public abstract void deleteDeliveryItems(int doId);
 
     @Query("SELECT * FROM OrderItemEntity WHERE doId = :id")
     public abstract List<OrderItemEntity> getDOrderItemssList(Integer id);

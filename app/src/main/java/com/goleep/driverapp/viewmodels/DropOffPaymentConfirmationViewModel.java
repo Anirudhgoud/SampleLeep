@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
+import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -12,6 +13,7 @@ import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +33,7 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
     private double previousBalance;
     private String paymentMethod;
     private boolean signatureAdded = false;
+    public String RECEIVER_SIGNATURE = "receiver_signature";
 
     public DropOffPaymentConfirmationViewModel(@NonNull Application application) {
         super(application);
@@ -39,7 +42,7 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
     public void editDeliveryOrderWithSelectedProducts(final UILevelNetworkCallback orderItemNetworkCallBack) {
         LogUtils.debug(this.getClass().getSimpleName(), generateOrderItemsRequestMap().toString());
 
-        NetworkService.sharedInstance().getNetworkClient().makePutRequest(getApplication().getApplicationContext(), UrlConstants.DELIVERY_ORDERS_URL + "/" + deliveryOrderId, true, generateOrderItemsRequestMap(), (type, response, errorMessage) -> {
+        NetworkService.sharedInstance().getNetworkClient().makeJsonPutRequest(getApplication().getApplicationContext(), UrlConstants.DELIVERY_ORDERS_URL + "/" + deliveryOrderId, true, generateOrderItemsRequestMap(), (type, response, errorMessage) -> {
             switch (type) {
                 case NetworkConstants.SUCCESS:
                     orderItemNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
@@ -58,6 +61,34 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
         });
     }
 
+    public void deliverOrder(String receivedBy, String contactNo, File file, final UILevelNetworkCallback deliverOrderNetworkCallBack) {
+        LogUtils.debug(this.getClass().getSimpleName(), generateDeliverOrderRequestMap(receivedBy, contactNo).toString());
+
+        NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.DELIVER_DELIVERY_ORDER_URL, true, generateDeliverOrderRequestMap(receivedBy, contactNo), file, RECEIVER_SIGNATURE, (type, response, errorMessage) -> {
+            switch (type) {
+                case NetworkConstants.SUCCESS:
+                    deleteOrderWithItems();
+                    deliverOrderNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
+                    break;
+
+                case NetworkConstants.FAILURE:
+                case NetworkConstants.NETWORK_ERROR:
+                    deliverOrderNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                    break;
+
+                case NetworkConstants.UNAUTHORIZED:
+                    deliverOrderNetworkCallBack.onResponseReceived(null,
+                            false, errorMessage, true);
+                    break;
+            }
+        });
+    }
+
+    private void deleteOrderWithItems() {
+        leepDatabase.deliveryOrderDao().deleteDeliveryOrder(deliveryOrderId);
+        leepDatabase.deliveryOrderItemDao().deleteDeliveryItems(deliveryOrderId);
+    }
+
     private int getAssigneeId() {
         return LocalStorageService.sharedInstance().getLocalFileStore().getInt(getApplication().getApplicationContext(), SharedPreferenceKeys.DRIVER_ID);
     }
@@ -65,7 +96,7 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
 
     private Map<String, Object> generateOrderItemsRequestMap() {
         Map<String, Object> httpBodyDetails = new HashMap<>();
-        httpBodyDetails.put("delivery_order_items", getDeliveryOrderItemsMap());
+        httpBodyDetails.put("delivery_order_items_attributes", getDeliveryOrderItemsMap());
         httpBodyDetails.put("assignee_id", getAssigneeId());
 
         Map<String, Object> httpBody = new HashMap<>();
@@ -85,6 +116,20 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
             orderItemMapList.add(orderItemMap);
         }
         return orderItemMapList;
+    }
+
+    private Map<String, Object> generateDeliverOrderRequestMap(String receivedBy, String contactNo) {
+        Map<String, Object> requestForm = new HashMap<>();
+        requestForm.put("delivery_order_id", deliveryOrderId);
+        if (paymentCollected != 0) {
+            requestForm.put("payment_collected", paymentCollected);
+        }
+        requestForm.put("payment_mode", PaymentMethod.CASH);
+        requestForm.put("received_by", receivedBy);
+        if (contactNo != null) {
+            requestForm.put("receiver_contact_number", contactNo);
+        }
+        return requestForm;
     }
 
     //Getters and setters

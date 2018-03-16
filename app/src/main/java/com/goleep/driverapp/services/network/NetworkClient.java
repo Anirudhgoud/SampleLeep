@@ -7,6 +7,7 @@ import com.goleep.driverapp.constants.NetworkStringConstants;
 import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
+import com.goleep.driverapp.services.storage.LocalFileStore;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 
@@ -38,9 +39,9 @@ public class NetworkClient {
         networkChecker = new NetworkChecker();
     }
 
-    public void makePutRequest(Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
-                               final NetworkAPICallback networkAPICallback){
-        requestHandler(context, requestUrl, isAuthRequired, bodyParams, RequestConstants.CONTENT_TYPE_JSON,
+    public void makeFormPutRequest(Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
+                                   final NetworkAPICallback networkAPICallback) {
+        requestHandler(context, requestUrl, isAuthRequired, bodyParams, "form",
                 NetworkConstants.PUT_REQUEST, networkAPICallback, null);
     }
 
@@ -144,6 +145,45 @@ public class NetworkClient {
         });
     }
 
+    public void uploadImageWithMultipartFormData(final Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
+                                                 File file, String imageFileKey, final NetworkAPICallback networkAPICallback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(imageFileKey, imageFileKey + ".jpg", RequestBody.create(MediaType.parse("image/jpeg"), file));
+
+        for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
+            builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
+        }
+        RequestBody formBody = builder.build();
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .addHeader("Authorization", getOAuthToken(context))
+                .addHeader("Content-Type", "multipart/form-data")
+                .addHeader(RequestConstants.KEY_USER_AGENT, RequestConstants.USER_AGENT)
+                .url(requestUrl)
+                .put(formBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                networkAPICallback.onNetworkResponse(NetworkConstants.FAILURE, null,
+                        NetworkStringConstants.REQUEST_FAILURE);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Object[] objects = responseValidator.validateResponse(response);
+                networkAPICallback.onNetworkResponse(getNetworkState(objects), getResponse(objects),
+                        getErrorMessage(objects));
+                LogUtils.error("response", response.toString());
+            }
+        });
+    }
+
+    private String getOAuthToken(Context context) {
+        LocalFileStore localFileStore = LocalStorageService.sharedInstance().getLocalFileStore();
+        return localFileStore.getString(context, SharedPreferenceKeys.AUTH_TOKEN);
+    }
 
     private int getNetworkState(Object[] objects){
         Object state = objects[0];
