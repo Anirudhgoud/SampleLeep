@@ -244,17 +244,22 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
             if (((Activity) context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
                 {
-                    productCheckbox.setVisibility(View.VISIBLE);
-                    productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                            if (isChecked)
-                                visibleItems.get(0).addSelection(1);
-                            else visibleItems.get(0).addSelection(-1);
-                            notifyDataSetChanged();
-                        }
-                    });
+                    if(productCheckbox != null) {
+                        productCheckbox.setVisibility(View.VISIBLE);
+                        productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                                if (isChecked)
+                                    visibleItems.get(0).addSelection(1);
+                                else visibleItems.get(0).addSelection(-1);
+                                notifyDataSetChanged();
+                            }
+                        });
+                    }
                 }
+            } else{
+                if(productCheckbox != null)
+                    productCheckbox.setVisibility(View.GONE);
             }
         }
     }
