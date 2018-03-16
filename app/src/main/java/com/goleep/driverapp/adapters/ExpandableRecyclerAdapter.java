@@ -13,9 +13,7 @@ import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by vishalm on 20/02/18.
@@ -28,8 +26,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     protected List<T> visibleItems = new ArrayList<>();
     private List<Integer> indexList = new ArrayList<>();
     private SparseIntArray expandMap = new SparseIntArray();
-    protected Map<Integer,Integer> doPositionMap = new HashMap<>();
-    private int mode = 1;
+    protected SparseIntArray doPositionMapAllItems = new SparseIntArray();
     private static final int ARROW_ROTATION_DURATION = 150;
     public ExpandableRecyclerAdapter(Context context) {
         mContext = context;
@@ -88,10 +85,19 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             } else {
                 closeArrow(arrow);
             }
+            updateDoPositionMap();
         }
 
         public void bind(int position) {
 
+        }
+    }
+
+    private void updateDoPositionMap() {
+        for(int i=0;i<allItems.size();i++){
+            if(allItems.get(i).getItemType() == AppConstants.TYPE_HEADER){
+                doPositionMapAllItems.put(((DeliveryOrderEntity)allItems.get(i)).getId(), i);
+            }
         }
     }
 
@@ -100,8 +106,8 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
             collapseItems(position, notify);
             return false;
         } else {
-            collapseAllExcept(position);
             expandItems(position, notify);
+            collapseAllExcept(position);
             return true;
         }
     }
@@ -148,7 +154,6 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         }
     }
 
-
     protected boolean isExpanded(int position) {
         int allItemsPosition = indexList.get(position);
         return expandMap.get(allItemsPosition, -1) >= 0;
@@ -172,7 +177,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
                     items.get(i).getItemType() == AppConstants.TYPE_SALES_INFO) {
                 indexList.add(i);
                 if(items.get(i).getItemType() == AppConstants.TYPE_HEADER){
-                    doPositionMap.put(((DeliveryOrderEntity)items.get(i)).getId(), i);
+                    doPositionMapAllItems.put(((DeliveryOrderEntity)items.get(i)).getId(), i);
                 }
                 visibleItems.add(items.get(i));
             }
@@ -182,51 +187,6 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         notifyDataSetChanged();
     }
 
-
-
-    protected void removeItemAt(int visiblePosition) {
-        int allItemsPosition = indexList.get(visiblePosition);
-
-        allItems.remove(allItemsPosition);
-        visibleItems.remove(visiblePosition);
-
-        incrementIndexList(allItemsPosition, visiblePosition, -1);
-        incrementExpandMapAfter(allItemsPosition, -1);
-
-        notifyItemRemoved(visiblePosition);
-    }
-
-    private void incrementExpandMapAfter(int position, int direction) {
-        SparseIntArray newExpandMap = new SparseIntArray();
-
-        for (int i=0; i<expandMap.size(); i++) {
-            int index = expandMap.keyAt(i);
-            newExpandMap.put(index < position ? index : index + direction, 1);
-        }
-
-        expandMap = newExpandMap;
-    }
-
-    private void incrementIndexList(int allItemsPosition, int visiblePosition, int direction) {
-        List<Integer> newIndexList = new ArrayList<>();
-
-        for (int i=0; i<indexList.size(); i++) {
-            if (i == visiblePosition) {
-                if (direction > 0) {
-                    newIndexList.add(allItemsPosition);
-                }
-            }
-
-            int val = indexList.get(i);
-            newIndexList.add(val < allItemsPosition ? val : val + direction);
-        }
-
-        indexList = newIndexList;
-    }
-
-    public void collapseAll() {
-        collapseAllExcept(-1);
-    }
 
     public void collapseAllExcept(int position) {
         for (int i=visibleItems.size()-1; i>=0; i--) {
@@ -238,8 +198,6 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
         }
     }
 
-
-
     public static void openArrow(View view) {
         view.animate().setDuration(ARROW_ROTATION_DURATION).rotation(180);
 
@@ -247,14 +205,6 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
 
     public static void closeArrow(View view) {
         view.animate().setDuration(ARROW_ROTATION_DURATION).rotation(0);
-    }
-
-    public int getMode() {
-        return mode;
-    }
-
-    public void setMode(int mode) {
-        this.mode = mode;
     }
 
     private boolean isHeader(BaseListItem baseListItem) {

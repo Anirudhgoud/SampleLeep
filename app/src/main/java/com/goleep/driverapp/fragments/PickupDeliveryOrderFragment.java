@@ -129,6 +129,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
         if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().containsKey(doDetails.get(0).getDoId())) {
             final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getDoId());
+            final int doId = doDetails.get(0).getDoId();
             List<BaseListItem> listItems = new ArrayList<>();
             for(OrderItemEntity orderItemEntity : doDetails){
                 orderItemEntity.setItemType(AppConstants.TYPE_DO_ITEM);
@@ -137,7 +138,8 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    adapter.addItemsList(listItems, pos);
+                    adapter.addItemsList(listItems, doId);
+                    doViewModel.getDoUpdateMap().put(doId, true);
                     if(expandableListView.findViewHolderForAdapterPosition(pos)!= null &&
                             expandableListView.findViewHolderForAdapterPosition(pos).itemView != null) {
                         expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
@@ -145,7 +147,6 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                     }
                 }
             });
-            doViewModel.getDoUpdateMap().put(((DeliveryOrderEntity) adapter.getItemAt(pos)).getId(), true);
         }
     }
 }
