@@ -54,6 +54,12 @@ public class SignatureDialogFragment extends DialogFragment implements View.OnCl
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.addSignatureListener = null;
+    }
+
     private void connectUIElements(View view) {
         pvSignature = view.findViewById(R.id.pv_signature);
         btDone = view.findViewById(R.id.bt_done);

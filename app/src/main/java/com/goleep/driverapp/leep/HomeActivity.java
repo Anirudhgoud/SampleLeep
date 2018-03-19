@@ -71,6 +71,12 @@ public class HomeActivity extends ParentAppCompatActivity {
                     Intent doIntent = new Intent(HomeActivity.this, DropOffDeliveryOrdersActivity.class);
                     startActivity(doIntent);
                     break;
+
+                case InnerDashboardUiModel.TAG_CASH_SALES:
+                    Intent cashSalesIntent = new Intent(HomeActivity.this, CashSalesActivity.class);
+                    startActivity(cashSalesIntent);
+                    break;
+
                 case InnerDashboardUiModel.TAG_PICKUP:
                     Intent pickupIntent = new Intent(HomeActivity.this, PickupActivity.class);
                     startActivity(pickupIntent);
