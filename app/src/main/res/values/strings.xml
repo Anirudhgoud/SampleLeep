@@ -61,6 +61,18 @@
     <string name="storage_permission_denied">Please provide external storage permissions</string>
     <string name="image_picker">"Select Image From Gallery"</string>
 
+    <!--Reports-->
+    <string name="reports">Reports</string>
+    <string name="total_payment_collected">Total Payment Collected</string>
+    <string name="kms_travelled">Kms Travelled</string>
+    <string name="units_delivered">Units Delivered</string>
+    <string name="sales">Sales</string>
+    <string name="returns">Returns</string>
+
+    <string name="stock">Stock</string>
+
+    <string name="history">History</string>
+
     <!--Collect Payment-->
     <string name="do_payment_title">DO > Payment</string>
     <string name="item_list">Item List</string>

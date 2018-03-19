@@ -53,6 +53,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     CircleImageView profileImage;
 
     final int START_GALLERY_REQUEST_CODE = 101;
+    final int START_PICKUP_ACTIVITY_CODE = 102;
 
     View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
@@ -73,7 +74,19 @@ public class HomeActivity extends ParentAppCompatActivity {
                     break;
                 case InnerDashboardUiModel.TAG_PICKUP:
                     Intent pickupIntent = new Intent(HomeActivity.this, PickupActivity.class);
-                    startActivity(pickupIntent);
+                    startActivityForResult(pickupIntent, START_PICKUP_ACTIVITY_CODE);
+                    break;
+                case InnerDashboardUiModel.TAG_REPORTS:
+                    Intent reportsIntent = new Intent(HomeActivity.this, ReportsActivity.class);
+                    startActivity(reportsIntent);
+                    break;
+                case InnerDashboardUiModel.TAG_HISTORY:
+                    Intent historyIntent = new Intent(HomeActivity.this, HistoryActivity.class);
+                    startActivity(historyIntent);
+                    break;
+                case InnerDashboardUiModel.TAG_STOCKS:
+                    Intent stocksIntent = new Intent(HomeActivity.this, StockActivity.class);
+                    startActivity(stocksIntent);
                     break;
             }
         }
@@ -134,9 +147,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         setToolbarRightText(driverEntity.getFirstName()+" "+ driverEntity.getLastName());
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
         if(driverEntity.getImageUrl() != null) {
-//            Glide.with(HomeActivity.this).load(driverEntity.getImageUrl()).
-//                    apply(RequestOptions.circleCropTransform())
-//                    .into(profileImage);
+
         }
     }
 
@@ -163,6 +174,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         setToolbarRightText("");
         profileButton.setOnClickListener(this);
         signOutButton.setOnClickListener(this);
+        viewModel.getStocks();
     }
 
     private void initDrawer() {
@@ -290,7 +302,8 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     private void populateInnerDashboard(List<InnerDashboardUiModel> innerDashboardUiModels) {
         ViewGroup innerDashBoardView = viewPager.findViewWithTag("inner");
-        innerDashBoardView.removeAllViews();
+        ViewGroup dashboardContainer = innerDashBoardView.findViewById(R.id.scrollview_container);
+        dashboardContainer.removeAllViewsInLayout();
         LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
         for ( InnerDashboardUiModel uimodel: innerDashboardUiModels) {
             View view = inflater.inflate(R.layout.inner_dashboard_item, null, false);
@@ -303,11 +316,11 @@ public class HomeActivity extends ParentAppCompatActivity {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     getResources().getDimensionPixelSize(R.dimen.card_view_height));
             view.findViewById(R.id.top_value_textview).setBackgroundResource(uimodel.getTopColorId());
-            params.setMargins(0, 0, 0, 70);
+            params.setMargins(0, 0, 0, 50);
             view.setLayoutParams(params);
             view.setTag(uimodel.getTag());
             view.setOnClickListener(innerDashboardItemClickListener);
-            innerDashBoardView.addView(view);
+            dashboardContainer.addView(view);
         }
     }
 
@@ -369,6 +382,8 @@ public class HomeActivity extends ParentAppCompatActivity {
             File sourceFile = new File(getRealPathFromURI(uri));
             profileImage.setImageURI(uri);
             viewModel.uploadProfileImage(sourceFile);
+        } else if(requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK){
+            viewModel.getStocks();
         }
     }
 

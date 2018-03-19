@@ -16,6 +16,7 @@ public interface UrlConstants {
     //Dashboard
     String DRIVERS_URL = BASE_URL + "/drivers";
     String SUMMARY_URL = BASE_URL + "/summary";
+    String INVENTORIES_URL = BASE_URL + "/inventories";
 
     //Delivery Orders
     String DELIVERY_ORDERS_URL = BASE_URL + "/delivery_orders";
