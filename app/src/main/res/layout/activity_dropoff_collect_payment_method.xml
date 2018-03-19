@@ -13,21 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <include
-        layout="@layout/delivery_order_top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.goleep.driverapp.helpers.customfont.CustomButton
-        android:id="@+id/bt_view_item_list"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/rounded_border_green"
-        android:text="@string/view_item_list"
-        android:textColor="@color/doTabTextColor"
-        android:textSize="18sp" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -37,6 +22,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <include
+                layout="@layout/delivery_order_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomButton
+                android:id="@+id/bt_view_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_border_green"
+                android:text="@string/view_item_list"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="18sp" />
+
 
             <include
                 layout="@layout/amount_summary_layout"
