@@ -68,10 +68,14 @@
         <activity
             android:name=".leep.PickupMapActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.ReportsActivity" />
-        <activity android:name=".leep.StockActivity" />
-        <activity android:name=".leep.HistoryActivity" />
-        <activity android:name=".leep.WarehouseDropoffActivity"></activity>
+        <activity android:name=".leep.ReportsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".leep.StockActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".leep.HistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".leep.WarehouseDropoffActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
