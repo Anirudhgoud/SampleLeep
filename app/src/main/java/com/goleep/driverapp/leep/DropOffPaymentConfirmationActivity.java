@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -19,11 +20,18 @@ import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
+import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
+import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.DropOffPaymentConfirmationViewModel;
+
+import java.io.File;
+import java.util.List;
 
 public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
 
@@ -197,11 +205,80 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
             case R.id.bt_confirm:
                 if (checkValidations()) {
-//                    viewModel.editDeliveryOrderWithSelectedProducts();
-                    //Goto next screen
+                    showProgressDialog();
+                    viewModel.editDeliveryOrderWithSelectedProducts(editOrderNetworkCallback);
                 }
                 break;
         }
+    }
+
+    private UILevelNetworkCallback editOrderNetworkCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            if (uiModels == null) {
+                runOnUiThread(() -> dismissProgressDialog());
+                if (toLogout) {
+                    logoutUser();
+                } else if (isDialogToBeShown) {
+                    showNetworkRelatedDialogs(errorMessage);
+                }
+            } else {
+                deliverOrder();
+            }
+        }
+    };
+
+    private void deliverOrder() {
+        String contactNo = etContactNumber.getText().length() == 0 ? null : etContactNumber.getText().toString();
+        File file = AppUtils.fileFromBitmap(getApplicationContext(), AppUtils.bitmapFromView(ivSignature, ivSignature.getWidth(), ivSignature.getHeight()), viewModel.RECEIVER_SIGNATURE);
+        viewModel.deliverOrder(etReceivedFrom.getText().toString(), contactNo, file, deliverOrderNetworkCallback);
+    }
+
+    private UILevelNetworkCallback deliverOrderNetworkCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            runOnUiThread(() -> dismissProgressDialog());
+            if (uiModels == null) {
+                if (toLogout) {
+                    logoutUser();
+                } else if (isDialogToBeShown) {
+                    showNetworkRelatedDialogs(errorMessage);
+                }
+            } else {
+                runOnUiThread(() -> {
+                    showSuccessDialog();
+                });
+                LogUtils.debug(this.getClass().getSimpleName(), "Order Delivered");
+            }
+        }
+    };
+
+    private void showSuccessDialog() {
+        LeepSuccessDialog successDialog = new LeepSuccessDialog(this, getString(R.string.delivery_successful));
+        successDialog.show();
+        successDialog.setSuccessDialogEventListener(new SuccessDialogEventListener() {
+            @Override
+            public void onOkButtonTap() {
+                goBackToDeliveryList();
+            }
+
+            @Override
+            public void onCloseButtonTap() {
+                goBackToDeliveryList();
+            }
+
+            @Override
+            public void onPrintButtonTap() {
+                LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
+            }
+        });
+        successDialog.setPrintButtonVisibility(true);
+    }
+
+    private void goBackToDeliveryList() {
+        Intent intent = new Intent(this, DropOffDeliveryOrdersActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private boolean checkValidations() {

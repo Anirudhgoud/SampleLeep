@@ -41,6 +41,9 @@ public abstract class DeliveryOrderDao {
     @Query("Delete from DeliveryOrderEntity WHERE type = 'driver'")
     public abstract void deleteDriverDo();
 
+    @Query("Delete from DeliveryOrderEntity WHERE id =:id")
+    public abstract void deleteDeliveryOrder(int id);
+
     @Query("Select * from DeliveryOrderEntity where type = 'driver'")
     public abstract LiveData<DeliveryOrderEntity> getDriverDo();
 

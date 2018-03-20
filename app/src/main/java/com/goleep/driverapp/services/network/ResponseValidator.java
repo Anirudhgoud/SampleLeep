@@ -5,6 +5,9 @@ package com.goleep.driverapp.services.network;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.NetworkStringConstants;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import okhttp3.Response;
 
 /**
@@ -35,7 +38,7 @@ public class ResponseValidator {
             case 500:
                 responseObjects[0] = NetworkConstants.FAILURE;
                 responseObjects[1] = null;
-                responseObjects[2] = NetworkStringConstants.BAD_REQUEST;
+                responseObjects[2] = parseErrorMessage(response);
                 break;
             case 401:
                 responseObjects[0] = NetworkConstants.UNAUTHORIZED;
@@ -51,5 +54,18 @@ public class ResponseValidator {
         return responseObjects;
     }
 
+
+    private String parseErrorMessage(Response response) {
+        String errorMessage = NetworkStringConstants.REQUEST_FAILURE;
+        if (response == null) return errorMessage;
+
+        JSONArray jsonArray = objectMapper.getResponse(response);
+        if (jsonArray == null) return errorMessage;
+        else {
+            JSONObject errorObject = jsonArray.optJSONObject(0);
+            errorMessage = errorObject.optString("message", NetworkStringConstants.REQUEST_FAILURE);
+        }
+        return errorMessage;
+    }
 
 }

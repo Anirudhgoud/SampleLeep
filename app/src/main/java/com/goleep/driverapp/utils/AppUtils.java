@@ -4,8 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 /**
  * Created by anurag on 19/02/18.
@@ -21,9 +26,24 @@ public class AppUtils {
     public static Bitmap bitmapFromView(View v, int width, int height) {
         Bitmap b = Bitmap.createBitmap(width , height, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
-        v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
+        v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
         v.draw(c);
         return b;
+    }
+
+    public static File fileFromBitmap(Context context, Bitmap bitmap, String fileName) {
+        File filesDir = context.getFilesDir();
+        File imageFile = new File(filesDir, fileName + ".jpg");
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(AppUtils.class.getSimpleName(), "Error writing bitmap", e);
+        }
+        return imageFile;
     }
 
     public static void toggleKeyboard(View view, Context context){
