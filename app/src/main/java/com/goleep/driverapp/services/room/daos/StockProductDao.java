@@ -36,5 +36,12 @@ public abstract class StockProductDao {
     @Query("DELETE FROM StockProductEntity")
     protected abstract void deleteAllStockProducts();
 
+    @Query("SELECT * FROM StockProductEntity WHERE sellableQuantity != 0")
+    public abstract List<StockProductEntity> getSellableStocks();
 
+    @Query("SELECT * FROM StockProductEntity WHERE deliverableQuantity != 0")
+    public abstract List<StockProductEntity> getDeliverableStocks();
+
+    @Query("SELECT * FROM StockProductEntity WHERE returnableQuantity != 0")
+    public abstract List<StockProductEntity> getReturnedStocks();
 }

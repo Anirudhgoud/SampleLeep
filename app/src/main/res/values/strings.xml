@@ -68,9 +68,14 @@
     <string name="units_delivered">Units Delivered</string>
     <string name="sales">Sales</string>
     <string name="returns">Returns</string>
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
+    <string name="this_month">This Month</string>
 
     <string name="stock">Stock</string>
-
+    <string name="sellable">Sellable</string>
+    <string name="deliverable">Deliverable</string>
+    <string name="returned">Returned</string>
     <string name="history">History</string>
 
     <!--Collect Payment-->
