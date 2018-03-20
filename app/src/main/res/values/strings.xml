@@ -71,12 +71,14 @@
     <string name="today">Today</string>
     <string name="this_week">This Week</string>
     <string name="this_month">This Month</string>
+    <string name="details">Details</string>
 
     <string name="stock">Stock</string>
     <string name="sellable">Sellable</string>
     <string name="deliverable">Deliverable</string>
     <string name="returned">Returned</string>
     <string name="history">History</string>
+    <string name="print">Print</string>
 
     <!--Collect Payment-->
     <string name="do_payment_title">DO > Payment</string>

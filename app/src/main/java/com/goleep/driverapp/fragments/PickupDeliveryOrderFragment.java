@@ -118,7 +118,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     }
 
     private void fetchDeliveryOrders() {
-        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null, null);
     }
 
     public void setItemSelectionListener(ItemCheckListener itemSelectionListener) {
