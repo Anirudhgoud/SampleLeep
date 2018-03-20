@@ -30,6 +30,9 @@ public class StockProductParser {
             stockProductEntity.setDeliverableQuantity(productJson.optInt("deliverable_quantity"));
             stockProductEntity.setSellableQuantity(productJson.optInt("sellable_quantity"));
             stockProductEntity.setReturnableQuantity(productJson.optInt("returnable_quantity"));
+            stockProductEntity.setBarcode(productJson.optString("barcode"));
+            stockProductEntity.setWeight(productJson.optString("weight"));
+            stockProductEntity.setWeightUnit(productJson.optString("weight_unit"));
             stockProductEntities.add(stockProductEntity);
         }
         return stockProductEntities;

@@ -18,6 +18,33 @@ public class StockProductEntity {
     private int sellableQuantity;
     private int deliverableQuantity;
     private int returnableQuantity;
+    private String weight;
+    private String weightUnit;
+    private String barcode;
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getWeightUnit() {
+        return weightUnit;
+    }
+
+    public void setWeightUnit(String weightUnit) {
+        this.weightUnit = weightUnit;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
 
     public int getId() {
         return id;

@@ -86,7 +86,7 @@ public class StockProductListAdapter extends RecyclerView.Adapter<StockProductLi
                     unitsTv.setText(String.valueOf(stockProductEntity.getReturnableQuantity()));
                     break;
             }
-            //productQuantityTv.setText(productEntity.getWeight()+" "+ productEntity.getWeightUnit());
+            productQuantityTv.setText(stockProductEntity.getWeight()+" "+ stockProductEntity.getWeightUnit());
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
         }
     }
