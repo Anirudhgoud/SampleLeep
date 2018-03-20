@@ -92,7 +92,7 @@ public class DeliveryOrdersListFragment extends Fragment {
         DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity) getActivity());
         if (dropOffDeliveryOrdersActivity != null) {
             dropOffDeliveryOrdersActivity.showLoading();
-            doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack);
+            doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null, null);
         }
     }
 

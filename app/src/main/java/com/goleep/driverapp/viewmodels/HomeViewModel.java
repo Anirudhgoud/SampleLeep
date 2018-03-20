@@ -14,9 +14,11 @@ import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DriverDataParser;
+import com.goleep.driverapp.services.network.jsonparsers.StockProductParser;
 import com.goleep.driverapp.services.network.jsonparsers.SummaryParser;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
+import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import org.json.JSONArray;
@@ -94,6 +96,27 @@ public class HomeViewModel extends AndroidViewModel {
                 }
             }
         });
+    }
+
+    public void getStocks(){
+        int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
+                getApplication().getApplicationContext(), SharedPreferenceKeys.DRIVER_ID);
+        String url = UrlConstants.INVENTORIES_URL+"?drivers="+driverId;
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(
+                getApplication().getApplicationContext(), url, true,
+                new NetworkAPICallback() {
+                    @Override
+                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
+                        System.out.print("");
+                        switch (type){
+                            case NetworkConstants.SUCCESS:
+                                StockProductParser parser = new StockProductParser();
+                                List<StockProductEntity> stockProductEntities = parser.getStockProduct(response);
+                                RoomDBService.sharedInstance().getDatabase(getApplication().
+                                        getApplicationContext()).stockProductDao().updateAllDeliveryOrders(stockProductEntities);
+                        }
+                    }
+                });
     }
 
     public void uploadProfileImage(File imageFile){
