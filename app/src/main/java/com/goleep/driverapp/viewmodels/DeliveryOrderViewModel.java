@@ -37,23 +37,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
     public LiveData<List<DeliveryOrderEntity>> getDeliveryOrders(String type, String status) {
-        String doType;
-        String doStatus;
-        switch (type){
-            case TYPE_CUSTOMER : doType = TYPE_CUSTOMER;
-                break;
-            case TYPE_DRIVER : doType = TYPE_DRIVER;
-                break;
-            default: doType = TYPE_CUSTOMER;
-        }
-        switch (status){
-            case STATUS_ASSIGNED : doStatus = STATUS_ASSIGNED;
-                break;
-            case STATUS_IN_TRANSIT : doStatus = STATUS_IN_TRANSIT;
-                break;
-            default: doStatus = STATUS_ASSIGNED;
-        }
-        deliveryOrders = leepDatabase.deliveryOrderDao().getCustomerDeliveryOrders(doType, doStatus);
+        deliveryOrders = leepDatabase.deliveryOrderDao().getCustomerDeliveryOrders(type, status);
         return deliveryOrders;
     }
 
