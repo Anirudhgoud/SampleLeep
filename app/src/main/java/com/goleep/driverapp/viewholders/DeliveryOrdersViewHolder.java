@@ -6,6 +6,7 @@ import android.view.View;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
@@ -48,7 +49,7 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
         tvDoNumber.setText(deliveryOrder.getDoNumber() ==  null ? "-" : deliveryOrder.getDoNumber());
         tvDate.setText(dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
         tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
-        tvDeliveryEstimatedTime.setText("-");
+        tvDeliveryEstimatedTime.setText(getEstimatedDeliveryTimeText(deliveryOrder.getDistanceFromCurrentLocation()));
         tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
         tvItemsCount.setText(String.valueOf(deliveryOrder.getDeliveryOrderItemsCount()));
         setDeliverButtonClickEvent(deliveryOrder.getId());
@@ -95,5 +96,12 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
             address = address + line2;
         }
         return address;
+    }
+
+    private String getEstimatedDeliveryTimeText(Distance distance) {
+        if (distance == null) return "-";
+        else {
+            return distance.getDurationText() == null ? "-" : distance.getDurationText();
+        }
     }
 }

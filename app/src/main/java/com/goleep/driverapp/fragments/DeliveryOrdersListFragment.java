@@ -59,6 +59,7 @@ public class DeliveryOrdersListFragment extends Fragment {
         doViewModel = ViewModelProviders.of(getActivity()).get(DropOffDeliveryOrdersViewModel.class);
         initialiseRecyclerView();
         initialiseRadioButtons();
+        observeDistanceChanges();
     }
 
     private void initialiseRecyclerView(){
@@ -77,6 +78,12 @@ public class DeliveryOrdersListFragment extends Fragment {
             }
         });
         doListRecyclerView.setAdapter(doListAdapter);
+    }
+
+    private void observeDistanceChanges() {
+        doViewModel.getTimeToReachDistanceMatrix().observe(this, distances -> {
+            doListAdapter.updateDoDistance(distances);
+        });
     }
 
     private void initialiseRadioButtons(){

@@ -25,6 +25,11 @@ import java.util.List;
 
 public class DeliveryOrderViewModel extends AndroidViewModel {
     protected AppDatabase leepDatabase;
+
+    public List<DeliveryOrderEntity> getDeliveryOrders() {
+        return deliveryOrders.getValue();
+    }
+
     private LiveData<List<DeliveryOrderEntity>> deliveryOrders;
 
     public static final String TYPE_CUSTOMER = "customer";

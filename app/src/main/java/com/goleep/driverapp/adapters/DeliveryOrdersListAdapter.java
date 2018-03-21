@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.SortCategoryType;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
+import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.comparators.SortDOByDeliveryTime;
@@ -55,6 +56,18 @@ public class DeliveryOrdersListAdapter extends RecyclerView.Adapter<DeliveryOrde
         this.deliveryOrderList.clear();
         this.deliveryOrderList.addAll(deliveryOrderList);
         notifyDataSetChanged();
+    }
+
+    public void updateDoDistance(List<Distance> distanceList) {
+        if (this.deliveryOrderList.size() == distanceList.size()) {
+            for (int i = 0; i < this.deliveryOrderList.size() && i < distanceList.size(); i++) {
+                DeliveryOrderEntity deliveryOrder = (DeliveryOrderEntity) this.deliveryOrderList.get(i);
+                Distance distance = distanceList.get(i);
+                deliveryOrder.setDistanceFromCurrentLocation(distance);
+            }
+            notifyDataSetChanged();
+        }
+
     }
 
     public void sortList(String sortType){

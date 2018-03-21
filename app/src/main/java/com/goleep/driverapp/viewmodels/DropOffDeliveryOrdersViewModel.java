@@ -2,14 +2,10 @@ package com.goleep.driverapp.viewmodels;
 
 
 import android.app.Application;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +20,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DistanceMatrixResponseParser;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.utils.AppUtils;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -39,11 +36,18 @@ import java.util.List;
 
 public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
 
-    private LocationManager locationManager;
+    private MutableLiveData<List<Distance>> timeToReachDistanceMatrix = new MutableLiveData<>();
+
+    public void setTimeToReachDistanceMatrix(List<Distance> timeToReachDistanceMatrix) {
+        this.timeToReachDistanceMatrix.setValue(timeToReachDistanceMatrix);
+    }
+
+    public MutableLiveData<List<Distance>> getTimeToReachDistanceMatrix() {
+        return timeToReachDistanceMatrix;
+    }
 
     public DropOffDeliveryOrdersViewModel(@NonNull Application application) {
         super(application);
-        locationManager = (LocationManager) application.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
     public void fetchTimeToReachAndUpdateDeliveryOrders(List<DeliveryOrderEntity> deliveryOrders, Location currentLocation, UILevelNetworkCallback timeToReachCallback) {
@@ -55,15 +59,7 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
                             case NetworkConstants.SUCCESS:
                                 List<Distance> timeToReachList = new DistanceMatrixResponseParser().
                                         parseDistanceMatrixResponse(response.optJSONObject(0));
-                                if (deliveryOrders.size() == 0) {
-                                    timeToReachCallback.onResponseReceived(null, false, null, false);
-                                }
-                                for (int i = 0; i < deliveryOrders.size() && i < timeToReachList.size(); i++) {
-                                    DeliveryOrderEntity deliveryOrder = deliveryOrders.get(i);
-                                    Distance distance = timeToReachList.get(i);
-                                    deliveryOrder.setDistanceFromCurrentLocation(distance);
-                                }
-                                timeToReachCallback.onResponseReceived(deliveryOrders, false,
+                                timeToReachCallback.onResponseReceived(timeToReachList, false,
                                         null, false);
                                 break;
 
@@ -102,29 +98,29 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
     }
 
     private Bitmap getMarkerBitmapFromView(String timeToReach) {
-//        View customMarkerView = ((LayoutInflater) getApplication().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
-//                inflate(R.layout.map_marker_title_layout, null);
-//        ((CustomTextView) customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);
-//        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-//        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
-//        customMarkerView.buildDrawingCache();
-//        return AppUtils.bitmapFromView(customMarkerView, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
-
-        View customMarkerView = ((LayoutInflater) getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+        View customMarkerView = ((LayoutInflater) getApplication().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
                 inflate(R.layout.map_marker_title_layout, null);
         ((CustomTextView) customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);
         customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
         customMarkerView.buildDrawingCache();
-        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(returnedBitmap);
-        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
-        Drawable drawable = customMarkerView.getBackground();
-        if (drawable != null)
-            drawable.draw(canvas);
-        customMarkerView.draw(canvas);
-        return returnedBitmap;
+        return AppUtils.bitmapFromView(customMarkerView, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+
+//        View customMarkerView = ((LayoutInflater) getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
+//                inflate(R.layout.map_marker_title_layout, null);
+//        ((CustomTextView) customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);
+//        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+//        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+//        customMarkerView.buildDrawingCache();
+//        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+//                Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(returnedBitmap);
+//        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+//        Drawable drawable = customMarkerView.getBackground();
+//        if (drawable != null)
+//            drawable.draw(canvas);
+//        customMarkerView.draw(canvas);
+//        return returnedBitmap;
     }
 
     private List<LatLng> getDestinations(List<DeliveryOrderEntity> deliveryOrders) {
@@ -171,5 +167,4 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
         url.append(getApplication().getApplicationContext().getResources().getString(R.string.google_maps_key));
         return url.toString();
     }
-
 }
