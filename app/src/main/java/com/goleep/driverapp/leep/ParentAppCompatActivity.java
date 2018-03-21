@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -80,7 +81,8 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         CustomButton leftToolbarButton = findViewById(R.id.left_toolbar_button);
         leftToolbarButton.setVisibility(View.VISIBLE);
         leftToolbarButton.setOnClickListener(this);
-        leftToolbarButton.setBackgroundResource(resId);
+        Drawable leftButtonDrawable = getResources().getDrawable(resId);
+        leftToolbarButton.setCompoundDrawablesWithIntrinsicBounds(leftButtonDrawable, null, null, null);
     }
 
     protected void setTitleIconAndText(String title, int resId){
