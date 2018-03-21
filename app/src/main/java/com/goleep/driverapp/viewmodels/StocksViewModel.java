@@ -2,7 +2,6 @@ package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.adapters.StockProductListAdapter;
@@ -25,18 +24,18 @@ public class StocksViewModel extends AndroidViewModel {
         leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
 
-    public List<StockProductEntity> getStockList(int listType){
+    public List<StockProductEntity> getStockList(int listType) {
         List<StockProductEntity> stockProductEntities = new ArrayList<>();
-        switch (listType){
+        switch (listType) {
 
-            case StockProductListAdapter.TYPE_SELLABLE :
+            case StockProductListAdapter.TYPE_SELLABLE:
                 stockProductEntities = leepDatabase.stockProductDao().getSellableStocks();
                 break;
-            case StockProductListAdapter.TYPE_RETURNED :
+            case StockProductListAdapter.TYPE_RETURNED:
                 stockProductEntities = leepDatabase.stockProductDao().getReturnedStocks();
                 break;
-            case StockProductListAdapter.TYPE_DELIVERABLE :
-                default:
+            case StockProductListAdapter.TYPE_DELIVERABLE:
+            default:
                 stockProductEntities = leepDatabase.stockProductDao().getDeliverableStocks();
                 break;
         }

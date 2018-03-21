@@ -19,11 +19,11 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListViewHold
     private List<DeliveryOrderEntity> deliveryOrderEntities;
     private View.OnClickListener detailsClickListener;
 
-    public HistoryListAdapter(List<DeliveryOrderEntity> orderHistoryList){
+    public HistoryListAdapter(List<DeliveryOrderEntity> orderHistoryList) {
         this.deliveryOrderEntities = orderHistoryList;
     }
 
-    public void setDetailsClickListener(View.OnClickListener detailsCliclListener){
+    public void setDetailsClickListener(View.OnClickListener detailsCliclListener) {
         this.detailsClickListener = detailsCliclListener;
     }
 
@@ -37,7 +37,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListViewHold
 
     @Override
     public void onBindViewHolder(HistoryListViewHolder holder, int position) {
-        if(deliveryOrderEntities.size() > position){
+        if (deliveryOrderEntities.size() > position) {
             holder.bind(deliveryOrderEntities.get(position));
         }
     }

@@ -45,7 +45,7 @@ public class StockActivity extends ParentAppCompatActivity {
         setResources(R.layout.activity_stock);
     }
 
-    private void initView(){
+    private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.stock), R.drawable.ic_stock_title_icon);
@@ -62,7 +62,7 @@ public class StockActivity extends ParentAppCompatActivity {
         rgListType.check(R.id.rb_deliverable);
     }
 
-    private void initialiseRadioButtons(){
+    private void initialiseRadioButtons() {
         rgListType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -71,8 +71,8 @@ public class StockActivity extends ParentAppCompatActivity {
         });
     }
 
-    private void onRadioSelectionChange(int checkedId){
-        switch (checkedId){
+    private void onRadioSelectionChange(int checkedId) {
+        switch (checkedId) {
             case R.id.rb_deliverable:
                 adapter.updateList(stocksViewModel.getStockList(StockProductListAdapter.TYPE_DELIVERABLE),
                         StockProductListAdapter.TYPE_DELIVERABLE);
@@ -92,8 +92,9 @@ public class StockActivity extends ParentAppCompatActivity {
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.left_toolbar_button : finish();
+        switch (resourceId) {
+            case R.id.left_toolbar_button:
+                finish();
                 break;
         }
     }

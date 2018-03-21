@@ -7,7 +7,6 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.database.sqlite.SQLiteDatabaseLockedException;
 
-import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.LogUtils;
 
@@ -27,7 +26,7 @@ public abstract class StockProductDao {
         try {
             deleteAllStockProducts();
             insertAllStockProducts(stockProductEntities);
-        }catch (SQLiteDatabaseLockedException e){
+        } catch (SQLiteDatabaseLockedException e) {
             e.printStackTrace();
             LogUtils.error("SQLiteDatabaseLockedException", "");
         }

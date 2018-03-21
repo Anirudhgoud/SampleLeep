@@ -31,7 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryActivity extends ParentAppCompatActivity implements Observer<List<DeliveryOrderEntity>>{
+public class HistoryActivity extends ParentAppCompatActivity implements Observer<List<DeliveryOrderEntity>> {
 
     @BindView(R.id.rb_today)
     RadioButton rbToday;
@@ -49,7 +49,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             dismissProgressDialog();
-            if(uiModels != null) {
+            if (uiModels != null) {
                 if (uiModels.size() > 0) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -82,7 +82,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         setResources(R.layout.activity_history);
     }
 
-    private void initView(){
+    private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.history), R.drawable.ic_history_title_icon);
@@ -93,7 +93,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         initRecyclerView();
     }
 
-    private void initialiseRadioButtons(){
+    private void initialiseRadioButtons() {
         rgDuration.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -117,17 +117,18 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.left_toolbar_button : finish();
+        switch (resourceId) {
+            case R.id.left_toolbar_button:
+                finish();
                 break;
         }
     }
 
-    private void onRadioSelectionChange(int checkedId){
+    private void onRadioSelectionChange(int checkedId) {
         showProgressDialog();
         Date today = new Date();
         String todayDateString = DateTimeUtils.convertedDate(today, "dd/mm/yyyy");
-        switch (checkedId){
+        switch (checkedId) {
             case R.id.rb_today:
                 deliveryOrderViewModel.fetchAllDeliveryOrders(ordersHistoryCallback,
                         "delivered", todayDateString, todayDateString);
@@ -155,12 +156,12 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
 
     @Override
     public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrderEntities) {
-        if(deliveryOrderEntities.size() > 0) {
+        if (deliveryOrderEntities.size() > 0) {
             adapter.updateList(deliveryOrderEntities);
         }
     }
 
-    private void startDetailActivity(int doId){
+    private void startDetailActivity(int doId) {
         Intent intent = new Intent(HistoryActivity.this, OrdersHistoryDetails.class);
         intent.putExtra(IntentConstants.DO_ID, doId);
         startActivity(intent);

@@ -388,7 +388,7 @@ public class HomeActivity extends ParentAppCompatActivity {
             File sourceFile = new File(getRealPathFromURI(uri));
             profileImage.setImageURI(uri);
             viewModel.uploadProfileImage(sourceFile);
-        } else if(requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK){
+        } else if (requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK) {
             viewModel.getStocks();
         }
     }

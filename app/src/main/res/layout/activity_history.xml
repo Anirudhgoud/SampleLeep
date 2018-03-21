@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.goleep.driverapp.leep.HistoryActivity">
 
-    <include layout="@layout/toolbar_layout"
+    <include
+        layout="@layout/toolbar_layout"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/inner_dashboard_bahama_blue"/>
+        android:background="@color/inner_dashboard_bahama_blue" />
+
     <RadioGroup
         android:id="@+id/rg_sort"
         android:layout_width="match_parent"
@@ -64,6 +66,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@android:color/white"/>
+        android:background="@android:color/white" />
 
 </LinearLayout>
