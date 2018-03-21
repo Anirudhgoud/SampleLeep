@@ -99,8 +99,9 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
     }
 
-    public void addItemsList(List<BaseListItem> baseListItems, int position) {
+    public void addItemsList(List<BaseListItem> baseListItems, int doId) {
         int listSize = recyclerViewListData.size();
+        int position = doPositionMapAllItems.get(doId);
         for (int j = position + 1; j < listSize; j++) {
             if (!(recyclerViewListData.get(position + 1) instanceof DeliveryOrderEntity)) {
                 recyclerViewListData.remove(position + 1);
@@ -226,6 +227,17 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     public class ItemViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
         private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
         private CheckBox productCheckbox;
+        private CompoundButton.OnCheckedChangeListener checkListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                int doId = (int) compoundButton.getTag();
+                visibleItems.get(getLayoutPosition()).checkItem(isChecked);
+                if (isChecked)
+                    allItems.get(doPositionMapAllItems.get(doId)).addSelection(1);
+                else allItems.get(doPositionMapAllItems.get(doId)).addSelection(-1);
+                notifyDataSetChanged();
+            }
+        };
         public ItemViewHolder(View view) {
             super(view);
             productNameTv = view.findViewById(R.id.product_name_text_view);
@@ -248,17 +260,11 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                     if(productCheckbox != null) {
                         productCheckbox.setVisibility(View.VISIBLE);
                         productCheckbox.setTag(doDetails.getDoId());
-                        productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                                if (isChecked)
-                                    visibleItems.get(doPositionMap.get(
-                                            compoundButton.getTag())).addSelection(1);
-                                else visibleItems.get(doPositionMap.get(
-                                        compoundButton.getTag())).addSelection(-1);
-                                notifyDataSetChanged();
-                            }
-                        });
+                        productCheckbox.setOnCheckedChangeListener(null);
+                        productCheckbox.setChecked(visibleItems.get(position).isItemChecked());
+                        productCheckbox.setOnCheckedChangeListener(checkListener);
+
+
                     }
                 }
             } else{

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.goleep.driverapp.leep.StockActivity">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/inner_dashboard_orange" />
+
+    <RadioGroup
+        android:id="@+id/rg_sort"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_deliverable"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/radiobutton_background"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/deliverable"
+            android:textColor="@color/doTabTextColor"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rb_sellable"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/radiobutton_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/sellable"
+            android:textColor="@color/doTabTextColor"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rb_returned"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/radiobutton_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/returned"
+            android:textColor="@color/doTabTextColor"
+            android:textSize="14sp" />
+
+    </RadioGroup>
+
+    <include layout="@layout/item_header_layout"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/stocks_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

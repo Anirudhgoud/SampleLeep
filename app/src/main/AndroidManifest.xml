@@ -70,6 +70,21 @@
         <activity
             android:name=".leep.CashSalesActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.ReportsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.StockActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.HistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.WarehouseDropoffActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.OrdersHistoryDetails"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

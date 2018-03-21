@@ -3,6 +3,7 @@ package com.goleep.driverapp.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -53,5 +54,15 @@ public class AppUtils {
                     view.getApplicationWindowToken(),
                     InputMethodManager.SHOW_FORCED, 0);
         }
+    }
+
+    public static Typeface getTypeface(Context context, String fontName){
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(),
+                "fonts/" + fontName + ".ttf");
+        if(typeface == null){
+            typeface = Typeface.createFromAsset(context.getAssets(),
+                    "fonts/" + "NotoSans-Regular" + ".ttf");
+        }
+        return typeface;
     }
 }

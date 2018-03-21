@@ -19,6 +19,9 @@ public class BaseListItem {
     @Ignore
     private String ordersHeader;
 
+    @Ignore
+    private boolean isItemChecked = false;
+
     public int getSelectedCount() {
         return (selectedCount < 1) ? 0 : selectedCount;
     }
@@ -41,6 +44,14 @@ public class BaseListItem {
 
     public int getItemType() {
         return itemType;
+    }
+
+    public boolean isItemChecked(){
+        return isItemChecked;
+    }
+
+    public void checkItem(boolean itemChecked){
+        this.isItemChecked = itemChecked;
     }
 
     public static List<BaseListItem> setItemType(List<BaseListItem> baseListItems, int itemType){

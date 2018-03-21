@@ -57,4 +57,8 @@ public abstract class DeliveryOrderDao {
             LogUtils.error("SQLiteDatabaseLockedException", "");
         }
     }
+
+    @Query("Delete from DeliveryOrderEntity WHERE id = :doId")
+    public abstract void deleteDeliveryOrder(Integer doId);
+
 }
