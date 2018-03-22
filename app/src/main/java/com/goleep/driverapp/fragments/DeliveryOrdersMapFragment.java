@@ -31,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -96,8 +97,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
 
     private void checkForLocationPermission() {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     LOCATION_PERMISSION_REQUEST_CODE);
             return;
         }
@@ -208,8 +208,21 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
             tvDeliveryDate.setText(viewModel.dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
             tvPreferredTime.setText(viewModel.timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
             tvTimeToReach.setText(viewModel.getEstimatedDeliveryTimeText(deliveryOrder.getDistanceFromCurrentLocation()));
+            updateMarkers(marker, deliveryOrder);
+            viewModel.setPreviouslySelectedMarker(viewModel.getSelectedMarker());
         }
         return true;
+    }
+
+    private void updateMarkers(Marker marker, DeliveryOrderEntity deliveryOrder) {
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(viewModel.getMarkerBitmapFromView(deliveryOrder.getDistanceFromCurrentLocation().getDurationText(), true)));
+        Marker previousMarker = viewModel.getPreviouslySelectedMarker();
+        if (previousMarker != null && previousMarker != viewModel.getSelectedMarker()) {
+            DeliveryOrderEntity prevMarkerDO = (DeliveryOrderEntity) previousMarker.getTag();
+            if (prevMarkerDO != null) {
+                previousMarker.setIcon(BitmapDescriptorFactory.fromBitmap(viewModel.getMarkerBitmapFromView(prevMarkerDO.getDistanceFromCurrentLocation().getDurationText(), false)));
+            }
+        }
     }
 
     private void openDirectionsOnGoogleMaps() {

@@ -3,17 +3,15 @@ package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.CustomMarkerView;
 import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -38,6 +36,7 @@ import java.util.List;
 
 public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
 
+    private Marker previouslySelectedMarker;
     private Marker selectedMarker;
     private MutableLiveData<List<Distance>> timeToReachDistanceMatrix = new MutableLiveData<>();
 
@@ -73,7 +72,7 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
             markerOptions = new MarkerOptions().position(destinationLatLng);
             Distance distance = deliveryOrder.getDistanceFromCurrentLocation();
             if (distance != null) {
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(distance.getDurationText())));
+                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(distance.getDurationText(), false)));
             }
         }
         return markerOptions;
@@ -84,10 +83,8 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
         return (latitude != 0 && longitude != 0) ? new LatLng(latitude, longitude) : null;
     }
 
-    private Bitmap getMarkerBitmapFromView(String timeToReach) {
-        View customMarkerView = ((LayoutInflater) getApplication().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
-                inflate(R.layout.map_marker_title_layout, null);
-        ((CustomTextView) customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);
+    public Bitmap getMarkerBitmapFromView(String timeToReach, boolean isSelected) {
+        View customMarkerView = new CustomMarkerView(getApplication().getApplicationContext(), timeToReach, isSelected);
         customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
         customMarkerView.setDrawingCacheEnabled(true);
@@ -194,5 +191,13 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
 
     public void setSelectedMarker(Marker selectedMarker) {
         this.selectedMarker = selectedMarker;
+    }
+
+    public Marker getPreviouslySelectedMarker() {
+        return previouslySelectedMarker;
+    }
+
+    public void setPreviouslySelectedMarker(Marker previouslySelectedMarker) {
+        this.previouslySelectedMarker = previouslySelectedMarker;
     }
 }
