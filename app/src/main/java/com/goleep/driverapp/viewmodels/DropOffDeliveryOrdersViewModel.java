@@ -21,8 +21,10 @@ import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DistanceMatrixResponseParser;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.DateTimeUtils;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -36,15 +38,8 @@ import java.util.List;
 
 public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
 
+    private Marker selectedMarker;
     private MutableLiveData<List<Distance>> timeToReachDistanceMatrix = new MutableLiveData<>();
-
-    public void setTimeToReachDistanceMatrix(List<Distance> timeToReachDistanceMatrix) {
-        this.timeToReachDistanceMatrix.setValue(timeToReachDistanceMatrix);
-    }
-
-    public MutableLiveData<List<Distance>> getTimeToReachDistanceMatrix() {
-        return timeToReachDistanceMatrix;
-    }
 
     public DropOffDeliveryOrdersViewModel(@NonNull Application application) {
         super(application);
@@ -93,7 +88,7 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
     }
 
 
-    private LatLng getLatLng(double latitude, double longitude) {
+    public LatLng getLatLng(double latitude, double longitude) {
         return (latitude != 0 && longitude != 0) ? new LatLng(latitude, longitude) : null;
     }
 
@@ -166,5 +161,60 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
         url.append("&key=");
         url.append(getApplication().getApplicationContext().getResources().getString(R.string.google_maps_key));
         return url.toString();
+    }
+
+    public String dateToDisplay(String dateString) {
+        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, "yyyy-MM-dd", "dd MMM, yyyy");
+
+    }
+
+    public String timeToDisplay(String timeString) {
+        if (timeString != null) {
+            String[] times = timeString.split(" - ");
+            if (times.length == 2) {
+                String startTime = DateTimeUtils.convertdDate(times[0].trim(), "HH:mm", "hh:mma");
+                String endTime = DateTimeUtils.convertdDate(times[1].trim(), "HH:mm", "hh:mma");
+                return startTime + " - " + endTime;
+            }
+        }
+        return "-";
+    }
+
+    public String getAddress(String line1, String line2) {
+        String address = "";
+        if (line1 != null) {
+            address = line1;
+        }
+        if (line2 != null) {
+            if (line1 != null) {
+                address += ", ";
+            }
+            address = address + line2;
+        }
+        return address;
+    }
+
+    public String getEstimatedDeliveryTimeText(Distance distance) {
+        if (distance == null) return "";
+        else {
+            return distance.getDurationText() == null ? "" : distance.getDurationText();
+        }
+    }
+
+    //Getters and setters
+    public void setTimeToReachDistanceMatrix(List<Distance> timeToReachDistanceMatrix) {
+        this.timeToReachDistanceMatrix.setValue(timeToReachDistanceMatrix);
+    }
+
+    public MutableLiveData<List<Distance>> getTimeToReachDistanceMatrix() {
+        return timeToReachDistanceMatrix;
+    }
+
+    public Marker getSelectedMarker() {
+        return selectedMarker;
+    }
+
+    public void setSelectedMarker(Marker selectedMarker) {
+        this.selectedMarker = selectedMarker;
     }
 }

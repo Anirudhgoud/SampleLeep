@@ -45,7 +45,8 @@
     <string name="do_number">"DO No. "</string>
     <string name="date">Date</string>
     <string name="distance">Distance</string>
-    <string name="preferred_time">"Preferred Time: "</string>
+    <string name="preferred_time">Preferred Time:</string>
+    <string name="delivery_by">Delivery By:</string>
 
     <!--Order Items-->
     <plurals name="item_count_text">
