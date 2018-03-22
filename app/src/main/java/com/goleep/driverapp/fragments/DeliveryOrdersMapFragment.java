@@ -139,7 +139,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
                 });
     }
 
-    private void displayLocationsOnMap(List<DeliveryOrderEntity> deliveryOrders) {
+    private void displayMarkersOnMap(List<DeliveryOrderEntity> deliveryOrders) {
         mGoogleMap.clear();
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (int i = 0; i < deliveryOrders.size(); i++) {
@@ -190,7 +190,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
                         Distance distance = timeToReachList.get(i);
                         deliveryOrder.setDistanceFromCurrentLocation(distance);
                     }
-                    displayLocationsOnMap((deliveryOrders));
+                    displayMarkersOnMap((deliveryOrders));
                 }
 
             });

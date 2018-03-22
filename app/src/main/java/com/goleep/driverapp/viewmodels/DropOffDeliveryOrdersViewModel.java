@@ -66,14 +66,6 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
                 });
     }
 
-    public List<MarkerOptions> getMarkerOptions(List<DeliveryOrderEntity> deliveryOrders) {
-        List<MarkerOptions> markerOptions = new ArrayList<>();
-        for (DeliveryOrderEntity deliveryOrder : deliveryOrders) {
-            markerOptions.add(getMarkerOption(deliveryOrder));
-        }
-        return markerOptions;
-    }
-
     public MarkerOptions getMarkerOption(DeliveryOrderEntity deliveryOrder) {
         MarkerOptions markerOptions = null;
         LatLng destinationLatLng = getLatLng(deliveryOrder.getDestinationLatitude(), deliveryOrder.getDestinationLongitude());
@@ -98,24 +90,10 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
         ((CustomTextView) customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);
         customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
-        customMarkerView.buildDrawingCache();
+        customMarkerView.setDrawingCacheEnabled(true);
+        customMarkerView.invalidate();
+        customMarkerView.buildDrawingCache(false);
         return AppUtils.bitmapFromView(customMarkerView, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
-
-//        View customMarkerView = ((LayoutInflater) getApplication().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).
-//                inflate(R.layout.map_marker_title_layout, null);
-//        ((CustomTextView) customMarkerView.findViewById(R.id.time_to_reach_tv)).setText(timeToReach);
-//        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-//        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
-//        customMarkerView.buildDrawingCache();
-//        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
-//                Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(returnedBitmap);
-//        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
-//        Drawable drawable = customMarkerView.getBackground();
-//        if (drawable != null)
-//            drawable.draw(canvas);
-//        customMarkerView.draw(canvas);
-//        return returnedBitmap;
     }
 
     private List<LatLng> getDestinations(List<DeliveryOrderEntity> deliveryOrders) {
