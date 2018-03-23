@@ -259,7 +259,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 {
                     if(productCheckbox != null) {
                         productCheckbox.setVisibility(View.VISIBLE);
-                        productCheckbox.setTag(doDetails.getDoId());
+                        productCheckbox.setTag(doDetails.getOrderId());
                         productCheckbox.setOnCheckedChangeListener(null);
                         productCheckbox.setChecked(visibleItems.get(position).isItemChecked());
                         productCheckbox.setOnCheckedChangeListener(checkListener);

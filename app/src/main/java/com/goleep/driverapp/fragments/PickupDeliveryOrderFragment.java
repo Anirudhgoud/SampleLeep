@@ -3,7 +3,6 @@ package com.goleep.driverapp.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -27,7 +26,6 @@ import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import butterknife.BindView;
@@ -127,9 +125,9 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     @Override
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
-        if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().containsKey(doDetails.get(0).getDoId())) {
-            final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getDoId());
-            final int doId = doDetails.get(0).getDoId();
+        if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().containsKey(doDetails.get(0).getOrderId())) {
+            final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
+            final int doId = doDetails.get(0).getOrderId();
             List<BaseListItem> listItems = new ArrayList<>();
             for(OrderItemEntity orderItemEntity : doDetails){
                 orderItemEntity.setItemType(AppConstants.TYPE_DO_ITEM);

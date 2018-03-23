@@ -24,6 +24,9 @@ public interface UrlConstants {
     String BUSINESS_LOCATIONS_URL = BASE_URL + "/businesses";
     String DELIVER_DELIVERY_ORDER_URL = BASE_URL + "/delivery_orders/deliver";
 
+    //Returned Orders
+    String RETURNED_ORDERS = BASE_URL + "/return_orders";
+
     //PickupConfirmation
     String PICKUP_CONFIRMATION = DELIVERY_ORDERS_URL + "/in_transit";
 

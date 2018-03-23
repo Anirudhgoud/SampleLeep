@@ -1,10 +1,12 @@
 package com.goleep.driverapp.leep;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.RadioButton;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.FontUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,9 +36,10 @@ public class ReportsActivity extends ParentAppCompatActivity {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.reports), R.drawable.ic_reports_title);
-        rbToday.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
-        rbThisWeek.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
-        rbThisMonth.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
+        Typeface typeface = new FontUtils().getTypeface(ReportsActivity.this, "NotoSans-Regular");
+        rbToday.setTypeface(typeface);
+        rbThisWeek.setTypeface(typeface);
+        rbThisMonth.setTypeface(typeface);
     }
 
     @Override

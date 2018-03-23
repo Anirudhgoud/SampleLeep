@@ -9,10 +9,10 @@ import java.util.Locale;
 public class StringUtils {
     public static String getAddress(String line1, String line2) {
         String address = "";
-        if (line1 != null) {
+        if (line1 != null && !line1.equals("null")) {
             address = line1;
         }
-        if (line2 != null) {
+        if (line2 != null && !line2.equals("null")) {
             if (line1 != null) {
                 address += ", ";
             }

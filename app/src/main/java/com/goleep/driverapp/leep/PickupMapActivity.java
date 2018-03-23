@@ -102,7 +102,8 @@ public class PickupMapActivity extends ParentAppCompatActivity implements OnMapR
         if(isPermissionGranted( new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION})) {
             LatLng userLatLng = pickupMapViewModel.getUserLocation();
-            pickupMapViewModel.getTimeToReach(userLatLng, warehouseLatLng, timeToReachCallback);
+            if(userLatLng != null)
+                pickupMapViewModel.getTimeToReach(userLatLng, warehouseLatLng, timeToReachCallback);
 
         } else {
             requestPermission(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
@@ -110,7 +111,8 @@ public class PickupMapActivity extends ParentAppCompatActivity implements OnMapR
                 @Override
                 public void onPermissionGranted() {
                     LatLng userLatLng = pickupMapViewModel.getUserLocation();
-                    pickupMapViewModel.getTimeToReach(userLatLng, warehouseLatLng, timeToReachCallback);
+                    if(userLatLng != null)
+                        pickupMapViewModel.getTimeToReach(userLatLng, warehouseLatLng, timeToReachCallback);
                     //navigateIcon.setOnClickListener(this);
                 }
 

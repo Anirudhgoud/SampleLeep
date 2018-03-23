@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 import com.goleep.driverapp.viewholders.HistoryListViewHolder;
 
 import java.util.List;
@@ -16,11 +17,11 @@ import java.util.List;
  */
 
 public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListViewHolder> {
-    private List<DeliveryOrderEntity> deliveryOrderEntities;
+    private List<?> orderEntities;
     private View.OnClickListener detailsClickListener;
 
-    public HistoryListAdapter(List<DeliveryOrderEntity> orderHistoryList){
-        this.deliveryOrderEntities = orderHistoryList;
+    public HistoryListAdapter(List<?> orderHistoryList){
+        this.orderEntities = orderHistoryList;
     }
 
     public void setDetailsClickListener(View.OnClickListener detailsCliclListener){
@@ -37,18 +38,22 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListViewHold
 
     @Override
     public void onBindViewHolder(HistoryListViewHolder holder, int position) {
-        if(deliveryOrderEntities.size() > position){
-            holder.bind(deliveryOrderEntities.get(position));
+        if(orderEntities.size() > position){
+            Object orderEntity = orderEntities.get(position);
+            if( orderEntity instanceof DeliveryOrderEntity)
+                holder.bind((DeliveryOrderEntity) orderEntity);
+            else if(orderEntity instanceof ReturnOrderEntity)
+                holder.bind((ReturnOrderEntity) orderEntity);
         }
     }
 
     @Override
     public int getItemCount() {
-        return deliveryOrderEntities.size();
+        return orderEntities.size();
     }
 
     public void updateList(List<DeliveryOrderEntity> deliveryOrderEntities) {
-        this.deliveryOrderEntities = deliveryOrderEntities;
+        this.orderEntities = deliveryOrderEntities;
         notifyDataSetChanged();
     }
 }

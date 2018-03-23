@@ -6,19 +6,21 @@ import android.widget.CheckBox;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 
-import static com.goleep.driverapp.adapters.StockProductListAdapter.TYPE_DELIVERABLE;
-import static com.goleep.driverapp.adapters.StockProductListAdapter.TYPE_RETURNED;
-import static com.goleep.driverapp.adapters.StockProductListAdapter.TYPE_SELLABLE;
+import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_DELIVERABLE;
+import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_RETURNED;
+import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_SELLABLE;
 
 /**
  * Created by vishalm on 20/03/18.
  */
 
 public class StocksListViewHolder extends RecyclerView.ViewHolder{
-    private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
+    private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv, returnReasonTv;
     private CheckBox checkBox;
     public StocksListViewHolder(View itemView) {
         super(itemView);
@@ -28,6 +30,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         unitsTv = itemView.findViewById(R.id.units_text_view);
         checkBox = itemView.findViewById(R.id.product_checkbox);
         checkBox.setVisibility(View.GONE);
+        returnReasonTv = itemView.findViewById(R.id.return_reason_tv);
     }
 
     public void bind(StockProductEntity stockProductEntity, int listType){
@@ -49,5 +52,25 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         }
         productQuantityTv.setText(stockProductEntity.getWeight()+" "+ stockProductEntity.getWeightUnit());
         amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+    }
+
+    public void bind(OrderItemEntity orderItem){
+        productNameTv.setText(orderItem.getProduct().getName());
+        double value = orderItem.getQuantity() * orderItem.getPrice();
+        unitsTv.setText(String.valueOf(orderItem.getQuantity()));
+        productQuantityTv.setText(orderItem.getProduct().getWeight()+" "+ orderItem.getProduct().getWeightUnit());
+        amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+    }
+
+    public void bind(ReturnOrderItem orderItem){
+        productNameTv.setText(orderItem.getProduct().getName());
+        double value = orderItem.getQuantity() * orderItem.getPrice();
+        unitsTv.setText(String.valueOf(orderItem.getQuantity()));
+        productQuantityTv.setText(orderItem.getProduct().getWeight()+" "+ orderItem.getProduct().getWeightUnit());
+        amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+        if(returnReasonTv != null){
+            returnReasonTv.setVisibility(View.VISIBLE);
+            returnReasonTv.setText(orderItem.getReason());
+        }
     }
 }

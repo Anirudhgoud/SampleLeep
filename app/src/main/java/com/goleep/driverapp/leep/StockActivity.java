@@ -2,6 +2,7 @@ package com.goleep.driverapp.leep;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,8 +11,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.adapters.StockProductListAdapter;
+import com.goleep.driverapp.adapters.ProductListAdapter;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.FontUtils;
 import com.goleep.driverapp.viewmodels.StocksViewModel;
 
 import butterknife.BindView;
@@ -31,7 +33,7 @@ public class StockActivity extends ParentAppCompatActivity {
     RadioGroup rgListType;
 
     private StocksViewModel stocksViewModel;
-    private StockProductListAdapter adapter;
+    private ProductListAdapter adapter;
 
     @Override
     public void doInitialSetup() {
@@ -49,15 +51,16 @@ public class StockActivity extends ParentAppCompatActivity {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.stock), R.drawable.ic_stock_title_icon);
-        rbDeliverable.setTypeface(AppUtils.getTypeface(StockActivity.this, "NotoSans-Regular"));
-        rbSellable.setTypeface(AppUtils.getTypeface(StockActivity.this, "NotoSans-Regular"));
-        rbReturned.setTypeface(AppUtils.getTypeface(StockActivity.this, "NotoSans-Regular"));
+        Typeface typeface = new FontUtils().getTypeface(StockActivity.this, "NotoSans-Regular");
+        rbDeliverable.setTypeface(typeface);
+        rbSellable.setTypeface(typeface);
+        rbReturned.setTypeface(typeface);
         initialiseRadioButtons();
         stocksRecyclerView.setLayoutManager(new LinearLayoutManager(StockActivity.this));
         stocksRecyclerView.addItemDecoration(new DividerItemDecoration(StockActivity.this,
                 DividerItemDecoration.VERTICAL));
-        adapter = new StockProductListAdapter(stocksViewModel.getStockList(
-                StockProductListAdapter.TYPE_DELIVERABLE));
+        adapter = new ProductListAdapter(stocksViewModel.getStockList(
+                ProductListAdapter.TYPE_DELIVERABLE));
         stocksRecyclerView.setAdapter(adapter);
         rgListType.check(R.id.rb_deliverable);
     }
@@ -74,18 +77,18 @@ public class StockActivity extends ParentAppCompatActivity {
     private void onRadioSelectionChange(int checkedId){
         switch (checkedId){
             case R.id.rb_deliverable:
-                adapter.updateList(stocksViewModel.getStockList(StockProductListAdapter.TYPE_DELIVERABLE),
-                        StockProductListAdapter.TYPE_DELIVERABLE);
+                adapter.updateList(stocksViewModel.getStockList(ProductListAdapter.TYPE_DELIVERABLE),
+                        ProductListAdapter.TYPE_DELIVERABLE);
                 break;
 
             case R.id.rb_sellable:
-                adapter.updateList(stocksViewModel.getStockList(StockProductListAdapter.TYPE_SELLABLE),
-                        StockProductListAdapter.TYPE_SELLABLE);
+                adapter.updateList(stocksViewModel.getStockList(ProductListAdapter.TYPE_SELLABLE),
+                        ProductListAdapter.TYPE_SELLABLE);
                 break;
 
             case R.id.rb_returned:
-                adapter.updateList(stocksViewModel.getStockList(StockProductListAdapter.TYPE_RETURNED),
-                        StockProductListAdapter.TYPE_RETURNED);
+                adapter.updateList(stocksViewModel.getStockList(ProductListAdapter.TYPE_RETURNED),
+                        ProductListAdapter.TYPE_RETURNED);
                 break;
         }
     }
