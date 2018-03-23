@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.leep.LeepApp;
 
 
 public class CustomButton extends AppCompatButton {
@@ -35,9 +36,10 @@ public class CustomButton extends AppCompatButton {
                 .getString(R.styleable.TypefacedTextView_typeface);
         styledAttrs.recycle();
         if (fontName != null) {
-            Typeface typeface = Typeface.createFromAsset(context.getAssets(),
-                    "fonts/" + fontName + ".ttf");
-            setTypeface(typeface);
+            Typeface typeface = ((LeepApp)context.getApplicationContext()).getTypeface(fontName);
+            if(typeface != null){
+                setTypeface(typeface);
+            }
         }
         setTransformationMethod(null);
     }
