@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
@@ -14,7 +13,6 @@ import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
-import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
@@ -34,7 +32,6 @@ import java.util.Map;
  */
 
 public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel {
-    private Context context;
     private LiveData<List<OrderItemEntity>> doDetailsLiveData = new MutableLiveData<>();
 
     private List<BaseListItem> doList = new ArrayList<>();
@@ -45,11 +42,10 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     public PickupDeliveryOrderViewModel(@NonNull Application application) {
         super(application);
-        context = application;
     }
 
     public void fetchDoItems(final int doId, Observer<List<OrderItemEntity>> orderItemsObserver){
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true,
                 new NetworkAPICallback() {
                     @Override
@@ -80,7 +76,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     }
 
     public String getWareHouseNameAddress(){
-        DriverEntity driverEntity = RoomDBService.sharedInstance().getDatabase(context).driverDao().getDriver();
+        DriverEntity driverEntity = leepDatabase.driverDao().getDriver();
         return driverEntity.getLocationName() + ", " + driverEntity.getAddressLine1() + ", " + driverEntity.getAddressLine2();
     }
 
@@ -127,7 +123,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
             requestBody.put("delivery_order_ids", selectedDeliveryOrdersArray);
             if(cashDoItems.size() > 0) {
                 JSONObject cashSalesObject = new JSONObject();
-                cashSalesObject.put("id", cashDoItems.get(0).getDoId());
+                cashSalesObject.put("id", cashDoItems.get(0).getOrderId());
                 JSONArray itemsArray = new JSONArray();
                 for (OrderItemEntity orderItemEntity : cashDoItems) {
                     JSONObject itemObject = new JSONObject();
@@ -174,6 +170,6 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         for (Integer doId : selectedDeliveryOrders)
             leepDatabase.deliveryOrderDao().deleteDeliveryOrder(doId);
         if (cashSalesItems.size() > 0)
-            leepDatabase.deliveryOrderDao().deleteDeliveryOrder(cashSalesItems.get(0).getDoId());
+            leepDatabase.deliveryOrderDao().deleteDeliveryOrder(cashSalesItems.get(0).getOrderId());
     }
 }

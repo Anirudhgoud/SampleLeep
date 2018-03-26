@@ -1,6 +1,9 @@
 package com.goleep.driverapp.leep;
 
+
 import android.arch.lifecycle.ViewModelProviders;
+
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.RadioButton;
 
@@ -12,9 +15,8 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.ReportsViewModel;
-
 import java.util.List;
-
+import com.goleep.driverapp.utils.FontUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -57,22 +59,27 @@ public class ReportsActivity extends ParentAppCompatActivity {
         rbThisWeek.setOnClickListener(this);
         rbThisMonth.setOnClickListener(this);
         setTitleIconAndText(getString(R.string.reports), R.drawable.ic_reports_title);
-        rbToday.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
-        rbThisWeek.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
-        rbThisMonth.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
+
+        Typeface typeface = new FontUtils().getTypeface(ReportsActivity.this,
+                "NotoSans-Regular");
+        rbToday.setTypeface(typeface);
+        rbThisWeek.setTypeface(typeface);
+        rbThisMonth.setTypeface(typeface);
         showProgressDialog();
         reportsViewModel.getReports(ReportsType.TODAY, reportsCallback);
     }
 
     private UILevelNetworkCallback reportsCallback = new UILevelNetworkCallback() {
         @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
             dismissProgressDialog();
             runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
         }
     };
 
-    private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+    private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
         dismissProgressDialog();
         if (uiModels == null) {
             if (toLogout) {
@@ -86,8 +93,6 @@ public class ReportsActivity extends ParentAppCompatActivity {
                 setReportData(reportAttr);
             });
         }
-
-
     }
 
     @Override
@@ -118,10 +123,12 @@ public class ReportsActivity extends ParentAppCompatActivity {
 
     private void setReportData(ReportAttr reportAttr) {
         boolean isReportAvailable = reportAttr != null;
-        tv_cash_collected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr.getCashCollected()) : "");
+        tv_cash_collected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr
+                .getCashCollected()) : "");
         tv_location.setText(isReportAvailable ? String.valueOf(reportAttr.getLocations()) : "");
         tv_returns.setText(isReportAvailable ? String.valueOf(reportAttr.getReturns()) : "");
-        tv_total_sales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr.getTotalSales()) : "");
+        tv_total_sales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr.
+                getTotalSales()) : "");
         tv_units.setText(isReportAvailable ? String.valueOf(reportAttr.getUnits()) : "");
     }
 }

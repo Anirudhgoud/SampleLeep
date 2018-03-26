@@ -1,5 +1,6 @@
 package com.goleep.driverapp.services.network.jsonparsers;
 
+import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
 
@@ -35,13 +36,49 @@ public class OrderItemParser {
         return orderItems;
     }
 
+
+    public List<ReturnOrderItem> returnOrderItemsByParsingJsonResponse(JSONArray jsonArray, int roNumber){
+        List<ReturnOrderItem> orderItems = new ArrayList<>();
+        JSONObject firstObj = (JSONObject) jsonArray.opt(0);
+        if(firstObj == null){
+            return orderItems;
+        }
+        JSONArray jsonList = firstObj.optJSONArray("return_order_items");
+        if(jsonList == null){
+            return orderItems;
+        }
+        for (int i = 0; i < jsonList.length(); i++) {
+            JSONObject jsonObject = jsonList.optJSONObject(i);
+            ReturnOrderItem orderItem = returnOrderItemByParsingJsonResponse(jsonObject, roNumber);
+            if(orderItem != null){
+                orderItems.add(orderItem);
+            }
+        }
+        return orderItems;
+    }
+
+    private ReturnOrderItem returnOrderItemByParsingJsonResponse(JSONObject jsonObject, int roNumber) {
+        if(jsonObject == null){
+            return null;
+        }
+        ReturnOrderItem returnOrderItem = new ReturnOrderItem();
+        returnOrderItem.setId(jsonObject.optInt("id"));
+        returnOrderItem.setOrderId(roNumber);
+        returnOrderItem.setPrice(jsonObject.optDouble("price", 0));
+        returnOrderItem.setProduct(productByParsingJsonResponse(jsonObject.optJSONObject("product")));
+        returnOrderItem.setQuantity(jsonObject.optInt("quantity", 0));
+        returnOrderItem.setReason(jsonObject.optJSONObject("return_reason").optString("reason"));
+        return returnOrderItem;
+    }
+
+
     public OrderItemEntity orderItemByParsingJsonResponse(JSONObject jsonObject, int deliveryOrderId){
         if(jsonObject == null){
             return null;
         }
         OrderItemEntity orderItem = new OrderItemEntity();
         orderItem.setId(jsonObject.optInt("id"));
-        orderItem.setDoId(deliveryOrderId);
+        orderItem.setOrderId(deliveryOrderId);
         orderItem.setPrice(jsonObject.optDouble("price", 0));
         orderItem.setProduct(productByParsingJsonResponse(jsonObject.optJSONObject("product")));
         orderItem.setQuantity(jsonObject.optInt("quantity", 0));

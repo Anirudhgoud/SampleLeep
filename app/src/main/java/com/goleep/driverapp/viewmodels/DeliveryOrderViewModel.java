@@ -34,6 +34,8 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
     public static final String STATUS_ASSIGNED = "assigned";
     public static final String STATUS_DELIVERED = "delivered";
 
+
+
     public DeliveryOrderViewModel(@NonNull Application application) {
         super(application);
         leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
@@ -42,6 +44,10 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         deliveryOrders = leepDatabase.deliveryOrderDao().getCustomerDeliveryOrders(type, status);
         return deliveryOrders;
     }
+
+
+
+
 
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doNetworkCallBack, String status,
                                        String startDate, String endDate){
@@ -55,8 +61,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
             url +="&start_date="+startDate+"&end_date="+endDate;
         }
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
-                url,
-                true, (type, response, errorMessage) -> {
+                url, true, (type, response, errorMessage) -> {
                     switch (type) {
                         case NetworkConstants.SUCCESS:
                             DeliveryOrderParser deliveryOrderParser = new DeliveryOrderParser();

@@ -32,7 +32,18 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_light_grey_title"
             android:textSize="14sp"
+            android:layout_marginBottom="10dp"
             app:typeface="NotoSans-Regular" />
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/return_reason_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            android:textSize="11sp"
+            app:typeface="NotoSans-Regular" />
+
     </LinearLayout>
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
