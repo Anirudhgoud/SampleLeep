@@ -41,10 +41,10 @@ public class StringUtils {
         return "-";
     }
 
-    public static String formatToOneDecimal(int value){
+    public static String formatToOneDecimal(int value) {
         String formattedString = String.valueOf(value);
-        if(value > 1000){
-            formattedString = String.format(Locale.ENGLISH, "%.1f", (value / 1000.0)) +"k";
+        if (value > 1000) {
+            formattedString = String.format(Locale.ENGLISH, "%.1f", (value / 1000.0)) + "k";
         }
         return formattedString;
     }

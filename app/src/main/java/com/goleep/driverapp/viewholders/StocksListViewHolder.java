@@ -17,9 +17,10 @@ import static com.goleep.driverapp.adapters.StockProductListAdapter.TYPE_SELLABL
  * Created by vishalm on 20/03/18.
  */
 
-public class StocksListViewHolder extends RecyclerView.ViewHolder{
+public class StocksListViewHolder extends RecyclerView.ViewHolder {
     private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
     private CheckBox checkBox;
+
     public StocksListViewHolder(View itemView) {
         super(itemView);
         productNameTv = itemView.findViewById(R.id.product_name_text_view);
@@ -30,24 +31,24 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         checkBox.setVisibility(View.GONE);
     }
 
-    public void bind(StockProductEntity stockProductEntity, int listType){
+    public void bind(StockProductEntity stockProductEntity, int listType) {
         productNameTv.setText(stockProductEntity.getProductName());
         double value = 0.0;
-        switch (listType){
-            case TYPE_DELIVERABLE :
+        switch (listType) {
+            case TYPE_DELIVERABLE:
                 value = stockProductEntity.getDeliverableQuantity() * stockProductEntity.getDefaultPrice();
                 unitsTv.setText(String.valueOf(stockProductEntity.getDeliverableQuantity()));
                 break;
-            case TYPE_SELLABLE :
+            case TYPE_SELLABLE:
                 value = stockProductEntity.getSellableQuantity() * stockProductEntity.getDefaultPrice();
                 unitsTv.setText(String.valueOf(stockProductEntity.getSellableQuantity()));
                 break;
-            case TYPE_RETURNED :
+            case TYPE_RETURNED:
                 value = stockProductEntity.getDeliverableQuantity() * stockProductEntity.getDefaultPrice();
                 unitsTv.setText(String.valueOf(stockProductEntity.getReturnableQuantity()));
                 break;
         }
-        productQuantityTv.setText(stockProductEntity.getWeight()+" "+ stockProductEntity.getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+        productQuantityTv.setText(stockProductEntity.getWeight() + " " + stockProductEntity.getWeightUnit());
+        amountTv.setText(AppUtils.userCurrencySymbol() + " " + String.valueOf(value));
     }
 }

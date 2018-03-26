@@ -13,7 +13,7 @@ import com.goleep.driverapp.utils.StringUtils;
  * Created by vishalm on 20/03/18.
  */
 
-public class HistoryListViewHolder extends RecyclerView.ViewHolder{
+public class HistoryListViewHolder extends RecyclerView.ViewHolder {
 
     private CustomTextView customerNameTv, doNumberTv, customerAddressTv, doValueTv;
     private CustomButton detailsButton;
@@ -29,7 +29,7 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder{
         detailsButton.setOnClickListener(detailsClickListener);
     }
 
-    public void setDetailsClickListener(View.OnClickListener detailsClickListener){
+    public void setDetailsClickListener(View.OnClickListener detailsClickListener) {
         this.detailsClickListener = detailsClickListener;
     }
 

@@ -5,8 +5,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-
-import javax.annotation.Nullable;
+import com.goleep.driverapp.helpers.uimodels.Distance;
 
 /**
  * Created by anurag on 16/02/18.
@@ -30,16 +29,15 @@ public class DeliveryOrderEntity extends BaseListItem{
     private String createdAt;
     private String assigneeName;
     private String customerName;
-    private long destinationLatitude;
-    private long destinationLongitude;
+    private double destinationLatitude;
+    private double destinationLongitude;
     private String destinationAddressLine1;
     private String destinationAddressLine2;
     private int deliveryOrderItemsCount;
     private float totalValue;
 
     @Ignore
-    private int durationFromCurrentLocation = 0;
-
+    private Distance distanceFromCurrentLocation;
 
 
     public DeliveryOrderEntity() {
@@ -158,22 +156,6 @@ public class DeliveryOrderEntity extends BaseListItem{
         this.customerName = customerName;
     }
 
-    public long getDestinationLatitude() {
-        return destinationLatitude;
-    }
-
-    public void setDestinationLatitude(long destinationLatitude) {
-        this.destinationLatitude = destinationLatitude;
-    }
-
-    public long getDestinationLongitude() {
-        return destinationLongitude;
-    }
-
-    public void setDestinationLongitude(long destinationLongitude) {
-        this.destinationLongitude = destinationLongitude;
-    }
-
     public String getDestinationAddressLine1() {
         return destinationAddressLine1;
     }
@@ -206,11 +188,27 @@ public class DeliveryOrderEntity extends BaseListItem{
         this.totalValue = totalValue;
     }
 
-    public int getDurationFromCurrentLocation() {
-        return durationFromCurrentLocation;
+    public Distance getDistanceFromCurrentLocation() {
+        return distanceFromCurrentLocation;
     }
 
-    public void setDurationFromCurrentLocation(int durationFromCurrentLocation) {
-        this.durationFromCurrentLocation = durationFromCurrentLocation;
+    public void setDistanceFromCurrentLocation(Distance distanceFromCurrentLocation) {
+        this.distanceFromCurrentLocation = distanceFromCurrentLocation;
+    }
+
+    public double getDestinationLatitude() {
+        return destinationLatitude;
+    }
+
+    public void setDestinationLatitude(double destinationLatitude) {
+        this.destinationLatitude = destinationLatitude;
+    }
+
+    public double getDestinationLongitude() {
+        return destinationLongitude;
+    }
+
+    public void setDestinationLongitude(double destinationLongitude) {
+        this.destinationLongitude = destinationLongitude;
     }
 }

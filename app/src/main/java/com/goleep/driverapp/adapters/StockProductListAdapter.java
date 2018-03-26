@@ -3,6 +3,7 @@ package com.goleep.driverapp.adapters;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.viewholders.StocksListViewHolder;
@@ -21,7 +22,7 @@ public class StockProductListAdapter extends RecyclerView.Adapter<StocksListView
     public static final int TYPE_RETURNED = 2;
     private int listType = TYPE_DELIVERABLE;
 
-    public StockProductListAdapter(List<StockProductEntity> stockProducts){
+    public StockProductListAdapter(List<StockProductEntity> stockProducts) {
         stockProductEntities = stockProducts;
     }
 
@@ -33,7 +34,7 @@ public class StockProductListAdapter extends RecyclerView.Adapter<StocksListView
 
     @Override
     public void onBindViewHolder(StocksListViewHolder holder, int position) {
-        if(stockProductEntities.size() > 0)
+        if (stockProductEntities.size() > 0)
             holder.bind(stockProductEntities.get(position), listType);
     }
 
@@ -42,7 +43,7 @@ public class StockProductListAdapter extends RecyclerView.Adapter<StocksListView
         return stockProductEntities.size();
     }
 
-    public void updateList(List<StockProductEntity> stockProducts, int listType){
+    public void updateList(List<StockProductEntity> stockProducts, int listType) {
         this.stockProductEntities = stockProducts;
         this.listType = listType;
         notifyDataSetChanged();

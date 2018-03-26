@@ -56,10 +56,10 @@ public class AppUtils {
         }
     }
 
-    public static Typeface getTypeface(Context context, String fontName){
+    public static Typeface getTypeface(Context context, String fontName) {
         Typeface typeface = Typeface.createFromAsset(context.getAssets(),
                 "fonts/" + fontName + ".ttf");
-        if(typeface == null){
+        if (typeface == null) {
             typeface = Typeface.createFromAsset(context.getAssets(),
                     "fonts/" + "NotoSans-Regular" + ".ttf");
         }

@@ -1,7 +1,6 @@
 package com.goleep.driverapp.helpers.uimodels;
 
 
-
 import static com.goleep.driverapp.utils.StringUtils.formatToOneDecimal;
 
 /**

@@ -72,6 +72,12 @@ public class HomeActivity extends ParentAppCompatActivity {
                     Intent doIntent = new Intent(HomeActivity.this, DropOffDeliveryOrdersActivity.class);
                     startActivity(doIntent);
                     break;
+
+                case InnerDashboardUiModel.TAG_CASH_SALES:
+                    Intent cashSalesIntent = new Intent(HomeActivity.this, CashSalesActivity.class);
+                    startActivity(cashSalesIntent);
+                    break;
+
                 case InnerDashboardUiModel.TAG_PICKUP:
                     Intent pickupIntent = new Intent(HomeActivity.this, PickupActivity.class);
                     startActivityForResult(pickupIntent, START_PICKUP_ACTIVITY_CODE);
@@ -382,7 +388,7 @@ public class HomeActivity extends ParentAppCompatActivity {
             File sourceFile = new File(getRealPathFromURI(uri));
             profileImage.setImageURI(uri);
             viewModel.uploadProfileImage(sourceFile);
-        } else if(requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK){
+        } else if (requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK) {
             viewModel.getStocks();
         }
     }

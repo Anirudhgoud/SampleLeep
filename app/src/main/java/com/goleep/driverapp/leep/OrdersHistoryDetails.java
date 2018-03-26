@@ -17,7 +17,7 @@ public class OrdersHistoryDetails extends ParentAppCompatActivity {
         setResources(R.layout.activity_orders_history_details);
     }
 
-    private void initView(){
+    private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.history), R.drawable.ic_history_title_icon);
