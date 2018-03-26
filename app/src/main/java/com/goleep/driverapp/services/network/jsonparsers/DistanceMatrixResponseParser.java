@@ -21,19 +21,21 @@ public class DistanceMatrixResponseParser {
                     optJSONObject(0).optJSONArray("elements");
             if (elements != null) {
                 for (int i = 0; i < elements.length(); i++) {
-                    JSONObject durationObject = (JSONObject) elements.opt(i);
+                    JSONObject jsonObject = (JSONObject) elements.opt(i);
                     Distance distance = new Distance();
-                    JSONObject distanceObject = durationObject.optJSONObject("distance");
+                    JSONObject distanceObject = jsonObject.optJSONObject("distance");
                     if (distanceObject != null) {
                         distance.setDistanceText(distanceObject.optString("text"));
                         distance.setDistanceValue(distanceObject.optInt("value"));
-                        distance.setDurationText(distanceObject.optString("text"));
-                        distance.setDurationValue(distanceObject.optInt("value"));
+                    }
+                    JSONObject durationObject = jsonObject.optJSONObject("duration");
+                    if (distanceObject != null) {
+                        distance.setDurationText(durationObject.optString("text"));
+                        distance.setDurationValue(durationObject.optInt("value"));
                     }
                     timeToReach.add(distance);
                 }
             }
-
         }
         return timeToReach;
     }

@@ -32,7 +32,7 @@ public class ReportsActivity extends ParentAppCompatActivity {
         setResources(R.layout.activity_reports);
     }
 
-    private void initView(){
+    private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.reports), R.drawable.ic_reports_title);
@@ -44,8 +44,9 @@ public class ReportsActivity extends ParentAppCompatActivity {
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.left_toolbar_button : finish();
+        switch (resourceId) {
+            case R.id.left_toolbar_button:
+                finish();
                 break;
         }
     }

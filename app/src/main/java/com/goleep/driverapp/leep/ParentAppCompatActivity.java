@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -34,8 +35,11 @@ import java.util.Vector;
  */
 
 public abstract class ParentAppCompatActivity extends AppCompatActivity implements View.OnClickListener{
-    public abstract void doInitialSetup();
+
     public abstract void onActivityCreated(Bundle savedInstanceState);
+
+    public abstract void doInitialSetup();
+
     public abstract void onClickWithId(int resourceId);
 
     private NetworkChangeListener networkChangeListener;
@@ -77,7 +81,8 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         CustomButton leftToolbarButton = findViewById(R.id.left_toolbar_button);
         leftToolbarButton.setVisibility(View.VISIBLE);
         leftToolbarButton.setOnClickListener(this);
-        leftToolbarButton.setBackgroundResource(resId);
+        Drawable leftButtonDrawable = getResources().getDrawable(resId);
+        leftToolbarButton.setCompoundDrawablesWithIntrinsicBounds(leftButtonDrawable, null, null, null);
     }
 
     protected void setTitleIconAndText(String title, int resId){
@@ -106,7 +111,6 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         startActivity(intent);
         finish();
     }
-
 
 
     @Override
@@ -203,11 +207,14 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            permissionResult.onPermissionGranted();
-        } else {
-            permissionResult.onPermissionDenied();
+        if (permissionResult != null) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                permissionResult.onPermissionGranted();
+            } else {
+                permissionResult.onPermissionDenied();
+            }
         }
+
     }
 
 }

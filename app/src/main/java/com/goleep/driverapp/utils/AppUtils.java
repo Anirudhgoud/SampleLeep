@@ -55,4 +55,5 @@ public class AppUtils {
                     InputMethodManager.SHOW_FORCED, 0);
         }
     }
+
 }

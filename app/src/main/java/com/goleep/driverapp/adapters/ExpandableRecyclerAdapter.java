@@ -94,9 +94,9 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     }
 
     private void updateDoPositionMap() {
-        for(int i=0;i<allItems.size();i++){
-            if(allItems.get(i).getItemType() == AppConstants.TYPE_HEADER){
-                doPositionMapAllItems.put(((DeliveryOrderEntity)allItems.get(i)).getId(), i);
+        for (int i = 0; i < allItems.size(); i++) {
+            if (allItems.get(i).getItemType() == AppConstants.TYPE_HEADER) {
+                doPositionMapAllItems.put(((DeliveryOrderEntity) allItems.get(i)).getId(), i);
             }
         }
     }
@@ -177,7 +177,7 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
                     items.get(i).getItemType() == AppConstants.TYPE_SALES_INFO) {
                 indexList.add(i);
                 if(items.get(i).getItemType() == AppConstants.TYPE_HEADER){
-                    doPositionMapAllItems.put(((DeliveryOrderEntity)items.get(i)).getId(), i);
+                    doPositionMapAllItems.put(((DeliveryOrderEntity) items.get(i)).getId(), i);
                 }
                 visibleItems.add(items.get(i));
             }

@@ -57,6 +57,18 @@ public class DeliveryOrdersListAdapter extends RecyclerView.Adapter<DeliveryOrde
         notifyDataSetChanged();
     }
 
+//    public void updateDoDistance(List<Distance> distanceList) {
+//        if (this.deliveryOrderList.size() == distanceList.size()) {
+//            for (int i = 0; i < this.deliveryOrderList.size() && i < distanceList.size(); i++) {
+//                DeliveryOrderEntity deliveryOrder = (DeliveryOrderEntity) this.deliveryOrderList.get(i);
+//                Distance distance = distanceList.get(i);
+//                deliveryOrder.setDistanceFromCurrentLocation(distance);
+//            }
+//            notifyDataSetChanged();
+//        }
+//
+//    }
+
     public void sortList(String sortType){
         switch (sortType){
             case SortCategoryType.DATE:
@@ -72,5 +84,9 @@ public class DeliveryOrdersListAdapter extends RecyclerView.Adapter<DeliveryOrde
                 break;
         }
         notifyDataSetChanged();
+    }
+
+    public List<BaseListItem> getDeliveryOrderList() {
+        return deliveryOrderList;
     }
 }
