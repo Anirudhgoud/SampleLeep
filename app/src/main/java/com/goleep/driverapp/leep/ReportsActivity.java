@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.RadioButton;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.ReportAttr;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -60,7 +61,7 @@ public class ReportsActivity extends ParentAppCompatActivity {
         rbThisWeek.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
         rbThisMonth.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
         showProgressDialog();
-        reportsViewModel.getTodaysReports(reportsCallback);
+        reportsViewModel.getReports(ReportsType.TODAY, reportsCallback);
     }
 
     private UILevelNetworkCallback reportsCallback = new UILevelNetworkCallback() {
@@ -97,15 +98,15 @@ public class ReportsActivity extends ParentAppCompatActivity {
                 break;
             case R.id.rb_today:
                 initialiseReportCallback();
-                reportsViewModel.getTodaysReports(reportsCallback);
+                reportsViewModel.getReports(ReportsType.TODAY, reportsCallback);
                 break;
             case R.id.rb_this_week:
                 initialiseReportCallback();
-                reportsViewModel.getThisWeekReports(reportsCallback);
+                reportsViewModel.getReports(ReportsType.THIS_WEEK, reportsCallback);
                 break;
             case R.id.rb_this_month:
                 initialiseReportCallback();
-                reportsViewModel.getThisMonthReport(reportsCallback);
+                reportsViewModel.getReports(ReportsType.THIS_MONTH, reportsCallback);
                 break;
         }
     }

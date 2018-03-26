@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.facebook.stetho.common.LogUtil;
 import com.goleep.driverapp.constants.NetworkConstants;
+import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
@@ -44,16 +45,19 @@ public class ReportsViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void getTodaysReports(final UILevelNetworkCallback reportCallBack) {
-        makeNetworkRequest(reportCallBack, getTodaysDateStringParameter());
-    }
+    public void getReports(int type, final UILevelNetworkCallback reportCallBack) {
 
-    public void getThisWeekReports(final UILevelNetworkCallback reportCallBack) {
-        makeNetworkRequest(reportCallBack, getDatesThisWeek());
-    }
-
-    public void getThisMonthReport(final UILevelNetworkCallback reportCallBack) {
-        makeNetworkRequest(reportCallBack, getDatesThisMonth());
+        switch (type) {
+            case ReportsType.TODAY:
+                makeNetworkRequest(reportCallBack, getTodaysDateStringParameter());
+                break;
+            case ReportsType.THIS_WEEK:
+                makeNetworkRequest(reportCallBack, getDatesThisWeek());
+                break;
+            case ReportsType.THIS_MONTH:
+                makeNetworkRequest(reportCallBack, getDatesThisMonth());
+                break;
+        }
     }
 
     private void makeNetworkRequest(final UILevelNetworkCallback reportCallBack, String urlQureyGetParameterString) {
@@ -62,27 +66,24 @@ public class ReportsViewModel extends AndroidViewModel {
                 null, true, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        if (response != null) {
-                            switch (type) {
-                                case NetworkConstants.SUCCESS:
-                                    JSONObject userObj = (JSONObject) response.opt(0);
-                                    ReportAttr reportAttr = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
-                                    List<ReportAttr> listReportAttr = new ArrayList<>();
-                                    listReportAttr.add(reportAttr);
-                                    reportCallBack.onResponseReceived(listReportAttr, false, null, false);
-                                    break;
-                                case NetworkConstants.FAILURE:
-                                    reportCallBack.onResponseReceived(null, false, errorMessage, false);
-                                    break;
-                                case NetworkConstants.NETWORK_ERROR:
-                                    reportCallBack.onResponseReceived(null, true, errorMessage, false);
-                                    break;
-                                case NetworkConstants.UNAUTHORIZED:
-                                    reportCallBack.onResponseReceived(null, false, errorMessage, true);
-                            }
-                        } else {
-                            reportCallBack.onResponseReceived(null, false, errorMessage, false);
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                JSONObject userObj = (JSONObject) response.opt(0);
+                                ReportAttr reportAttr = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
+                                List<ReportAttr> listReportAttr = new ArrayList<>();
+                                listReportAttr.add(reportAttr);
+                                reportCallBack.onResponseReceived(listReportAttr, false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                reportCallBack.onResponseReceived(null, false, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                reportCallBack.onResponseReceived(null, true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                reportCallBack.onResponseReceived(null, false, errorMessage, true);
                         }
+
                     }
                 });
 
@@ -90,36 +91,27 @@ public class ReportsViewModel extends AndroidViewModel {
 
     private String getDatesThisWeek() {
         Calendar calendar = Calendar.getInstance();
-        Calendar c1 = Calendar.getInstance();
-        c1.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        Date date1 = null, date2 = null;
-        try {
-            date1 = simpleDateFormat.parse(simpleDateFormat.format(c1.getTime()));
-            date2 = simpleDateFormat.parse(simpleDateFormat.format(calendar.getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (date1.after(date2)) {
-            int i = calendar.get(Calendar.DAY_OF_WEEK) - calendar.getFirstDayOfWeek();
-            calendar.add(Calendar.DATE, -i - 6);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        Date mondayDate = calendar.getTime();
+        calendar = Calendar.getInstance();
+        Date todaysDate = calendar.getTime();
+        if (mondayDate.after(todaysDate)) {
+            int daysToSubtract = calendar.get(Calendar.DAY_OF_WEEK) - calendar.getFirstDayOfWeek();
+            calendar.add(Calendar.DATE, -daysToSubtract - 6);
             Date start = calendar.getTime();
             calendar = Calendar.getInstance();
             return getUrlQueryParameterFormater(simpleDateFormat.format(start), simpleDateFormat.format(calendar.getTime()));
-
         } else {
-
-            return getUrlQueryParameterFormater(simpleDateFormat.format(c1.getTime()), simpleDateFormat.format(calendar.getTime()));
+            return getUrlQueryParameterFormater(simpleDateFormat.format(mondayDate), simpleDateFormat.format(calendar.getTime()));
         }
 
     }
 
     private String getDatesThisMonth() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        String endDate = simpleDateFormat.format(calendar.getTime());
         calendar.setTime(new Date());
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-        return getUrlQueryParameterFormater(simpleDateFormat.format(calendar.getTime()), endDate);
+        return getUrlQueryParameterFormater(simpleDateFormat.format(calendar.getTime()), simpleDateFormat.format(Calendar.getInstance().getTime()));
     }
 
     private String getTodaysDateStringParameter() {
