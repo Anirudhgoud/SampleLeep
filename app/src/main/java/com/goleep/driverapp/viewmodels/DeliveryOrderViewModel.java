@@ -24,17 +24,14 @@ import java.util.List;
  * Created by vishalm on 27/02/18.
  */
 
-public class DeliveryOrderViewModel extends AndroidViewModel {
+public class    DeliveryOrderViewModel extends AndroidViewModel {
     protected AppDatabase leepDatabase;
     private LiveData<List<DeliveryOrderEntity>> deliveryOrders = new MutableLiveData<>();
 
     public static final String TYPE_CUSTOMER = "customer";
-    public static final String TYPE_DRIVER = "driver";
     public static final String STATUS_IN_TRANSIT = "in_transit";
     public static final String STATUS_ASSIGNED = "assigned";
     public static final String STATUS_DELIVERED = "delivered";
-
-
 
     public DeliveryOrderViewModel(@NonNull Application application) {
         super(application);
@@ -44,10 +41,6 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         deliveryOrders = leepDatabase.deliveryOrderDao().getCustomerDeliveryOrders(type, status);
         return deliveryOrders;
     }
-
-
-
-
 
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doNetworkCallBack, String status,
                                        String startDate, String endDate){
@@ -68,12 +61,14 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
                             List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
                                     deliveryOrdersByParsingJsonResponse(response);
                             leepDatabase.deliveryOrderDao().updateAllDeliveryOrders(deliveryOrdersList);
-                            doNetworkCallBack.onResponseReceived(deliveryOrdersList, false, null, false);
+                            doNetworkCallBack.onResponseReceived(deliveryOrdersList, false,
+                                    null, false);
                             break;
 
                         case NetworkConstants.FAILURE:
                         case NetworkConstants.NETWORK_ERROR:
-                            doNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                            doNetworkCallBack.onResponseReceived(null, true,
+                                    errorMessage, false);
                             break;
 
                         case NetworkConstants.UNAUTHORIZED:

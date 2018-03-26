@@ -80,7 +80,8 @@
         <activity
             android:name=".leep.WarehouseDropoffActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.HistoryDetailsActivity"></activity>
+        <activity android:name=".leep.HistoryDetailsActivity" />
+        <activity android:name=".leep.PickupWarehouseActivity"></activity>
     </application>
 
 </manifest>

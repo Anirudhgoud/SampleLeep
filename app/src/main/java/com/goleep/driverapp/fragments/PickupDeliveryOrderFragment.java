@@ -3,6 +3,8 @@ package com.goleep.driverapp.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -133,16 +135,23 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                 orderItemEntity.setItemType(AppConstants.TYPE_DO_ITEM);
                 listItems.add(orderItemEntity);
             }
+
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     adapter.addItemsList(listItems, doId);
                     doViewModel.getDoUpdateMap().put(doId, true);
-                    if(expandableListView.findViewHolderForAdapterPosition(pos)!= null &&
-                            expandableListView.findViewHolderForAdapterPosition(pos).itemView != null) {
-                        expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
-                        expandableListView.scrollToPosition(pos);
-                    }
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(expandableListView.findViewHolderForAdapterPosition(pos)!= null &&
+                                    expandableListView.findViewHolderForAdapterPosition(pos).itemView != null) {
+                                expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
+                                expandableListView.scrollToPosition(pos);
+                            }
+                        }
+                    },1);
                 }
             });
         }
