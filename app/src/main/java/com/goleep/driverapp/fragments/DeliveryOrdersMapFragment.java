@@ -215,7 +215,6 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     }
 
     private void updateMarkers(Marker marker, DeliveryOrderEntity deliveryOrder) {
-        marker.setIcon(BitmapDescriptorFactory.fromBitmap(viewModel.getMarkerBitmapFromView(deliveryOrder.getDistanceFromCurrentLocation().getDurationText(), true)));
         Marker previousMarker = viewModel.getPreviouslySelectedMarker();
         if (previousMarker != null && previousMarker != viewModel.getSelectedMarker()) {
             DeliveryOrderEntity prevMarkerDO = (DeliveryOrderEntity) previousMarker.getTag();
@@ -223,6 +222,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
                 previousMarker.setIcon(BitmapDescriptorFactory.fromBitmap(viewModel.getMarkerBitmapFromView(prevMarkerDO.getDistanceFromCurrentLocation().getDurationText(), false)));
             }
         }
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(viewModel.getMarkerBitmapFromView(deliveryOrder.getDistanceFromCurrentLocation().getDurationText(), true)));
     }
 
     private void openDirectionsOnGoogleMaps() {

@@ -12,6 +12,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.customviews.CustomMarkerView;
+import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -156,24 +157,33 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
     }
 
     public String getAddress(String line1, String line2) {
-        String address = "";
-        if (line1 != null) {
-            address = line1;
-        }
-        if (line2 != null) {
-            if (line1 != null) {
-                address += ", ";
-            }
-            address = address + line2;
-        }
-        return address;
+        String addressLine1 = line1 == null ? "" : line1;
+        String addressLine2 = line2 == null ? "" : line2;
+        String separator = line1 == null ? "" : ", ";
+        return addressLine1 + separator + addressLine2;
     }
 
     public String getEstimatedDeliveryTimeText(Distance distance) {
         if (distance == null) return "";
-        else {
-            return distance.getDurationText() == null ? "" : distance.getDurationText();
+        return distance.getDurationText() == null ? "" : distance.getDurationText();
+
+    }
+
+    public List<BaseListItem> updatedOrders(List<DeliveryOrderEntity> deliveryOrders, List<Distance> distances) {
+        int deliveryOrderSize = deliveryOrders.size();
+        int distanceListSize = distances.size();
+
+        if (deliveryOrderSize == distanceListSize) {
+            for (int i = 0; i < deliveryOrderSize; i++) {
+                DeliveryOrderEntity deliveryOrder = deliveryOrders.get(i);
+                Distance distance = distances.get(i);
+                deliveryOrder.setDistanceFromCurrentLocation(distance);
+            }
+            List<BaseListItem> baseListItems = new ArrayList<>();
+            baseListItems.addAll(deliveryOrders);
+            return baseListItems;
         }
+        return null;
     }
 
     //Getters and setters

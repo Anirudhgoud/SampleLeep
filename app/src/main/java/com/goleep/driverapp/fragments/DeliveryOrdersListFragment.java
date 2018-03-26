@@ -82,7 +82,10 @@ public class DeliveryOrdersListFragment extends Fragment {
 
     private void observeDistanceChanges() {
         doViewModel.getTimeToReachDistanceMatrix().observe(this, distances -> {
-            doListAdapter.updateDoDistance(distances);
+            List<DeliveryOrderEntity> deliveryOrders = doViewModel.getDeliveryOrders();
+            List<BaseListItem> baseListItems = doViewModel.updatedOrders(deliveryOrders, distances);
+            if (baseListItems != null)
+                doListAdapter.updateList(baseListItems);
         });
     }
 
