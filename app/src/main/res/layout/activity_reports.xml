@@ -7,13 +7,15 @@
     android:orientation="vertical"
     tools:context="com.goleep.driverapp.leep.ReportsActivity">
 
-    <include layout="@layout/toolbar_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/inner_dashboard_olive"/>
+        android:background="@color/inner_dashboard_olive" />
 
     <RadioGroup
         android:id="@+id/rg_sort"
@@ -63,44 +65,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="34dp"
-        android:paddingLeft="26dp"
-        android:paddingStart="26dp"
-        android:paddingRight="26dp"
+        android:orientation="vertical"
         android:paddingEnd="26dp"
-        android:orientation="vertical">
+        android:paddingLeft="26dp"
+        android:paddingRight="26dp"
+        android:paddingStart="25dp"
+        android:paddingTop="34dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="40dp">
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="62sp"
-                android:id="@+id/activity_reports_tv_total_sales"
-                app:typeface="NotoSans-Light"
-                android:textColor="@color/text_black"/>
+            android:layout_marginBottom="24dp"
+            android:orientation="vertical">
+
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/total_sales"
+                android:textColor="@color/text_light_grey_title"
                 android:textSize="22sp"
-                app:typeface="NotoSans-Regular"
-                android:textColor="@color/text_light_grey_title"/>
+                app:typeface="NotoSans-Regular" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomTextView
+                android:id="@+id/activity_reports_tv_total_sales"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_black"
+                android:textSize="62sp"
+                app:typeface="NotoSans-Light" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginBottom="22dp"
                 android:gravity="start"
-                android:layout_marginBottom="22dp">
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -108,20 +114,21 @@
                     android:orientation="vertical">
 
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/cash_label_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/cash_collected"
-                        app:typeface="NotoSans-Regular"
-                        android:textSize="14sp"
                         android:textColor="@color/text_light_grey_title"
-                        android:id="@+id/cash_label_tv"/>
+                        android:textSize="14sp"
+                        app:typeface="NotoSans-Regular" />
+
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/activity_reports_tv_cash_collected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:typeface="NotoSans-Light"
-                        android:textSize="24sp"
                         android:textColor="@color/text_black"
-                        android:id="@+id/activity_reports_tv_cash_collected"/>
+                        android:textSize="24sp"
+                        app:typeface="NotoSans-Light" />
 
                 </LinearLayout>
 
@@ -131,29 +138,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="22dp"
-                android:orientation="horizontal"
-                android:gravity="start">
+                android:gravity="start"
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/activity_reports_tv_lable_returns"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/returns"
-                        app:typeface="NotoSans-Regular"
-                        android:textSize="14sp"
                         android:textColor="@color/text_light_grey_title"
-                        android:id="@+id/activity_reports_tv_lable_returns"/>
+                        android:textSize="14sp"
+                        app:typeface="NotoSans-Regular" />
+
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/activity_reports_tv_returns"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:typeface="NotoSans-Light"
-                        android:textSize="24sp"
                         android:textColor="@color/text_black"
-                        android:id="@+id/activity_reports_tv_returns"/>
+                        android:textSize="24sp"
+                        app:typeface="NotoSans-Light" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -164,27 +173,29 @@
                 android:layout_marginBottom="22dp"
                 android:gravity="left"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/activity_reports_tv_label_sales"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/units"
-                        app:typeface="NotoSans-Regular"
-                        android:textSize="14sp"
                         android:textColor="@color/text_light_grey_title"
-                        android:id="@+id/activity_reports_tv_label_sales"/>
+                        android:textSize="14sp"
+                        app:typeface="NotoSans-Regular" />
+
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/activity_reports_tv_units"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:typeface="NotoSans-Light"
-                        android:textSize="24sp"
                         android:textColor="@color/text_black"
-                        android:id="@+id/activity_reports_tv_units"/>
+                        android:textSize="24sp"
+                        app:typeface="NotoSans-Light" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -195,27 +206,29 @@
                 android:layout_marginBottom="22dp"
                 android:gravity="left"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/activity_reports_tv_label_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/locations"
-                        app:typeface="NotoSans-Regular"
-                        android:textSize="14sp"
                         android:textColor="@color/text_light_grey_title"
-                        android:id="@+id/activity_reports_tv_label_location"/>
+                        android:textSize="14sp"
+                        app:typeface="NotoSans-Regular" />
+
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        android:id="@+id/activity_reports_tv_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:typeface="NotoSans-Light"
-                        android:textSize="24sp"
                         android:textColor="@color/text_black"
-                        android:id="@+id/activity_reports_tv_location"/>
+                        android:textSize="24sp"
+                        app:typeface="NotoSans-Light" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -224,5 +237,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
 </LinearLayout>

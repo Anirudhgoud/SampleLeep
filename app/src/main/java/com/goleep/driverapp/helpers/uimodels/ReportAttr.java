@@ -5,18 +5,18 @@ package com.goleep.driverapp.helpers.uimodels;
  */
 
 public class ReportAttr {
-   int total_sales;
-   int cash_collected;
-   int units;
-   int returns;
-   int locations;
+  private int totalSales;
+  private int cashCollected;
+  private int units;
+  private int returns;
+  private int locations;
 
-    public int getTotal_sales() {
-        return total_sales;
+    public int getTotalSales() {
+        return totalSales;
     }
 
-    public int getCash_collected() {
-        return cash_collected;
+    public int getCashCollected() {
+        return cashCollected;
     }
 
     public int getUnits() {
@@ -31,12 +31,12 @@ public class ReportAttr {
         return locations;
     }
 
-    public void setTotal_sales(int total_sales) {
-        this.total_sales = total_sales;
+    public void setTotalSales(int totalSales) {
+        this.totalSales = totalSales;
     }
 
-    public void setCash_collected(int cash_collected) {
-        this.cash_collected = cash_collected;
+    public void setCashCollected(int cashCollected) {
+        this.cashCollected = cashCollected;
     }
 
     public void setUnits(int units) {

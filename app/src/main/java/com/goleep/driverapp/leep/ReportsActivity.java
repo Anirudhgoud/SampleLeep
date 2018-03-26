@@ -2,19 +2,16 @@ package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.ReportAttr;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.ReportsViewModel;
 
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,31 +26,30 @@ public class ReportsActivity extends ParentAppCompatActivity {
     @BindView(R.id.rb_this_month)
     RadioButton rbThisMonth;
     @BindView(R.id.activity_reports_tv_total_sales)
-    TextView tv_total_sales;
+    CustomTextView tv_total_sales;
     @BindView(R.id.activity_reports_tv_cash_collected)
-    TextView tv_cash_collected;
+    CustomTextView tv_cash_collected;
     @BindView(R.id.activity_reports_tv_returns)
-    TextView tv_returns;
+    CustomTextView tv_returns;
     @BindView(R.id.activity_reports_tv_units)
-    TextView tv_units;
+    CustomTextView tv_units;
     @BindView(R.id.activity_reports_tv_location)
-    TextView tv_location;
+    CustomTextView tv_location;
     private ReportsViewModel reportsViewModel;
-
-    @Override
-    public void doInitialSetup() {
-        ButterKnife.bind(ReportsActivity.this);
-        reportsViewModel= ViewModelProviders.of(this).get(ReportsViewModel.class);
-        initView();
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_reports);
-
     }
 
-    private void initView(){
+    @Override
+    public void doInitialSetup() {
+        ButterKnife.bind(ReportsActivity.this);
+        reportsViewModel = ViewModelProviders.of(ReportsActivity.this).get(ReportsViewModel.class);
+        initView();
+    }
+
+    private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         rbToday.setOnClickListener(this);
@@ -63,34 +59,31 @@ public class ReportsActivity extends ParentAppCompatActivity {
         rbToday.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
         rbThisWeek.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
         rbThisMonth.setTypeface(AppUtils.getTypeface(ReportsActivity.this, "NotoSans-Regular"));
-        reportsViewModel.getTodysRepors(reportsCallback);
         showProgressDialog();
+        reportsViewModel.getTodaysReports(reportsCallback);
     }
+
     private UILevelNetworkCallback reportsCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             dismissProgressDialog();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    handleReportsResponse(uiModels, isDialogToBeShown, errorMessage);
-                }
-            });
+            runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
         }
     };
-    private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
-        if(errorMessage != null)
-            showNetworkRelatedDialogs(errorMessage);
-        else
-        {
-            dismissProgressDialog();
-            ReportAttr reportAttr=(ReportAttr) uiModels.get(0);
-            tv_cash_collected.setText(StringUtils.amountToDisplay((float)reportAttr.getCash_collected()));
-            tv_location.setText(String.valueOf(reportAttr.getLocations()));
-            tv_returns.setText(String.valueOf(reportAttr.getLocations()));
-            tv_total_sales.setText(StringUtils.amountToDisplay((float)reportAttr.getTotal_sales()));
-            tv_units.setText(String.valueOf(reportAttr.getUnits()));
+
+    private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+        dismissProgressDialog();
+        if (uiModels == null) {
+            if (toLogout) {
+                logoutUser();
+            } else if (isDialogToBeShown) {
+                showNetworkRelatedDialogs(errorMessage);
+            }
+        } else if (uiModels.size() > 0) {
+            runOnUiThread(() -> {
+                ReportAttr reportAttr = (ReportAttr) uiModels.get(0);
+                setReportData(reportAttr);
+            });
         }
 
 
@@ -98,31 +91,36 @@ public class ReportsActivity extends ParentAppCompatActivity {
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.left_toolbar_button : finish();
+        switch (resourceId) {
+            case R.id.left_toolbar_button:
+                finish();
                 break;
             case R.id.rb_today:
-                reportsViewModel.getTodysRepors(reportsCallback);
-                prePareUiRequest();
+                initialiseReportCallback();
+                reportsViewModel.getTodaysReports(reportsCallback);
                 break;
             case R.id.rb_this_week:
-                reportsViewModel.getThisWeekRepors(reportsCallback);
-                prePareUiRequest();
+                initialiseReportCallback();
+                reportsViewModel.getThisWeekReports(reportsCallback);
                 break;
             case R.id.rb_this_month:
-                reportsViewModel.getthisMonthRepors(reportsCallback);
-                prePareUiRequest();
+                initialiseReportCallback();
+                reportsViewModel.getThisMonthReport(reportsCallback);
                 break;
         }
     }
-    private void prePareUiRequest()
-    {
-        tv_cash_collected.setText("");
-        tv_location.setText("");
-        tv_returns.setText("");
-        tv_total_sales.setText("");
-        tv_units.setText("");
-        showProgressDialog();
 
+    private void initialiseReportCallback() {
+        showProgressDialog();
+        setReportData(null);
+    }
+
+    private void setReportData(ReportAttr reportAttr) {
+        boolean isReportAvailable = reportAttr != null;
+        tv_cash_collected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr.getCashCollected()) : "");
+        tv_location.setText(isReportAvailable ? String.valueOf(reportAttr.getLocations()) : "");
+        tv_returns.setText(isReportAvailable ? String.valueOf(reportAttr.getReturns()) : "");
+        tv_total_sales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr.getTotalSales()) : "");
+        tv_units.setText(isReportAvailable ? String.valueOf(reportAttr.getUnits()) : "");
     }
 }

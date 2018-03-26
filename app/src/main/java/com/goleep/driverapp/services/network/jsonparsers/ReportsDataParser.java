@@ -19,10 +19,9 @@ public class ReportsDataParser {
         if(jsonObject == null){
             return null;
         }
-         ReportAttr reportAttr =new ReportAttr();
-        //Todo
-        reportAttr.setTotal_sales(jsonObject.optInt("total_sales"));
-        reportAttr.setCash_collected(jsonObject.optInt("cash_collected"));
+        ReportAttr reportAttr =new ReportAttr();
+        reportAttr.setTotalSales(jsonObject.optInt("total_sales"));
+        reportAttr.setCashCollected(jsonObject.optInt("cash_collected"));
         reportAttr.setUnits(jsonObject.optInt("units"));
         reportAttr.setReturns(jsonObject.optInt("returns"));
         reportAttr.setLocations(jsonObject.optInt("locations"));
