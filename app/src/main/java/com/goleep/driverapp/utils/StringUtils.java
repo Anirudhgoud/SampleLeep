@@ -1,5 +1,7 @@
 package com.goleep.driverapp.utils;
 
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Locale;
 
 /**
@@ -7,6 +9,9 @@ import java.util.Locale;
  */
 
 public class StringUtils {
+    static NumberFormat currencyFormatter;
+    static NumberFormat numberFormatter;
+
     public static String getAddress(String line1, String line2) {
         String address = "";
         if (line1 != null && !line1.equals("null")) {
@@ -22,11 +27,21 @@ public class StringUtils {
     }
 
     public static String amountToDisplay(Float amountString) {
-        String currencySymbol = AppUtils.userCurrencySymbol();
+        if (currencyFormatter == null)
+            currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
+        currencyFormatter.setMaximumFractionDigits(0);
+        String moneyString = currencyFormatter.format(amountString);
         if (amountString != null) {
-            return currencySymbol + " " + Math.round(amountString);
+            return moneyString;
         }
-        return currencySymbol + " 0";
+        return currencyFormatter.format(0);
+    }
+
+    public static String numberToDisplay(int number) {
+        if (numberFormatter == null)
+            numberFormatter = NumberFormat.getNumberInstance();
+        numberFormatter.setMaximumFractionDigits(0);
+        return numberFormatter.format(number);
     }
 
     public static String timeToDisplay(String timeString) {
@@ -49,4 +64,9 @@ public class StringUtils {
         return formattedString;
     }
 
+    public static String addZeroToSingleCharacter(String str) {
+        if (str.length() == 1)
+            return "0" + str;
+        else return str;
+    }
 }

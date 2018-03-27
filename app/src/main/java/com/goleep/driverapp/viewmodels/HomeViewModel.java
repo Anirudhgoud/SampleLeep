@@ -37,6 +37,7 @@ public class HomeViewModel extends AndroidViewModel {
     private Context context;
 
     private Summary summary = new Summary();
+
     public HomeViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
@@ -48,67 +49,67 @@ public class HomeViewModel extends AndroidViewModel {
                 .getLocalFileStore().getString(context, SharedPreferenceKeys.AUTH_TOKEN));
         NetworkService.sharedInstance().getNetworkClient().makeDeleteRequest(context, UrlConstants.LOGOUT_URL,
                 true, headerParams, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type){
-                    case NetworkConstants.SUCCESS:
-                        logoutCallback.onResponseReceived(null, false, null, false);
-                        break;
-                    case NetworkConstants.FAILURE:
-                        logoutCallback.onResponseReceived(null, false, errorMessage, false);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                        logoutCallback.onResponseReceived(null, true, errorMessage, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        logoutCallback.onResponseReceived(null, false, errorMessage, true);
-                }
-            }
-        });
+                    @Override
+                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                logoutCallback.onResponseReceived(null, false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                logoutCallback.onResponseReceived(null, false, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                logoutCallback.onResponseReceived(null, true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                logoutCallback.onResponseReceived(null, false, errorMessage, true);
+                        }
+                    }
+                });
     }
 
     public void getDriverProfile(final UILevelNetworkCallback driverProfileCallback) {
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(context, SharedPreferenceKeys.DRIVER_ID);
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
-                UrlConstants.DRIVERS_URL+"/"+driverId,
+                UrlConstants.DRIVERS_URL + "/" + driverId,
                 true, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type){
-                    case NetworkConstants.SUCCESS:
-                        List<DriverEntity> driverEntities = new ArrayList<>();
-                        DriverDataParser driverDataParser = new DriverDataParser();
-                        DriverEntity driver =  driverDataParser.driverResponseByParsingJsonResponse(response);
-                        if(driver != null){
-                            driverEntities.add(driver);
-                            RoomDBService.sharedInstance().getDatabase(context).driverDao().insertDriver(driver);
+                    @Override
+                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                List<DriverEntity> driverEntities = new ArrayList<>();
+                                DriverDataParser driverDataParser = new DriverDataParser();
+                                DriverEntity driver = driverDataParser.driverResponseByParsingJsonResponse(response);
+                                if (driver != null) {
+                                    driverEntities.add(driver);
+                                    RoomDBService.sharedInstance().getDatabase(context).driverDao().insertDriver(driver);
+                                }
+                                driverProfileCallback.onResponseReceived(driverEntities, false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                driverProfileCallback.onResponseReceived(null, false, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                driverProfileCallback.onResponseReceived(null, true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                driverProfileCallback.onResponseReceived(null, false, errorMessage, true);
                         }
-                        driverProfileCallback.onResponseReceived(driverEntities, false, null, false);
-                        break;
-                    case NetworkConstants.FAILURE:
-                        driverProfileCallback.onResponseReceived(null, false, errorMessage, false);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                        driverProfileCallback.onResponseReceived(null, true, errorMessage, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        driverProfileCallback.onResponseReceived(null, false, errorMessage, true);
-                }
-            }
-        });
+                    }
+                });
     }
 
-    public void getStocks(){
+    public void getStocks() {
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
                 getApplication().getApplicationContext(), SharedPreferenceKeys.DRIVER_ID);
-        String url = UrlConstants.INVENTORIES_URL+"?drivers="+driverId;
+        String url = UrlConstants.INVENTORIES_URL + "?drivers=" + driverId;
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(
                 getApplication().getApplicationContext(), url, true,
                 new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         System.out.print("");
-                        switch (type){
+                        switch (type) {
                             case NetworkConstants.SUCCESS:
                                 StockProductParser parser = new StockProductParser();
                                 List<StockProductEntity> stockProductEntities = parser.getStockProduct(response);
@@ -119,12 +120,12 @@ public class HomeViewModel extends AndroidViewModel {
                 });
     }
 
-    public void uploadProfileImage(File imageFile){
+    public void uploadProfileImage(File imageFile) {
         String authToken = LocalStorageService.sharedInstance().getLocalFileStore().
                 getString(getApplication().getApplicationContext(), SharedPreferenceKeys.AUTH_TOKEN);
         String userId = LocalStorageService.sharedInstance().getLocalFileStore().
                 getString(getApplication().getApplicationContext(), SharedPreferenceKeys.USER_ID);
-        NetworkService.sharedInstance().getNetworkClient().uploadImage(authToken, UrlConstants.UPDATE_PROFILE_IMAGE+userId,
+        NetworkService.sharedInstance().getNetworkClient().uploadImage(authToken, UrlConstants.UPDATE_PROFILE_IMAGE + userId,
                 imageFile, "profile_image.jpg");
     }
 
@@ -135,28 +136,28 @@ public class HomeViewModel extends AndroidViewModel {
     public void getSummary(final UILevelNetworkCallback summaryCallback) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context, UrlConstants.SUMMARY_URL,
                 true, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type){
-                    case NetworkConstants.SUCCESS:
-                        List<Summary> summaryList = new ArrayList<>();
-                        SummaryParser summaryParser = new SummaryParser();
-                        summary = summaryParser.summaryResponseByParsingJsonResponse(response);
-                        if(summary != null){
-                            summaryList.add(summary);
+                    @Override
+                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                List<Summary> summaryList = new ArrayList<>();
+                                SummaryParser summaryParser = new SummaryParser();
+                                summary = summaryParser.summaryResponseByParsingJsonResponse(response);
+                                if (summary != null) {
+                                    summaryList.add(summary);
+                                }
+                                summaryCallback.onResponseReceived(summaryList, false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                summaryCallback.onResponseReceived(null, false, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                summaryCallback.onResponseReceived(null, true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                summaryCallback.onResponseReceived(null, false, errorMessage, true);
                         }
-                        summaryCallback.onResponseReceived(summaryList, false, null, false);
-                        break;
-                    case NetworkConstants.FAILURE:
-                        summaryCallback.onResponseReceived(null, false, errorMessage, false);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                        summaryCallback.onResponseReceived(null, true, errorMessage, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        summaryCallback.onResponseReceived(null, false, errorMessage, true);
-                }
-            }
-        });
+                    }
+                });
     }
 }

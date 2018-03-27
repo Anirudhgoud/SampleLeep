@@ -2,35 +2,26 @@ package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.facebook.stetho.common.LogUtil;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.ReportsType;
-import com.goleep.driverapp.constants.RequestConstants;
-import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.helpers.uimodels.ReportAttr;
+import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.ReportsDataParser;
-import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by shubham on 23/03/2018.
@@ -69,10 +60,10 @@ public class ReportsViewModel extends AndroidViewModel {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
                                 JSONObject userObj = (JSONObject) response.opt(0);
-                                ReportAttr reportAttr = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
-                                List<ReportAttr> listReportAttr = new ArrayList<>();
-                                listReportAttr.add(reportAttr);
-                                reportCallBack.onResponseReceived(listReportAttr, false, null, false);
+                                ReportAttrribute reportAttrribute = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
+                                List<ReportAttrribute> listReportAttrribute = new ArrayList<>();
+                                listReportAttrribute.add(reportAttrribute);
+                                reportCallBack.onResponseReceived(listReportAttrribute, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
                                 reportCallBack.onResponseReceived(null, false, errorMessage, false);

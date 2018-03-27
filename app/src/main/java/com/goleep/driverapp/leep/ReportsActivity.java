@@ -10,13 +10,15 @@ import android.widget.RadioButton;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.helpers.uimodels.ReportAttr;
+import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.ReportsViewModel;
+
 import java.util.List;
+
 import com.goleep.driverapp.utils.FontUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -89,8 +91,8 @@ public class ReportsActivity extends ParentAppCompatActivity {
             }
         } else if (uiModels.size() > 0) {
             runOnUiThread(() -> {
-                ReportAttr reportAttr = (ReportAttr) uiModels.get(0);
-                setReportData(reportAttr);
+                ReportAttrribute reportAttrribute = (ReportAttrribute) uiModels.get(0);
+                setReportData(reportAttrribute);
             });
         }
     }
@@ -121,14 +123,14 @@ public class ReportsActivity extends ParentAppCompatActivity {
         setReportData(null);
     }
 
-    private void setReportData(ReportAttr reportAttr) {
-        boolean isReportAvailable = reportAttr != null;
-        tv_cash_collected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr
+    private void setReportData(ReportAttrribute reportAttrribute) {
+        boolean isReportAvailable = reportAttrribute != null;
+        tv_cash_collected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttrribute
                 .getCashCollected()) : "");
-        tv_location.setText(isReportAvailable ? String.valueOf(reportAttr.getLocations()) : "");
-        tv_returns.setText(isReportAvailable ? String.valueOf(reportAttr.getReturns()) : "");
-        tv_total_sales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr.
+        tv_location.setText(isReportAvailable ? String.valueOf(reportAttrribute.getLocations()) : "");
+        tv_returns.setText(isReportAvailable ? String.valueOf(reportAttrribute.getReturns()) + " " + getResources().getString(R.string.units) : "");
+        tv_total_sales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttrribute.
                 getTotalSales()) : "");
-        tv_units.setText(isReportAvailable ? String.valueOf(reportAttr.getUnits()) : "");
+        tv_units.setText(isReportAvailable ? StringUtils.numberToDisplay(reportAttrribute.getUnits()) : "");
     }
 }

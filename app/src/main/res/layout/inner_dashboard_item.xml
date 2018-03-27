@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:gravity="center_vertical">
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
@@ -19,18 +19,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:text=""
             android:textColor="@color/light_grey"
-            app:typeface="NotoSans-Regular"
-            android:text="" />
+            app:typeface="NotoSans-Regular" />
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:id="@+id/top_value_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:typeface="NotoSans-Regular"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:typeface="NotoSans-Regular" />
     </LinearLayout>
 
     <LinearLayout

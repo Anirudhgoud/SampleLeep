@@ -13,12 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <include
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
-        android:id="@+id/toolbar_layout"
-        layout="@layout/toolbar_layout" />
+        <include
+            android:id="@+id/toolbar_layout"
+            layout="@layout/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
 
 
         <com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar_layout"
-            android:paddingTop="50dp"/>
+            android:paddingTop="50dp" />
 
 
     </RelativeLayout>
@@ -37,8 +37,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start">
 
-        <include layout="@layout/profile_layout"
-            android:id="@+id/profile_layout"/>
+        <include
+            android:id="@+id/profile_layout"
+            layout="@layout/profile_layout" />
 
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
