@@ -46,11 +46,11 @@ public class BaseListItem {
         return itemType;
     }
 
-    public boolean isItemChecked(){
+    public boolean isItemChecked() {
         return isItemChecked;
     }
 
-    public void checkItem(boolean itemChecked){
+    public void checkItem(boolean itemChecked) {
         this.isItemChecked = itemChecked;
     }
 

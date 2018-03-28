@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.HistoryListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
@@ -33,7 +34,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HistoryActivity extends ParentAppCompatActivity implements Observer<List<DeliveryOrderEntity>> {
+import static com.goleep.driverapp.utils.DateTimeUtils.REQUEST_DATE_FORMAT;
+
+public class HistoryActivity extends ParentAppCompatActivity implements Observer<List<DeliveryOrderEntity>>{
 
     @BindView(R.id.rb_today)
     RadioButton rbToday;
@@ -61,7 +64,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             dismissProgressDialog();
-            if (uiModels != null) {
+            if(uiModels != null) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -92,11 +95,11 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         setResources(R.layout.activity_history);
     }
 
-    private void initView() {
+    private void initView(){
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.history), R.drawable.ic_history_title_icon);
-        Typeface typeface = new FontUtils().getTypeface(HistoryActivity.this, "NotoSans-Regular");
+        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
         rbToday.setTypeface(typeface);
         rbThisWeek.setTypeface(typeface);
         rbThisMonth.setTypeface(typeface);
@@ -106,7 +109,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         initRecyclerView();
     }
 
-    private void initialiseRadioButtons() {
+    private void initialiseRadioButtons(){
         rgOrdersType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -137,23 +140,22 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
     private void getInitialData() {
         showProgressDialog();
         Date today = new Date();
-        String todayDateString = DateTimeUtils.convertedDate(today, "dd/MM/yyyy");
+        String todayDateString = DateTimeUtils.convertedDate(today, REQUEST_DATE_FORMAT);
         deliveryOrderViewModel.fetchDeliveryOrders(todayDateString, todayDateString,
                 ordersHistoryCallback);
     }
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId) {
-            case R.id.left_toolbar_button:
-                finish();
+        switch (resourceId){
+            case R.id.left_toolbar_button : finish();
                 break;
         }
     }
 
-    private void onOrdersTypeChange(int checkedId) {
+    private void onOrdersTypeChange(int checkedId){
         showProgressDialog();
-        switch (checkedId) {
+        switch (checkedId){
             case R.id.rb_delivery_order:
                 deliveryOrderViewModel.fetchDeliveryOrders(ordersHistoryCallback);
                 break;
@@ -163,17 +165,18 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         }
     }
 
-    private void onRadioSelectionChange(int checkedId) {
+    private void onRadioSelectionChange(int checkedId){
         showProgressDialog();
         Date today = new Date();
-        String todayDateString = DateTimeUtils.convertedDate(today, "dd/MM/yyyy");
+        String todayDateString = DateTimeUtils.convertedDate(today, REQUEST_DATE_FORMAT);
         int ordersTYpe = rgOrdersType.getCheckedRadioButtonId();
-        switch (checkedId) {
+        switch (checkedId){
             case R.id.rb_today:
-                if (ordersTYpe == R.id.rb_delivery_order) {
+                if(ordersTYpe == R.id.rb_delivery_order) {
                     deliveryOrderViewModel.fetchDeliveryOrders(todayDateString, todayDateString,
                             ordersHistoryCallback);
-                } else {
+                }
+                else{
                     deliveryOrderViewModel.fetchReturnedOrders(todayDateString, todayDateString, ordersHistoryCallback);
                 }
                 break;
@@ -182,11 +185,12 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
                 Calendar calender = Calendar.getInstance();
                 calender.add(Calendar.DAY_OF_YEAR, -7);
                 Date weekAgo = calender.getTime();
-                String weekAgoString = DateTimeUtils.convertedDate(weekAgo, "dd/MM/yyyy");
-                if (ordersTYpe == R.id.rb_delivery_order) {
+                String weekAgoString = DateTimeUtils.convertedDate(weekAgo, REQUEST_DATE_FORMAT);
+                if(ordersTYpe == R.id.rb_delivery_order) {
                     deliveryOrderViewModel.fetchDeliveryOrders(weekAgoString, todayDateString,
                             ordersHistoryCallback);
-                } else {
+                }
+                else{
                     deliveryOrderViewModel.fetchReturnedOrders(weekAgoString, todayDateString, ordersHistoryCallback);
                 }
                 break;
@@ -195,12 +199,14 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
                 Calendar month = Calendar.getInstance();
                 month.add(Calendar.DAY_OF_YEAR, -30);
                 Date monthAgo = month.getTime();
-                String monthAgoString = DateTimeUtils.convertedDate(monthAgo, "dd/MM/yyyy");
-                if (ordersTYpe == R.id.rb_delivery_order) {
+                String monthAgoString = DateTimeUtils.convertedDate(monthAgo, REQUEST_DATE_FORMAT);
+                if(ordersTYpe == R.id.rb_delivery_order) {
                     deliveryOrderViewModel.fetchDeliveryOrders(monthAgoString, todayDateString,
                             ordersHistoryCallback);
-                } else {
-                    deliveryOrderViewModel.fetchReturnedOrders(monthAgoString, todayDateString, ordersHistoryCallback);
+                }
+                else{
+                    deliveryOrderViewModel.fetchReturnedOrders(monthAgoString, todayDateString,
+                            ordersHistoryCallback);
                 }
                 break;
         }
@@ -208,13 +214,13 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
 
     @Override
     public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrderEntities) {
-        if (deliveryOrderEntities.size() > 0) {
+        if(deliveryOrderEntities.size() > 0) {
             adapter.updateList(deliveryOrderEntities);
         }
     }
 
-    private void startDetailActivity(String doId) {
-        Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
+    private void startDetailActivity(String doId){
+        Intent intent = new Intent(this, HistoryDetailsActivity.class);
         intent.putExtra(IntentConstants.ORDER_ID, doId);
         startActivity(intent);
     }

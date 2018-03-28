@@ -14,12 +14,12 @@ import java.util.List;
 
 public class StockProductParser {
 
-    public List<StockProductEntity> getStockProduct(JSONArray response){
+    public List<StockProductEntity> getStockProduct(JSONArray response) {
         List<StockProductEntity> stockProductEntities = new ArrayList<>();
         JSONObject firstObject = response.optJSONObject(0);
         JSONArray dataJson = firstObject.optJSONArray("data");
         int length = dataJson.length();
-        for(int i=0;i<length;i++){
+        for (int i = 0; i < length; i++) {
             JSONObject productJson = dataJson.optJSONObject(i);
             StockProductEntity stockProductEntity = new StockProductEntity();
             stockProductEntity.setId(productJson.optInt("id"));

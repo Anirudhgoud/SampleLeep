@@ -35,13 +35,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<StocksListViewHolde
 
     @Override
     public void onBindViewHolder(StocksListViewHolder holder, int position) {
-        if(products.size() > 0)
-            if(products.get(0) instanceof StockProductEntity)
-                holder.bind((StockProductEntity)products.get(position), listType);
-            else if(products.get(0) instanceof ReturnOrderItem)
-                holder.bind((ReturnOrderItem)products.get(position));
-            else if(products.get(0) instanceof OrderItemEntity)
-                holder.bind((OrderItemEntity)products.get(position));
+        if(products.get(0) instanceof StockProductEntity)
+            holder.bind((StockProductEntity)products.get(position), listType);
+        else if(products.get(0) instanceof ReturnOrderItem)
+            holder.bind((ReturnOrderItem)products.get(position));
+        else if(products.get(0) instanceof OrderItemEntity)
+            holder.bind((OrderItemEntity)products.get(position));
 
     }
 

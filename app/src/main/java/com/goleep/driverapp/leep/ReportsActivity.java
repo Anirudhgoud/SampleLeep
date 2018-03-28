@@ -17,6 +17,9 @@ import com.goleep.driverapp.viewmodels.ReportsViewModel;
 
 import java.util.List;
 
+
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
+
 import com.goleep.driverapp.utils.FontUtils;
 
 import butterknife.BindView;
@@ -62,8 +65,7 @@ public class ReportsActivity extends ParentAppCompatActivity {
         rbThisMonth.setOnClickListener(this);
         setTitleIconAndText(getString(R.string.reports), R.drawable.ic_reports_title);
 
-        Typeface typeface = new FontUtils().getTypeface(ReportsActivity.this,
-                "NotoSans-Regular");
+        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
         rbToday.setTypeface(typeface);
         rbThisWeek.setTypeface(typeface);
         rbThisMonth.setTypeface(typeface);

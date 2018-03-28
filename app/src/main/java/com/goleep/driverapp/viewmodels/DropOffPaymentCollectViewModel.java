@@ -20,7 +20,8 @@ public class DropOffPaymentCollectViewModel extends DropOffDoBaseViewModel {
     }
 
     public String dateToDisplay(String dateString) {
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, "yyyy-MM-dd", "dd MMM, yyyy");
+        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
+                DateTimeUtils.ORDER_SERVER_DATE_FORMAT, DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
     }
 
     public String getAddress(Location location) {

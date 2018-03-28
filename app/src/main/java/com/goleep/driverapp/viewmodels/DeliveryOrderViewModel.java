@@ -17,24 +17,26 @@ import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by vishalm on 27/02/18.
  */
 
+
 public class DeliveryOrderViewModel extends AndroidViewModel {
+
     protected AppDatabase leepDatabase;
     private LiveData<List<DeliveryOrderEntity>> deliveryOrders = new MutableLiveData<>();
 
+    public List<DeliveryOrderEntity> getDeliveryOrders() {
+        return deliveryOrders.getValue();
+    }
+
     public static final String TYPE_CUSTOMER = "customer";
-    public static final String TYPE_DRIVER = "driver";
     public static final String STATUS_IN_TRANSIT = "in_transit";
     public static final String STATUS_ASSIGNED = "assigned";
     public static final String STATUS_DELIVERED = "delivered";
-
-
 
     public DeliveryOrderViewModel(@NonNull Application application) {
         super(application);
@@ -45,20 +47,16 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         return deliveryOrders;
     }
 
-
-
-
-
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doNetworkCallBack, String status,
-                                       String startDate, String endDate){
+                                       String startDate, String endDate) {
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
                 getApplication().getApplicationContext(),SharedPreferenceKeys.DRIVER_ID);
-        String url = UrlConstants.DELIVERY_ORDERS_URL+"?assignees="+driverId;
-        if(status != null){
-            url += "&statuses="+status;
+        String url = UrlConstants.DELIVERY_ORDERS_URL + "?assignees=" + driverId;
+        if (status != null) {
+            url += "&statuses=" + status;
         }
-        if(startDate != null && endDate != null){
-            url +="&start_date="+startDate+"&end_date="+endDate;
+        if (startDate != null && endDate != null) {
+            url += "&start_date=" + startDate + "&end_date=" + endDate;
         }
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
                 url, true, (type, response, errorMessage) -> {
@@ -68,12 +66,14 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
                             List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
                                     deliveryOrdersByParsingJsonResponse(response);
                             leepDatabase.deliveryOrderDao().updateAllDeliveryOrders(deliveryOrdersList);
-                            doNetworkCallBack.onResponseReceived(deliveryOrdersList, false, null, false);
+                            doNetworkCallBack.onResponseReceived(deliveryOrdersList, false,
+                                    null, false);
                             break;
 
                         case NetworkConstants.FAILURE:
                         case NetworkConstants.NETWORK_ERROR:
-                            doNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                            doNetworkCallBack.onResponseReceived(null, true,
+                                    errorMessage, false);
                             break;
 
                         case NetworkConstants.UNAUTHORIZED:

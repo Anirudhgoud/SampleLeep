@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.leep.LeepApp;
 
 
@@ -36,10 +37,8 @@ public class CustomTextView extends AppCompatTextView {
                 .getString(R.styleable.TypefacedTextView_typeface);
         styledAttrs.recycle();
         if (fontName != null) {
-            Typeface typeface = ((LeepApp)context.getApplicationContext()).getTypeface(fontName);
-            if(typeface != null){
-                setTypeface(typeface);
-            }
+            Typeface typeface = FontProvider.getTypeface(fontName, context);
+            setTypeface(typeface);
         }
     }
 

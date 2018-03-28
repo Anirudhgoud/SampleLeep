@@ -11,10 +11,6 @@ import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 
-import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_DELIVERABLE;
-import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_RETURNED;
-import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_SELLABLE;
-
 /**
  * Created by vishalm on 20/03/18.
  */
@@ -35,21 +31,8 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
 
     public void bind(StockProductEntity stockProductEntity, int listType){
         productNameTv.setText(stockProductEntity.getProductName());
-        double value = 0.0;
-        switch (listType){
-            case TYPE_DELIVERABLE :
-                value = stockProductEntity.getDeliverableQuantity() * stockProductEntity.getDefaultPrice();
-                unitsTv.setText(String.valueOf(stockProductEntity.getDeliverableQuantity()));
-                break;
-            case TYPE_SELLABLE :
-                value = stockProductEntity.getSellableQuantity() * stockProductEntity.getDefaultPrice();
-                unitsTv.setText(String.valueOf(stockProductEntity.getSellableQuantity()));
-                break;
-            case TYPE_RETURNED :
-                value = stockProductEntity.getDeliverableQuantity() * stockProductEntity.getDefaultPrice();
-                unitsTv.setText(String.valueOf(stockProductEntity.getReturnableQuantity()));
-                break;
-        }
+        double value = stockProductEntity.getQuantity(listType) * stockProductEntity.getDefaultPrice();
+        unitsTv.setText(String.valueOf(stockProductEntity.getDeliverableQuantity()));
         productQuantityTv.setText(stockProductEntity.getWeight()+" "+ stockProductEntity.getWeightUnit());
         amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
     }
