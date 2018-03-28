@@ -43,12 +43,12 @@ public class ResponseValidator {
             case 401:
                 responseObjects[0] = NetworkConstants.UNAUTHORIZED;
                 responseObjects[1] = null;
-                responseObjects[2] = NetworkStringConstants.UNAUTHORIZED;
+                responseObjects[2] = parseErrorMessage(response);
                 break;
             default:
                 responseObjects[0] = NetworkConstants.FAILURE;
                 responseObjects[1] = null;
-                responseObjects[2] = NetworkStringConstants.REQUEST_FAILURE;
+                responseObjects[2] = parseErrorMessage(response);
 
         }
         return responseObjects;
