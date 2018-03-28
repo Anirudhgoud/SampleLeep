@@ -40,17 +40,18 @@ public class DropOffDoBaseViewModel extends AndroidViewModel {
 
 
     public String dateToDisplay(String dateString) {
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, "yyyy-MM-dd", "dd MMM, yyyy");
+        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
+                DateTimeUtils.ORDER_SERVER_DATE_FORMAT, DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
     }
 
     public String currentDateToDisplay() {
         Date now = new Date();
-        return DateTimeUtils.convertedDate(now, "dd MMM, yyyy");
+        return DateTimeUtils.convertedDate(now, DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
     }
 
     public String currentTimeToDisplay() {
         Date now = new Date();
-        return DateTimeUtils.convertedDate(now, "hh:mma");
+        return DateTimeUtils.convertedDate(now, DateTimeUtils.TWELVE_HOUR_TIME_FORMAT);
     }
 
     //Getters and setters

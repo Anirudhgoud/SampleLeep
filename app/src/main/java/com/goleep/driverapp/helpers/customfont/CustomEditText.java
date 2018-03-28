@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
+import com.goleep.driverapp.leep.LeepApp;
 
 
 public class CustomEditText extends AppCompatEditText {
@@ -37,11 +39,8 @@ public class CustomEditText extends AppCompatEditText {
                 .getString(R.styleable.TypefacedTextView_typeface);
         styledAttrs.recycle();
         if (fontName != null) {
-            Typeface typeface = Typeface.createFromAsset(context.getAssets(),
-                    "fonts/" + fontName + ".ttf");
-            if(typeface != null){
-                setTypeface(typeface);
-            }
+            Typeface typeface = FontProvider.getTypeface(fontName, context);
+            setTypeface(typeface);
         }
     }
 

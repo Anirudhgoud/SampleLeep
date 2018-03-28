@@ -15,13 +15,13 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
  */
 @Entity(foreignKeys = @ForeignKey(entity = DeliveryOrderEntity.class,
         parentColumns = "id",
-        childColumns = "doId",
+        childColumns = "orderId",
         onDelete = CASCADE))
 public class OrderItemEntity extends BaseListItem{
 
     @PrimaryKey
     private int id;
-    private int doId;
+    private int orderId;
     private int quantity;
     private int maxQuantity;
     private boolean selected;
@@ -33,12 +33,12 @@ public class OrderItemEntity extends BaseListItem{
 
     }
 
-    public int getDoId() {
-        return doId;
+    public int getOrderId() {
+        return orderId;
     }
 
-    public void setDoId(int doId) {
-        this.doId = doId;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public int getId() {

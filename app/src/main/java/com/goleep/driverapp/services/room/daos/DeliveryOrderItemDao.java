@@ -22,13 +22,13 @@ public abstract class DeliveryOrderItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insertDeliveryOrderItems(List<OrderItemEntity> orderItemEntities);
 
-    @Query("SELECT * FROM OrderItemEntity WHERE doId = :id")
+    @Query("SELECT * FROM OrderItemEntity WHERE orderId = :id")
     public abstract LiveData<List<OrderItemEntity>> getDeliveryOrderItems(int id);
 
     @Query("SELECT * FROM OrderItemEntity WHERE id = :itemId")
     public abstract OrderItemEntity getOrderItem(int itemId);
 
-    @Query("SELECT * FROM OrderItemEntity WHERE doId = :id AND selected = 1")
+    @Query("SELECT * FROM OrderItemEntity WHERE orderId = :id AND selected = 1")
     public abstract List<OrderItemEntity> getSelectedOrderItems(int id);
 
     @Query("UPDATE OrderItemEntity SET quantity = :updatedQuantity WHERE id = :orderItemId")
@@ -40,7 +40,7 @@ public abstract class DeliveryOrderItemDao {
     @Query("DELETE FROM OrderItemEntity WHERE id = :doId")
     public abstract void deleteDeliveryItems(int doId);
 
-    @Query("SELECT * FROM OrderItemEntity WHERE doId = :id")
+    @Query("SELECT * FROM OrderItemEntity WHERE orderId = :id")
     public abstract List<OrderItemEntity> getDOrderItemssList(Integer id);
 
 

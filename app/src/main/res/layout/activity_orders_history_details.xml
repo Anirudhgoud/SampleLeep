@@ -4,26 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="24dp"
-    android:paddingRight="20dp"
+
     android:orientation="vertical"
-    tools:context="com.goleep.driverapp.leep.OrdersHistoryDetails">
+    tools:context="com.goleep.driverapp.leep.HistoryDetailsActivity">
 
-    <include
-        layout="@layout/toolbar_layout"
+    <include layout="@layout/toolbar_layout"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
-
+        android:layout_width="match_parent"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/inner_dashboard_bahama_blue" />
+        android:background="@color/inner_dashboard_bahama_blue"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:paddingTop="20dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="20dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -124,32 +123,6 @@
                     app:typeface="NotoSans-Bold" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="12dp"
-                    android:layout_marginRight="10dp"
-                    android:adjustViewBounds="true"
-                    app:srcCompat="@drawable/ic_map_unselected" />
-
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
-                    android:id="@+id/tv_estimated_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:lines="1"
-                    android:textColor="@color/doTabTextColor"
-                    android:textSize="12sp"
-                    app:typeface="NotoSans-Bold" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
         <RelativeLayout
@@ -184,12 +157,11 @@
                     android:textSize="18sp"
                     app:typeface="NotoSans-Regular"
                     android:textColor="@color/text_black"
-                    android:id="@+id/tv_do_amount" />
+                    android:id="@+id/tv_do_amount"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -197,25 +169,24 @@
                         app:typeface="NotoSans-Bold"
                         android:text="@string/items"
                         android:textColor="@color/text_black"
-                        android:id="@+id/tv_items_label" />
-
+                        android:id="@+id/tv_items_label"/>
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="10sp"
                         app:typeface="NotoSans-Regular"
                         android:textColor="@color/text_black"
-                        android:id="@+id/tv_items_value" />
+                        android:id="@+id/tv_items_value"/>
                 </LinearLayout>
 
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
-    <include layout="@layout/item_header_layout" />
-
+    <include layout="@layout/item_header_layout"
+        android:paddingLeft="24dp"
+        android:paddingRight="20dp"/>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/order_items_recycler_view" />
+        android:id="@+id/order_items_recycler_view"/>
 </LinearLayout>
