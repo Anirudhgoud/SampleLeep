@@ -25,6 +25,9 @@ import com.goleep.driverapp.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT;
+import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
+
 /**
  * Created by vishalm on 20/02/18.
  */
@@ -169,7 +172,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             doNumberLayout.setVisibility(View.GONE);
             if (((Activity) context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
                 tvDate.setText(DateTimeUtils.convertdDate(deliveryOrder.getPreferredDeliveryDate(),
-                        "yyyy-MM-dd", "dd MMM yyyy"));
+                        ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
                 tvSchedule.setText(StringUtils.timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
                 dateLayout.setVisibility(View.VISIBLE);
                 timeLayout.setVisibility(View.VISIBLE);
@@ -259,7 +262,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 {
                     if(productCheckbox != null) {
                         productCheckbox.setVisibility(View.VISIBLE);
-                        productCheckbox.setTag(doDetails.getDoId());
+                        productCheckbox.setTag(doDetails.getOrderId());
                         productCheckbox.setOnCheckedChangeListener(null);
                         productCheckbox.setChecked(visibleItems.get(position).isItemChecked());
                         productCheckbox.setOnCheckedChangeListener(checkListener);

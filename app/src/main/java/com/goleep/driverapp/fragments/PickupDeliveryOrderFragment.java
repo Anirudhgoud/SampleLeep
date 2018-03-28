@@ -3,6 +3,9 @@ package com.goleep.driverapp.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+
+import android.os.Handler;
+
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -125,26 +128,34 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     @Override
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
-        if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().containsKey(doDetails.get(0).getDoId())) {
-            final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getDoId());
-            final int doId = doDetails.get(0).getDoId();
+        if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().containsKey(doDetails.get(0).getOrderId())) {
+            final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
+            final int doId = doDetails.get(0).getOrderId();
             List<BaseListItem> listItems = new ArrayList<>();
             for(OrderItemEntity orderItemEntity : doDetails){
                 orderItemEntity.setItemType(AppConstants.TYPE_DO_ITEM);
                 listItems.add(orderItemEntity);
             }
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.addItemsList(listItems, doId);
-                    doViewModel.getDoUpdateMap().put(doId, true);
-                    if(expandableListView.findViewHolderForAdapterPosition(pos)!= null &&
-                            expandableListView.findViewHolderForAdapterPosition(pos).itemView != null) {
-                        expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
-                        expandableListView.scrollToPosition(pos);
+            if(getActivity() != null && !getActivity().isFinishing())
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.addItemsList(listItems, doId);
+                        doViewModel.getDoUpdateMap().put(doId, true);
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                RecyclerView.ViewHolder viewHolder = expandableListView.findViewHolderForAdapterPosition(pos);
+                                if(viewHolder != null &&
+                                        viewHolder.itemView != null) {
+                                    viewHolder.itemView.performClick();
+                                    expandableListView.scrollToPosition(pos);
+                                }
+                            }
+                        },1);
                     }
-                }
-            });
+                });
         }
     }
 }

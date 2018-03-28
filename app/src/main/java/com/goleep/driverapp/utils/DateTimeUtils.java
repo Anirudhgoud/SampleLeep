@@ -12,10 +12,15 @@ import java.util.Date;
 
 public class DateTimeUtils {
 
-    public static String convertdDate(String dateString, String fromFormatString, String toFormatString){
-        DateFormat fromFormat = new SimpleDateFormat(fromFormatString);
+    public static final DateFormat ORDER_SERVER_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateFormat ORDER_DISPLAY_DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy");
+    public static final DateFormat ORDER_DISPLAY_DATE_FORMAT_COMMA = new SimpleDateFormat("dd MMM, yyyy");
+    public static final DateFormat REQUEST_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    public static final DateFormat TWENTY_FOUR_HOUR_TIME_FORMAT = new SimpleDateFormat("HH:mm");
+    public static final DateFormat TWELVE_HOUR_TIME_FORMAT = new SimpleDateFormat("hh:mma");
+
+    public static String convertdDate(String dateString, DateFormat fromFormat, DateFormat toFormat){
         fromFormat.setLenient(false);
-        DateFormat toFormat = new SimpleDateFormat(toFormatString);
         toFormat.setLenient(false);
         Date date = null;
         try {
@@ -27,19 +32,17 @@ public class DateTimeUtils {
         return "";
     }
 
-    public static String convertedDate(Date date, String requiredFormat) {
-        DateFormat requiredDateFormat = new SimpleDateFormat(requiredFormat);
+    public static String convertedDate(Date date, DateFormat requiredDateFormat) {
         requiredDateFormat.setLenient(false);
         return requiredDateFormat.format(date);
     }
 
-    public static Date dateFrom(String dateString, String dateFormatString){
-        if(dateString == null || dateFormatString == null){
+    public static Date dateFrom(String dateString, DateFormat dateFormat){
+        if(dateString == null || dateFormat == null){
             return  null;
         }
-        DateFormat format = new SimpleDateFormat(dateFormatString);
         try {
-            return format.parse(dateString);
+            return dateFormat.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }

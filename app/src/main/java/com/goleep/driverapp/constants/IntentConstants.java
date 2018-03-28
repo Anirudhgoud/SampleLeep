@@ -12,5 +12,5 @@ public interface IntentConstants {
     String BUSINESS_ADDRESS = "business_address";
     String GRAND_TOTAL = "grand_total";
     String PAYMENT_METHOD = "payment_method";
-    String DO_ID = "do_id";
+    String ORDER_ID = "order_id";
 }
