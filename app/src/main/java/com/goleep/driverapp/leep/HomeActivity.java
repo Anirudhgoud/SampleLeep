@@ -118,6 +118,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                 logoutUser();
             else if (errorMessage == null) {
                 if (uiModels.size() > 0) {
+                    if(!HomeActivity.this.isFinishing())
                     HomeActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
