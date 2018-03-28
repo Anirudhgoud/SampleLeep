@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA;
+import static com.goleep.driverapp.utils.DateTimeUtils.TWELVE_HOUR_TIME_FORMAT;
+import static com.goleep.driverapp.utils.DateTimeUtils.TWENTY_FOUR_HOUR_TIME_FORMAT;
+
 /**
  * Created by anurag on 27/02/18.
  */
@@ -70,7 +74,8 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
     }
 
     public String dateToDisplay(String dateString){
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, "yyyy-MM-dd", "dd MMM, yyyy");
+        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
+                DateTimeUtils.ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT_COMMA);
 
     }
 
@@ -78,8 +83,10 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
         if (timeString != null){
             String[] times = timeString.split(" - ");
             if(times.length == 2){
-                String startTime = DateTimeUtils.convertdDate(times[0].trim(), "HH:mm", "hh:mma");
-                String endTime = DateTimeUtils.convertdDate(times[1].trim(), "HH:mm", "hh:mma");
+                String startTime = DateTimeUtils.convertdDate(times[0].trim(),
+                        TWENTY_FOUR_HOUR_TIME_FORMAT, TWELVE_HOUR_TIME_FORMAT);
+                String endTime = DateTimeUtils.convertdDate(times[1].trim(),
+                        TWENTY_FOUR_HOUR_TIME_FORMAT, TWELVE_HOUR_TIME_FORMAT);
                 return startTime + " - " + endTime;
             }
         }

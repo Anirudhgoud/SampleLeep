@@ -140,7 +140,8 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
     }
 
     public String dateToDisplay(String dateString) {
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, "yyyy-MM-dd", "dd MMM, yyyy");
+        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
+                DateTimeUtils.ORDER_SERVER_DATE_FORMAT, DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
 
     }
 
@@ -148,8 +149,10 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
         if (timeString != null) {
             String[] times = timeString.split(" - ");
             if (times.length == 2) {
-                String startTime = DateTimeUtils.convertdDate(times[0].trim(), "HH:mm", "hh:mma");
-                String endTime = DateTimeUtils.convertdDate(times[1].trim(), "HH:mm", "hh:mma");
+                String startTime = DateTimeUtils.convertdDate(times[0].trim(),
+                        DateTimeUtils.TWENTY_FOUR_HOUR_TIME_FORMAT, DateTimeUtils.TWELVE_HOUR_TIME_FORMAT);
+                String endTime = DateTimeUtils.convertdDate(times[1].trim(),
+                        DateTimeUtils.TWENTY_FOUR_HOUR_TIME_FORMAT, DateTimeUtils.TWELVE_HOUR_TIME_FORMAT);
                 return startTime + " - " + endTime;
             }
         }

@@ -25,6 +25,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT;
+import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
+
 public class HistoryDetailsActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
@@ -50,8 +53,7 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
     private UILevelNetworkCallback orderItemsCallBack = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if(uiModels != null){
-                if(uiModels.size() > 0)
+            if(uiModels != null && uiModels.size() > 0){
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -117,7 +119,7 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
                     deliveryOrderEntity.getDestinationAddressLine2()));
             doNumberTv.setText(deliveryOrderEntity.getDoNumber());
             dateTv.setText(DateTimeUtils.convertdDate(deliveryOrderEntity.getActualDeliveryDate(),
-                    "yyyy-MM-dd", "dd MMM yyyy"));
+                    ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
             timeTv.setText(StringUtils.timeToDisplay(deliveryOrderEntity.getPreferredDeliveryTime()));
             itemsTv.setText(String.valueOf(deliveryOrderEntity.getDeliveryOrderItemsCount()));
             doAmountTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue()));

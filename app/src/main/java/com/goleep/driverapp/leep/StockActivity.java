@@ -12,8 +12,7 @@ import android.widget.RadioGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ProductListAdapter;
-import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.utils.FontUtils;
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.viewmodels.StocksViewModel;
 
 import butterknife.BindView;
@@ -51,7 +50,7 @@ public class StockActivity extends ParentAppCompatActivity {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.stock), R.drawable.ic_stock_title_icon);
-        Typeface typeface = new FontUtils().getTypeface(StockActivity.this, "NotoSans-Regular");
+        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
         rbDeliverable.setTypeface(typeface);
         rbSellable.setTypeface(typeface);
         rbReturned.setTypeface(typeface);

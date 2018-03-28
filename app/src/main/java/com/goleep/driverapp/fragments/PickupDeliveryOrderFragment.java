@@ -136,25 +136,26 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                 orderItemEntity.setItemType(AppConstants.TYPE_DO_ITEM);
                 listItems.add(orderItemEntity);
             }
+            if(getActivity() != null && !getActivity().isFinishing())
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.addItemsList(listItems, doId);
+                        doViewModel.getDoUpdateMap().put(doId, true);
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.addItemsList(listItems, doId);
-                    doViewModel.getDoUpdateMap().put(doId, true);
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(expandableListView.findViewHolderForAdapterPosition(pos)!= null &&
-                                    expandableListView.findViewHolderForAdapterPosition(pos).itemView != null) {
-                                expandableListView.findViewHolderForAdapterPosition(pos).itemView.performClick();
-                                expandableListView.scrollToPosition(pos);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                RecyclerView.ViewHolder viewHolder = expandableListView.findViewHolderForAdapterPosition(pos);
+                                if(viewHolder != null &&
+                                        viewHolder.itemView != null) {
+                                    viewHolder.itemView.performClick();
+                                    expandableListView.scrollToPosition(pos);
+                                }
                             }
-                        }
-                    },1);
-                }
-            });
+                        },1);
+                    }
+                });
         }
     }
 }
