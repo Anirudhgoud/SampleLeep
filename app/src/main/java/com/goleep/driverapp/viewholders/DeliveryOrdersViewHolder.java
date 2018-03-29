@@ -67,7 +67,6 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
     private String dateToDisplay(String dateString){
         return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, ORDER_SERVER_DATE_FORMAT,
                 ORDER_DISPLAY_DATE_FORMAT_COMMA);
-
     }
 
     private String timeToDisplay(String timeString){
@@ -84,30 +83,17 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
 
     private String amountToDisplay(Float amountString){
         String currencySymbol = AppUtils.userCurrencySymbol();
-        if (amountString != null){
-            return currencySymbol + " " + Math.round(amountString);
-        }
-        return currencySymbol + " 0";
+        return amountString != null ? (currencySymbol + " " + Math.round(amountString)) : (currencySymbol + " 0");
     }
 
     private String getAddress(String line1, String line2){
-        String address = "";
-        if(line1 != null){
-            address = line1;
-        }
-        if(line2 != null){
-            if(line1 != null){
-                address += ", ";
-            }
-            address = address + line2;
-        }
-        return address;
+        String addressLine1 = line1 == null ? "" : line1;
+        String addressLine2 = line2 == null ? "" : line2;
+        String separator = line1 == null ? "" : ", ";
+        return addressLine1 + separator + addressLine2;
     }
 
     private String getEstimatedDeliveryTimeText(Distance distance) {
-        if (distance == null) return "-";
-        else {
-            return distance.getDurationText() == null ? "-" : distance.getDurationText();
-        }
+        return (distance == null) ? "-" : (distance.getDurationText() == null ? "-" : distance.getDurationText());
     }
 }

@@ -2,7 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
+    <AutoCompleteTextView
+        android:id="@+id/atv_search"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_rect_with_grey_border"
+        android:drawableRight="@drawable/ic_search"
+        android:fontFamily="@font/noto_sans"
+        android:hint="@string/search_customer"
+        android:padding="8dp"
+        android:textColor="@color/doTabTextColor"
+        android:textCursorDrawable="@null" />
+
+    <include layout="@layout/divider_view" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/noto_sans_bold"
+        android:text="@string/nearby_customers"
+        android:textColor="@color/dark_grey_text"
+        android:textSize="14sp" />
+
+    <include layout="@layout/divider_view" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/customer_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </LinearLayout>
