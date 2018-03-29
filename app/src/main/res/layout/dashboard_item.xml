@@ -16,15 +16,13 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="22dp"
-        android:background="@drawable/drop_off_icon_bg"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
-            app:srcCompat="@drawable/ic_drop_off_dashboard" />
+            android:layout_margin="10dp" />
     </LinearLayout>
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
@@ -33,7 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/icon_layout"
-        android:text="@string/dropoff"
         android:textColor="@color/text_black"
         android:textSize="22sp"
         app:typeface="NotoSans-Regular" />
@@ -43,12 +40,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:background="@drawable/drop_off_icon_bg"
         android:paddingBottom="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="8dp"
-        android:text="132"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:typeface="NotoSans-Regular"></com.goleep.driverapp.helpers.customfont.CustomTextView>
@@ -60,7 +55,6 @@
         android:layout_below="@+id/main_text"
         android:layout_toEndOf="@+id/icon_layout"
         android:layout_toRightOf="@+id/icon_layout"
-        android:text="@string/drop_off_below_text"
         android:textColor="@color/dark_grey_text"
         android:textSize="12dp"
         app:typeface="NotoSans-Regular"></com.goleep.driverapp.helpers.customfont.CustomTextView>
