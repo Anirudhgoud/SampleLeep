@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.stetho.common.StringUtil;
@@ -55,6 +57,10 @@ public class HomeActivity extends ParentAppCompatActivity {
     CustomButton signOutButton;
     @BindView(R.id.edit_profile_imageview)
     CircleImageView profileImage;
+
+    private RelativeLayout relativeLayout_pickup_cardview;
+    private RelativeLayout relativeLayout_drop_off_cardview;
+    private RelativeLayout relativeLayout_information_cardview;
 
     final int START_GALLERY_REQUEST_CODE = 101;
     final int START_PICKUP_ACTIVITY_CODE = 102;
@@ -118,13 +124,13 @@ public class HomeActivity extends ParentAppCompatActivity {
                 logoutUser();
             else if (errorMessage == null) {
                 if (uiModels.size() > 0) {
-                    if(!HomeActivity.this.isFinishing())
-                    HomeActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            displayDriverProfile((DriverEntity) uiModels.get(0));
-                        }
-                    });
+                    if (!HomeActivity.this.isFinishing())
+                        HomeActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                displayDriverProfile((DriverEntity) uiModels.get(0));
+                            }
+                        });
                 }
             } else if (isDialogToBeShown) {
                 showNetworkRelatedDialogs(errorMessage);
@@ -356,9 +362,15 @@ public class HomeActivity extends ParentAppCompatActivity {
             switch (position) {
                 case 0:
                     layout = (ViewGroup) inflater.inflate(R.layout.dashboard_view, collection, false);
-                    layout.findViewById(R.id.pickup_cardview).setOnClickListener(dashboardItemClickListener);
-                    layout.findViewById(R.id.drop_off_cardview).setOnClickListener(dashboardItemClickListener);
-                    layout.findViewById(R.id.information_cardview).setOnClickListener(dashboardItemClickListener);
+                    relativeLayout_pickup_cardview = layout.findViewById(R.id.pickup_cardview);
+                    relativeLayout_drop_off_cardview = layout.findViewById(R.id.drop_off_cardview);
+                    relativeLayout_information_cardview = layout.findViewById(R.id.information_cardview);
+                    relativeLayout_pickup_cardview.setTag("0");
+                    relativeLayout_drop_off_cardview.setTag("1");
+                    relativeLayout_information_cardview.setTag("2");
+                    relativeLayout_pickup_cardview.setOnClickListener(dashboardItemClickListener);
+                    relativeLayout_drop_off_cardview.setOnClickListener(dashboardItemClickListener);
+                    relativeLayout_information_cardview.setOnClickListener(dashboardItemClickListener);
                     break;
                 case 1:
                     layout = (ViewGroup) inflater.inflate(R.layout.inner_dashboard_view, collection, false);
@@ -424,10 +436,30 @@ public class HomeActivity extends ParentAppCompatActivity {
         return result;
     }
 
+    private void findDashboardViewsAndSet(RelativeLayout layout, int mainText, int drawableIconBg, int drawableDashboard, int belowText, String count) {
+        ((CustomTextView) layout.findViewById(R.id.main_text)).setText(getResources().getText(mainText));
+        (layout.findViewById(R.id.icon_layout)).setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
+        ((ImageView) layout.findViewById(R.id.icon)).setImageResource(drawableDashboard);
+        ((CustomTextView) layout.findViewById(R.id.sub_text)).setText(getResources().getText(belowText));
+        CustomTextView tvPickUpCount = layout.findViewById(R.id.count_text);
+        tvPickUpCount.setText(count);
+        tvPickUpCount.setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
+
+    }
+
     private void populateUiCount(Summary summary) {
-        boolean isSummaryNull = summary == null;
-        ((CustomTextView) findViewById(R.id.tv_pickup_count)).setText(StringUtils.addZeroToSingleCharacter(isSummaryNull ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())));
-        ((CustomTextView) findViewById(R.id.tv_dropoff_count)).setText(StringUtils.addZeroToSingleCharacter(isSummaryNull ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())));
-        ((CustomTextView) findViewById(R.id.tv_information_count)).setText(StringUtils.addZeroToSingleCharacter(isSummaryNull ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())));
+        findDashboardViewsAndSet(relativeLayout_pickup_cardview, R.string.pickup, R.drawable.pickup_icon_bg,
+                R.drawable.ic_pickup_dashboard, R.string.pick_up__below_text,
+                StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())));
+
+        findDashboardViewsAndSet(relativeLayout_drop_off_cardview, R.string.dropoff, R.drawable.drop_off_icon_bg,
+                R.drawable.ic_drop_off_dashboard, R.string.drop_off_below_text,
+                StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())));
+
+        findDashboardViewsAndSet(relativeLayout_information_cardview, R.string.information, R.drawable.info_icon_bg,
+                R.drawable.ic_info_dashboard, R.string.information_below_text,
+                StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())));
+
+
     }
 }

@@ -12,8 +12,18 @@ import static com.goleep.driverapp.utils.DateTimeUtils.TWENTY_FOUR_HOUR_TIME_FOR
  */
 
 public class StringUtils {
-    static NumberFormat currencyFormatter;
-    static NumberFormat numberFormatter;
+    final static NumberFormat currencyFormatter;
+    final static NumberFormat numberFormatter;
+
+
+    static {
+        currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
+        numberFormatter = NumberFormat.getNumberInstance();
+    }
+
+    private StringUtils() {
+    }
+
 
     public static String getAddress(String line1, String line2) {
         String address = "";
@@ -30,8 +40,6 @@ public class StringUtils {
     }
 
     public static String amountToDisplay(Float amountString) {
-        if (currencyFormatter == null)
-            currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
         currencyFormatter.setMaximumFractionDigits(0);
         String moneyString = currencyFormatter.format(amountString);
         if (amountString != null) {
@@ -41,8 +49,6 @@ public class StringUtils {
     }
 
     public static String numberToDisplay(int number) {
-        if (numberFormatter == null)
-            numberFormatter = NumberFormat.getNumberInstance();
         numberFormatter.setMaximumFractionDigits(0);
         return numberFormatter.format(number);
     }
