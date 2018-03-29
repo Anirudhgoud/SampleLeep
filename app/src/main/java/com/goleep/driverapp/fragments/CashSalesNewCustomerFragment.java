@@ -5,11 +5,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CashSalesNewCustomerFragment extends Fragment {
 
@@ -31,6 +36,13 @@ public class CashSalesNewCustomerFragment extends Fragment {
                 scrollView.setVisibility(View.VISIBLE);
             }
         });
+        List<String> listBussinessType = new ArrayList<> ();
+        listBussinessType.add("Retailer");
+        listBussinessType.add("Warehouse");
+        listBussinessType.add("distributor");
+        ArrayAdapter<String> adapterBusinessType = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,listBussinessType);
+        Spinner spinnerBusinessType = view.findViewById(R.id.sp_business_type);
+        spinnerBusinessType.setAdapter(adapterBusinessType);
         return view;
     }
 
