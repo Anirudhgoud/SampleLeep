@@ -11,13 +11,17 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
 import com.goleep.driverapp.adapters.CustomerListAdapter;
+import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.interfaces.CustomerClickEventListener;
@@ -30,16 +34,23 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by anurag on 19/03/18.
  */
 
 public class CashSalesExistingCustomerFragment extends Fragment implements LocationChangeListener {
 
-    private RecyclerView customersRecyclerView;
+    @BindView(R.id.customer_recycler_view)
+    RecyclerView customersRecyclerView;
+    @BindView(R.id.atv_search)
+    CustomAppCompatAutoCompleteTextView atvSearch;
 
     private CashSalesExistingCustomerViewModel viewModel;
     private CustomerListAdapter customerListAdapter;
+    private CustomerSearchArrayAdapter customerSearchListAdapter;
     private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
 
     private CustomerClickEventListener customerClickEventListener = customerId -> {
@@ -53,7 +64,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cash_sales_existing_customer, container, false);
-        customersRecyclerView = view.findViewById(R.id.customer_recycler_view);
+        ButterKnife.bind(this, view);
         initialise();
         checkForLocationPermission();
         return view;
@@ -62,6 +73,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     private void initialise() {
         viewModel = ViewModelProviders.of(getActivity()).get(CashSalesExistingCustomerViewModel.class);
         initialiseRecyclerView();
+        initialiseAutoCompleteTextView();
     }
 
 
@@ -71,6 +83,26 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
         customerListAdapter = new CustomerListAdapter(new ArrayList<>());
         customerListAdapter.setCustomerClickEventListener(customerClickEventListener);
         customersRecyclerView.setAdapter(customerListAdapter);
+    }
+
+    private void initialiseAutoCompleteTextView() {
+        customerSearchListAdapter = new CustomerSearchArrayAdapter(getContext(), new ArrayList());
+        atvSearch.setAdapter(customerSearchListAdapter);
+
+        atvSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 2) fetchCustomerList(false, false, null, s.toString() ,customerSuggestionsNetworkCallback);
+            }
+        });
     }
 
     private void checkForLocationPermission() {
@@ -113,11 +145,10 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
 
             activity.runOnUiThread(() -> {
                 ((ParentAppCompatActivity) getActivity()).dismissProgressDialog();
-                if(uiModels == null){
-                    getActivity().runOnUiThread(() -> activity.dismissProgressDialog());
-                    if(toLogout){
+                if (uiModels == null) {
+                    if (toLogout) {
                         activity.logoutUser();
-                    }else if(isDialogToBeShown) {
+                    } else if (isDialogToBeShown) {
                         activity.showNetworkRelatedDialogs(errorMessage);
                     }
                 } else if (uiModels.size() > 0) {
@@ -128,15 +159,36 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
         }
     };
 
-    private void fetchCustomerList(boolean lastDeliveryDateRequired, LatLng currentLocation, UILevelNetworkCallback networkCallback) {
-        ((ParentAppCompatActivity) getActivity()).showProgressDialog();
-        viewModel.fetchCustomerList(lastDeliveryDateRequired, currentLocation, networkCallback);
+    private UILevelNetworkCallback customerSuggestionsNetworkCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            ParentAppCompatActivity activity = ((ParentAppCompatActivity) getActivity());
+            if (activity == null) return;
+            activity.runOnUiThread(() -> {
+                ((ParentAppCompatActivity) getActivity()).dismissProgressDialog();
+                if (uiModels == null) {
+                    if (toLogout) {
+                        activity.logoutUser();
+                    } else if (isDialogToBeShown) {
+                        activity.showNetworkRelatedDialogs(errorMessage);
+                    }
+                } else if (uiModels.size() > 0) {
+                    List<Customer> customerList = (List<Customer>) uiModels;
+                    customerSearchListAdapter.updateData(customerList);
+                }
+            });
+        }
+    };
+
+    private void fetchCustomerList(boolean showLoading, boolean lastDeliveryDateRequired, LatLng currentLocation, String searchText, UILevelNetworkCallback networkCallback) {
+        if (showLoading) ((ParentAppCompatActivity) getActivity()).showProgressDialog();
+        viewModel.fetchCustomerList(lastDeliveryDateRequired, currentLocation, searchText ,networkCallback);
     }
 
     @Override
     public void onLastKnownLocationReceived(Location location) {
         if (location != null)
-            fetchCustomerList(true, new LatLng(location.getLatitude(), location.getLongitude()), customerListNetworkCallback);
+            fetchCustomerList(true, true, new LatLng(location.getLatitude(), location.getLongitude()), null, customerListNetworkCallback);
         else {
             Toast.makeText(getContext(), getContext().getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
         }

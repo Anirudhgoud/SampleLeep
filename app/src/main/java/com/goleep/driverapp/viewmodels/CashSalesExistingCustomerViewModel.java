@@ -25,11 +25,11 @@ public class CashSalesExistingCustomerViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void fetchCustomerList(boolean lastDeliveryDateRequired, LatLng currentLocation, final UILevelNetworkCallback customerListNetworkCallBack) {
+    public void fetchCustomerList(boolean lastDeliveryDateRequired, LatLng currentLocation, String searchText, final UILevelNetworkCallback customerListNetworkCallBack) {
         String url = UrlConstants.CONSUMER_LOCATIONS_URL + "?last_delivery_date=" + lastDeliveryDateRequired;
-        if(currentLocation != null){
-            url += "&latitude=" + currentLocation.latitude + "&longitude=" + currentLocation.longitude;
-        }
+        if(currentLocation != null) url += "&latitude=" + currentLocation.latitude + "&longitude=" + currentLocation.longitude;
+        if(searchText != null) url += "&text=" + searchText;
+
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
                 url, true, (type, response, errorMessage) -> {
                     switch (type) {
