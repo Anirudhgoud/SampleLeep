@@ -118,6 +118,9 @@
     <string name="select">Select</string>
     <string name="last_delivery">Last Delivery:</string>
     <string name="search_customer">Search Customer</string>
+    <string name="scan">Scan</string>
+    <string name="search">Search</string>
+
 
     <!--Error Messages-->
     <string name="invalid_quantity_error">You can only reduce the units and it should be greater than 0</string>

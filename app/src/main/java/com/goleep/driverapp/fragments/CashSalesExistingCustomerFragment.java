@@ -2,6 +2,7 @@ package com.goleep.driverapp.fragments;
 
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -21,12 +22,14 @@ import android.widget.Toast;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
 import com.goleep.driverapp.adapters.CustomerListAdapter;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.interfaces.CustomerClickEventListener;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.CashSalesSelectProductsActivity;
 import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.viewmodels.CashSalesExistingCustomerViewModel;
 import com.google.android.gms.maps.model.LatLng;
@@ -53,9 +56,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     private CustomerSearchArrayAdapter customerSearchListAdapter;
     private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
 
-    private CustomerClickEventListener customerClickEventListener = customerId -> {
-
-    };
+    private CustomerClickEventListener customerClickEventListener = this::gotoSelectProductActivity;
 
     public CashSalesExistingCustomerFragment() {
     }
@@ -197,5 +198,11 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     @Override
     public void onLastKnownLocationError(String errorMessage) {
         Toast.makeText(getContext(), getContext().getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
+    }
+
+    private void gotoSelectProductActivity(int customerId){
+        Intent intent = new Intent(getActivity(), CashSalesSelectProductsActivity.class);
+        intent.putExtra(IntentConstants.CUSTOMER_ID, customerId);
+        startActivity(intent);
     }
 }
