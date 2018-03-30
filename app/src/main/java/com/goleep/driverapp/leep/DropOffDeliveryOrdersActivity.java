@@ -43,7 +43,7 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
         initialiseTabBar();
     }
 
-    private void initialiseToolbar(){
+    private void initialiseToolbar() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.delivery_orders), R.drawable.ic_drop_off_toolbar);
@@ -80,26 +80,11 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.left_toolbar_button : finish();
+        switch (resourceId) {
+            case R.id.left_toolbar_button:
+                finish();
                 break;
         }
-    }
-
-    public void logout(){
-        super.logoutUser();
-    }
-
-    public void showErrorDialog(String message){
-        super.showNetworkRelatedDialogs(message);
-    }
-
-    public void showLoading() {
-        showProgressDialog();
-    }
-
-    public void hideLoading() {
-        dismissProgressDialog();
     }
 
     class DeliveryOrderPagerAdapter extends FragmentPagerAdapter {

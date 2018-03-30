@@ -22,7 +22,7 @@ import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.DropOffDeliveryOrderDetailsActivity;
-import com.goleep.driverapp.leep.DropOffDeliveryOrdersActivity;
+import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
 
@@ -55,28 +55,25 @@ public class DeliveryOrdersListFragment extends Fragment {
         return view;
     }
 
-    private void initialise(){
+    private void initialise() {
         doViewModel = ViewModelProviders.of(getActivity()).get(DropOffDeliveryOrdersViewModel.class);
         initialiseRecyclerView();
         initialiseRadioButtons();
         observeDistanceChanges();
     }
 
-    private void initialiseRecyclerView(){
+    private void initialiseRecyclerView() {
         doListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         doListRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<BaseListItem>());
+        doListAdapter = new DeliveryOrdersListAdapter(new ArrayList<>());
         doListAdapter.setDeliveryOrderClickEventListener(deliveryOrderClickEventListener);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
-                        DeliveryOrdersListFragment.this, new Observer<List<DeliveryOrderEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrders) {
-                List<BaseListItem> baseListItems = new ArrayList<>();
-                baseListItems.addAll(deliveryOrders);
-                doListAdapter.updateList(baseListItems);
-            }
-        });
+                DeliveryOrdersListFragment.this, deliveryOrders -> {
+                    List<BaseListItem> baseListItems = new ArrayList<>();
+                    baseListItems.addAll(deliveryOrders);
+                    doListAdapter.updateList(baseListItems);
+                });
         doListRecyclerView.setAdapter(doListAdapter);
     }
 
@@ -89,7 +86,7 @@ public class DeliveryOrdersListFragment extends Fragment {
         });
     }
 
-    private void initialiseRadioButtons(){
+    private void initialiseRadioButtons() {
         rgFilterRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -98,16 +95,15 @@ public class DeliveryOrdersListFragment extends Fragment {
         });
     }
 
-    private void fetchDeliveryOrders(){
-        DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity) getActivity());
-        if (dropOffDeliveryOrdersActivity != null) {
-            dropOffDeliveryOrdersActivity.showLoading();
-            doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null, null);
-        }
+    private void fetchDeliveryOrders() {
+        ParentAppCompatActivity activity = ((ParentAppCompatActivity) getActivity());
+        if (activity == null) return;
+        activity.showProgressDialog();
+        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null, null);
     }
 
-    private void onRadioSelectionChange(int checkedId){
-        switch (checkedId){
+    private void onRadioSelectionChange(int checkedId) {
+        switch (checkedId) {
             case R.id.rb_date:
                 doListAdapter.sortList(SortCategoryType.DATE);
                 break;
@@ -122,25 +118,21 @@ public class DeliveryOrdersListFragment extends Fragment {
         }
     }
 
-    private void openDeliveryDetailsActivity(Integer deliveryOrderId){
+    private void openDeliveryDetailsActivity(Integer deliveryOrderId) {
         Intent doDetailsIntent = new Intent(getActivity(), DropOffDeliveryOrderDetailsActivity.class);
         doDetailsIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, deliveryOrderId);
         startActivity(doDetailsIntent);
     }
 
-    private UILevelNetworkCallback deliveryOrderCallBack = new UILevelNetworkCallback() {
+    private UILevelNetworkCallback deliveryOrderCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        ParentAppCompatActivity activity = ((ParentAppCompatActivity) getActivity());
+        if (activity == null) return;
+        activity.dismissProgressDialog();
 
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            DropOffDeliveryOrdersActivity dropOffDeliveryOrdersActivity = ((DropOffDeliveryOrdersActivity) getActivity());
-            if (dropOffDeliveryOrdersActivity == null) return;
-            dropOffDeliveryOrdersActivity.hideLoading();
-
-            if (toLogout) {
-                dropOffDeliveryOrdersActivity.logout();
-            } else if (isDialogToBeShown) {
-                dropOffDeliveryOrdersActivity.showErrorDialog(errorMessage);
-            }
+        if (toLogout) {
+            activity.logoutUser();
+        } else if (isDialogToBeShown) {
+            activity.showNetworkRelatedDialogs(errorMessage);
         }
     };
 }

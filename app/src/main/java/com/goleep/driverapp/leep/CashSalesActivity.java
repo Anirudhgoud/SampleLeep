@@ -78,23 +78,6 @@ public class CashSalesActivity extends ParentAppCompatActivity {
         }
     }
 
-    public void logout() {
-        super.logoutUser();
-    }
-
-    public void showErrorDialog(String message) {
-        super.showNetworkRelatedDialogs(message);
-    }
-
-    public void showLoading() {
-        showProgressDialog();
-    }
-
-    public void hideLoading() {
-        dismissProgressDialog();
-    }
-
-
     class CashSalesPagerAdapter extends FragmentPagerAdapter {
 
         private int NUMBER_OF_ITEMS = 2;
