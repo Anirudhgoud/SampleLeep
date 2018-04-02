@@ -36,7 +36,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewCustomerActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationChangeListener {
+public class NewCustomerActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationChangeListener , GoogleMap.OnMarkerDragListener{
     @BindView(R.id.tv_complete_address)
     CustomTextView tvAddress;
     @BindView(R.id.et_location)
@@ -192,4 +192,18 @@ public class NewCustomerActivity extends AppCompatActivity implements OnMapReady
 
     }
 
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+
+    }
 }
