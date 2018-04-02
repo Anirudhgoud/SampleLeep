@@ -16,9 +16,11 @@ import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DriverDataParser;
 import com.goleep.driverapp.services.network.jsonparsers.StockProductParser;
 import com.goleep.driverapp.services.network.jsonparsers.SummaryParser;
+import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
+import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import org.json.JSONArray;
@@ -34,19 +36,18 @@ import java.util.Map;
  */
 
 public class HomeViewModel extends AndroidViewModel {
-    private Context context;
-
     private Summary summary = new Summary();
+    private AppDatabase leepDatabase;
     public HomeViewModel(@NonNull Application application) {
         super(application);
-        context = application.getApplicationContext();
+        leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
 
     public void signout(final UILevelNetworkCallback logoutCallback) {
         Map<String, String> headerParams = new HashMap<>();
         headerParams.put(RequestConstants.AUTHORIZATION, LocalStorageService.sharedInstance()
-                .getLocalFileStore().getString(context, SharedPreferenceKeys.AUTH_TOKEN));
-        NetworkService.sharedInstance().getNetworkClient().makeDeleteRequest(context, UrlConstants.LOGOUT_URL,
+                .getLocalFileStore().getString(getApplication(), SharedPreferenceKeys.AUTH_TOKEN));
+        NetworkService.sharedInstance().getNetworkClient().makeDeleteRequest(getApplication(), UrlConstants.LOGOUT_URL,
                 true, headerParams, new NetworkAPICallback() {
             @Override
             public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
@@ -68,8 +69,9 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void getDriverProfile(final UILevelNetworkCallback driverProfileCallback) {
-        int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(context, SharedPreferenceKeys.DRIVER_ID);
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
+        int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(getApplication(),
+                SharedPreferenceKeys.DRIVER_ID);
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
                 UrlConstants.DRIVERS_URL+"/"+driverId,
                 true, new NetworkAPICallback() {
             @Override
@@ -81,7 +83,11 @@ public class HomeViewModel extends AndroidViewModel {
                         DriverEntity driver =  driverDataParser.driverResponseByParsingJsonResponse(response);
                         if(driver != null){
                             driverEntities.add(driver);
-                            RoomDBService.sharedInstance().getDatabase(context).driverDao().insertDriver(driver);
+                            leepDatabase.driverDao().insertDriver(driver);
+                        }
+                        List<WarehouseEntity> warehouseEntities = driverDataParser.warehouseByParsingResponse(response);
+                        if(warehouseEntities != null){
+                            leepDatabase.warehouseDao().insertWarehouseEntities(warehouseEntities);
                         }
                         driverProfileCallback.onResponseReceived(driverEntities, false, null, false);
                         break;
@@ -133,7 +139,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void getSummary(final UILevelNetworkCallback summaryCallback) {
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context, UrlConstants.SUMMARY_URL,
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.SUMMARY_URL,
                 true, new NetworkAPICallback() {
             @Override
             public void onNetworkResponse(int type, JSONArray response, String errorMessage) {

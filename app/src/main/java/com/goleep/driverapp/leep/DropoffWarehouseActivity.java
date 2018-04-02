@@ -1,12 +1,8 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,21 +10,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
-
 import com.goleep.driverapp.adapters.WarehousePagerAdapter;
-import com.goleep.driverapp.constants.AppConstants;
-import com.goleep.driverapp.fragments.WarehouseListFragment;
-import com.goleep.driverapp.fragments.WarehouseMapFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.viewmodels.DeliveryOrderViewModel;
+import com.goleep.driverapp.viewmodels.DropoffViewModel;
 import com.goleep.driverapp.viewmodels.PickupViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PickupWarehouseActivity extends ParentAppCompatActivity {
+public class DropoffWarehouseActivity extends ParentAppCompatActivity {
 
-    PickupViewModel pickupViewModel;
+    private DropoffViewModel dropoffViewModel;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.view_pager)
@@ -36,21 +28,20 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        setResources(R.layout.activity_pickup_warehouse);
+        setResources(R.layout.activity_dropoff_warehouse);
     }
 
     @Override
     public void doInitialSetup() {
-        ButterKnife.bind(PickupWarehouseActivity.this);
-        pickupViewModel = ViewModelProviders.of(PickupWarehouseActivity.this).
-                get(PickupViewModel.class);
+        ButterKnife.bind(this);
+        dropoffViewModel = ViewModelProviders.of(DropoffWarehouseActivity.this).get(DropoffViewModel.class);
         initView();
     }
 
     private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
+        setTitleIconAndText(getString(R.string.dropoff), R.drawable.ic_drop_off_title);
         initialiseTabBar();
     }
 
@@ -83,22 +74,6 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.left_toolbar_button : finish();
-                break;
-        }
+
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 101) {
-            if (resultCode == AppConstants.ACTIVITY_SUCCESS_RESULT) {
-                finish();
-            }
-        }
-    }
-
-
-
-
 }

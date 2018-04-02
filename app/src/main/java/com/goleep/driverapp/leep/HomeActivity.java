@@ -94,6 +94,9 @@ public class HomeActivity extends ParentAppCompatActivity {
                     Intent stocksIntent = new Intent(HomeActivity.this, StockActivity.class);
                     startActivity(stocksIntent);
                     break;
+                case InnerDashboardUiModel.TAG_DROP_OFF:
+                    Intent dropoffIntent = new Intent(HomeActivity.this, DropoffWarehouseActivity.class);
+                    startActivity(dropoffIntent);
             }
         }
     };

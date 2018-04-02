@@ -214,7 +214,5 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
                 permissionResult.onPermissionDenied();
             }
         }
-
     }
-
 }

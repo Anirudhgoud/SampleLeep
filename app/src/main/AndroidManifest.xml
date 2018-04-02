@@ -82,12 +82,14 @@
         <activity
             android:name=".leep.WarehouseDropoffActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".leep.HistoryDetailsActivity"
+        <activity
+            android:name=".leep.HistoryDetailsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.PickupWarehouseActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".leep.PickupWarehouseActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".leep.DropoffWarehouseActivity" />
+        <activity android:name=".leep.DropoffActivity"></activity>
     </application>
 
 </manifest>

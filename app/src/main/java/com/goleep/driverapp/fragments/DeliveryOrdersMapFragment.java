@@ -43,7 +43,8 @@ import java.util.List;
  * Created by anurag on 15/02/18.
  */
 
-public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationChangeListener {
+public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener, LocationChangeListener {
 
     private CustomTextView tvCustomerName;
     private CustomTextView tvDONumber;
@@ -61,7 +62,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_delivery_order_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
         connectUIElements(view);
         addListeners();
         initialiseMapView();

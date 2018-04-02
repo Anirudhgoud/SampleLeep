@@ -36,6 +36,7 @@
     <string name="total_value_label">Total Value: %1s</string>
     <string name="pickup_success">Pick Up Successful</string>
     <string name="ok">OK</string>
+    <string name="select">Select</string>
 
 
     <!--Delivery Orders-->
@@ -61,6 +62,10 @@
     <string name="enter_quantity">Enter Quantity</string>
     <string name="storage_permission_denied">Please provide external storage permissions</string>
     <string name="image_picker">"Select Image From Gallery"</string>
+
+    <!--Dropoff-->
+    <string name="dropoff_stock">Drop Off</string>
+    <string name="sellable_stocks">Sellable Stocks</string>
 
     <!--Reports-->
     <string name="reports">Reports</string>

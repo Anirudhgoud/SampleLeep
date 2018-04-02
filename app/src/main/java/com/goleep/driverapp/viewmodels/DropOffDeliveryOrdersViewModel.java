@@ -21,6 +21,7 @@ import com.goleep.driverapp.services.network.jsonparsers.DistanceMatrixResponseP
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.MapUtils;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -45,8 +46,12 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
         super(application);
     }
 
-    public void fetchTimeToReachAndUpdateDeliveryOrders(List<DeliveryOrderEntity> deliveryOrders, Location currentLocation, UILevelNetworkCallback timeToReachCallback) {
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(), generateDistanceMatrixUrl(getOrigins(currentLocation), getDestinations(deliveryOrders)),
+    public void fetchTimeToReachAndUpdateDeliveryOrders(List<DeliveryOrderEntity> deliveryOrders,
+                                                        Location currentLocation,
+                                                        UILevelNetworkCallback timeToReachCallback) {
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
+                MapUtils.generateDistanceMatrixUrl(getOrigins(currentLocation),
+                        getDestinations(deliveryOrders), getApplication()),
                 false, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
@@ -107,36 +112,6 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
         List<LatLng> origins = new ArrayList<>();
         origins.add(new LatLng(location.getLatitude(), location.getLongitude()));
         return origins;
-    }
-
-
-    private String generateDistanceMatrixUrl(List<LatLng> origins, List<LatLng> destinations) {
-        StringBuilder url = new StringBuilder();
-        url.append(UrlConstants.DISTANCE_MATRIX_API);
-
-        if (origins != null && origins.size() > 0) {
-            url.append("origins=");
-            for (int i = 0; i < origins.size(); i++) {
-                LatLng origin = origins.get(i);
-                if (i != 0) url.append("|");
-                url.append(origin.latitude);
-                url.append(",");
-                url.append(origin.longitude);
-            }
-        }
-        if (destinations != null && destinations.size() > 0) {
-            url.append("&destinations=");
-            for (int i = 0; i < destinations.size(); i++) {
-                LatLng destination = destinations.get(i);
-                if (i != 0) url.append("|");
-                url.append(destination.latitude);
-                url.append(",");
-                url.append(destination.longitude);
-            }
-        }
-        url.append("&key=");
-        url.append(getApplication().getApplicationContext().getResources().getString(R.string.google_maps_key));
-        return url.toString();
     }
 
     public String dateToDisplay(String dateString) {
