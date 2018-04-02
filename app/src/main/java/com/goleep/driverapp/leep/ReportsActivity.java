@@ -10,8 +10,13 @@ import android.widget.RadioButton;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+
 import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.ReportsViewModel;
 
