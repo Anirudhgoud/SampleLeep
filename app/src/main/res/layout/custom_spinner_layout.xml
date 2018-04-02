@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-
-</TextView>
+<com.goleep.driverapp.helpers.customfont.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/text1"
+    style="?android:attr/spinnerItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawablePadding="4dp"
+    android:drawableRight="@drawable/spinner_text_selector"
+    android:singleLine="true"
+    android:text="@string/business_type"
+    app:typeface="NotoSans-Regular" />

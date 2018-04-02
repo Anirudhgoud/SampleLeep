@@ -56,4 +56,15 @@ public class AppUtils {
         }
     }
 
+    public static boolean isValidEmail(String strEmail) {
+        if (strEmail.length() == 0)
+            return false;
+        else {
+            final String PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+            if (strEmail.matches(PATTERN))
+                return true;
+            return false;
+        }
+    }
+
 }

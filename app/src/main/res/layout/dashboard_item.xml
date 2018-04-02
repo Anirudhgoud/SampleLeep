@@ -5,8 +5,7 @@
     android:layout_height="130dp"
     android:layout_marginBottom="25dp"
     android:background="@drawable/dashboard_item_bg"
-    android:elevation="5dp"
-    >
+    android:elevation="5dp">
 
     <LinearLayout
         android:id="@+id/icon_layout"
