@@ -23,4 +23,14 @@
         app:tabSelectedTextColor="@color/doTabTextColor"
         app:tabTextColor="@color/doTabTextColor" />
 
+    <fragment
+        android:id="@+id/barcode"
+        android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        app:gvb_auto_focus="true"
+        app:gvb_code_format="all_format"
+        app:gvb_flash="false"
+        app:gvb_rect_colors="@array/rect_color" />
+
 </LinearLayout>
