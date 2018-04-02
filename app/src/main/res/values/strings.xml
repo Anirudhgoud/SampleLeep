@@ -139,4 +139,16 @@
     <string name="business_type">Business Type</string>
     <string name="contact_name">Contact Name</string>
     <string name="email_id">Email Id</string>
+    <string name="name_your_location">Name your Location</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="address_line_1">Address Line 1</string>
+    <string name="address_line_2">Address Line 2</string>
+    <string name="floor">Floor</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="country">Country</string>
+    
+
+    <!--Instructions-->
+    <string name="map_drag_drop">Drag &amp; drop the pin to get the address</string>
 </resources>

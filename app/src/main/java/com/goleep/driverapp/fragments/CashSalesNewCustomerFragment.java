@@ -99,10 +99,10 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
                 scrollView.setVisibility(View.VISIBLE);
                 break;
             case R.id.tv_confirm:
-                if (checkInputsValidation()) {
+               /* if (checkInputsValidation()) {*/
                     startActivity(new Intent(getContext(), NewCustomerActivity.class));
                     ((Activity) getContext()).finish();
-                }
+                /*}*/
                 break;
         }
     }
