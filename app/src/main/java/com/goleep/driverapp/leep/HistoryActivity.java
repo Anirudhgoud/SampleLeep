@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.HistoryListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
@@ -32,6 +33,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.goleep.driverapp.utils.DateTimeUtils.REQUEST_DATE_FORMAT;
 
 public class HistoryActivity extends ParentAppCompatActivity implements Observer<List<DeliveryOrderEntity>>{
 
@@ -96,7 +99,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.history), R.drawable.ic_history_title_icon);
-        Typeface typeface = new FontUtils().getTypeface(HistoryActivity.this, "NotoSans-Regular");
+        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
         rbToday.setTypeface(typeface);
         rbThisWeek.setTypeface(typeface);
         rbThisMonth.setTypeface(typeface);
@@ -137,7 +140,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
     private void getInitialData() {
         showProgressDialog();
         Date today = new Date();
-        String todayDateString = DateTimeUtils.convertedDate(today, "dd/MM/yyyy");
+        String todayDateString = DateTimeUtils.convertedDate(today, REQUEST_DATE_FORMAT);
         deliveryOrderViewModel.fetchDeliveryOrders(todayDateString, todayDateString,
                 ordersHistoryCallback);
     }
@@ -165,7 +168,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
     private void onRadioSelectionChange(int checkedId){
         showProgressDialog();
         Date today = new Date();
-        String todayDateString = DateTimeUtils.convertedDate(today, "dd/MM/yyyy");
+        String todayDateString = DateTimeUtils.convertedDate(today, REQUEST_DATE_FORMAT);
         int ordersTYpe = rgOrdersType.getCheckedRadioButtonId();
         switch (checkedId){
             case R.id.rb_today:
@@ -182,7 +185,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
                 Calendar calender = Calendar.getInstance();
                 calender.add(Calendar.DAY_OF_YEAR, -7);
                 Date weekAgo = calender.getTime();
-                String weekAgoString = DateTimeUtils.convertedDate(weekAgo, "dd/MM/yyyy");
+                String weekAgoString = DateTimeUtils.convertedDate(weekAgo, REQUEST_DATE_FORMAT);
                 if(ordersTYpe == R.id.rb_delivery_order) {
                     deliveryOrderViewModel.fetchDeliveryOrders(weekAgoString, todayDateString,
                             ordersHistoryCallback);
@@ -196,13 +199,14 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
                 Calendar month = Calendar.getInstance();
                 month.add(Calendar.DAY_OF_YEAR, -30);
                 Date monthAgo = month.getTime();
-                String monthAgoString = DateTimeUtils.convertedDate(monthAgo, "dd/MM/yyyy");
+                String monthAgoString = DateTimeUtils.convertedDate(monthAgo, REQUEST_DATE_FORMAT);
                 if(ordersTYpe == R.id.rb_delivery_order) {
                     deliveryOrderViewModel.fetchDeliveryOrders(monthAgoString, todayDateString,
                             ordersHistoryCallback);
                 }
                 else{
-                    deliveryOrderViewModel.fetchReturnedOrders(monthAgoString, todayDateString, ordersHistoryCallback);
+                    deliveryOrderViewModel.fetchReturnedOrders(monthAgoString, todayDateString,
+                            ordersHistoryCallback);
                 }
                 break;
         }
@@ -216,7 +220,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
     }
 
     private void startDetailActivity(String doId){
-        Intent intent = new Intent(HistoryActivity.this, HistoryDetailsActivity.class);
+        Intent intent = new Intent(this, HistoryDetailsActivity.class);
         intent.putExtra(IntentConstants.ORDER_ID, doId);
         startActivity(intent);
     }

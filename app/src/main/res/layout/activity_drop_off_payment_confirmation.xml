@@ -13,23 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <include
-        layout="@layout/delivery_order_top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.goleep.driverapp.helpers.customfont.CustomButton
-        android:id="@+id/bt_view_item_list"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/rounded_border_green"
-        android:text="@string/view_item_list"
-        android:textColor="@color/doTabTextColor"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:textSize="18sp" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -41,6 +24,23 @@
             android:orientation="vertical">
 
             <include
+                layout="@layout/delivery_order_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.goleep.driverapp.helpers.customfont.CustomButton
+                android:id="@+id/bt_view_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_border_green"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="@string/view_item_list"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="18sp" />
+            
+            <include
                 layout="@layout/final_amount_summary_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,8 +50,8 @@
                 android:id="@+id/ll_collect_payment_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp">
+                android:layout_margin="16dp"
+                android:orientation="vertical">
 
                 <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="match_parent"
@@ -86,10 +86,10 @@
                     <com.goleep.driverapp.helpers.customfont.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
                         android:text=":"
                         android:textColor="@color/light_grey"
                         android:textSize="14sp"
-                        android:layout_marginRight="4dp"
                         app:typeface="NotoSans-Regular" />
 
                     <com.goleep.driverapp.helpers.customfont.CustomTextView

@@ -98,17 +98,17 @@ public class HomeViewModel extends AndroidViewModel {
         });
     }
 
-    public void getStocks(){
+    public void getStocks() {
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
                 getApplication().getApplicationContext(), SharedPreferenceKeys.DRIVER_ID);
-        String url = UrlConstants.INVENTORIES_URL+"?drivers="+driverId;
+        String url = UrlConstants.INVENTORIES_URL + "?drivers=" + driverId;
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(
                 getApplication().getApplicationContext(), url, true,
                 new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         System.out.print("");
-                        switch (type){
+                        switch (type) {
                             case NetworkConstants.SUCCESS:
                                 StockProductParser parser = new StockProductParser();
                                 List<StockProductEntity> stockProductEntities = parser.getStockProduct(response);

@@ -18,6 +18,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.ReportsDataParser;
 import com.goleep.driverapp.services.storage.LocalStorageService;
+import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
 
 import org.json.JSONArray;
@@ -39,7 +40,6 @@ import java.util.Map;
 public class ReportsViewModel extends AndroidViewModel {
     private final String DATE_START = "start_date";
     private final String DATE_END = "end_date";
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public ReportsViewModel(@NonNull Application application) {
         super(application);
@@ -100,9 +100,9 @@ public class ReportsViewModel extends AndroidViewModel {
             calendar.add(Calendar.DATE, -daysToSubtract - 6);
             Date start = calendar.getTime();
             calendar = Calendar.getInstance();
-            return getUrlQueryParameterFormater(simpleDateFormat.format(start), simpleDateFormat.format(calendar.getTime()));
+            return getUrlQueryParameterFormater(DateTimeUtils.REQUEST_DATE_FORMAT.format(start), DateTimeUtils.REQUEST_DATE_FORMAT.format(calendar.getTime()));
         } else {
-            return getUrlQueryParameterFormater(simpleDateFormat.format(mondayDate), simpleDateFormat.format(calendar.getTime()));
+            return getUrlQueryParameterFormater(DateTimeUtils.REQUEST_DATE_FORMAT.format(mondayDate), DateTimeUtils.REQUEST_DATE_FORMAT.format(calendar.getTime()));
         }
 
     }
@@ -111,11 +111,11 @@ public class ReportsViewModel extends AndroidViewModel {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-        return getUrlQueryParameterFormater(simpleDateFormat.format(calendar.getTime()), simpleDateFormat.format(Calendar.getInstance().getTime()));
+        return getUrlQueryParameterFormater(DateTimeUtils.REQUEST_DATE_FORMAT.format(calendar.getTime()), DateTimeUtils.REQUEST_DATE_FORMAT.format(Calendar.getInstance().getTime()));
     }
 
     private String getTodaysDateStringParameter() {
-        String date = simpleDateFormat.format(Calendar.getInstance().getTime());
+        String date = DateTimeUtils.REQUEST_DATE_FORMAT.format(Calendar.getInstance().getTime());
         return getUrlQueryParameterFormater(date, date);
     }
 

@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.helpers.uimodels.ReportAttr;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.utils.AppUtils;
@@ -59,9 +60,7 @@ public class ReportsActivity extends ParentAppCompatActivity {
         rbThisWeek.setOnClickListener(this);
         rbThisMonth.setOnClickListener(this);
         setTitleIconAndText(getString(R.string.reports), R.drawable.ic_reports_title);
-
-        Typeface typeface = new FontUtils().getTypeface(ReportsActivity.this,
-                "NotoSans-Regular");
+        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
         rbToday.setTypeface(typeface);
         rbThisWeek.setTypeface(typeface);
         rbThisMonth.setTypeface(typeface);

@@ -39,7 +39,7 @@ public class OrderItemParser {
 
     public List<ReturnOrderItem> returnOrderItemsByParsingJsonResponse(JSONArray jsonArray, int roNumber){
         List<ReturnOrderItem> orderItems = new ArrayList<>();
-        JSONObject firstObj = (JSONObject) jsonArray.opt(0);
+        JSONObject firstObj = jsonArray.optJSONObject(0);
         if(firstObj == null){
             return orderItems;
         }
