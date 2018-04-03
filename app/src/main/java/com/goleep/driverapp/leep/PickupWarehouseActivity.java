@@ -1,12 +1,8 @@
 package com.goleep.driverapp.leep;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,18 +13,13 @@ import com.goleep.driverapp.R;
 
 import com.goleep.driverapp.adapters.WarehousePagerAdapter;
 import com.goleep.driverapp.constants.AppConstants;
-import com.goleep.driverapp.fragments.WarehouseListFragment;
-import com.goleep.driverapp.fragments.WarehouseMapFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.viewmodels.DeliveryOrderViewModel;
-import com.goleep.driverapp.viewmodels.PickupViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PickupWarehouseActivity extends ParentAppCompatActivity {
 
-    PickupViewModel pickupViewModel;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.view_pager)
@@ -42,8 +33,7 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
     @Override
     public void doInitialSetup() {
         ButterKnife.bind(PickupWarehouseActivity.this);
-        pickupViewModel = ViewModelProviders.of(PickupWarehouseActivity.this).
-                get(PickupViewModel.class);
+
         initView();
     }
 
@@ -97,8 +87,4 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
             }
         }
     }
-
-
-
-
 }

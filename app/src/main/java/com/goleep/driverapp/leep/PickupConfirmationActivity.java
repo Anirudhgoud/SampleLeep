@@ -59,10 +59,33 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
 
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        setResources(R.layout.activity_pickup_confirmation);
+    }
+
     private void handleIntent() {
         Intent intent = getIntent();
         cashDoItems = intent.getIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY);
         selectedDeliveryOrders = intent.getIntegerArrayListExtra(AppConstants.DO_IDS_KEY);
+    }
+
+    private void initView() {
+        setToolBarColor(getResources().getColor(R.color.light_green));
+        setToolbarLeftIcon(R.drawable.ic_back_arrow);
+        setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
+        setWareHouseDetails();
+        initRecyclerView();
+        confirmButton.setOnClickListener(this);
+    }
+
+    private void initRecyclerView() {
+        expandableListView.setLayoutManager(new LinearLayoutManager(PickupConfirmationActivity.this));
+        expandableListView.addItemDecoration(new DividerItemDecoration(PickupConfirmationActivity.this,
+                DividerItemDecoration.VERTICAL));
+        adapter = new DoExpandableListAdapter(PickupConfirmationActivity.this, new ArrayList<BaseListItem>());
+        expandableListView.setAdapter(adapter);
+        adapter.addCombinedListItems(generateAdapterItemList(cashDoItems, selectedDeliveryOrders));
     }
 
     private List<BaseListItem> generateAdapterItemList(ArrayList<Integer> cashDoItems,
@@ -113,31 +136,8 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         return baseListItems;
     }
 
-    private void initView() {
-        setToolBarColor(getResources().getColor(R.color.light_green));
-        setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
-        setWareHouseDetails();
-        initRecyclerView();
-        confirmButton.setOnClickListener(this);
-    }
-
-    private void initRecyclerView() {
-        expandableListView.setLayoutManager(new LinearLayoutManager(PickupConfirmationActivity.this));
-        expandableListView.addItemDecoration(new DividerItemDecoration(PickupConfirmationActivity.this,
-                DividerItemDecoration.VERTICAL));
-        adapter = new DoExpandableListAdapter(PickupConfirmationActivity.this, new ArrayList<BaseListItem>());
-        expandableListView.setAdapter(adapter);
-        adapter.addCombinedListItems(generateAdapterItemList(cashDoItems, selectedDeliveryOrders));
-    }
-
     private void setWareHouseDetails() {
         wareHouseInfoTextView.setText(pickupDeliveryOrderViewModel.getWareHouseNameAddress());
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        setResources(R.layout.activity_pickup_confirmation);
     }
 
     @Override

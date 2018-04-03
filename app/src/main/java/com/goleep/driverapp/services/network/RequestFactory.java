@@ -69,25 +69,9 @@ public class RequestFactory {
         }else if (contentType != null && contentType.equals(RequestConstants.CONTENT_TYPE_JSON)){
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             headerParams.put("Content-Type", "application/json");
-//            JSONObject json = new JSONObject();
             if(bodyParams != null) {
                 LogUtils.debug(this.getClass().getSimpleName(), new Gson().toJson(bodyParams));
                 requestBody = RequestBody.create(JSON, new Gson().toJson(bodyParams));
-//                for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
-//                    Object value;
-//                    try {
-//                        value = entry.getValue();
-//                    } catch (ClassCastException exception) {
-//                        exception.printStackTrace();
-//                        value = entry.getValue().toString();
-//                    }
-//                    try {
-//                        json.put(entry.getKey(), value);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                requestBody = RequestBody.create(JSON, String.valueOf(json));
             }
         }
         return networkRequest.buildRequest(url, requestBody, headerParams);

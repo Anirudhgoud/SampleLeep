@@ -66,6 +66,9 @@
     <!--Dropoff-->
     <string name="dropoff_stock">Drop Off</string>
     <string name="sellable_stocks">Sellable Stocks</string>
+    <string name="to">To:</string>
+    <string name="confirm_dropoff">Confirm Drop Off</string>
+    <string name="dropoff_success">Drop Items Updated Successfully</string>
 
     <!--Reports-->
     <string name="reports">Reports</string>

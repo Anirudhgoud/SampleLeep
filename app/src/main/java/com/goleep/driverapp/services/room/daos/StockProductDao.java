@@ -43,4 +43,13 @@ public abstract class StockProductDao {
 
     @Query("SELECT * FROM StockProductEntity WHERE returnableQuantity != 0")
     public abstract List<StockProductEntity> getReturnedStocks();
+
+    @Query("SELECT * FROM StockProductEntity WHERE id = :itemId")
+    public abstract StockProductEntity getStock(int itemId);
+
+    @Query("UPDATE StockProductEntity SET sellableQuantity = :updatedQuantity WHERE id = :id")
+    public abstract void updateSellableQuantity(int id, int updatedQuantity);
+
+    @Query("UPDATE StockProductEntity SET returnableQuantity = :updatedQuantity WHERE id = :id")
+    public abstract void updateReturnableQuantity(int id, int updatedQuantity);
 }

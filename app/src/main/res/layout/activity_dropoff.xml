@@ -11,6 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>
 
+    <include layout="@layout/top_information_layout"
+        android:id="@+id/top_information_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"

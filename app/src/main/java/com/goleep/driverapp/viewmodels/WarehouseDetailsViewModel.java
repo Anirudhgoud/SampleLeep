@@ -15,10 +15,10 @@ import com.goleep.driverapp.utils.StringUtils;
  * Created by vishalm on 21/02/18.
  */
 
-public class PickupViewModel extends AndroidViewModel {
-    private AppDatabase leepDatabase;
+public class WarehouseDetailsViewModel extends AndroidViewModel {
+    protected AppDatabase leepDatabase;
     private WarehouseEntity warehouseEntity;
-    public PickupViewModel(@NonNull Application application) {
+    public WarehouseDetailsViewModel(@NonNull Application application) {
         super(application);
         leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }

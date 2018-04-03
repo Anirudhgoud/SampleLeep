@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.goleep.driverapp.constants.NetworkConstants;
-import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.customviews.CustomMarkerView;
 import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
@@ -17,7 +16,6 @@ import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DistanceMatrixResponseParser;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.MapUtils;

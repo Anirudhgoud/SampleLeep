@@ -180,21 +180,23 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     private UILevelNetworkCallback timeToReachCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            getActivity().runOnUiThread(() -> {
-                List<Distance> timeToReachList = (List<Distance>) uiModels;
-                viewModel.setTimeToReachDistanceMatrix(timeToReachList);
+            if(getActivity() != null && !getActivity().isFinishing()) {
+                getActivity().runOnUiThread(() -> {
+                    List<Distance> timeToReachList = (List<Distance>) uiModels;
+                    viewModel.setTimeToReachDistanceMatrix(timeToReachList);
 
-                List<DeliveryOrderEntity> deliveryOrders = viewModel.getDeliveryOrders();
-                if (deliveryOrders.size() == timeToReachList.size()) {
-                    for (int i = 0; i < deliveryOrders.size() && i < timeToReachList.size(); i++) {
-                        DeliveryOrderEntity deliveryOrder = deliveryOrders.get(i);
-                        Distance distance = timeToReachList.get(i);
-                        deliveryOrder.setDistanceFromCurrentLocation(distance);
+                    List<DeliveryOrderEntity> deliveryOrders = viewModel.getDeliveryOrders();
+                    if (deliveryOrders.size() == timeToReachList.size()) {
+                        for (int i = 0; i < deliveryOrders.size() && i < timeToReachList.size(); i++) {
+                            DeliveryOrderEntity deliveryOrder = deliveryOrders.get(i);
+                            Distance distance = timeToReachList.get(i);
+                            deliveryOrder.setDistanceFromCurrentLocation(distance);
+                        }
+                        displayMarkersOnMap((deliveryOrders));
                     }
-                    displayMarkersOnMap((deliveryOrders));
-                }
 
-            });
+                });
+            }
         }
     };
 

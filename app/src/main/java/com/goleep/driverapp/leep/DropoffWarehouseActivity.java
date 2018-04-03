@@ -13,7 +13,6 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.WarehousePagerAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.viewmodels.DropoffViewModel;
-import com.goleep.driverapp.viewmodels.PickupViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,6 +73,10 @@ public class DropoffWarehouseActivity extends ParentAppCompatActivity {
 
     @Override
     public void onClickWithId(int resourceId) {
-
+        switch (resourceId){
+            case R.id.left_toolbar_button:
+                finish();
+                break;
+        }
     }
 }
