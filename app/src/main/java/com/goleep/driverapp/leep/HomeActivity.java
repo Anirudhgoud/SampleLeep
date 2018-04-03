@@ -444,22 +444,25 @@ public class HomeActivity extends ParentAppCompatActivity {
         CustomTextView tvPickUpCount = layout.findViewById(R.id.count_text);
         tvPickUpCount.setText(count);
         tvPickUpCount.setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
-
     }
 
     private void populateUiCount(Summary summary) {
         findDashboardViewsAndSet(relativeLayout_pickup_cardview, R.string.pickup, R.drawable.pickup_icon_bg,
                 R.drawable.ic_pickup_dashboard, R.string.pick_up__below_text,
-                StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())));
+                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())));
 
         findDashboardViewsAndSet(relativeLayout_drop_off_cardview, R.string.dropoff, R.drawable.drop_off_icon_bg,
                 R.drawable.ic_drop_off_dashboard, R.string.drop_off_below_text,
-                StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())));
+                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())));
 
         findDashboardViewsAndSet(relativeLayout_information_cardview, R.string.information, R.drawable.info_icon_bg,
                 R.drawable.ic_info_dashboard, R.string.information_below_text,
-                StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())));
+                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())));
+    }
 
-
+    private String addZeroToSingleCharacter(String str) {
+        if (str.length() == 1)
+            return "0" + str;
+        else return str;
     }
 }

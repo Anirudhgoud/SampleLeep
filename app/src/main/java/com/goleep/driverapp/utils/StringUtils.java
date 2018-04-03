@@ -43,10 +43,7 @@ public class StringUtils {
 
     public static String amountToDisplay(Float amountString) {
         String moneyString = currencyFormatter.format(amountString);
-        if (amountString != null) {
-            return moneyString;
-        }
-        return currencyFormatter.format(0);
+        return (amountString != null ? moneyString : currencyFormatter.format(0));
     }
 
     public static String numberToDisplay(int number) {
@@ -74,11 +71,5 @@ public class StringUtils {
             formattedString = String.format(Locale.ENGLISH, "%.1f", (value / 1000.0)) + "k";
         }
         return formattedString;
-    }
-
-    public static String addZeroToSingleCharacter(String str) {
-        if (str.length() == 1)
-            return "0" + str;
-        else return str;
     }
 }
