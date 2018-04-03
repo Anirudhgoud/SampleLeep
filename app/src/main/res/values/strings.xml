@@ -147,7 +147,9 @@
     <string name="city">City</string>
     <string name="state">State</string>
     <string name="country">Country</string>
-    
+
+    <!--Map-->
+    <string name="map_key">AIzaSyAq9pi62Es_ElwauRwDV6ZvW912wjghpHo</string>
 
     <!--Instructions-->
     <string name="map_drag_drop">Drag &amp; drop the pin to get the address</string>

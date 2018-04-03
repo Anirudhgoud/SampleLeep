@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.Manifest;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -17,8 +18,13 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
+import com.goleep.driverapp.helpers.uimodels.MapAttribute;
+import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.utils.LogUtils;
+import com.goleep.driverapp.viewmodels.NewCustomerViewModel;
+import com.goleep.driverapp.viewmodels.ReportsViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -32,11 +38,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewCustomerActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationChangeListener , GoogleMap.OnMarkerDragListener{
+public class NewCustomerActivity extends ParentAppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationChangeListener, GoogleMap.OnMarkerDragListener {
     @BindView(R.id.tv_complete_address)
     CustomTextView tvAddress;
     @BindView(R.id.et_location)
@@ -46,7 +53,7 @@ public class NewCustomerActivity extends AppCompatActivity implements OnMapReady
     @BindView(R.id.et_addressline1)
     CustomEditText etAddressLine1;
     @BindView(R.id.et_addressline2)
-    CustomEditText getEtAddressLine2;
+    CustomEditText etAddressLine2;
     @BindView(R.id.et_city)
     CustomEditText etCity;
     @BindView(R.id.et_state)
@@ -58,13 +65,23 @@ public class NewCustomerActivity extends AppCompatActivity implements OnMapReady
     private GoogleMap googleMap;
     private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
     private Marker marker;
+    private NewCustomerViewModel newCustomerViewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_customer);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        setResources(R.layout.activity_new_customer);
+    }
+
+    @Override
+    public void doInitialSetup() {
         ButterKnife.bind(NewCustomerActivity.this);
+        newCustomerViewModel = ViewModelProviders.of(NewCustomerActivity.this).get(NewCustomerViewModel.class);
         initialiseMapView();
+    }
+
+    @Override
+    public void onClickWithId(int resourceId) {
+
     }
 
     private void initialiseMapView() {
@@ -73,6 +90,33 @@ public class NewCustomerActivity extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(NewCustomerActivity.this);
     }
+
+    private UILevelNetworkCallback mapCallBack = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
+            dismissProgressDialog();
+            runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
+        }
+    };
+
+    private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
+        dismissProgressDialog();
+        if (uiModels == null) {
+            if (toLogout) {
+                logoutUser();
+            } else if (isDialogToBeShown) {
+                showNetworkRelatedDialogs(errorMessage);
+            }
+        } else if (uiModels.size() > 0) {
+            runOnUiThread(() -> {
+                MapAttribute mapAttribute = (MapAttribute) uiModels.get(0);
+                setUiElements(mapAttribute);
+            });
+        }
+    }
+
 
     private void checkForLocationPermission() {
         if (ActivityCompat.checkSelfPermission(NewCustomerActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(NewCustomerActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -110,23 +154,17 @@ public class NewCustomerActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onMapReady(GoogleMap googleMap) {
         NewCustomerActivity.this.googleMap = googleMap;
-        LatLng latLng = new LatLng(21, 57);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkForLocationPermission();
         else
             fetchUserLocation();
 
-
     }
-
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
-
+    public void onPointerCaptureChanged(boolean hasCapture) {}
     @Override
     public void onLastKnownLocationReceived(Location location) {
+        googleMap.setOnMarkerDragListener(this);
         if (location == null) {
             Toast.makeText(NewCustomerActivity.this, NewCustomerActivity.this.getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
         } else {
@@ -140,70 +178,45 @@ public class NewCustomerActivity extends AppCompatActivity implements OnMapReady
                     marker = googleMap.addMarker(new
                             MarkerOptions()
                             .position(latLng)
-                            .title("your location"));
+                            .title("your location").draggable(true));
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_selected));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-/*
-                    CameraPosition cameraPosition = new CameraPosition.Builder().target(
-                            latLng).zoom(15).build();*/
-
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 }
             });
         }
 
     }
-
     @Override
     public void onLastKnownLocationError(String errorMessage) {
         Toast.makeText(NewCustomerActivity.this, errorMessage, Toast.LENGTH_LONG).show();
     }
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         return false;
     }
 
-    private void getAddressFromLatLng(double lat, double lng) {
-        String strAddress, city, country, postalCode;
-
-        Geocoder geocoder;
-        List<Address> ListAddresses;
-        geocoder = new Geocoder(NewCustomerActivity.this, Locale.getDefault());
-        try {
-            ListAddresses = geocoder.getFromLocation(lat, lng, 3); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            Address address = ListAddresses.get(0);
-            LogUtils.debug("newCust", address + "");
-            strAddress = address.getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            city = address.getLocality();
-            country = address.getCountryName();
-            postalCode = address.getPostalCode();
-            etAddressLine1.setText(address.getFeatureName() + " " + address.getThoroughfare());
-            getEtAddressLine2.setText(address.getPostalCode() + " " + address.getSubAdminArea() + " " + address.getLocality());
-            tvAddress.setText(strAddress);
-            etCity.setText(city);
-            etState.setText(address.getAdminArea());
-            etCountry.setText(country);
-            etPostalCode.setText(postalCode);
-
-        } catch (Exception e) {
-            Toast.makeText(NewCustomerActivity.this, "could not find your location", Toast.LENGTH_LONG).show();
-        }
-
-
+    private void getAddressFromLatLng(double latitude, double longitude) {
+        showProgressDialog();
+        newCustomerViewModel.getAddressFromLatitudeLongitude(mapCallBack, String.valueOf(latitude), String.valueOf(longitude));
     }
-
     @Override
-    public void onMarkerDragStart(Marker marker) {
-
-    }
-
+    public void onMarkerDragStart(Marker marker) {}
     @Override
-    public void onMarkerDrag(Marker marker) {
-
-    }
-
+    public void onMarkerDrag(Marker marker) {}
     @Override
     public void onMarkerDragEnd(Marker marker) {
-
+        LogUtils.debug("new Cust", marker.getPosition().latitude + " " + marker.getPosition().longitude);
+        getAddressFromLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
     }
+    private void setUiElements(MapAttribute mapAttribute) {
+        marker.setTitle(mapAttribute.getTotalAddress());
+        tvAddress.setText(mapAttribute.getTotalAddress());
+        etPostalCode.setText(mapAttribute.getPostalCode());
+        etAddressLine1.setText(mapAttribute.getAddressLine1());
+        etAddressLine2.setText(mapAttribute.getAddressLine2());
+        etCity.setText(mapAttribute.getCity());
+        etState.setText(mapAttribute.getState());
+        etCountry.setText(mapAttribute.getCountry());
+    }
+
 }

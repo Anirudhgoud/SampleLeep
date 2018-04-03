@@ -34,7 +34,11 @@ public interface UrlConstants {
     String UPDATE_PROFILE_IMAGE = BASE_URL + "/users/";
 
     //Reports
-    String REPORT_URL = BASE_URL+"/reports";
+    String REPORT_URL = BASE_URL + "/reports";
     //Maps base url
     String DISTANCE_MATRIX_API = "https://maps.googleapis.com/maps/api/distancematrix/json?";
+    String LAT_LONG_TO_ADDRESS_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+
+    //Drop off
+    String Business_Categories = BASE_URL+"/business_categories";
 }
