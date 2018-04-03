@@ -19,6 +19,8 @@ public class StringUtils {
     static {
         currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
         numberFormatter = NumberFormat.getNumberInstance();
+        currencyFormatter.setMaximumFractionDigits(0);
+        numberFormatter.setMaximumFractionDigits(0);
     }
 
     private StringUtils() {
@@ -40,7 +42,6 @@ public class StringUtils {
     }
 
     public static String amountToDisplay(Float amountString) {
-        currencyFormatter.setMaximumFractionDigits(0);
         String moneyString = currencyFormatter.format(amountString);
         if (amountString != null) {
             return moneyString;
@@ -49,7 +50,7 @@ public class StringUtils {
     }
 
     public static String numberToDisplay(int number) {
-        numberFormatter.setMaximumFractionDigits(0);
+
         return numberFormatter.format(number);
     }
 

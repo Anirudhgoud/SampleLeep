@@ -39,15 +39,15 @@ public class ReportsActivity extends ParentAppCompatActivity {
     @BindView(R.id.rb_this_month)
     RadioButton rbThisMonth;
     @BindView(R.id.activity_reports_tv_total_sales)
-    CustomTextView tv_total_sales;
+    CustomTextView tvTotalSales;
     @BindView(R.id.activity_reports_tv_cash_collected)
-    CustomTextView tv_cash_collected;
+    CustomTextView tvCashCollected;
     @BindView(R.id.activity_reports_tv_returns)
-    CustomTextView tv_returns;
+    CustomTextView tvReturns;
     @BindView(R.id.activity_reports_tv_units)
-    CustomTextView tv_units;
+    CustomTextView tvUnits;
     @BindView(R.id.activity_reports_tv_location)
-    CustomTextView tv_location;
+    CustomTextView tvLocation;
     private ReportsViewModel reportsViewModel;
 
     @Override
@@ -132,12 +132,12 @@ public class ReportsActivity extends ParentAppCompatActivity {
 
     private void setReportData(ReportAttrribute reportAttrribute) {
         boolean isReportAvailable = reportAttrribute != null;
-        tv_cash_collected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttrribute
+        tvCashCollected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttrribute
                 .getCashCollected()) : "");
-        tv_location.setText(isReportAvailable ? String.valueOf(reportAttrribute.getLocations()) : "");
-        tv_returns.setText(isReportAvailable ? String.valueOf(reportAttrribute.getReturns()) + " " + getResources().getString(R.string.units) : "");
-        tv_total_sales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttrribute.
+        tvLocation.setText(isReportAvailable ? String.valueOf(reportAttrribute.getLocations()) : "");
+        tvReturns.setText(isReportAvailable ? String.valueOf(reportAttrribute.getReturns()) + " " + getResources().getString(R.string.units) : "");
+        tvTotalSales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttrribute.
                 getTotalSales()) : "");
-        tv_units.setText(isReportAvailable ? StringUtils.numberToDisplay(reportAttrribute.getUnits()) : "");
+        tvUnits.setText(isReportAvailable ? StringUtils.numberToDisplay(reportAttrribute.getUnits()) : "");
     }
 }
