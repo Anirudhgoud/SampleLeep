@@ -17,4 +17,8 @@ public interface AppConstants {
     String DO_IDS_KEY = "do_selected";
 
     int ACTIVITY_SUCCESS_RESULT = 101;
+
+    int TYPE_DELIVERABLE = 0;
+    int TYPE_SELLABLE = 1;
+    int TYPE_RETURNED = 2;
 }

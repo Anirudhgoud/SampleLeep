@@ -3,9 +3,7 @@ package com.goleep.driverapp.services.room.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_DELIVERABLE;
-import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_RETURNED;
-import static com.goleep.driverapp.adapters.ProductListAdapter.TYPE_SELLABLE;
+import com.goleep.driverapp.constants.AppConstants;
 
 /**
  * Created by vishalm on 19/03/18.
@@ -115,13 +113,14 @@ public class StockProductEntity {
     }
 
     public int getQuantity(int type){
+
         switch (type){
-            case TYPE_RETURNED:
+            case AppConstants.TYPE_RETURNED:
                 return returnableQuantity;
-            case TYPE_SELLABLE:
+            case AppConstants.TYPE_SELLABLE:
                 return sellableQuantity;
             default:
-            case TYPE_DELIVERABLE:
+            case AppConstants.TYPE_DELIVERABLE:
                 return deliverableQuantity;
         }
     }

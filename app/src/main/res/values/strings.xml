@@ -118,6 +118,7 @@
     <string name="select">Select</string>
     <string name="last_delivery">Last Delivery:</string>
     <string name="search_customer">Search Customer</string>
+    <string name="search_product">Search Product</string>
     <string name="scan">Scan</string>
     <string name="search">Search</string>
 
@@ -133,4 +134,6 @@
     <string name="location_permission_denied">Location permission denied</string>
     <string name="location_fetch_error">Unable to get user location</string>
     <string name="camera_permission_denied">Camera Permission denied.</string>
+    <string name="item_already_added">Item already added in list.</string>
+    <string name="product_not_available">Product not available in inventory.</string>
 </resources>
