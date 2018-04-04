@@ -28,13 +28,15 @@ import java.util.List;
  */
 
 public class NewCustomerViewModel extends AndroidViewModel {
-    String TAG= "NewCusViewModLog";
+    String TAG = "NewCusViewModLog";
+
     public NewCustomerViewModel(@NonNull Application application) {
         super(application);
     }
-    public void getAddressFromLatitudeLongitude(final UILevelNetworkCallback newCustomerCallBack,String latitude, String longitude){
-        LogUtils.debug(TAG, UrlConstants.LAT_LONG_TO_ADDRESS_URL+getQueryParameter(latitude,longitude));
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.LAT_LONG_TO_ADDRESS_URL +getQueryParameter(latitude,longitude),
+
+    public void getAddressFromLatitudeLongitude(final UILevelNetworkCallback newCustomerCallBack, String latitude, String longitude) {
+        LogUtils.debug(TAG, UrlConstants.LAT_LONG_TO_ADDRESS_URL + getQueryParameter(latitude, longitude));
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.LAT_LONG_TO_ADDRESS_URL + getQueryParameter(latitude, longitude),
                 null, true, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
@@ -59,8 +61,36 @@ public class NewCustomerViewModel extends AndroidViewModel {
                     }
                 });
     }
-    private  String getQueryParameter(String latitude,String longitude){
-        return "latlng="+latitude+","+longitude+"&key="+getApplication().getResources().getString(R.string.map_key);
+
+    private String getQueryParameter(String latitude, String longitude) {
+        return "latlng=" + latitude + "," + longitude + "&key=" + getApplication().getResources().getString(R.string.map_key);
+    }
+
+    public void createNewCustomer(final UILevelNetworkCallback newCustomerCallBack, int countryId, String name, String contactEmail, String contactName, String contactNumber, String designation, String postalCode, int businessCategoryId) {
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.LAT_LONG_TO_ADDRESS_URL + getQueryParameter(latitude, longitude),
+                null, true, new NetworkAPICallback() {
+                    @Override
+                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                JSONObject userObj = (JSONObject) response.opt(0);
+                                MapAttribute mapAttribute = new MapAddressParser().reportsDataByParsingJsonResponse(userObj);
+                                List<MapAttribute> lisMapAttributes = new ArrayList<>();
+                                lisMapAttributes.add(mapAttribute);
+                                newCustomerCallBack.onResponseReceived(lisMapAttributes, false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
+                        }
+
+                    }
+                });
     }
 
 }

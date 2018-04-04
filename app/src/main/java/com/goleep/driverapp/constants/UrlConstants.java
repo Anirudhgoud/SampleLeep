@@ -40,5 +40,5 @@ public interface UrlConstants {
     String LAT_LONG_TO_ADDRESS_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
 
     //Drop off
-    String Business_Categories = BASE_URL+"/business_categories";
+    String BUSINESS_CATEGORIES_URL = BASE_URL+"/business_categories";
 }

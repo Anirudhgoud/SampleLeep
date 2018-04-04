@@ -70,6 +70,8 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_new_customer);
+        Bundle bundle = getIntent().getExtras();
+        String str ;
     }
 
     @Override
@@ -160,8 +162,11 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
             fetchUserLocation();
 
     }
+
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {}
+    public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
     @Override
     public void onLastKnownLocationReceived(Location location) {
         googleMap.setOnMarkerDragListener(this);
@@ -186,10 +191,12 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         }
 
     }
+
     @Override
     public void onLastKnownLocationError(String errorMessage) {
         Toast.makeText(NewCustomerActivity.this, errorMessage, Toast.LENGTH_LONG).show();
     }
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         return false;
@@ -199,15 +206,21 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         showProgressDialog();
         newCustomerViewModel.getAddressFromLatitudeLongitude(mapCallBack, String.valueOf(latitude), String.valueOf(longitude));
     }
+
     @Override
-    public void onMarkerDragStart(Marker marker) {}
+    public void onMarkerDragStart(Marker marker) {
+    }
+
     @Override
-    public void onMarkerDrag(Marker marker) {}
+    public void onMarkerDrag(Marker marker) {
+    }
+
     @Override
     public void onMarkerDragEnd(Marker marker) {
         LogUtils.debug("new Cust", marker.getPosition().latitude + " " + marker.getPosition().longitude);
         getAddressFromLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
     }
+
     private void setUiElements(MapAttribute mapAttribute) {
         marker.setTitle(mapAttribute.getTotalAddress());
         tvAddress.setText(mapAttribute.getTotalAddress());

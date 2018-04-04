@@ -8,12 +8,11 @@ public class BusinessCategoryAttribute {
     int id;
     String name;
     int businessesCount;
-
     public int getId() {
         return id;
     }
 
-    public String getName() {
+    public String getBusinessName() {
         return name;
     }
 
