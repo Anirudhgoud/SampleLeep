@@ -81,6 +81,19 @@ public class Summary {
     public void setInformationOnReports(int informationOnReports) {
         this.informationOnReports = informationOnReports;
     }
+
+    public int getPickUpCount() {
+        return pickUpFromWarehouse + returnsFromCustomers;
+    }
+
+    public int getDropoffCount() {
+        return dropOffDeliveryOrdersCount + dropOffCashSales + dropOffToWarehouse;
+    }
+
+    public int getInformationCount() {
+        return informationStocks + informationOnHistory + informationOnReports;
+    }
+
 }
 
 

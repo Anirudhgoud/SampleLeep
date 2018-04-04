@@ -10,14 +10,23 @@ import android.widget.RadioButton;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+
+import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+
 import com.goleep.driverapp.helpers.uihelpers.FontProvider;
-import com.goleep.driverapp.helpers.uimodels.ReportAttr;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.ReportsViewModel;
+
 import java.util.List;
+
+
+import com.goleep.driverapp.helpers.uihelpers.FontProvider;
+
 import com.goleep.driverapp.utils.FontUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -30,15 +39,15 @@ public class ReportsActivity extends ParentAppCompatActivity {
     @BindView(R.id.rb_this_month)
     RadioButton rbThisMonth;
     @BindView(R.id.activity_reports_tv_total_sales)
-    CustomTextView tv_total_sales;
+    CustomTextView tvTotalSales;
     @BindView(R.id.activity_reports_tv_cash_collected)
-    CustomTextView tv_cash_collected;
+    CustomTextView tvCashCollected;
     @BindView(R.id.activity_reports_tv_returns)
-    CustomTextView tv_returns;
+    CustomTextView tvReturns;
     @BindView(R.id.activity_reports_tv_units)
-    CustomTextView tv_units;
+    CustomTextView tvUnits;
     @BindView(R.id.activity_reports_tv_location)
-    CustomTextView tv_location;
+    CustomTextView tvLocation;
     private ReportsViewModel reportsViewModel;
 
     @Override
@@ -60,6 +69,7 @@ public class ReportsActivity extends ParentAppCompatActivity {
         rbThisWeek.setOnClickListener(this);
         rbThisMonth.setOnClickListener(this);
         setTitleIconAndText(getString(R.string.reports), R.drawable.ic_reports_title);
+
         Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
         rbToday.setTypeface(typeface);
         rbThisWeek.setTypeface(typeface);
@@ -88,8 +98,8 @@ public class ReportsActivity extends ParentAppCompatActivity {
             }
         } else if (uiModels.size() > 0) {
             runOnUiThread(() -> {
-                ReportAttr reportAttr = (ReportAttr) uiModels.get(0);
-                setReportData(reportAttr);
+                ReportAttrribute reportAttrribute = (ReportAttrribute) uiModels.get(0);
+                setReportData(reportAttrribute);
             });
         }
     }
@@ -120,14 +130,14 @@ public class ReportsActivity extends ParentAppCompatActivity {
         setReportData(null);
     }
 
-    private void setReportData(ReportAttr reportAttr) {
-        boolean isReportAvailable = reportAttr != null;
-        tv_cash_collected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr
+    private void setReportData(ReportAttrribute reportAttrribute) {
+        boolean isReportAvailable = reportAttrribute != null;
+        tvCashCollected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttrribute
                 .getCashCollected()) : "");
-        tv_location.setText(isReportAvailable ? String.valueOf(reportAttr.getLocations()) : "");
-        tv_returns.setText(isReportAvailable ? String.valueOf(reportAttr.getReturns()) : "");
-        tv_total_sales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttr.
+        tvLocation.setText(isReportAvailable ? String.valueOf(reportAttrribute.getLocations()) : "");
+        tvReturns.setText(isReportAvailable ? String.valueOf(reportAttrribute.getReturns()) + " " + getResources().getString(R.string.units) : "");
+        tvTotalSales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) reportAttrribute.
                 getTotalSales()) : "");
-        tv_units.setText(isReportAvailable ? String.valueOf(reportAttr.getUnits()) : "");
+        tvUnits.setText(isReportAvailable ? StringUtils.numberToDisplay(reportAttrribute.getUnits()) : "");
     }
 }
