@@ -91,13 +91,13 @@ public class CustomerSearchArrayAdapter extends ArrayAdapter<Customer> {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            ArrayList<Customer> resultList = (ArrayList<Customer>) results.values;
             if (results != null && results.count > 0) {
+                ArrayList<Customer> resultList = (ArrayList<Customer>) results.values;
                 clear();
                 for (Customer customer : resultList) {
                     add(customer);
-                    notifyDataSetChanged();
                 }
+                notifyDataSetChanged();
             }
         }
     };

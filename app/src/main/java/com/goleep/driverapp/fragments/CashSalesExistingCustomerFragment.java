@@ -1,6 +1,7 @@
 package com.goleep.driverapp.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -140,16 +141,17 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     private UILevelNetworkCallback customerListNetworkCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            ParentAppCompatActivity activity = ((ParentAppCompatActivity) getActivity());
-            if (activity == null) return;
+            Activity activity = getActivity();
+            if (activity == null || activity.isFinishing()) return;
 
+            ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
             activity.runOnUiThread(() -> {
-                ((ParentAppCompatActivity) getActivity()).dismissProgressDialog();
+                parentActivity.dismissProgressDialog();
                 if (uiModels == null) {
                     if (toLogout) {
-                        activity.logoutUser();
+                        parentActivity.logoutUser();
                     } else if (isDialogToBeShown) {
-                        activity.showNetworkRelatedDialogs(errorMessage);
+                        parentActivity.showNetworkRelatedDialogs(errorMessage);
                     }
                 } else if (uiModels.size() > 0) {
                     List<Customer> customerList = (List<Customer>) uiModels;
@@ -162,15 +164,17 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     private UILevelNetworkCallback customerSuggestionsNetworkCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            ParentAppCompatActivity activity = ((ParentAppCompatActivity) getActivity());
-            if (activity == null) return;
+            Activity activity = getActivity();
+            if (activity == null || activity.isFinishing()) return;
+
+            ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
             activity.runOnUiThread(() -> {
-                ((ParentAppCompatActivity) getActivity()).dismissProgressDialog();
+                parentActivity.dismissProgressDialog();
                 if (uiModels == null) {
                     if (toLogout) {
-                        activity.logoutUser();
+                        parentActivity.logoutUser();
                     } else if (isDialogToBeShown) {
-                        activity.showNetworkRelatedDialogs(errorMessage);
+                        parentActivity.showNetworkRelatedDialogs(errorMessage);
                     }
                 } else if (uiModels.size() > 0) {
                     List<Customer> customerList = (List<Customer>) uiModels;
