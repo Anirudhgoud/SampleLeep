@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.viewholders.OrderItemsViewHolder;
 
 import java.util.List;
@@ -17,11 +18,17 @@ import java.util.List;
 
 public class OrderItemsListAdapter extends RecyclerView.Adapter<OrderItemsViewHolder> {
 
-    private List<OrderItemEntity> orderItemList;
+    private List<?> itemsList;
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener;
+    private int productsType = -1;
 
-    public OrderItemsListAdapter(List<OrderItemEntity> orderItemList){
-        this.orderItemList = orderItemList;
+    public OrderItemsListAdapter(List<?> itemsList){
+        this.itemsList = itemsList;
+    }
+
+    public OrderItemsListAdapter(List<?> itemsList, int productsType){
+        this.itemsList = itemsList;
+        this.productsType = productsType;
     }
 
     public void setOrderItemClickEventListener(DeliveryOrderItemEventListener deliveryOrderItemEventListener){
@@ -36,18 +43,25 @@ public class OrderItemsListAdapter extends RecyclerView.Adapter<OrderItemsViewHo
 
     @Override
     public void onBindViewHolder(OrderItemsViewHolder holder, int position) {
-        OrderItemEntity orderItem = orderItemList.get(position);
-        holder.bindData(orderItem);
+        if(itemsList.get(0) instanceof OrderItemEntity) {
+            OrderItemEntity orderItem = (OrderItemEntity) itemsList.get(position);
+            holder.bindData(orderItem);
+        }else if(itemsList.get(0) instanceof StockProductEntity && productsType != -1){
+            StockProductEntity stockProductEntity = (StockProductEntity) itemsList.get(position);
+            holder.bindData(stockProductEntity, productsType);
+        }else if(itemsList.get(0) instanceof StockProductEntity){
+            StockProductEntity stockProductEntity = (StockProductEntity) itemsList.get(position);
+            holder.bindData(stockProductEntity);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return orderItemList.size();
+        return itemsList.size();
     }
 
-    public void updateList(List<OrderItemEntity> deliveryOrderList){
-        this.orderItemList.clear();
-        this.orderItemList.addAll(deliveryOrderList);
+    public void updateList(List<?> itemsList){
+        this.itemsList = itemsList;
         notifyDataSetChanged();
     }
 }
