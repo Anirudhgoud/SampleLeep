@@ -1,5 +1,6 @@
 package com.goleep.driverapp.fragments;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.location.Location;
@@ -120,9 +121,12 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     }
 
     private void fetchUserLocation() {
-        LocationHelper locationHelper = new LocationHelper(getActivity());
-        locationHelper.setLocationChangeListener(this);
-        locationHelper.getLastKnownLocation(getActivity());
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing()){
+            LocationHelper locationHelper = new LocationHelper(activity);
+            locationHelper.setLocationChangeListener(this);
+            locationHelper.getLastKnownLocation(activity);
+        }
     }
 
     private void observeDeliveryOrders(Location location) {
@@ -177,10 +181,11 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     private UILevelNetworkCallback timeToReachCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            getActivity().runOnUiThread(() -> {
+            Activity activity = getActivity();
+            if (activity == null || activity.isFinishing()) return;
+            activity.runOnUiThread(() -> {
                 List<Distance> timeToReachList = (List<Distance>) uiModels;
                 viewModel.setTimeToReachDistanceMatrix(timeToReachList);
-
                 List<DeliveryOrderEntity> deliveryOrders = viewModel.getDeliveryOrders();
                 if (deliveryOrders.size() == timeToReachList.size()) {
                     for (int i = 0; i < deliveryOrders.size() && i < timeToReachList.size(); i++) {

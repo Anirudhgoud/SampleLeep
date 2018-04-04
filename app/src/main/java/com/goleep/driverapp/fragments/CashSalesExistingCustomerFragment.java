@@ -132,9 +132,12 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     }
 
     private void fetchUserLocation() {
-        LocationHelper locationHelper = new LocationHelper(getActivity());
-        locationHelper.setLocationChangeListener(this);
-        locationHelper.getLastKnownLocation(getActivity());
+        Activity activity = getActivity();
+        if (activity != null){
+            LocationHelper locationHelper = new LocationHelper(activity);
+            locationHelper.setLocationChangeListener(this);
+            locationHelper.getLastKnownLocation(activity);
+        }
     }
 
     private UILevelNetworkCallback customerListNetworkCallback = new UILevelNetworkCallback() {
@@ -184,7 +187,10 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     };
 
     private void fetchCustomerList(boolean showLoading, boolean lastDeliveryDateRequired, LatLng currentLocation, String searchText, UILevelNetworkCallback networkCallback) {
-        if (showLoading) ((ParentAppCompatActivity) getActivity()).showProgressDialog();
+        Activity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
+        parentActivity.showProgressDialog();
         viewModel.fetchCustomerList(lastDeliveryDateRequired, currentLocation, searchText, networkCallback);
     }
 
