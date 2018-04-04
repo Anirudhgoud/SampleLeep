@@ -191,7 +191,7 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     @Override
     public void onNewIntent(Intent intent){
-        if(intent.getBooleanExtra(IntentConstants.TASK_SUCCESSFUL, false)){
+        if(intent != null && intent.getBooleanExtra(IntentConstants.TASK_SUCCESSFUL, false)){
             viewPager.setCurrentItem(0);
         }
     }
