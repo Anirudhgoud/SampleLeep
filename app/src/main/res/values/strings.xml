@@ -115,6 +115,10 @@
     <!--Cash Sales - New Sale-->
     <string name="existing_customer">Existing Customer</string>
     <string name="new_customer">New Customer</string>
+    <string name="nearby_customers">Nearby Customers</string>
+    <string name="select">Select</string>
+    <string name="last_delivery">Last Delivery:</string>
+    <string name="search_customer">Search Customer</string>
 
     <!--Error Messages-->
     <string name="invalid_quantity_error">You can only reduce the units and it should be greater than 0</string>
