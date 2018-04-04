@@ -103,7 +103,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         toolbarContainer.setBackgroundColor(colorId);
     }
 
-    protected void logoutUser(){
+    public void logoutUser(){
         LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -134,7 +134,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         registerReceiverForNetworkChange();
     }
 
-    protected void showNetworkRelatedDialogs(String message){
+    public void showNetworkRelatedDialogs(String message){
         alertDialogHelper = new AlertDialogHelper();
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
     }
@@ -144,7 +144,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         alertDialogHelper.showSuccessDialog(this, message);
     }
 
-    protected void showProgressDialog(){
+    public void showProgressDialog(){
         if (progressBarDialog == null) {
             progressBarDialog = new Dialog(ParentAppCompatActivity.this, R.style.ProgressBarTheme);
             progressBarDialog.setContentView(LayoutInflater.from(this).inflate(
@@ -161,7 +161,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     }
 
 
-    protected void dismissProgressDialog() {
+    public void dismissProgressDialog() {
         if (progressBarDialog != null) {
             progressBarDialog.dismiss();
             progressBarDialog = null;
