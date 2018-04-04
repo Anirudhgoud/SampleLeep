@@ -1,13 +1,10 @@
 package com.goleep.driverapp.fragments;
 
-import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,10 +17,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
 import com.goleep.driverapp.adapters.CustomerListAdapter;
+import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
+import com.goleep.driverapp.constants.Permissions;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
+import com.goleep.driverapp.helpers.uihelpers.PermissionHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.interfaces.CustomerClickEventListener;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
@@ -37,6 +36,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.goleep.driverapp.constants.AppConstants.LOCATION_PERMISSION_REQUEST_CODE;
 
 /**
  * Created by anurag on 19/03/18.
@@ -52,7 +53,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     private CashSalesExistingCustomerViewModel viewModel;
     private CustomerListAdapter customerListAdapter;
     private CustomerSearchArrayAdapter customerSearchListAdapter;
-    private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+    private PermissionHelper permissionHelper;
 
     private CustomerClickEventListener customerClickEventListener = customerId -> {
 
@@ -101,35 +102,33 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() > 2) fetchCustomerList(false, false, null, s.toString() ,customerSuggestionsNetworkCallback);
+                if (s.length() > 2)
+                    fetchCustomerList(false, false, null, s.toString(), customerSuggestionsNetworkCallback);
             }
         });
     }
 
     private void checkForLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
-            return;
-        }
-        onPermissionGranted();
+        permissionHelper = new PermissionHelper(this, new String[]{Permissions.FINE_LOCATION, Permissions.COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        permissionHelper.request(new PermissionHelper.PermissionCallback() {
+            @Override
+            public void onPermissionGranted() {
+                fetchUserLocation();
+            }
+
+            @Override
+            public void onPermissionDenied() {
+                Toast.makeText(getContext(), getContext().getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    onPermissionGranted();
-                } else {
-                    Toast.makeText(getContext(), getContext().getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show();
-                }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissionHelper != null) {
+            permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    private void onPermissionGranted() {
-        fetchUserLocation();
     }
 
     private void fetchUserLocation() {
@@ -186,7 +185,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
 
     private void fetchCustomerList(boolean showLoading, boolean lastDeliveryDateRequired, LatLng currentLocation, String searchText, UILevelNetworkCallback networkCallback) {
         if (showLoading) ((ParentAppCompatActivity) getActivity()).showProgressDialog();
-        viewModel.fetchCustomerList(lastDeliveryDateRequired, currentLocation, searchText ,networkCallback);
+        viewModel.fetchCustomerList(lastDeliveryDateRequired, currentLocation, searchText, networkCallback);
     }
 
     @Override
@@ -201,5 +200,11 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     @Override
     public void onLastKnownLocationError(String errorMessage) {
         Toast.makeText(getContext(), getContext().getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        permissionHelper = null;
+        super.onDestroy();
     }
 }
