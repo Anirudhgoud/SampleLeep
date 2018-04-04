@@ -11,6 +11,12 @@ import com.goleep.driverapp.BuildConfig;
 
 public class LogUtils {
 
+    public static void info(String tag, String msg) {
+        if (BuildConfig.DEBUG) {
+            Log.i(tag, msg);
+        }
+    }
+
     public static void debug(String tag, String msg) {
         if (BuildConfig.DEBUG) {
             Log.d(tag, msg);

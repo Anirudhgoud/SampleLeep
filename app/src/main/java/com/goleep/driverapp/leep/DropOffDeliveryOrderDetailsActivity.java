@@ -87,7 +87,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         setCLickListenersOnButtons();
     }
 
-    private void connectUIElements(){
+    private void connectUIElements() {
         tvCustomerName = findViewById(R.id.tv_customer_name);
         tvCustomerName.requestFocus();
         tvStoreAddress = findViewById(R.id.tv_store_address);
@@ -108,13 +108,13 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         initialiseUpdateQuantityView();
     }
 
-    private void initialiseToolbar(){
+    private void initialiseToolbar() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.delivery_orders), R.drawable.ic_drop_off_toolbar);
     }
 
-    private void initialiseRecyclerView(){
+    private void initialiseRecyclerView() {
         orderItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderItemsRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         orderItemsListAdapter = new OrderItemsListAdapter(new ArrayList<>());
@@ -122,7 +122,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         viewModel.deliveryOrderItems(viewModel.getDeliveryOrderId()).observe(this, orderItemEntities -> {
             orderItemsListAdapter.updateList(orderItemEntities);
             viewModel.setSelectedItemCount(0);
-            for (OrderItemEntity entity : orderItemEntities){
+            for (OrderItemEntity entity : orderItemEntities) {
                 if (entity.isSelected())
                     viewModel.setSelectedItemCount(viewModel.getSelectedItemCount() + 1);
             }
@@ -131,33 +131,33 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         orderItemsRecyclerView.setAdapter(orderItemsListAdapter);
     }
 
-    private void fetchDeliveryOrderData(){
+    private void fetchDeliveryOrderData() {
         viewModel.deliveryOrder(viewModel.getDeliveryOrderId());
     }
 
-    private void fetchDeliveryOrderItems(){
+    private void fetchDeliveryOrderItems() {
         showProgressDialog();
         viewModel.fetchDeliveryOrderItems(viewModel.getDeliveryOrderId(), orderItemNetworkCallBack);
     }
 
-    private void updateDeliveryOrderUI(){
+    private void updateDeliveryOrderUI() {
         DeliveryOrderEntity deliveryOrder = viewModel.getDeliveryOrder();
-        if(deliveryOrder != null){
+        if (deliveryOrder != null) {
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(viewModel.getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
-            tvDoNumber.setText(deliveryOrder.getDoNumber() ==  null ? "-" : deliveryOrder.getDoNumber());
+            tvDoNumber.setText(deliveryOrder.getDoNumber() == null ? "-" : deliveryOrder.getDoNumber());
             tvDate.setText(viewModel.dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
             tvSchedule.setText(viewModel.timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
             int deliveryOrderCount = deliveryOrder.getDeliveryOrderItemsCount();
             tvItemsCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, deliveryOrderCount, deliveryOrderCount)));
-        }else {
+        } else {
             LogUtils.error(this.getLocalClassName(), "--------Delivery order is null--------");
         }
     }
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
+        switch (resourceId) {
             case R.id.left_toolbar_button:
                 finish();
                 break;
@@ -167,11 +167,11 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     private UILevelNetworkCallback orderItemNetworkCallBack = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if(uiModels == null){
+            if (uiModels == null) {
                 runOnUiThread(() -> dismissProgressDialog());
-                if(toLogout){
+                if (toLogout) {
                     logoutUser();
-                }else if(isDialogToBeShown) {
+                } else if (isDialogToBeShown) {
                     showNetworkRelatedDialogs(errorMessage);
                 }
             } else if (uiModels.size() > 0) {
@@ -202,7 +202,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         }
     };
 
-    private void initialiseUpdateQuantityView(){
+    private void initialiseUpdateQuantityView() {
         etUnits.setKeyImeChangeListener(new CustomEditText.KeyImeChange() {
             @Override
             public void onDoneButtonPress() {
@@ -218,21 +218,24 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         });
         etUnits.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (viewModel.getSelectedOrderItem() != null) {
                     int maxUnits = viewModel.getSelectedOrderItem().getMaxQuantity();
                     String newUnitsText = etUnits.getText().toString();
-                    if(newUnitsText.length() > 0){
+                    if (newUnitsText.length() > 0) {
                         int newUnits = Integer.valueOf(newUnitsText);
                         boolean isValid = newUnits <= maxUnits && newUnits != 0;
                         invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
                         btUpdate.setEnabled(isValid);
-                    }else{
+                    } else {
                         btUpdate.setEnabled(false);
                     }
                 }
@@ -248,11 +251,11 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         });
     }
 
-    private void displayUpdateQuantityView(int itemId, int currentUnits){
+    private void displayUpdateQuantityView(int itemId, int currentUnits) {
         etUnits.requestFocus();
         OrderItemEntity selectedOrderItem = viewModel.orderItem(itemId);
         viewModel.setSelectedOrderItem(selectedOrderItem);
-        if(selectedOrderItem != null && selectedOrderItem.getProduct() != null){
+        if (selectedOrderItem != null && selectedOrderItem.getProduct() != null) {
             ProductEntity product = selectedOrderItem.getProduct();
             tvProductName.setText(product.getName() + " " + product.getWeight() + product.getWeightUnit());
             etUnits.setText("");
@@ -264,7 +267,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         }
     }
 
-    private void hideUpdateQuantityView(){
+    private void hideUpdateQuantityView() {
         updateQuantityLayout.setVisibility(View.GONE);
         viewModel.setSelectedOrderItem(null);
     }

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
@@ -18,16 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.facebook.stetho.common.StringUtil;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
 import com.goleep.driverapp.helpers.uimodels.InnerDashboardUiModel;
+import com.goleep.driverapp.helpers.uimodels.Summary;
 import com.goleep.driverapp.interfaces.OnPermissionResult;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
+import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.HomeViewModel;
 
 import java.io.File;
@@ -48,9 +53,14 @@ public class HomeActivity extends ParentAppCompatActivity {
     ImageView closeButton;
     @BindView(R.id.dashboard_viewpager)
     NonSwipeableViewPager viewPager;
-    @BindView(R.id.signout) CustomButton signOutButton;
+    @BindView(R.id.signout)
+    CustomButton signOutButton;
     @BindView(R.id.edit_profile_imageview)
     CircleImageView profileImage;
+
+    private RelativeLayout relativeLayout_pickup_cardview;
+    private RelativeLayout relativeLayout_drop_off_cardview;
+    private RelativeLayout relativeLayout_information_cardview;
 
     final int START_GALLERY_REQUEST_CODE = 101;
     final int START_PICKUP_ACTIVITY_CODE = 102;
@@ -58,7 +68,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            setupInnerDashboard((String)view.getTag());
+            setupInnerDashboard((String) view.getTag());
             viewPager.setCurrentItem(1);
             setToolbarLeftIcon(R.drawable.ic_home);
         }
@@ -67,7 +77,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     View.OnClickListener innerDashboardItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            switch ((String)view.getTag()){
+            switch ((String) view.getTag()) {
                 case InnerDashboardUiModel.TAG_DELIVERY_ORDERS:
                     Intent doIntent = new Intent(HomeActivity.this, DropOffDeliveryOrdersActivity.class);
                     startActivity(doIntent);
@@ -113,15 +123,16 @@ public class HomeActivity extends ParentAppCompatActivity {
             if (toLogout)
                 logoutUser();
             else if (errorMessage == null) {
-                if(uiModels.size() > 0){
-                    HomeActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            displayDriverProfile((DriverEntity)uiModels.get(0));
-                        }
-                    });
+                if (uiModels.size() > 0) {
+                    if (!HomeActivity.this.isFinishing())
+                        HomeActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                displayDriverProfile((DriverEntity) uiModels.get(0));
+                            }
+                        });
                 }
-            } else if(isDialogToBeShown){
+            } else if (isDialogToBeShown) {
                 showNetworkRelatedDialogs(errorMessage);
             }
         }
@@ -131,28 +142,36 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
-            if(toLogout){
+            if (toLogout) {
                 logoutUser();
             } else if (isDialogToBeShown) {
                 showNetworkRelatedDialogs(errorMessage);
+            } else if (uiModels.size() > 0) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        populateUiCount((Summary) uiModels.get(0));
+                    }
+                });
             }
         }
     };
 
     private void displayDriverProfile(DriverEntity driverEntity) {
         View view = findViewById(R.id.profile_layout);
-        ((CustomTextView)view.findViewById(R.id.name_textView)).setText(driverEntity.getFirstName()+" "+ driverEntity.getLastName());
-        ((CustomTextView)view.findViewById(R.id.place_text_view)).setText(driverEntity.getCity()+", "+ driverEntity.getCountryName());
-        ((CustomTextView)view.findViewById(R.id.deliveries_value_textview)).setText(driverEntity.getCompletedDeliveryOrdersCount()+"");
-        ((CustomTextView)view.findViewById(R.id.payment_collected_values_textview)).setText(driverEntity.getPaymentCollected()+"");
-        ((CustomTextView)view.findViewById(R.id.locations_layout_value_textview)).setText(driverEntity.getDeliveryLocationsCount()+"");
-        ((CustomTextView)view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
-        ((CustomTextView)view.findViewById(R.id.address_text_view)).setText(driverEntity.getAddressLine1()+"\n"+ driverEntity.getAddressLine2());
-        ((CustomTextView)view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
-        ((CustomTextView)view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
-        setToolbarRightText(driverEntity.getFirstName()+" "+ driverEntity.getLastName());
+        ((CustomTextView) view.findViewById(R.id.name_textView)).setText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
+        ((CustomTextView) view.findViewById(R.id.place_text_view)).setText(driverEntity.getCity() + ", " + driverEntity.getCountryName());
+        ((CustomTextView) view.findViewById(R.id.deliveries_value_textview)).setText(driverEntity.getCompletedDeliveryOrdersCount() + "");
+        ((CustomTextView) view.findViewById(R.id.payment_collected_values_textview)).setText(driverEntity.getPaymentCollected() + "");
+        ((CustomTextView) view.findViewById(R.id.locations_layout_value_textview)).setText(driverEntity.getDeliveryLocationsCount() + "");
+        ((CustomTextView) view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
+        ((CustomTextView) view.findViewById(R.id.address_text_view)).setText(driverEntity.getAddressLine1() + "\n" + driverEntity.getAddressLine2());
+        ((CustomTextView) view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
+        ((CustomTextView) view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
+        setToolbarRightText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
-        if(driverEntity.getImageUrl() != null) {
+        if (driverEntity.getImageUrl() != null) {
 
         }
     }
@@ -204,9 +223,9 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
+        switch (resourceId) {
             case R.id.left_toolbar_button:
-                if(viewPager.getCurrentItem() == 0)
+                if (viewPager.getCurrentItem() == 0)
                     drawerLayout.openDrawer(GravityCompat.START);
                 else {
                     setToolbarLeftIcon(R.drawable.ic_profile);
@@ -226,10 +245,10 @@ public class HomeActivity extends ParentAppCompatActivity {
     }
 
     private void openGallery() {
-        if(isPermissionGranted(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
+        if (isPermissionGranted(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
             startGallery();
         } else {
-            requestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},new OnPermissionResult() {
+            requestPermission(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new OnPermissionResult() {
                 @Override
                 public void onPermissionGranted() {
                     startGallery();
@@ -256,12 +275,15 @@ public class HomeActivity extends ParentAppCompatActivity {
         final String TAG_DROPOFF = "1";
         final String TAG_INFO = "2";
 
-        switch (tag){
-            case TAG_PICKUP: setUpPickupDashboard();
+        switch (tag) {
+            case TAG_PICKUP:
+                setUpPickupDashboard();
                 break;
-            case TAG_DROPOFF: setUpReturnsDashboard();
+            case TAG_DROPOFF:
+                setUpReturnsDashboard();
                 break;
-            case TAG_INFO: setupInformationDashboard();
+            case TAG_INFO:
+                setupInformationDashboard();
                 break;
         }
     }
@@ -311,13 +333,13 @@ public class HomeActivity extends ParentAppCompatActivity {
         ViewGroup dashboardContainer = innerDashBoardView.findViewById(R.id.scrollview_container);
         dashboardContainer.removeAllViewsInLayout();
         LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
-        for ( InnerDashboardUiModel uimodel: innerDashboardUiModels) {
+        for (InnerDashboardUiModel uimodel : innerDashboardUiModels) {
             View view = inflater.inflate(R.layout.inner_dashboard_item, null, false);
-            ((CustomTextView)view.findViewById(R.id.top_label_textview)).setText(uimodel.getTopText());
-            ((CustomTextView)view.findViewById(R.id.main_text)).setText(uimodel.getMainText());
-            ((CustomTextView)view.findViewById(R.id.sub_text)).setText(uimodel.getSubText());
-            ((CustomTextView)view.findViewById(R.id.top_value_textview)).setText(String.valueOf(uimodel.getTopNumber()));
-            ((ImageView)view.findViewById(R.id.icon)).setImageResource(uimodel.getIconResId());
+            ((CustomTextView) view.findViewById(R.id.top_label_textview)).setText(uimodel.getTopText());
+            ((CustomTextView) view.findViewById(R.id.main_text)).setText(uimodel.getMainText());
+            ((CustomTextView) view.findViewById(R.id.sub_text)).setText(uimodel.getSubText());
+            ((CustomTextView) view.findViewById(R.id.top_value_textview)).setText(String.valueOf(uimodel.getTopNumber()));
+            ((ImageView) view.findViewById(R.id.icon)).setImageResource(uimodel.getIconResId());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     getResources().getDimensionPixelSize(R.dimen.card_view_height));
@@ -337,16 +359,23 @@ public class HomeActivity extends ParentAppCompatActivity {
             LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
             ViewGroup layout = null;
 
-            switch (position){
-                case 0: layout = (ViewGroup) inflater.inflate(R.layout.dashboard_view, collection, false);
-                    layout.findViewById(R.id.pickup_cardview).setOnClickListener(dashboardItemClickListener);
-                    layout.findViewById(R.id.drop_off_cardview).setOnClickListener(dashboardItemClickListener);
-                    layout.findViewById(R.id.information_cardview).setOnClickListener(dashboardItemClickListener);
-                break;
-
-                case 1: layout = (ViewGroup) inflater.inflate(R.layout.inner_dashboard_view, collection, false);
-                layout.setTag("inner");
-                break;
+            switch (position) {
+                case 0:
+                    layout = (ViewGroup) inflater.inflate(R.layout.dashboard_view, collection, false);
+                    relativeLayout_pickup_cardview = layout.findViewById(R.id.pickup_cardview);
+                    relativeLayout_drop_off_cardview = layout.findViewById(R.id.drop_off_cardview);
+                    relativeLayout_information_cardview = layout.findViewById(R.id.information_cardview);
+                    relativeLayout_pickup_cardview.setTag("0");
+                    relativeLayout_drop_off_cardview.setTag("1");
+                    relativeLayout_information_cardview.setTag("2");
+                    relativeLayout_pickup_cardview.setOnClickListener(dashboardItemClickListener);
+                    relativeLayout_drop_off_cardview.setOnClickListener(dashboardItemClickListener);
+                    relativeLayout_information_cardview.setOnClickListener(dashboardItemClickListener);
+                    break;
+                case 1:
+                    layout = (ViewGroup) inflater.inflate(R.layout.inner_dashboard_view, collection, false);
+                    layout.setTag("inner");
+                    break;
             }
 
             collection.addView(layout);
@@ -355,7 +384,7 @@ public class HomeActivity extends ParentAppCompatActivity {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View)object);
+            container.removeView((View) object);
         }
 
         @Override
@@ -371,7 +400,7 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(viewPager.getCurrentItem() != 0){
+        if (viewPager.getCurrentItem() != 0) {
             viewPager.setCurrentItem(0);
         } else if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
@@ -383,7 +412,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if(requestCode == START_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == START_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = intent.getData();
             File sourceFile = new File(getRealPathFromURI(uri));
             profileImage.setImageURI(uri);
@@ -405,5 +434,35 @@ public class HomeActivity extends ParentAppCompatActivity {
             cursor.close();
         }
         return result;
+    }
+
+    private void findDashboardViewsAndSet(RelativeLayout layout, int mainText, int drawableIconBg, int drawableDashboard, int belowText, String count) {
+        ((CustomTextView) layout.findViewById(R.id.main_text)).setText(getResources().getText(mainText));
+        (layout.findViewById(R.id.icon_layout)).setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
+        ((ImageView) layout.findViewById(R.id.icon)).setImageResource(drawableDashboard);
+        ((CustomTextView) layout.findViewById(R.id.sub_text)).setText(getResources().getText(belowText));
+        CustomTextView tvPickUpCount = layout.findViewById(R.id.count_text);
+        tvPickUpCount.setText(count);
+        tvPickUpCount.setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
+    }
+
+    private void populateUiCount(Summary summary) {
+        findDashboardViewsAndSet(relativeLayout_pickup_cardview, R.string.pickup, R.drawable.pickup_icon_bg,
+                R.drawable.ic_pickup_dashboard, R.string.pick_up__below_text,
+                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())));
+
+        findDashboardViewsAndSet(relativeLayout_drop_off_cardview, R.string.dropoff, R.drawable.drop_off_icon_bg,
+                R.drawable.ic_drop_off_dashboard, R.string.drop_off_below_text,
+                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())));
+
+        findDashboardViewsAndSet(relativeLayout_information_cardview, R.string.information, R.drawable.info_icon_bg,
+                R.drawable.ic_info_dashboard, R.string.information_below_text,
+                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())));
+    }
+
+    private String addZeroToSingleCharacter(String str) {
+        if (str.length() == 1)
+            return "0" + str;
+        else return str;
     }
 }

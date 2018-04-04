@@ -21,4 +21,7 @@ public interface AppConstants {
     int TYPE_DELIVERABLE = 0;
     int TYPE_SELLABLE = 1;
     int TYPE_RETURNED = 2;
+
+    //Permission codes
+    int LOCATION_PERMISSION_REQUEST_CODE = 100;
 }
