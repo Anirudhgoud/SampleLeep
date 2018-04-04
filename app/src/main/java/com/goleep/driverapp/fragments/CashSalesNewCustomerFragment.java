@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -24,6 +25,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BusinessCategoryAttribute;
+import com.goleep.driverapp.helpers.uimodels.GetBusinessesData;
 import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.CashSalesActivity;
@@ -59,6 +61,8 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
     CustomTextView tvConfirm;
     @BindView(R.id.sv_add_customer)
     ScrollView scrollView;
+    @BindView(R.id.ac_tv_business_name)
+    AutoCompleteTextView  autoCompleteTextViewBusinessName;
     private CashSalesActivity cashSalesActivity;
     private CashSalesNewCustomerViewModel cashSalesNewCustomerViewModel;
     private ArrayAdapter<String> adapterBusinessType;
@@ -88,7 +92,14 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         adapterBusinessType = new ArrayAdapter(getContext(), R.layout.custom_spinner_layout, new ArrayList<String>());
         adapterBusinessType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBusinessType.setAdapter(adapterBusinessType);
+        cashSalesActivity.showLoading();
         cashSalesNewCustomerViewModel.getBusinessTypes(busissnesTypeCallBack);
+        cashSalesNewCustomerViewModel.getBusinessesData(getBusinessesDataCallBack);
+        String[] language ={"C","C++","Java",".NET","iPhone","Android","ASP.NET","PHP"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(cashSalesActivity,android.R.layout.select_dialog_item,language);
+        autoCompleteTextViewBusinessName.setThreshold(1);
+        autoCompleteTextViewBusinessName.setAdapter(adapter);
+
     }
 
 
@@ -132,9 +143,9 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
                 scrollView.setVisibility(View.VISIBLE);
                 break;
             case R.id.tv_confirm:
-               if (checkInputsValidation()) {
-                startActivity(new Intent(getContext(), NewCustomerActivity.class).putExtras(bundle));
-                ((Activity) getContext()).finish();
+                if (checkInputsValidation()) {
+                    startActivity(new Intent(getContext(), NewCustomerActivity.class).putExtras(bundle));
+                    ((Activity) getContext()).finish();
                 }
                 break;
         }
@@ -151,6 +162,7 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
 
     private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
+        cashSalesActivity.hideLoading();
         ((CashSalesActivity) getActivity()).hideLoading();
         if (uiModels == null) {
             if (toLogout) {
@@ -163,6 +175,32 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
                 listBussinessCategoryAttribute = (List<BusinessCategoryAttribute>) uiModels;
                 for (int i = 0; i < listBussinessCategoryAttribute.size(); i++)
                     adapterBusinessType.add(listBussinessCategoryAttribute.get(i).getBusinessName());
+
+            });
+        }
+    }
+
+    private UILevelNetworkCallback getBusinessesDataCallBack = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
+            cashSalesActivity.hideLoading();
+            cashSalesActivity.runOnUiThread(() -> handleResponsegetBusinessesDataCallBack(uiModels, isDialogToBeShown, errorMessage, toLogout));
+        }
+    };
+
+    private void handleResponsegetBusinessesDataCallBack(List<?> uiModels, boolean isDialogToBeShown,
+                                                         String errorMessage, boolean toLogout) {
+        ((CashSalesActivity) getActivity()).hideLoading();
+        if (uiModels == null) {
+            if (toLogout) {
+                cashSalesActivity.logout();
+            } else if (isDialogToBeShown) {
+                cashSalesActivity.showErrorDialog(errorMessage);
+            }
+        } else if (uiModels.size() > 0) {
+            cashSalesActivity.runOnUiThread(() -> {
+                List<GetBusinessesData> listGetBusinessesData = (List<GetBusinessesData>) uiModels;
 
             });
         }

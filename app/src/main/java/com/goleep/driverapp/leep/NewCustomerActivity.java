@@ -18,6 +18,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
+import com.goleep.driverapp.helpers.uimodels.BusinessAttribute;
 import com.goleep.driverapp.helpers.uimodels.MapAttribute;
 import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
@@ -66,12 +67,26 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
     private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
     private Marker marker;
     private NewCustomerViewModel newCustomerViewModel;
+    private int countryId = 105;//remove this latter
+    private String name;
+    private String contactEmail;
+    private String contactName;
+    private String contactNumber;
+    private String designation = "designation";//remove this latter
+    private String postalCode;
+    private int businessCategoryId;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_new_customer);
         Bundle bundle = getIntent().getExtras();
-        String str ;
+        if (bundle != null) {
+            name = bundle.getString("BUSINESS_NAME");
+            contactEmail = bundle.getString("EMAIL_ID");
+            contactName = bundle.getString("CONTACT_NAME");
+            contactNumber = bundle.getString("CONTACT_NUMBER");
+            businessCategoryId = bundle.getInt("BUSINESS_ID");
+        }
     }
 
     @Override
@@ -79,10 +94,19 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         ButterKnife.bind(NewCustomerActivity.this);
         newCustomerViewModel = ViewModelProviders.of(NewCustomerActivity.this).get(NewCustomerViewModel.class);
         initialiseMapView();
+        tvConfirm.setOnClickListener(this);
     }
 
     @Override
     public void onClickWithId(int resourceId) {
+        switch (resourceId) {
+            case R.id.tv_confirm:
+                if (checkInputFiledVaidation())
+                    newCustomerViewModel.createNewCustomer(newCustomerCallBack, countryId, name,
+                            contactEmail, contactName, contactNumber, designation, postalCode,
+                            businessCategoryId);
+                break;
+        }
 
     }
 
@@ -119,6 +143,40 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         }
     }
 
+    private UILevelNetworkCallback newCustomerCallBack = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
+                                       String errorMessage, boolean toLogout) {
+            dismissProgressDialog();
+            runOnUiThread(() -> handleReportsResponseForNewCustome(uiModels, isDialogToBeShown, errorMessage, toLogout));
+        }
+    };
+
+    private void handleReportsResponseForNewCustome(List<?> uiModels, boolean isDialogToBeShown,
+                                                    String errorMessage, boolean toLogout) {
+        dismissProgressDialog();
+        if (uiModels == null) {
+            if (toLogout) {
+                logoutUser();
+            } else if (isDialogToBeShown) {
+                showNetworkRelatedDialogs(errorMessage);
+            }
+        } else if (uiModels.size() > 0) {
+            runOnUiThread(() -> {
+                BusinessAttribute businessAttribute = (BusinessAttribute) uiModels.get(0);
+                Toast.makeText(this,businessAttribute.getId()+"",Toast.LENGTH_LONG).show();
+            });
+        }
+    }
+
+    private boolean checkInputFiledVaidation() {
+        postalCode = etPostalCode.getText().toString();
+        if (postalCode.length() == 0){
+            etPostalCode.setError("postalcode could not be empty");
+            return  false;
+        }
+            return true;
+    }
 
     private void checkForLocationPermission() {
         if (ActivityCompat.checkSelfPermission(NewCustomerActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(NewCustomerActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

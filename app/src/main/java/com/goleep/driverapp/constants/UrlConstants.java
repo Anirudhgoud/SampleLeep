@@ -41,4 +41,5 @@ public interface UrlConstants {
 
     //Drop off
     String BUSINESS_CATEGORIES_URL = BASE_URL+"/business_categories";
+    String BUSINESSES_URL = BASE_URL+"/businesses";
 }
