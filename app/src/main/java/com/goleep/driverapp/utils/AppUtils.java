@@ -18,17 +18,17 @@ import java.io.OutputStream;
 
 public class AppUtils {
 
-    public static String userCurrencySymbol(){
+    public static String userCurrencySymbol() {
         //TODO: Get appropriate currency symbol according to user country or fetch from APIs
         return "₹";
     }
 
     public static Bitmap bitmapFromView(View v, int width, int height) {
-        Bitmap b = Bitmap.createBitmap(width , height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
         v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
-        v.draw(c);
-        return b;
+        v.draw(canvas);
+        return bitmap;
     }
 
     public static File fileFromBitmap(Context context, Bitmap bitmap, String fileName) {
@@ -46,10 +46,10 @@ public class AppUtils {
         return imageFile;
     }
 
-    public static void toggleKeyboard(View view, Context context){
+    public static void toggleKeyboard(View view, Context context) {
         InputMethodManager inputMethodManager =
-                (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(inputMethodManager != null){
+                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null) {
             inputMethodManager.toggleSoftInputFromWindow(
                     view.getApplicationWindowToken(),
                     InputMethodManager.SHOW_FORCED, 0);

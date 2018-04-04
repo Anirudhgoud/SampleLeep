@@ -37,7 +37,9 @@ import java.util.Map;
 
 public class HomeViewModel extends AndroidViewModel {
     private Summary summary = new Summary();
+
     private AppDatabase leepDatabase;
+
     public HomeViewModel(@NonNull Application application) {
         super(application);
         leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
@@ -49,26 +51,27 @@ public class HomeViewModel extends AndroidViewModel {
                 .getLocalFileStore().getString(getApplication(), SharedPreferenceKeys.AUTH_TOKEN));
         NetworkService.sharedInstance().getNetworkClient().makeDeleteRequest(getApplication(), UrlConstants.LOGOUT_URL,
                 true, headerParams, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type){
-                    case NetworkConstants.SUCCESS:
-                        logoutCallback.onResponseReceived(null, false, null, false);
-                        break;
-                    case NetworkConstants.FAILURE:
-                        logoutCallback.onResponseReceived(null, false, errorMessage, false);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                        logoutCallback.onResponseReceived(null, true, errorMessage, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        logoutCallback.onResponseReceived(null, false, errorMessage, true);
-                }
-            }
-        });
+                    @Override
+                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                logoutCallback.onResponseReceived(null, false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                logoutCallback.onResponseReceived(null, false, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                logoutCallback.onResponseReceived(null, true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                logoutCallback.onResponseReceived(null, false, errorMessage, true);
+                        }
+                    }
+                });
     }
 
     public void getDriverProfile(final UILevelNetworkCallback driverProfileCallback) {
+
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(getApplication(),
                 SharedPreferenceKeys.DRIVER_ID);
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
@@ -86,11 +89,12 @@ public class HomeViewModel extends AndroidViewModel {
                             leepDatabase.driverDao().insertDriver(driver);
                         }
                         List<WarehouseEntity> warehouseEntities = driverDataParser.warehouseByParsingResponse(response);
-                        if(warehouseEntities != null){
+                        if(warehouseEntities != null) {
                             leepDatabase.warehouseDao().insertWarehouseEntities(warehouseEntities);
                         }
                         driverProfileCallback.onResponseReceived(driverEntities, false, null, false);
                         break;
+
                     case NetworkConstants.FAILURE:
                         driverProfileCallback.onResponseReceived(null, false, errorMessage, false);
                         break;
@@ -99,9 +103,11 @@ public class HomeViewModel extends AndroidViewModel {
                         break;
                     case NetworkConstants.UNAUTHORIZED:
                         driverProfileCallback.onResponseReceived(null, false, errorMessage, true);
-                }
-            }
-        });
+
+
+                        }
+                    }
+                });
     }
 
     public void getStocks() {
@@ -125,12 +131,12 @@ public class HomeViewModel extends AndroidViewModel {
                 });
     }
 
-    public void uploadProfileImage(File imageFile){
+    public void uploadProfileImage(File imageFile) {
         String authToken = LocalStorageService.sharedInstance().getLocalFileStore().
                 getString(getApplication().getApplicationContext(), SharedPreferenceKeys.AUTH_TOKEN);
         String userId = LocalStorageService.sharedInstance().getLocalFileStore().
                 getString(getApplication().getApplicationContext(), SharedPreferenceKeys.USER_ID);
-        NetworkService.sharedInstance().getNetworkClient().uploadImage(authToken, UrlConstants.UPDATE_PROFILE_IMAGE+userId,
+        NetworkService.sharedInstance().getNetworkClient().uploadImage(authToken, UrlConstants.UPDATE_PROFILE_IMAGE + userId,
                 imageFile, "profile_image.jpg");
     }
 
@@ -141,28 +147,28 @@ public class HomeViewModel extends AndroidViewModel {
     public void getSummary(final UILevelNetworkCallback summaryCallback) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.SUMMARY_URL,
                 true, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type){
-                    case NetworkConstants.SUCCESS:
-                        List<Summary> summaryList = new ArrayList<>();
-                        SummaryParser summaryParser = new SummaryParser();
-                        summary = summaryParser.summaryResponseByParsingJsonResponse(response);
-                        if(summary != null){
-                            summaryList.add(summary);
+                    @Override
+                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                List<Summary> summaryList = new ArrayList<>();
+                                SummaryParser summaryParser = new SummaryParser();
+                                summary = summaryParser.summaryResponseByParsingJsonResponse(response);
+                                if (summary != null) {
+                                    summaryList.add(summary);
+                                }
+                                summaryCallback.onResponseReceived(summaryList, false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                summaryCallback.onResponseReceived(null, false, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                summaryCallback.onResponseReceived(null, true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                summaryCallback.onResponseReceived(null, false, errorMessage, true);
                         }
-                        summaryCallback.onResponseReceived(summaryList, false, null, false);
-                        break;
-                    case NetworkConstants.FAILURE:
-                        summaryCallback.onResponseReceived(null, false, errorMessage, false);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                        summaryCallback.onResponseReceived(null, true, errorMessage, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        summaryCallback.onResponseReceived(null, false, errorMessage, true);
-                }
-            }
-        });
+                    }
+                });
     }
 }

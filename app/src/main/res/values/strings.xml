@@ -130,6 +130,12 @@
     <string name="invalid_contact_number">Please enter valid 10 digit contact number.</string>
     <string name="signature_error">Please add signature.</string>
 
+
+    <!--dashboard string-->
+    <string name="pick_up__below_text">From Warehouse, Returns</string>
+    <string name="drop_off_below_text">Delivery Orders, Cash Sales, Drop Off to Warehouse</string>
+    <string name="information_below_text">Stock, History, Reports</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="location_permission_denied">Location permission denied</string>

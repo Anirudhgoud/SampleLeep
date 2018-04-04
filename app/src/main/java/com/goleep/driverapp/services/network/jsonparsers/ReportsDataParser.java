@@ -1,30 +1,24 @@
 package com.goleep.driverapp.services.network.jsonparsers;
 
-import com.goleep.driverapp.helpers.uimodels.ReportAttr;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.services.room.entities.ReportsEntity;
+import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by shubham on 23/03/2018.
  */
 
 public class ReportsDataParser {
-    public ReportAttr reportsDataByParsingJsonResponse(JSONObject jsonObject){
+    public ReportAttrribute reportsDataByParsingJsonResponse(JSONObject jsonObject){
         if(jsonObject == null){
             return null;
         }
-        ReportAttr reportAttr =new ReportAttr();
-        reportAttr.setTotalSales(jsonObject.optInt("total_sales"));
-        reportAttr.setCashCollected(jsonObject.optInt("cash_collected"));
-        reportAttr.setUnits(jsonObject.optInt("units"));
-        reportAttr.setReturns(jsonObject.optInt("returns"));
-        reportAttr.setLocations(jsonObject.optInt("locations"));
-        return  reportAttr;
+        ReportAttrribute reportAttrribute =new ReportAttrribute();
+        reportAttrribute.setTotalSales(jsonObject.optInt("total_sales"));
+        reportAttrribute.setCashCollected(jsonObject.optInt("cash_collected"));
+        reportAttrribute.setUnits(jsonObject.optInt("units"));
+        reportAttrribute.setReturns(jsonObject.optInt("returns"));
+        reportAttrribute.setLocations(jsonObject.optInt("locations"));
+        return reportAttrribute;
     }
 }
