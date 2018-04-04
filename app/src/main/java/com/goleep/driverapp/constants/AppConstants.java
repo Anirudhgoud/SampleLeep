@@ -17,7 +17,7 @@ public interface AppConstants {
     String DO_IDS_KEY = "do_selected";
 
     int ACTIVITY_SUCCESS_RESULT = 101;
-
+    git 
     //Permission codes
     int LOCATION_PERMISSION_REQUEST_CODE = 100;
 }
