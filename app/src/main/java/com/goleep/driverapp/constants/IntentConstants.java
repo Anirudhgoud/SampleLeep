@@ -16,4 +16,5 @@ public interface IntentConstants {
     String WAREHOUSE_ID = "warehouse_id";
     String RETURNABLE = "returnable";
     String SELLABLE = "sellable";
+    String TASK_SUCCESSFUL = "task_successful";
 }

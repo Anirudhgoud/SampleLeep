@@ -16,7 +16,6 @@ import com.goleep.driverapp.utils.StringUtils;
 public class WarehouseListViewHolder extends RecyclerView.ViewHolder {
     private CustomTextView customerNameTextView;
     private CustomTextView addressTextView;
-    private CustomButton selectButton;
     private View.OnClickListener warehouseSelectionListener;
 
     public void setWarehouseSelectionListener(View.OnClickListener warehouseSelectionListener) {
@@ -27,7 +26,6 @@ public class WarehouseListViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         customerNameTextView = itemView.findViewById(R.id.customer_name_tv);
         addressTextView = itemView.findViewById(R.id.address_tv);
-        selectButton = itemView.findViewById(R.id.select_bt);
     }
 
     public void bind(WarehouseEntity warehouseEntity, int position) {
@@ -35,9 +33,9 @@ public class WarehouseListViewHolder extends RecyclerView.ViewHolder {
         addressTextView.setText(StringUtils.getFullAddress(warehouseEntity.getAddressLine1(),
                 warehouseEntity.getAddressLine2(), warehouseEntity.getCity(),
                 warehouseEntity.getState(), warehouseEntity.getPincode()));
-        selectButton.setTag(position);
+        itemView.setTag(position);
         if(warehouseSelectionListener != null){
-            selectButton.setOnClickListener(warehouseSelectionListener);
+            itemView.setOnClickListener(warehouseSelectionListener);
         }
     }
 }

@@ -6,17 +6,23 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.helpers.uimodels.CashSalesInfo;
+import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
@@ -32,6 +38,8 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
     RecyclerView expandableListView;
     @BindView(R.id.confirm_button)
     CustomButton confirmButton;
+    @BindView(R.id.map_button)
+    LinearLayout mapButton;
     private DoExpandableListAdapter adapter;
     private PickupDeliveryOrderViewModel pickupDeliveryOrderViewModel;
     private ArrayList<Integer> cashDoItems = new ArrayList<>();
@@ -42,9 +50,10 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage,
                                        boolean toLogout) {
+            dismissProgressDialog();
             if (!isDialogToBeShown && errorMessage == null && !toLogout) {
                 pickupDeliveryOrderViewModel.deleteDeliveryOrders(selectedDeliveryOrders, cashSalesItems);
-                showSuccessDialog(getString(R.string.pickup_success));
+                showSuccessDialog();
             }
         }
     };
@@ -76,6 +85,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
         setWareHouseDetails();
         initRecyclerView();
+        mapButton.setVisibility(View.GONE);
         confirmButton.setOnClickListener(this);
     }
 
@@ -97,8 +107,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
             deliveryOrderEntities.add(pickupDeliveryOrderViewModel.getDeliveryOrder(doId));
         }
         BaseListItem deliveryOrderHeader = new BaseListItem();
-        deliveryOrderHeader.setOrdersHeader(String.format(getString(R.string.do_header_label),
-                deliveryOrderEntities.size()));
+        deliveryOrderHeader.setOrdersHeader(String.format(getString(R.string.do_header_label), deliveryOrderEntities.size()));
         deliveryOrderHeader.setItemType(AppConstants.TYPE_ORDERS_HEADER);
         baseListItems.add(deliveryOrderHeader);
         for (DeliveryOrderEntity deliveryOrderEntity : deliveryOrderEntities) {
@@ -140,14 +149,48 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         wareHouseInfoTextView.setText(pickupDeliveryOrderViewModel.getWareHouseNameAddress());
     }
 
+    private void showSuccessDialog() {
+        LeepSuccessDialog successDialog = new LeepSuccessDialog(this, getString(R.string.pickup_success));
+        successDialog.show();
+        successDialog.setSuccessDialogEventListener(new SuccessDialogEventListener() {
+            @Override
+            public void onOkButtonTap() {
+                goToHomeActivity();
+            }
+
+            @Override
+            public void onCloseButtonTap() {
+                goToHomeActivity();
+            }
+
+            @Override
+            public void onPrintButtonTap() {
+                LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
+            }
+        });
+        successDialog.setPrintButtonVisibility(true);
+    }
+
+    private void goToHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
+        startActivity(intent);
+    }
+
     @Override
     public void onClickWithId(int resourceId) {
         switch (resourceId){
             case R.id.left_toolbar_button : finish();
                 break;
             case R.id.confirm_button:
-                pickupDeliveryOrderViewModel.confirmPickup(cashSalesItems, selectedDeliveryOrders, pickupConfirmCallBack);
+                performConfirm();
                 break;
         }
+    }
+
+    private void performConfirm() {
+        showProgressDialog();
+        pickupDeliveryOrderViewModel.confirmPickup(cashSalesItems, selectedDeliveryOrders, pickupConfirmCallBack);
     }
 }

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.facebook.stetho.common.StringUtil;
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
@@ -186,6 +187,13 @@ public class HomeActivity extends ParentAppCompatActivity {
         initView();
         populateProfile();
         populateSummary();
+    }
+
+    @Override
+    public void onNewIntent(Intent intent){
+        if(intent.getBooleanExtra(IntentConstants.TASK_SUCCESSFUL, false)){
+            viewPager.setCurrentItem(0);
+        }
     }
 
     private void populateSummary() {

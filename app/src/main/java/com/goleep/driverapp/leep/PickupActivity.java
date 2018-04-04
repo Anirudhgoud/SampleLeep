@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
@@ -40,6 +41,8 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
     TabLayout tabLayout;
     @BindView(R.id.warehouse_info_text_view)
     CustomTextView wareHouseInfoTextView;
+    @BindView(R.id.map_button)
+    LinearLayout mapButton;
     private WarehouseDetailsViewModel warehouseDetailsViewModel;
     private List<Integer> selectedDeliveryOrders = new ArrayList<>();
     private List<Integer> cashDoItems = new ArrayList<>();
@@ -77,6 +80,7 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
         initialiseTabBar();
         setWareHouseDetails();
+        mapButton.setVisibility(View.GONE);
     }
 
     private void setWareHouseDetails() {
@@ -136,15 +140,6 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
 
     public void logoutUser(){
         super.logoutUser();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 101) {
-            if (resultCode == AppConstants.ACTIVITY_SUCCESS_RESULT) {
-                finish();
-            }
-        }
     }
 
     @Override
