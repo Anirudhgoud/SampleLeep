@@ -216,12 +216,13 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Customer customer = (Customer) parent.getAdapter().getItem(position);
-        gotoSelectProductActivity(customer.getId());
+        gotoSelectProductActivity(customer);
     }
 
-    private void gotoSelectProductActivity(int customerId) {
+    private void gotoSelectProductActivity(Customer customer) {
+        if (customer == null) return;
         Intent intent = new Intent(getActivity(), CashSalesSelectProductsActivity.class);
-        intent.putExtra(IntentConstants.CUSTOMER_ID, customerId);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, customer);
         startActivity(intent);
     }
 

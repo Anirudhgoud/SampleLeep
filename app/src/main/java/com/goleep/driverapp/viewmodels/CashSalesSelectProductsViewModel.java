@@ -4,8 +4,11 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.helpers.uimodels.Customer;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
@@ -19,9 +22,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by anurag on 30/03/18.
@@ -30,9 +31,10 @@ import java.util.Map;
 public class CashSalesSelectProductsViewModel extends AndroidViewModel {
 
     private AppDatabase leepDatabase;
-    private StockProductEntity selectedStockProductEntity;
-    private List<StockProductEntity> scannedProducts = new ArrayList<>();
-    private Map<Integer, Integer> productMaxQuantities = new HashMap<>();
+    private Customer consumerLocation;
+    private Product selectedProduct;
+    private int driverLocationId;
+    private List<Product> scannedProducts = new ArrayList<>();
 
     public CashSalesSelectProductsViewModel(@NonNull Application application) {
         super(application);
@@ -55,8 +57,8 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
             public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                 switch (type) {
                     case NetworkConstants.SUCCESS:
-                        double product_price = new OrderItemParser().getProductPriceByParsingJsonArray(response);
-                        networkCallback.onResponseReceived(new ArrayList<>(Arrays.asList(product_price)), false,
+                        double productPrice = new OrderItemParser().getProductPriceByParsingJsonArray(response);
+                        networkCallback.onResponseReceived(new ArrayList<>(Arrays.asList(productPrice)), false,
                                 null, false);
                         break;
 
@@ -73,7 +75,20 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
         });
     }
 
-    public void addToScannedProduct(StockProductEntity scannedProduct) {
+    public Product getProductFromStockProduct(StockProductEntity stockProduct) {
+        if (stockProduct == null) return null;
+        Product product = new Product();
+        product.setId(stockProduct.getId());
+        product.setProductName(stockProduct.getProductName());
+        product.setPrice(stockProduct.getDefaultPrice());
+        product.setQuantity(stockProduct.getQuantity(AppConstants.TYPE_SELLABLE));
+        product.setMaxQuantity(product.getQuantity());
+        product.setWeight(stockProduct.getWeight());
+        product.setWeightUnit(stockProduct.getWeightUnit());
+        return product;
+    }
+
+    public void addToScannedProduct(Product scannedProduct) {
         scannedProducts.add(scannedProduct);
     }
 
@@ -82,38 +97,46 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
         return driverEntity != null ? driverEntity.getLocationId() : 0;
     }
 
-    public void addToProductMaxQuantities(int id, int quantity) {
-        productMaxQuantities.put(id, quantity);
-    }
-
-    public int getMaxQuantityofProduct(int id) {
-        return productMaxQuantities.get(id);
-    }
-
-    public StockProductEntity getProductFromScannedProducts(int id) {
-        for (StockProductEntity entity : scannedProducts) {
-            if (entity.getId() == id) return entity;
+    public Product getProductFromScannedProducts(int id) {
+        for (Product product : scannedProducts) {
+            if (product.getId() == id) return product;
         }
         return null;
     }
 
     public boolean isProductInScannedList(int id) {
-        for (StockProductEntity entity : scannedProducts) {
-            if (entity.getId() == id) return true;
+        for (Product product : scannedProducts) {
+            if (product.getId() == id) return true;
         }
         return false;
     }
 
     // getters and setters
-    public StockProductEntity getSelectedStockProductEntity() {
-        return selectedStockProductEntity;
-    }
-
-    public void setSelectedStockProductEntity(StockProductEntity selectedStockProductEntity) {
-        this.selectedStockProductEntity = selectedStockProductEntity;
-    }
-
-    public List<StockProductEntity> getScannedProducts() {
+    public List<Product> getScannedProducts() {
         return scannedProducts;
+    }
+
+    public Product getSelectedProduct() {
+        return selectedProduct;
+    }
+
+    public void setSelectedProduct(Product selectedProduct) {
+        this.selectedProduct = selectedProduct;
+    }
+
+    public Customer getConsumerLocation() {
+        return consumerLocation;
+    }
+
+    public void setConsumerLocation(Customer consumerLocation) {
+        this.consumerLocation = consumerLocation;
+    }
+
+    public int getDriverLocationId() {
+        return driverLocationId;
+    }
+
+    public void setDriverLocationId(int driverLocationId) {
+        this.driverLocationId = driverLocationId;
     }
 }

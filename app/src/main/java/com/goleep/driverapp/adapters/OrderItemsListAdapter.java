@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
@@ -49,9 +50,9 @@ public class OrderItemsListAdapter extends RecyclerView.Adapter<OrderItemsViewHo
         }else if(itemsList.get(0) instanceof StockProductEntity && productsType != -1){
             StockProductEntity stockProductEntity = (StockProductEntity) itemsList.get(position);
             holder.bindData(stockProductEntity, productsType);
-        }else if(itemsList.get(0) instanceof StockProductEntity){
-            StockProductEntity stockProductEntity = (StockProductEntity) itemsList.get(position);
-            holder.bindData(stockProductEntity);
+        }else if(itemsList.get(0) instanceof Product){
+            Product product = (Product) itemsList.get(position);
+            holder.bindData(product);
         }
     }
 

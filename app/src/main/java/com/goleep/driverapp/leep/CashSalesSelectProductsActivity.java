@@ -25,13 +25,17 @@ import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
 import com.goleep.driverapp.constants.AppConstants;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
+import com.goleep.driverapp.helpers.uimodels.Customer;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.CashSalesSelectProductsViewModel;
@@ -106,12 +110,18 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         viewModel = ViewModelProviders.of(this).get(CashSalesSelectProductsViewModel.class);
         ButterKnife.bind(this);
+        extractIntentData();
         initialiseToolbar();
         initialiseTabBar();
         initialiseBarcodeScanner();
         initialiseRecyclerView();
         initialiseAutoCompleteTextView();
         initialiseUpdateQuantityView();
+        fetchDriverLocationId();
+    }
+
+    private void extractIntentData(){
+        viewModel.setConsumerLocation(getIntent().getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
     }
 
     private void initialiseToolbar() {
@@ -204,20 +214,25 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (viewModel.getSelectedStockProductEntity() != null) {
-                    int maxUnits = viewModel.getMaxQuantityofProduct(viewModel.getSelectedStockProductEntity().getId());
-                    String newUnitsText = etUnits.getText().toString();
-                    if (newUnitsText.length() > 0) {
-                        int newUnits = Integer.valueOf(newUnitsText);
-                        boolean isValid = newUnits <= maxUnits && newUnits != 0;
-                        etUnits.setError(isValid ? null : invalidQuantityError.getText());
-                        btUpdate.setEnabled(isValid);
-                    } else {
-                        btUpdate.setEnabled(false);
-                    }
+                Product selectedProduct = viewModel.getSelectedProduct();
+                if (selectedProduct == null) return;
+                int maxUnits = selectedProduct.getMaxQuantity();
+                String newUnitsText = etUnits.getText().toString();
+                if (newUnitsText.length() > 0) {
+                    int newUnits = Integer.valueOf(newUnitsText);
+                    boolean isValid = newUnits <= maxUnits && newUnits != 0;
+                    etUnits.setError(isValid ? null : invalidQuantityError.getText());
+                    btUpdate.setEnabled(isValid);
+                } else {
+                    btUpdate.setEnabled(false);
                 }
+
             }
         });
+    }
+
+    private void fetchDriverLocationId(){
+        viewModel.setDriverLocationId(viewModel.getSourceLocationId());
     }
 
     private void initialiseAutoCompleteTextView() {
@@ -258,25 +273,24 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             Toast.makeText(CashSalesSelectProductsActivity.this, R.string.product_not_available, Toast.LENGTH_SHORT).show();
             return;
         }
-        addProductToSelectedList(stockProduct);
+        addProductToSelectedList(viewModel.getProductFromStockProduct(stockProduct));
     }
 
-    private void addProductToSelectedList(StockProductEntity stockProduct){
-        if (viewModel.isProductInScannedList(stockProduct.getId())) {
+    private void addProductToSelectedList(Product product){
+        if (viewModel.isProductInScannedList(product.getId())) {
             Toast.makeText(CashSalesSelectProductsActivity.this, R.string.item_already_added, Toast.LENGTH_SHORT).show();
         } else {
-            viewModel.addToProductMaxQuantities(stockProduct.getId(), stockProduct.getQuantity(AppConstants.TYPE_SELLABLE));
-            displayUpdateQuantityView(stockProduct);
+            displayUpdateQuantityView(product);
         }
     }
 
-    private void displayUpdateQuantityView(StockProductEntity stockProduct) {
-        if (stockProduct != null) {
-            viewModel.setSelectedStockProductEntity(stockProduct);
+    private void displayUpdateQuantityView(Product product) {
+        if (product != null) {
+            viewModel.setSelectedProduct(product);
             etUnits.requestFocus();
-            tvProductName.setText(stockProduct.getProductName() + " " + stockProduct.getWeight() + stockProduct.getWeightUnit());
+            tvProductName.setText(product.getProductName() + " " + product.getWeight() + product.getWeightUnit());
             etUnits.setText("");
-            etUnits.setHint(String.valueOf(viewModel.getMaxQuantityofProduct(stockProduct.getId())));
+            etUnits.setHint(String.valueOf(product.getMaxQuantity()));
             updateQuantityLayout.setVisibility(View.VISIBLE);
             invalidQuantityError.setVisibility(View.INVISIBLE);
             btUpdate.setEnabled(false);
@@ -304,21 +318,48 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void onUpdateButtonTap(){
-        StockProductEntity product = viewModel.getSelectedStockProductEntity();
-        if (product != null) {
-            product.setSellableQuantity(Integer.valueOf(etUnits.getText().toString()));
-            if (!viewModel.isProductInScannedList(product.getId()))
-                viewModel.addToScannedProduct(product);
-            cashSalesListAdapter.notifyDataSetChanged();
-            hideUpdateQuantityView();
-            AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+        Product product = viewModel.getSelectedProduct();
+        Customer customer = viewModel.getConsumerLocation();
+        if (product != null && customer != null) {
+            showProgressDialog();
+            viewModel.getProductPricing(viewModel.getDriverLocationId(), customer.getId(), product.getId(), productPricingCallback);
         }
+    }
+
+    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        runOnUiThread(() -> {
+            dismissProgressDialog();
+            if (uiModels == null) {
+                if (toLogout) {
+                    logoutUser();
+                }else {
+                    updateProductDetails(0.0);
+                }
+            } else if (uiModels.size() > 0) {
+                Double productPrice = (Double) uiModels.get(0);
+                updateProductDetails(productPrice);
+
+            }
+        });
+    };
+
+    private void updateProductDetails(Double productPrice){
+        Product product = viewModel.getSelectedProduct();
+        if (product == null) return;
+        product.setQuantity(Integer.valueOf(etUnits.getText().toString()));
+        if (productPrice != 0) product.setPrice(productPrice);
+        if (!viewModel.isProductInScannedList(product.getId()))
+            viewModel.addToScannedProduct(product);
+        cashSalesListAdapter.notifyDataSetChanged();
+        hideUpdateQuantityView();
+        AppUtils.toggleKeyboard(etUnits, getApplicationContext());
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        StockProductEntity product = (StockProductEntity) parent.getAdapter().getItem(position);
-        if (product == null) return;
+        StockProductEntity stockProductEntity = (StockProductEntity) parent.getAdapter().getItem(position);
+        if (stockProductEntity == null) return;
+        Product product = viewModel.getProductFromStockProduct(stockProductEntity);
         addProductToSelectedList(product);
     }
 }
