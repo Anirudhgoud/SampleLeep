@@ -6,13 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,12 +20,10 @@ import java.util.List;
 public class CustomerSearchArrayAdapter extends ArrayAdapter<Customer> {
 
     private List<Customer> customerList;
-    private Context mContext;
 
     public CustomerSearchArrayAdapter(@NonNull Context context, @NonNull List objects) {
         super(context, android.R.layout.simple_list_item_1, objects);
         customerList = objects;
-        mContext = context;
     }
 
     @Override
@@ -41,10 +37,10 @@ public class CustomerSearchArrayAdapter extends ArrayAdapter<Customer> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(R.layout.customer_item_layout, parent, false);
         }
         Customer customer = customerList.get(position);
@@ -62,43 +58,4 @@ public class CustomerSearchArrayAdapter extends ArrayAdapter<Customer> {
         this.customerList.addAll(customerList);
         notifyDataSetChanged();
     }
-
-    @NonNull
-    @Override
-    public Filter getFilter() {
-        return filter;
-    }
-
-    private Filter filter = new Filter() {
-
-        @Override
-        public CharSequence convertResultToString(Object resultValue) {
-            Customer customer = (Customer) resultValue;
-            return customer.getName();
-        }
-
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            if (constraint != null) {
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = customerList;
-                filterResults.count = customerList.size();
-                return filterResults;
-            } else {
-                return new FilterResults();
-            }
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (results != null && results.count > 0) {
-                ArrayList<Customer> resultList = (ArrayList<Customer>) results.values;
-                clear();
-                for (Customer customer : resultList) {
-                    add(customer);
-                }
-                notifyDataSetChanged();
-            }
-        }
-    };
 }

@@ -1,11 +1,11 @@
 package com.goleep.driverapp.fragments;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -56,7 +56,9 @@ public class DeliveryOrdersListFragment extends Fragment {
     }
 
     private void initialise() {
-        doViewModel = ViewModelProviders.of(getActivity()).get(DropOffDeliveryOrdersViewModel.class);
+        FragmentActivity activity = getActivity();
+        if (activity == null) return;
+        doViewModel = ViewModelProviders.of(activity).get(DropOffDeliveryOrdersViewModel.class);
         initialiseRecyclerView();
         initialiseRadioButtons();
         observeDistanceChanges();

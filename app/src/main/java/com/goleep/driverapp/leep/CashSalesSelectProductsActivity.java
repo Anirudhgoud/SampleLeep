@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
+import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
@@ -35,10 +38,13 @@ import com.goleep.driverapp.viewmodels.CashSalesSelectProductsViewModel;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CashSalesSelectProductsActivity extends ParentAppCompatActivity {
+public class CashSalesSelectProductsActivity extends ParentAppCompatActivity implements AdapterView.OnItemClickListener {
 
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
@@ -59,6 +65,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity {
 
     private CashSalesSelectProductsViewModel viewModel;
     private OrderItemsListAdapter cashSalesListAdapter;
+    private ProductSearchArrayAdapter productSearchArrayAdapter;
     private BarcodeCapture barcodeCapture;
 
     private BarcodeScanListener barcodeScanListener = new BarcodeScanListener() {
@@ -103,13 +110,14 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity {
         initialiseTabBar();
         initialiseBarcodeScanner();
         initialiseRecyclerView();
+        initialiseAutoCompleteTextView();
         initialiseUpdateQuantityView();
     }
 
     private void initialiseToolbar() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        setTitleIconAndText(getString(R.string.delivery_orders), R.drawable.ic_drop_off_toolbar);
+        setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
     }
 
     private void initialiseTabBar() {
@@ -117,12 +125,33 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                atvSearch.setVisibility(tab.getPosition() == 0 ? View.GONE : View.VISIBLE);
-                barcodeCapture.getView().setVisibility(tab.getPosition() == 0 ? View.VISIBLE : View.GONE);
+                switch (tab.getPosition()) {
+                    case 0:
+                        barcodeCapture.onResume();
+                        atvSearch.setVisibility(View.GONE);
+                        barcodeCapture.getView().setVisibility(View.VISIBLE);
+                        break;
+
+                    case 1:
+                        //TODO: hide keyboard
+                        //AppUtils.hideKeyboard();
+                        atvSearch.setVisibility(View.VISIBLE);
+                        barcodeCapture.getView().setVisibility(View.GONE);
+                        break;
+                }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        barcodeCapture.onPause();
+                        break;
+
+                    case 1:
+                        atvSearch.clearFocus();
+                        break;
+                }
             }
 
             @Override
@@ -155,8 +184,8 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity {
     }
 
     private void initialiseUpdateQuantityView() {
+        btUpdate.setOnClickListener(this);
         etUnits.setKeyImeChangeListener(this::hideUpdateQuantityView);
-
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 hideUpdateQuantityView();
@@ -189,18 +218,30 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity {
                 }
             }
         });
+    }
 
-        btUpdate.setOnClickListener(v -> {
-            StockProductEntity product = viewModel.getSelectedStockProductEntity();
-            if (product != null) {
-                product.setSellableQuantity(Integer.valueOf(etUnits.getText().toString()));
-                if (!viewModel.isProductInScannedList(product.getId()))
-                    viewModel.addToScannedProduct(product);
-                cashSalesListAdapter.notifyDataSetChanged();
-                hideUpdateQuantityView();
-                AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+    private void initialiseAutoCompleteTextView() {
+        productSearchArrayAdapter = new ProductSearchArrayAdapter(this, new ArrayList());
+        atvSearch.setAdapter(productSearchArrayAdapter);
+        atvSearch.setOnItemClickListener(this);
+        atvSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (count > 2){
+                    List<StockProductEntity> list = viewModel.sellebleProductsWithName(s.toString());
+                    productSearchArrayAdapter.updateData(list);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
+
     }
 
     private void initialiseRecyclerView() {
@@ -217,6 +258,10 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity {
             Toast.makeText(CashSalesSelectProductsActivity.this, R.string.product_not_available, Toast.LENGTH_SHORT).show();
             return;
         }
+        addProductToSelectedList(stockProduct);
+    }
+
+    private void addProductToSelectedList(StockProductEntity stockProduct){
         if (viewModel.isProductInScannedList(stockProduct.getId())) {
             Toast.makeText(CashSalesSelectProductsActivity.this, R.string.item_already_added, Toast.LENGTH_SHORT).show();
         } else {
@@ -251,6 +296,29 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity {
                 //AppUtils.hideKeyboard();
                 finish();
                 break;
+
+            case R.id.bt_update:
+                onUpdateButtonTap();
+                break;
         }
+    }
+
+    private void onUpdateButtonTap(){
+        StockProductEntity product = viewModel.getSelectedStockProductEntity();
+        if (product != null) {
+            product.setSellableQuantity(Integer.valueOf(etUnits.getText().toString()));
+            if (!viewModel.isProductInScannedList(product.getId()))
+                viewModel.addToScannedProduct(product);
+            cashSalesListAdapter.notifyDataSetChanged();
+            hideUpdateQuantityView();
+            AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        StockProductEntity product = (StockProductEntity) parent.getAdapter().getItem(position);
+        if (product == null) return;
+        addProductToSelectedList(product);
     }
 }
