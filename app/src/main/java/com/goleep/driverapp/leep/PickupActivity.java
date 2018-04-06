@@ -58,7 +58,7 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
     private void processIntent() {
         int locationId = getIntent().getIntExtra(IntentConstants.WAREHOUSE_ID, -1);
         if(locationId != -1)
-            warehouseDetailsViewModel.setWarehouse(warehouseDetailsViewModel.getWarehouse(locationId));
+            warehouseDetailsViewModel.setWarehouse(locationId);
     }
 
     @Override

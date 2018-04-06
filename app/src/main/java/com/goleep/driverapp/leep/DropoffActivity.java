@@ -110,7 +110,7 @@ public class DropoffActivity extends ParentAppCompatActivity {
     private void processIntent() {
         int locationId = getIntent().getIntExtra(IntentConstants.WAREHOUSE_ID, -1);
         if(locationId != -1)
-            dropoffViewModel.setWarehouse(dropoffViewModel.getWarehouse(locationId));
+            dropoffViewModel.setWarehouse(locationId);
     }
 
     @Override

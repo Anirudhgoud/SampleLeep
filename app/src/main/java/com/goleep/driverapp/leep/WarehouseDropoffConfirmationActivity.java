@@ -68,7 +68,7 @@ public class WarehouseDropoffConfirmationActivity extends ParentAppCompatActivit
         Intent intent = getIntent();
         int locationId = intent.getIntExtra(IntentConstants.WAREHOUSE_ID, -1);
         if(locationId != -1)
-            dropoffConfirmationViewModel.setWarehouse(dropoffConfirmationViewModel.getWarehouse(locationId));
+            dropoffConfirmationViewModel.setWarehouse(locationId);
         dropoffConfirmationViewModel.setSelectedReturnableIds(intent.getIntegerArrayListExtra(IntentConstants.RETURNABLE));
         dropoffConfirmationViewModel.setSelectedSellableIds(intent.getIntegerArrayListExtra(IntentConstants.SELLABLE));
     }

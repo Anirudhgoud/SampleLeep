@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
+import android.util.SparseArray;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
@@ -37,7 +38,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     private List<BaseListItem> doList = new ArrayList<>();
     private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
-    private Map<Integer, Integer> positionMap = new HashMap<>();
+    private SparseArray positionMap = new SparseArray();
 
 
     public PickupDeliveryOrderViewModel(@NonNull Application application) {
@@ -104,12 +105,8 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         this.doUpdateMap = doUpdateMap;
     }
 
-    public Map<Integer, Integer> getPositionMap() {
+    public SparseArray getPositionMap() {
         return positionMap;
-    }
-
-    public void setPositionMap(Map<Integer, Integer> positionMap) {
-        this.positionMap = positionMap;
     }
 
     public void confirmPickup(List<OrderItemEntity> cashDoItems, ArrayList<Integer> selectedDeliveryOrders,
