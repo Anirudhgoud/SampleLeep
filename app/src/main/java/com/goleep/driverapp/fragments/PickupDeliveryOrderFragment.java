@@ -82,7 +82,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     private void initialise() {
         doViewModel = ViewModelProviders.of(getActivity()).get(PickupDeliveryOrderViewModel.class);
-        doViewModel.setWarehouse(doViewModel.getWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1)));
+        doViewModel.setWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1));
         initRecyclerView();
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override

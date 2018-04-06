@@ -78,8 +78,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
 
     private void initialize() {
         cashSalesViewModel = ViewModelProviders.of(getActivity()).get(CashSalesViewModel.class);
-        cashSalesViewModel.setWarehouse(cashSalesViewModel.getWarehouse(getArguments().
-                getInt(IntentConstants.WAREHOUSE_ID, -1)));
+        cashSalesViewModel.setWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1));
         confirmButton.setOnClickListener(PickupCashSalessFragment.this);
     }
 

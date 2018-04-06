@@ -51,13 +51,8 @@ public class CashSalesViewModel extends AndroidViewModel {
         return driverDoDetails;
     }
 
-    public WarehouseEntity getWarehouse(int warehouseId){
+    public void setWarehouse(int warehouseId) {
         warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);
-        return warehouseEntity;
-    }
-
-    public void setWarehouse(WarehouseEntity warehouse) {
-        warehouseEntity = warehouse;
     }
 
     public WarehouseEntity getWarehouse() {
