@@ -61,6 +61,10 @@ public class DeliveryOrderParser {
         deliveryOrder.setDestinationAddressLine2(jsonObject.optString("destination_address_line_2"));
         deliveryOrder.setDeliveryOrderItemsCount(jsonObject.optInt("delivery_order_items_count", 0));
         deliveryOrder.setTotalValue((float)jsonObject.optDouble("total_value", 0));
+        deliveryOrder.setSourceAddressLine1(jsonObject.optString("source_address_line_1"));
+        deliveryOrder.setSourceAddressLine2(jsonObject.optString("source_address_line_2"));
+        deliveryOrder.setSourceLatitude(jsonObject.optDouble("source_latitude", 0.0));
+        deliveryOrder.setSourceLongitude(jsonObject.optDouble("source_longitude", 0.0));
         return  deliveryOrder;
     }
 }

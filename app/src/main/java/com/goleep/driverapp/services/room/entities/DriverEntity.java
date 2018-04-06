@@ -23,6 +23,7 @@ public class DriverEntity {
     private String dateOfBirth;
     private String contactNumber;
     private int locationId;
+    private int businessId;
     private String licenceNumber;
     private String vehicleNumber;
     private String licenceExpirationDate;
@@ -262,5 +263,13 @@ public class DriverEntity {
 
     public void setWorkLocationLng(double workLocationLng) {
         this.workLocationLng = workLocationLng;
+    }
+
+    public int getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(int businessId) {
+        this.businessId = businessId;
     }
 }

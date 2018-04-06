@@ -32,6 +32,12 @@ public abstract class StockProductDao {
         }
     }
 
+    @Query("Select * from StockProductEntity WHERE sellableQuantity != 0 AND barcode =:barcode")
+    public abstract StockProductEntity sellableProductHavingBarcode(String barcode);
+
+    @Query("Select * from StockProductEntity WHERE sellableQuantity != 0 AND productName LIKE '%' || :text  || '%'")
+    public abstract List<StockProductEntity> sellebleProductsWithName(String text);
+
     @Query("DELETE FROM StockProductEntity")
     protected abstract void deleteAllStockProducts();
 
@@ -43,4 +49,13 @@ public abstract class StockProductDao {
 
     @Query("SELECT * FROM StockProductEntity WHERE returnableQuantity != 0")
     public abstract List<StockProductEntity> getReturnedStocks();
+
+    @Query("SELECT * FROM StockProductEntity WHERE id = :itemId")
+    public abstract StockProductEntity getStock(int itemId);
+
+    @Query("UPDATE StockProductEntity SET sellableQuantity = :updatedQuantity WHERE id = :id")
+    public abstract void updateSellableQuantity(int id, int updatedQuantity);
+
+    @Query("UPDATE StockProductEntity SET returnableQuantity = :updatedQuantity WHERE id = :id")
+    public abstract void updateReturnableQuantity(int id, int updatedQuantity);
 }

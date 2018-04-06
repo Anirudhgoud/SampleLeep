@@ -1,11 +1,8 @@
 package com.goleep.driverapp.leep;
 
-import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +11,15 @@ import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
 
-import com.goleep.driverapp.fragments.WarehouseListFragment;
-import com.goleep.driverapp.fragments.WarehouseMapFragment;
+import com.goleep.driverapp.adapters.WarehousePagerAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.viewmodels.DeliveryOrderViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PickupWarehouseActivity extends ParentAppCompatActivity {
 
-    DeliveryOrderViewModel deliveryOrderViewModel;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.view_pager)
@@ -38,8 +33,7 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
     @Override
     public void doInitialSetup() {
         ButterKnife.bind(PickupWarehouseActivity.this);
-        deliveryOrderViewModel = ViewModelProviders.of(PickupWarehouseActivity.this).
-                get(DeliveryOrderViewModel.class);
+
         initView();
     }
 
@@ -51,7 +45,8 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
     }
 
     private void initialiseTabBar() {
-        WarehousePagerAdapter warehousePagerAdapter = new WarehousePagerAdapter(getSupportFragmentManager());
+        WarehousePagerAdapter warehousePagerAdapter = new WarehousePagerAdapter(getSupportFragmentManager(),
+                new String[]{getString(R.string.list), getString(R.string.map), getString(R.string.app_name)});
         viewPager.setAdapter(warehousePagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
@@ -61,25 +56,20 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
         View listTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         CustomTextView textView = listTab.findViewById(R.id.title_text);
         ImageView icon = listTab.findViewById(R.id.icon);
-        listTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
+        listTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.list));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_list_tab));
-
-
         tabLayout.getTabAt(0).setCustomView(listTab);
-
         View mapTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         textView = mapTab.findViewById(R.id.title_text);
         icon = mapTab.findViewById(R.id.icon);
-        mapTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mapTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.map));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_map_tab));
-
         tabLayout.getTabAt(1).setCustomView(mapTab);
     }
-
-
 
     @Override
     public void onClickWithId(int resourceId) {
@@ -89,43 +79,10 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
         }
     }
 
-
-    class WarehousePagerAdapter extends FragmentPagerAdapter {
-
-        private int NUMBER_OF_ITEMS = 2;
-
-        public WarehousePagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return new WarehouseListFragment();
-                case 1:
-                    return new WarehouseMapFragment();
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return NUMBER_OF_ITEMS;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getResources().getString(R.string.list);
-                case 1:
-                    return getResources().getString(R.string.map);
-                default:
-                    return getResources().getString(R.string.app_name);
-            }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 101 && resultCode == AppConstants.ACTIVITY_SUCCESS_RESULT) {
+            finish();
         }
     }
-
 }

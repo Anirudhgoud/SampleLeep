@@ -25,6 +25,7 @@ public interface UrlConstants {
 
     //New Sale
     String CONSUMER_LOCATIONS_URL = BASE_URL + "/consumer_locations";
+    String PRODUCT_PRICING_URL = BASE_URL + "/products/product_pricing";
 
     //Returned Orders
     String RETURNED_ORDERS = BASE_URL + "/return_orders";
