@@ -16,11 +16,8 @@ import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +31,10 @@ import java.util.Map;
 
 public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel {
     private LiveData<List<OrderItemEntity>> doDetailsLiveData = new MutableLiveData<>();
+
+    private ArrayList<Integer> cashDoItems = new ArrayList<>();
+    private ArrayList<Integer> selectedDeliveryOrders = new ArrayList<>();
+    private List<OrderItemEntity> cashSalesItems = new ArrayList<>();
 
     private List<BaseListItem> doList = new ArrayList<>();
     private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
@@ -69,6 +70,30 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     public LiveData<List<OrderItemEntity>> getDoDetails(Integer id) {
         doDetailsLiveData = leepDatabase.deliveryOrderItemDao().getDeliveryOrderItems(id);
         return doDetailsLiveData;
+    }
+
+    public ArrayList<Integer> getCashDoItems() {
+        return cashDoItems;
+    }
+
+    public void setCashDoItems(ArrayList<Integer> cashDoItems) {
+        this.cashDoItems = cashDoItems;
+    }
+
+    public ArrayList<Integer> getSelectedDeliveryOrders() {
+        return selectedDeliveryOrders;
+    }
+
+    public void setSelectedDeliveryOrders(ArrayList<Integer> selectedDeliveryOrders) {
+        this.selectedDeliveryOrders = selectedDeliveryOrders;
+    }
+
+    public List<OrderItemEntity> getCashSalesItems() {
+        return cashSalesItems;
+    }
+
+    public void setCashSalesItems(List<OrderItemEntity> cashSalesItems) {
+        this.cashSalesItems = cashSalesItems;
     }
 
     public LiveData<List<OrderItemEntity>> getOrderItemsLiveData(){
@@ -114,7 +139,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     public void confirmPickup(List<OrderItemEntity> cashDoItems, ArrayList<Integer> selectedDeliveryOrders,
                               final UILevelNetworkCallback pickupConfirmCallBack) {
-        Map<String, Object> requestBody = generateRequestmap(selectedDeliveryOrders, cashDoItems);
+        Map<String, Object> requestBody = generateRequestMap(selectedDeliveryOrders, cashDoItems);
         if (requestBody.containsKey("delivery_order_ids") || requestBody.containsKey("cash_sales")) {
             NetworkService.sharedInstance().getNetworkClient().makeJsonPutRequest(
                     getApplication().getApplicationContext(), UrlConstants.PICKUP_CONFIRMATION, true,
@@ -144,7 +169,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     }
 
-    private Map<String, Object> generateRequestmap(ArrayList<Integer> selectedDeliveryOrders,
+    private Map<String, Object> generateRequestMap(ArrayList<Integer> selectedDeliveryOrders,
                                                    List<OrderItemEntity> cashDoItems){
         Map<String, Object> requestBody = new HashMap<>();
         if(selectedDeliveryOrders.size() > 0) {
@@ -161,7 +186,14 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
             for (OrderItemEntity orderItemEntity : cashDoItems) {
                 Map<String, Object> itemObject = new HashMap<>();
                 itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
-                itemObject.put("_destroy", true);
+                orderItemMapList.add(itemObject);
+            }
+            List<OrderItemEntity> unselectedCashSaleItems = leepDatabase.deliveryOrderItemDao().
+                    getUnselectedOrderItems(getCashDoItems());
+            for (OrderItemEntity orderItemEntity : unselectedCashSaleItems) {
+                Map<String, Object> itemObject = new HashMap<>();
+                itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
+                itemObject.put("destroy", true);
                 orderItemMapList.add(itemObject);
             }
             cashSalesObject.put("cash_sales_items", orderItemMapList);

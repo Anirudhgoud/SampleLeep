@@ -13,12 +13,12 @@
     <application
         android:name=".leep.LeepApp"
         android:allowBackup="false"
-        tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -42,6 +42,7 @@
             android:theme="@style/LoginTheme" />
         <activity
             android:name=".leep.HomeActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/HomeScreenTheme" />
         <activity
@@ -90,12 +91,16 @@
         <activity
             android:name=".leep.PickupWarehouseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.DropoffWarehouseActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".leep.DropoffActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".leep.WarehouseDropoffConfirmationActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".leep.DropoffWarehouseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.DropoffActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.WarehouseDropoffConfirmationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".leep.ReturnsSelectReasonActivity"></activity>
     </application>
 
 </manifest>

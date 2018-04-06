@@ -133,6 +133,9 @@
     <string name="invalid_contact_number">Please enter valid 10 digit contact number.</string>
     <string name="signature_error">Please add signature.</string>
 
+    <!--Return Reasons-->
+    <string name="select_reason">Select reason</string>
+
 
     <!--dashboard string-->
     <string name="pick_up__below_text">From Warehouse, Returns</string>

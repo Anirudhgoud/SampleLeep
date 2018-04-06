@@ -26,6 +26,9 @@ public interface UrlConstants {
     //New Sale
     String CONSUMER_LOCATIONS_URL = BASE_URL + "/consumer_locations";
 
+    //Return_Reasons
+    String RETURN_REASONS = BASE_URL + "/return_reasons";
+
     //Returned Orders
     String RETURNED_ORDERS = BASE_URL + "/return_orders";
 

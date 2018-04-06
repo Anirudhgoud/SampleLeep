@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.goleep.driverapp.leep.ReturnsSelectReasonActivity">
+
+    <include layout="@layout/toolbar_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/inner_dashboard_red"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/noto_sans"
+        android:textColor="@color/text_black"
+        android:text="@string/select_reason"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="30dp"
+        android:paddingEnd="30dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="30dp"
+        android:paddingEnd="30dp"
+        android:layout_marginTop="22dp">
+        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="left"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_product_name"
+                android:textSize="14sp"
+                android:text="Lays Potato Chips"
+                android:textColor="@color/text_black"
+                android:fontFamily="@fonf/noto_sans"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_product_quantity"
+                android:textSize="14sp"
+                android:text="100 grams"
+                android:textColor="@color/text_light_grey_title"
+                android:fontFamily="@font/noto_sans"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:gravity="left"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_units_label"
+                android:textSize="14sp"
+                android:text="Units"
+                android:textColor="@color/text_black"
+                android:fontFamily="@font/noto_sans"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_units_value"
+                android:textSize="14sp"
+                android:text="24"
+                android:textColor="@color/text_light_grey_title"
+                android:fontFamily="@font/noto_sans"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2.5"
+            android:gravity="left"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_value_label"
+                android:textSize="14sp"
+                android:text="Value"
+                android:textColor="@color/text_black"
+                android:fontFamily="@font/noto_sans"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_value"
+                android:textSize="14sp"
+                android:text="750"
+                android:textColor="@color/text_light_grey_title"
+                android:fontFamily="@font/noto_sans"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reasons_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:paddingTop="30dp"
+            android:layout_above="@id/confirm_button"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/confirm_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green"
+            android:text="@string/next"
+            android:textColor="@color/white"
+            android:fontFamily="@font/noto_sans"
+            android:layout_alignParentBottom="true"
+            android:textSize="18sp"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+</LinearLayout>

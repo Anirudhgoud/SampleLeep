@@ -177,6 +177,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 dateLayout.setVisibility(View.VISIBLE);
                 timeLayout.setVisibility(View.VISIBLE);
                 selectionIcon.setVisibility(View.VISIBLE);
+                DeliveryOrderEntity deliveryOrderEntity =  ((DeliveryOrderEntity) visibleItems.get(position));
                 if (((DeliveryOrderEntity) visibleItems.get(position)).getDeliveryOrderItemsCount() ==
                         visibleItems.get(position).getSelectedCount()) {
                     selectionIcon.setImageResource(R.drawable.ic_do_selected);
@@ -266,8 +267,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                         productCheckbox.setOnCheckedChangeListener(null);
                         productCheckbox.setChecked(visibleItems.get(position).isItemChecked());
                         productCheckbox.setOnCheckedChangeListener(checkListener);
-
-
                     }
                 }
             } else{

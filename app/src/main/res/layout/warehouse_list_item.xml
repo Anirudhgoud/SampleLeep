@@ -42,6 +42,8 @@
         android:background="@drawable/rounded_green_button"
         android:text="@string/select"
         android:textSize="14sp"
+        android:enabled="false"
+        android:clickable="false"
         android:textColor="@color/white"
         app:typeface="NotoSans-Regular"/>
 

@@ -1,5 +1,6 @@
 package com.goleep.driverapp.fragments;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -97,18 +98,21 @@ public class DropoffSellableItemsFragment extends Fragment {
     }
 
     private void startConfirmationActivity() {
-        Intent intent = new Intent(getActivity(), WarehouseDropoffConfirmationActivity.class);
-        int warehouseId = getArguments().getInt(IntentConstants.WAREHOUSE_ID);
-        intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseId);
-        if(((DropoffActivity)getActivity()).getSelectedReturnableIds().size() >0 ){
-            intent.putIntegerArrayListExtra(IntentConstants.RETURNABLE,
-                    ((DropoffActivity)getActivity()).getSelectedReturnableIds());
+        DropoffActivity activity = ((DropoffActivity) getActivity());
+        if(activity != null && !activity.isFinishing()) {
+            Intent intent = new Intent(activity, WarehouseDropoffConfirmationActivity.class);
+            int warehouseId = getArguments().getInt(IntentConstants.WAREHOUSE_ID);
+            intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseId);
+            if (activity.getSelectedReturnableIds().size() > 0) {
+                intent.putIntegerArrayListExtra(IntentConstants.RETURNABLE,
+                        activity.getSelectedReturnableIds());
+            }
+            if (stocksViewModel.getSelectedIds().size() > 0) {
+                intent.putIntegerArrayListExtra(IntentConstants.SELLABLE,
+                        (ArrayList<Integer>) stocksViewModel.getSelectedIds());
+            }
+            startActivityForResult(intent, 101);
         }
-        if(stocksViewModel.getSelectedIds().size() >0){
-            intent.putIntegerArrayListExtra(IntentConstants.SELLABLE,
-                    (ArrayList<Integer>) stocksViewModel.getSelectedIds());
-        }
-        startActivityForResult(intent, 101);
     }
 
     private void initRecyclerView() {

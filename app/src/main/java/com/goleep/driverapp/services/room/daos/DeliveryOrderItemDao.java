@@ -57,4 +57,7 @@ public abstract class DeliveryOrderItemDao {
 
     @Query("SELECT * FROM OrderItemEntity WHERE  id = :doItemId")
     public abstract OrderItemEntity getDeliveryOrderItem(int doItemId);
+
+    @Query("SELECT * FROM OrderItemEntity WHERE id NOT IN (:cashDoItems)")
+    public abstract List<OrderItemEntity> getUnselectedOrderItems(List<Integer> cashDoItems);
 }
