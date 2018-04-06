@@ -41,7 +41,7 @@ public class CashSalesActivity extends ParentAppCompatActivity {
     private void initialiseToolbar() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        setTitleIconAndText(getString(R.string.delivery_orders), R.drawable.ic_drop_off_toolbar);
+        setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
     }
 
     private void initialiseTabBar() {
@@ -77,23 +77,6 @@ public class CashSalesActivity extends ParentAppCompatActivity {
                 break;
         }
     }
-
-    public void logout() {
-        super.logoutUser();
-    }
-
-    public void showErrorDialog(String message) {
-        super.showNetworkRelatedDialogs(message);
-    }
-
-    public void showLoading() {
-        showProgressDialog();
-    }
-
-    public void hideLoading() {
-        dismissProgressDialog();
-    }
-
 
     class CashSalesPagerAdapter extends FragmentPagerAdapter {
 

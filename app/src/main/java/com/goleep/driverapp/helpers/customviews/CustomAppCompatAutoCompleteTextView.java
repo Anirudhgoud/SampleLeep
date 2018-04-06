@@ -38,4 +38,7 @@ public class CustomAppCompatAutoCompleteTextView extends AppCompatAutoCompleteTe
         return super.onKeyPreIme(keyCode, event);
     }
 
+    @Override
+    protected void replaceText(CharSequence text) {
+    }
 }

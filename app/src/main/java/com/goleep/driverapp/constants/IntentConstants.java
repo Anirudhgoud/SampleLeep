@@ -13,6 +13,8 @@ public interface IntentConstants {
     String GRAND_TOTAL = "grand_total";
     String PAYMENT_METHOD = "payment_method";
     String ORDER_ID = "order_id";
+    String CONSUMER_LOCATION = "consumer_location";
+    String PRODUCT_LIST = "product_list";
     String WAREHOUSE_ID = "warehouse_id";
     String RETURNABLE = "returnable";
     String SELLABLE = "sellable";

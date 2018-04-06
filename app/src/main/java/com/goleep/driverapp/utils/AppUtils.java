@@ -46,20 +46,26 @@ public class AppUtils {
         return imageFile;
     }
 
-    public static void toggleKeyboard(View view, Context context) {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (inputMethodManager != null) {
-            inputMethodManager.toggleSoftInputFromWindow(
-                    view.getApplicationWindowToken(),
-                    InputMethodManager.SHOW_FORCED, 0);
-        }
+    public static void toggleKeyboard(View view) {
+        InputMethodManager inputMethodManager = inputMethodManager(view);
+        if (inputMethodManager == null) return;
+        inputMethodManager.toggleSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.SHOW_IMPLICIT, 0);
     }
 
-    public static void hideKeyboard(View focusView) {
-        if (focusView != null) {
-            InputMethodManager imm = (InputMethodManager)focusView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
-        }
+    public static void showKeyboard(View view) {
+        InputMethodManager inputMethodManager = inputMethodManager(view);
+        if (inputMethodManager == null) return;
+        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    public static void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = inputMethodManager(view);
+        if (inputMethodManager == null) return;
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private static InputMethodManager inputMethodManager(View view){
+        if (view == null) return null;
+        return  (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 }

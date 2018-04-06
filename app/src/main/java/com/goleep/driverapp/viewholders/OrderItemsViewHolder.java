@@ -7,6 +7,7 @@ import android.widget.CheckBox;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
@@ -39,9 +40,22 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvUnits.setBackground(context.getResources().getDrawable(R.drawable.rounded_border_green));
     }
 
-    public void bindData(final OrderItemEntity orderItem){
+    public void bindData(Product product) {
+        tvProductName.setText(product.getProductName() == null ? "" :
+                product.getProductName());
+        tvProductQuantity.setText(context.getString(R.string.weight_with_units,
+                product.getWeight(), product.getWeightUnit()));
+        tvUnits.setText(String.valueOf(product.getQuantity()));
+
+        double value = product.getQuantity() * product.getPrice();
+        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
+        productCheckbox.setVisibility(View.GONE);
+        tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(product.getId(), product.getQuantity()));
+    }
+
+    public void bindData(final OrderItemEntity orderItem) {
         ProductEntity product = orderItem.getProduct();
-        if(product != null){
+        if (product != null) {
             tvProductName.setText(product.getName() == null ? "" : product.getName());
         }
         tvProductQuantity.setText(context.getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
@@ -55,7 +69,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(orderItem.getId(), orderItem.getMaxQuantity()));
     }
 
-    private String itemTotalPriceText(double value){
+    private String itemTotalPriceText(double value) {
         return String.format(Locale.getDefault(), "%.02f", value);
     }
 
