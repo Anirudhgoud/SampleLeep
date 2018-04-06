@@ -102,18 +102,9 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         ImageView icon = doTab.findViewById(R.id.icon);
         doTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
-
         textView.setText(getString(R.string.delivery_order));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.delivery_orders_tab));
-        doTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         tabLayout.getTabAt(0).setCustomView(doTab);
-
         View cashSalesTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         textView = cashSalesTab.findViewById(R.id.title_text);
         icon = cashSalesTab.findViewById(R.id.icon);
@@ -121,12 +112,6 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
                 ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.cash_sales));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.cash_sales_tab));
-        cashSalesTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
         tabLayout.getTabAt(1).setCustomView(cashSalesTab);
     }
 

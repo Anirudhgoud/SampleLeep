@@ -81,10 +81,8 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 101) {
-            if (resultCode == AppConstants.ACTIVITY_SUCCESS_RESULT) {
-                finish();
-            }
+        if (requestCode == 101 && resultCode == AppConstants.ACTIVITY_SUCCESS_RESULT) {
+            finish();
         }
     }
 }
