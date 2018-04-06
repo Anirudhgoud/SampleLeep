@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -62,7 +63,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     @BindView(R.id.bt_update)
     CustomButton btUpdate;
     @BindView(R.id.bt_confirm)
-    CustomButton btConfirm;
+    Button btConfirm;
     @BindView(R.id.atv_search)
     CustomAppCompatAutoCompleteTextView atvSearch;
     @BindView(R.id.cash_sales_recyclerview)
@@ -204,6 +205,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         barcodeScanHelper.setBarcodeScanListener(barcodeScanListener);
         barcodeCapture.setRetrieval(barcodeScanHelper);
         barcodeCapture.setSupportMultipleScan(false);
+        barcodeCapture.setShowDrawRect(true);
     }
 
     private void initialiseUpdateQuantityView() {
