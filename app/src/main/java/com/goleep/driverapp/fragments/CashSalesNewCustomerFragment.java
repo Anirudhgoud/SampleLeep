@@ -27,6 +27,7 @@ import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.CashSalesActivity;
 import com.goleep.driverapp.leep.NewCustomerActivity;
+import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.CashSalesNewCustomerViewModel;
 
@@ -91,8 +92,9 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
     }
 
     private void networkCalls() {
-        if (!(getActivity()).isFinishing())
-            ((CashSalesActivity) getActivity()).showLoading();
+        Activity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+            ((ParentAppCompatActivity) activity).showProgressDialog();
         cashSalesNewCustomerViewModel.getBusinessTypes(busissnesTypeCallBack);
         cashSalesNewCustomerViewModel.getBusinessesData(getBusinessesDataCallBack);
     }
@@ -169,21 +171,22 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
             if (!(getActivity()).isFinishing())
-                ((CashSalesActivity) getActivity()).hideLoading();
+
             getActivity().runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
         }
     };
 
     private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
-        if (!(getActivity()).isFinishing())
-            ((CashSalesActivity) getActivity()).hideLoading();
-        ((CashSalesActivity) getActivity()).hideLoading();
+        Activity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+
+        ((ParentAppCompatActivity) activity).dismissProgressDialog();
         if (uiModels == null) {
             if (toLogout) {
-                ((CashSalesActivity) getActivity()).logout();
+                ((ParentAppCompatActivity) activity).logoutUser();
             } else if (isDialogToBeShown) {
-                ((CashSalesActivity) getActivity()).showErrorDialog(errorMessage);
+                ((ParentAppCompatActivity) activity).showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
             getActivity().runOnUiThread(() -> {
@@ -199,19 +202,23 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
-            ((CashSalesActivity) getActivity()).hideLoading();
+            Activity activity = getActivity();
+            if (activity == null || activity.isFinishing()) return;
+            ((ParentAppCompatActivity) activity).dismissProgressDialog();
             getActivity().runOnUiThread(() -> handleResponsegetBusinessesDataCallBack(uiModels, isDialogToBeShown, errorMessage, toLogout));
         }
     };
 
     private void handleResponsegetBusinessesDataCallBack(List<?> uiModels, boolean isDialogToBeShown,
                                                          String errorMessage, boolean toLogout) {
-        ((CashSalesActivity) getActivity()).hideLoading();
+        Activity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        ((ParentAppCompatActivity) activity).dismissProgressDialog();
         if (uiModels == null) {
             if (toLogout) {
-                ((CashSalesActivity) getActivity()).logout();
+                ((ParentAppCompatActivity) activity).logoutUser();
             } else if (isDialogToBeShown) {
-                ((CashSalesActivity) getActivity()).showErrorDialog(errorMessage);
+                ((ParentAppCompatActivity) activity).showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
             getActivity().runOnUiThread(() -> {
