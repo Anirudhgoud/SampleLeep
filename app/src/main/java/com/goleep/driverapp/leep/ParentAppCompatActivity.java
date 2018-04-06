@@ -101,7 +101,6 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     protected void setToolBarColor(int colorId){
         RelativeLayout toolbarContainer = findViewById(R.id.toolbar_container);
         toolbarContainer.setBackgroundColor(colorId);
-
     }
 
     public void logoutUser(){
@@ -214,7 +213,5 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
                 permissionResult.onPermissionDenied();
             }
         }
-
     }
-
 }

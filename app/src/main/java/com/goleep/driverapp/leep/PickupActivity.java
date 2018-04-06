@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.fragments.PickupCashSalessFragment;
 import com.goleep.driverapp.fragments.PickupDeliveryOrderFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
@@ -23,7 +24,7 @@ import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.viewmodels.PickupViewModel;
+import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,15 +43,22 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
     CustomTextView wareHouseInfoTextView;
     @BindView(R.id.map_button)
     LinearLayout mapButton;
-    private PickupViewModel pickupViewModel;
+    private WarehouseDetailsViewModel warehouseDetailsViewModel;
     private List<Integer> selectedDeliveryOrders = new ArrayList<>();
     private List<Integer> cashDoItems = new ArrayList<>();
 
     @Override
     public void doInitialSetup() {
         ButterKnife.bind(this);
-        pickupViewModel = ViewModelProviders.of(PickupActivity.this).get(PickupViewModel.class);
+        warehouseDetailsViewModel = ViewModelProviders.of(PickupActivity.this).get(WarehouseDetailsViewModel.class);
+        processIntent();
         initView();
+    }
+
+    private void processIntent() {
+        int locationId = getIntent().getIntExtra(IntentConstants.WAREHOUSE_ID, -1);
+        if(locationId != -1)
+            warehouseDetailsViewModel.setWarehouse(locationId);
     }
 
     @Override
@@ -63,28 +71,20 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         switch (resourceId){
             case R.id.left_toolbar_button : finish();
             break;
-            case R.id.map_button:
-                startMapActivity();
-                break;
         }
     }
 
-    private void startMapActivity() {
-        Intent mapIntent = new Intent(PickupActivity.this, PickupMapActivity.class);
-        startActivity(mapIntent);
-    }
-
-    private void initView() {
+   private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.pickup_stock), R.drawable.ic_pickup_toolbar);
         initialiseTabBar();
         setWareHouseDetails();
-        mapButton.setOnClickListener(this);
+        mapButton.setVisibility(View.GONE);
     }
 
     private void setWareHouseDetails() {
-        wareHouseInfoTextView.setText(pickupViewModel.getWareHouseNameAddress());
+        wareHouseInfoTextView.setText(warehouseDetailsViewModel.getWareHouseNameAddress());
     }
 
     private void initialiseTabBar() {
@@ -143,15 +143,6 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 101) {
-            if (resultCode == AppConstants.ACTIVITY_SUCCESS_RESULT) {
-                finish();
-            }
-        }
-    }
-
-    @Override
     public void itemChecked(BaseListItem item, boolean checked) {
         if (item instanceof OrderItemEntity) {
             if (checked && !cashDoItems.contains(((OrderItemEntity) item).getId()) && item.getItemType()
@@ -192,9 +183,15 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
                 case 0:
                     PickupDeliveryOrderFragment pickupDeliveryOrderFragment = new PickupDeliveryOrderFragment();
                     pickupDeliveryOrderFragment.setItemSelectionListener(PickupActivity.this);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(IntentConstants.WAREHOUSE_ID, warehouseDetailsViewModel.getWarehouse().getId());
+                    pickupDeliveryOrderFragment.setArguments(bundle);
                     return pickupDeliveryOrderFragment;
                 case 1:
                     PickupCashSalessFragment pickupCashSalessFragment = new PickupCashSalessFragment();
+                    Bundle pickupCashSalessFragmentBundle = new Bundle();
+                    pickupCashSalessFragmentBundle.putInt(IntentConstants.WAREHOUSE_ID, warehouseDetailsViewModel.getWarehouse().getId());
+                    pickupCashSalessFragment.setArguments(pickupCashSalessFragmentBundle);
                     pickupCashSalessFragment.setItemSelectionListener(PickupActivity.this);
                     return pickupCashSalessFragment;
                 default:
@@ -207,16 +204,5 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
             return NUMBER_OF_ITEMS;
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getResources().getString(R.string.list);
-                case 1:
-                    return getResources().getString(R.string.map);
-                default:
-                    return getResources().getString(R.string.app_name);
-            }
-        }
     }
 }

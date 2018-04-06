@@ -63,7 +63,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_delivery_order_map, container, false);
+        View view = inflater.inflate(R.layout.fragment_map, container, false);
         connectUIElements(view);
         addListeners();
         initialiseMapView();

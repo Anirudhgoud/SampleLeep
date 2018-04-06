@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
@@ -81,6 +82,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     private void initialise() {
         doViewModel = ViewModelProviders.of(getActivity()).get(PickupDeliveryOrderViewModel.class);
+        doViewModel.setWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1));
         initRecyclerView();
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +121,11 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     }
 
     private void fetchDeliveryOrders() {
-        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null, null);
+        int warehouseId = -1;
+        if(doViewModel.getWarehouse() != null)
+            warehouseId = doViewModel.getWarehouse().getId();
+        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null,
+                null, warehouseId);
     }
 
     public void setItemSelectionListener(ItemCheckListener itemSelectionListener) {
@@ -128,8 +134,9 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     @Override
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
-        if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().containsKey(doDetails.get(0).getOrderId())) {
-            final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
+        if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().
+                indexOfKey(doDetails.get(0).getOrderId()) > 0) {
+            final int pos = (int) doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
             final int doId = doDetails.get(0).getOrderId();
             List<BaseListItem> listItems = new ArrayList<>();
             for(OrderItemEntity orderItemEntity : doDetails){

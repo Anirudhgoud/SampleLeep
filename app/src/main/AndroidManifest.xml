@@ -85,14 +85,17 @@
             android:name=".leep.HistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".leep.WarehouseDropoffActivity"
+            android:name=".leep.HistoryDetailsActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".leep.HistoryDetailsActivity"
+        <activity
+            android:name=".leep.PickupWarehouseActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.PickupWarehouseActivity"
+        <activity android:name=".leep.DropoffWarehouseActivity"
             android:screenOrientation="portrait"/>
-
+        <activity android:name=".leep.DropoffActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".leep.WarehouseDropoffConfirmationActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

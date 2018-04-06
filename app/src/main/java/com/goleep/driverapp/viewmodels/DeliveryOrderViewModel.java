@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DeliveryOrderParser;
@@ -16,7 +17,9 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
+import com.goleep.driverapp.utils.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +35,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
     public List<DeliveryOrderEntity> getDeliveryOrders() {
         return deliveryOrders.getValue();
     }
+    private WarehouseEntity warehouseEntity;
 
     public static final String TYPE_CUSTOMER = "customer";
     public static final String STATUS_IN_TRANSIT = "in_transit";
@@ -47,8 +51,16 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         return deliveryOrders;
     }
 
+    public void setWarehouse(int warehouseId) {
+        warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);;
+    }
+
+    public WarehouseEntity getWarehouse() {
+        return warehouseEntity;
+    }
+
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doNetworkCallBack, String status,
-                                       String startDate, String endDate) {
+                                       String startDate, String endDate, int wareHouseId) {
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
                 getApplication().getApplicationContext(),SharedPreferenceKeys.DRIVER_ID);
         String url = UrlConstants.DELIVERY_ORDERS_URL + "?assignees=" + driverId;
@@ -57,6 +69,9 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         }
         if (startDate != null && endDate != null) {
             url += "&start_date=" + startDate + "&end_date=" + endDate;
+        }
+        if(wareHouseId != -1){
+            url += "&source_locations="+wareHouseId;
         }
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
                 url, true, (type, response, errorMessage) -> {

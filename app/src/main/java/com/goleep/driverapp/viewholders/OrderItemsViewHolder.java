@@ -10,6 +10,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
+import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 
 import java.util.Locale;
@@ -58,4 +59,20 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         return String.format(Locale.getDefault(), "%.02f", value);
     }
 
+    public void bindData(StockProductEntity stockProductEntity, int productType) {
+        tvProductName.setText(stockProductEntity.getProductName() == null ? "" :
+                stockProductEntity.getProductName());
+        tvProductQuantity.setText(context.getString(R.string.weight_with_units,
+                stockProductEntity.getWeight(), stockProductEntity.getWeightUnit()));
+        tvUnits.setText(String.valueOf(stockProductEntity.getQuantity(productType)));
+
+        double value = stockProductEntity.getQuantity(productType) * stockProductEntity.getDefaultPrice();
+        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
+
+        productCheckbox.setChecked(stockProductEntity.isSelected());
+        productCheckbox.setOnClickListener(v -> deliveryOrderItemEventListener.onCheckboxTap(
+                stockProductEntity.getId(), productCheckbox.isChecked()));
+        tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(
+                stockProductEntity.getId(), stockProductEntity.getMaxQuantity(productType)));
+    }
 }
