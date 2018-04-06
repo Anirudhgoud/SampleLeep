@@ -2,24 +2,21 @@ package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.helpers.uimodels.BusinessCategoryAttribute;
-import com.goleep.driverapp.helpers.uimodels.GetBusinessesData;
-import com.goleep.driverapp.helpers.uimodels.MapAttribute;
+import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.BusinessCategoryParser;
 import com.goleep.driverapp.services.network.jsonparsers.GetBusinessesDataParser;
-import com.goleep.driverapp.services.network.jsonparsers.MapAddressParser;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +24,54 @@ import java.util.List;
  */
 
 public class CashSalesNewCustomerViewModel extends AndroidViewModel {
+
+    private List<Business> listBusinessData;
+    private String strBusinesstype;
+    private int businessTypeId, selectedBusinessId;
+    public Bundle bundle;
+    private List<Business> listGetBusinessesData;
+
+    public List<Business> getListBusinessData() {
+        return listBusinessData;
+    }
+
+    public String getStrBusinesstype() {
+        return strBusinesstype;
+    }
+
+    public int getBusinessTypeId() {
+        return businessTypeId;
+    }
+
+    public int getSelectedBusinessId() {
+        return selectedBusinessId;
+    }
+
+    public List<Business> getListGetBusinessesData() {
+        return listGetBusinessesData;
+    }
+
+
+    public void setListBusinessData(List<Business> listBusinessData) {
+        this.listBusinessData = listBusinessData;
+    }
+
+    public void setStrBusinesstype(String strBusinesstype) {
+        this.strBusinesstype = strBusinesstype;
+    }
+
+    public void setBusinessTypeId(int businessTypeId) {
+        this.businessTypeId = businessTypeId;
+    }
+
+    public void setSelectedBusinessId(int selectedBusinessId) {
+        this.selectedBusinessId = selectedBusinessId;
+    }
+
+    public void setListGetBusinessesData(List<Business> listGetBusinessesData) {
+        this.listGetBusinessesData = listGetBusinessesData;
+    }
+
     public CashSalesNewCustomerViewModel(@NonNull Application application) {
         super(application);
     }
@@ -39,12 +84,10 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
                                 JSONObject userObj = (JSONObject) response.opt(0);
-                                List<BusinessCategoryAttribute> listBusinessCategoryAttribute = new BusinessCategoryParser().reportsDataByParsingJsonResponse(userObj);
-                                newBusinessCategoryCallBack.onResponseReceived(listBusinessCategoryAttribute, false, null, false);
+                                List<Business> listBusinessData = new BusinessCategoryParser().reportsDataByParsingJsonResponse(userObj);
+                                newBusinessCategoryCallBack.onResponseReceived(listBusinessData, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
-                                newBusinessCategoryCallBack.onResponseReceived(null, false, errorMessage, false);
-                                break;
                             case NetworkConstants.NETWORK_ERROR:
                                 newBusinessCategoryCallBack.onResponseReceived(null, true, errorMessage, false);
                                 break;
@@ -64,12 +107,10 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
                                 JSONObject userObj = (JSONObject) response.opt(0);
-                                List<GetBusinessesData> lisGetBusinessesData = new GetBusinessesDataParser().reportsDataByParsingJsonResponse(userObj);
+                                List<Business> lisGetBusinessesData = new GetBusinessesDataParser().reportsDataByParsingJsonResponse(userObj);
                                 newBusinessCategoryCallBack.onResponseReceived(lisGetBusinessesData, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
-                                newBusinessCategoryCallBack.onResponseReceived(null, false, errorMessage, false);
-                                break;
                             case NetworkConstants.NETWORK_ERROR:
                                 newBusinessCategoryCallBack.onResponseReceived(null, true, errorMessage, false);
                                 break;

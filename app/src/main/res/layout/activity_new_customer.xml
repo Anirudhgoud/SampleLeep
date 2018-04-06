@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.goleep.driverapp.leep.NewCustomerActivity">
-
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:layout_width="match_parent"
-        android:layout_height="24dp"
+        android:layout_height="30dp"
         android:background="@color/blue"
         android:padding="4dp"
         android:text="@string/map_drag_drop"
@@ -29,7 +32,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:scrollbars="none"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"

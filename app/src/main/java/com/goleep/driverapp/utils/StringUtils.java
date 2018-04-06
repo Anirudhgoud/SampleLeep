@@ -12,13 +12,15 @@ import static com.goleep.driverapp.utils.DateTimeUtils.TWENTY_FOUR_HOUR_TIME_FOR
  */
 
 public class StringUtils {
-    final static NumberFormat currencyFormatter;
-    final static NumberFormat numberFormatter;
+   private final static NumberFormat currencyFormatter;
+   private final static NumberFormat numberFormatter;
 
 
     static {
         currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
         numberFormatter = NumberFormat.getNumberInstance();
+        currencyFormatter.setMaximumFractionDigits(0);
+        numberFormatter.setMaximumFractionDigits(0);
     }
 
     private StringUtils() {
@@ -40,16 +42,11 @@ public class StringUtils {
     }
 
     public static String amountToDisplay(Float amountString) {
-        currencyFormatter.setMaximumFractionDigits(0);
-        String moneyString = currencyFormatter.format(amountString);
-        if (amountString != null) {
-            return moneyString;
-        }
-        return currencyFormatter.format(0);
+        return (amountString != null ? currencyFormatter.format(amountString) : currencyFormatter.format(0));
     }
 
     public static String numberToDisplay(int number) {
-        numberFormatter.setMaximumFractionDigits(0);
+
         return numberFormatter.format(number);
     }
 
@@ -73,11 +70,5 @@ public class StringUtils {
             formattedString = String.format(Locale.ENGLISH, "%.1f", (value / 1000.0)) + "k";
         }
         return formattedString;
-    }
-
-    public static String addZeroToSingleCharacter(String str) {
-        if (str.length() == 1)
-            return "0" + str;
-        else return str;
     }
 }

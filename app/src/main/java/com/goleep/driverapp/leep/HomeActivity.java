@@ -450,6 +450,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         (layout.findViewById(R.id.icon_layout)).setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
         ((ImageView) layout.findViewById(R.id.icon)).setImageResource(drawableDashboard);
         ((CustomTextView) layout.findViewById(R.id.sub_text)).setText(getResources().getText(belowText));
+
     }
     private  void setCountValues(RelativeLayout layout,String count,int background) {
         CustomTextView tvCount = layout.findViewById(R.id.count_text);
@@ -458,9 +459,15 @@ public class HomeActivity extends ParentAppCompatActivity {
     }
 
     private void populateUiCount(Summary summary) {
-       setCountValues(relativeLayout_pickup_cardview,StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())),R.drawable.pickup_icon_bg);
-       setCountValues(relativeLayout_drop_off_cardview,StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())),R.drawable.drop_off_icon_bg);
-       setCountValues(relativeLayout_information_cardview,StringUtils.addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())),R.drawable.info_icon_bg);
+       setCountValues(relativeLayout_pickup_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())),R.drawable.pickup_icon_bg);
+       setCountValues(relativeLayout_drop_off_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())),R.drawable.drop_off_icon_bg);
+       setCountValues(relativeLayout_information_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())),R.drawable.info_icon_bg);
+    }
 
+
+    private String addZeroToSingleCharacter(String str) {
+        if (str.length() == 1)
+            return "0" + str;
+        else return str;
     }
 }

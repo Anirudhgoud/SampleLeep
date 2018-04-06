@@ -59,7 +59,6 @@
             android:text="@string/this_month"
             android:textColor="@color/doTabTextColor"
             android:textSize="14sp" />
-
     </RadioGroup>
 
     <LinearLayout
@@ -129,10 +128,8 @@
                         android:textColor="@color/dark_grey_text"
                         android:textSize="24sp"
                         app:typeface="NotoSans-Light" />
-
                 </LinearLayout>
-
-            </LinearLayout>git
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -163,7 +160,6 @@
                         android:textColor="@color/dark_grey_text"
                         android:textSize="24sp"
                         app:typeface="NotoSans-Light" />
-
                 </LinearLayout>
             </LinearLayout>
 
@@ -227,7 +223,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/dark_grey_text"
-                        android:textSize="24sp"
                         app:typeface="NotoSans-Light" />
 
                 </LinearLayout>

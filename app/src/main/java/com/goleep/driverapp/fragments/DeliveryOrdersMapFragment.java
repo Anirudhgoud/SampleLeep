@@ -1,15 +1,13 @@
 package com.goleep.driverapp.fragments;
 
-import android.Manifest;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.Permissions;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
+import com.goleep.driverapp.helpers.uihelpers.PermissionHelper;
 import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -39,6 +39,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
+import static com.goleep.driverapp.constants.AppConstants.LOCATION_PERMISSION_REQUEST_CODE;
+
 /**
  * Created by anurag on 15/02/18.
  */
@@ -56,7 +58,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
 
     private DropOffDeliveryOrdersViewModel viewModel;
     private GoogleMap mGoogleMap;
-    private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+    private PermissionHelper permissionHelper;
 
     @Nullable
     @Override
@@ -96,35 +98,35 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     }
 
     private void checkForLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
-            return;
-        }
-        onPermissionGranted();
+        permissionHelper = new PermissionHelper(this, new String[]{Permissions.FINE_LOCATION, Permissions.COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        permissionHelper.request(new PermissionHelper.PermissionCallback() {
+            @Override
+            public void onPermissionGranted() {
+                fetchUserLocation();
+            }
+
+            @Override
+            public void onPermissionDenied() {
+                Toast.makeText(getContext(), getContext().getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    onPermissionGranted();
-                } else {
-                    Toast.makeText(getContext(), getContext().getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show();
-                }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissionHelper != null) {
+            permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
-    private void onPermissionGranted() {
-        fetchUserLocation();
-    }
-
     private void fetchUserLocation() {
-        LocationHelper locationHelper = new LocationHelper(getActivity());
-        locationHelper.setLocationChangeListener(this);
-        locationHelper.getLastKnownLocation(getActivity());
+        Activity activity = getActivity();
+        if (activity != null && !activity.isFinishing()){
+            LocationHelper locationHelper = new LocationHelper(activity);
+            locationHelper.setLocationChangeListener(this);
+            locationHelper.getLastKnownLocation(activity);
+        }
     }
 
     private void observeDeliveryOrders(Location location) {
@@ -179,10 +181,11 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     private UILevelNetworkCallback timeToReachCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            getActivity().runOnUiThread(() -> {
+            Activity activity = getActivity();
+            if (activity == null || activity.isFinishing()) return;
+            activity.runOnUiThread(() -> {
                 List<Distance> timeToReachList = (List<Distance>) uiModels;
                 viewModel.setTimeToReachDistanceMatrix(timeToReachList);
-
                 List<DeliveryOrderEntity> deliveryOrders = viewModel.getDeliveryOrders();
                 if (deliveryOrders.size() == timeToReachList.size()) {
                     for (int i = 0; i < deliveryOrders.size() && i < timeToReachList.size(); i++) {
@@ -235,5 +238,11 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        permissionHelper = null;
+        super.onDestroy();
     }
 }

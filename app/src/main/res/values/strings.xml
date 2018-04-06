@@ -115,6 +115,10 @@
     <!--Cash Sales - New Sale-->
     <string name="existing_customer">Existing Customer</string>
     <string name="new_customer">New Customer</string>
+    <string name="nearby_customers">Nearby Customers</string>
+    <string name="select">Select</string>
+    <string name="last_delivery">Last Delivery:</string>
+    <string name="search_customer">Search Customer</string>
 
     <!--Error Messages-->
     <string name="invalid_quantity_error">You can only reduce the units and it should be greater than 0</string>
@@ -138,6 +142,7 @@
     <string name="business_name">Business Name</string>
     <string name="business_type">Business Type</string>
     <string name="contact_name">Contact Name</string>
+    <string name="designation">Designation</string>
     <string name="email_id">Email Id</string>
     <string name="name_your_location">Name your Location</string>
     <string name="postal_code">Postal Code</string>

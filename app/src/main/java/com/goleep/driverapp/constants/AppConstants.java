@@ -18,4 +18,6 @@ public interface AppConstants {
 
     int ACTIVITY_SUCCESS_RESULT = 101;
 
+    //Permission codes
+    int LOCATION_PERMISSION_REQUEST_CODE = 100;
 }

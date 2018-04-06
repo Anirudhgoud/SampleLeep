@@ -1,7 +1,6 @@
 package com.goleep.driverapp.services.network.jsonparsers;
 
-import com.goleep.driverapp.helpers.uimodels.BusinessAttribute;
-import com.goleep.driverapp.helpers.uimodels.GetBusinessesData;
+import com.goleep.driverapp.helpers.uimodels.Business;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,22 +13,18 @@ import java.util.List;
  */
 
 public class GetBusinessesDataParser {
-    public List<GetBusinessesData> reportsDataByParsingJsonResponse(JSONObject jsonObject) {
+    public List<Business> reportsDataByParsingJsonResponse(JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;
         }
-        List<GetBusinessesData>  listGetBusinessesData = new ArrayList<>();
+        List<Business>  listGetBusinessesData = new ArrayList<>();
         JSONArray jsonArray = jsonObject.optJSONArray("data");
         for(int index =0 ;index < jsonArray.length();index++){
             JSONObject  jsonObject1 = jsonArray.optJSONObject(index);
-            GetBusinessesData getBusinessesData = new GetBusinessesData();
-            getBusinessesData.setId(jsonObject1.optInt("id"));
-            getBusinessesData.setName(jsonObject1.optString("name"));
-            getBusinessesData.setImageUrl(jsonObject1.optString("image_url"));
-            getBusinessesData.setCategory(jsonObject1.optString("category"));
-            getBusinessesData.setLocationsCount(jsonObject1.optInt("locations_count"));
-            getBusinessesData.setActive(jsonObject1.optBoolean("active"));
-            listGetBusinessesData.add(getBusinessesData);
+            Business business = new Business();
+            business.setId(jsonObject1.optInt("id"));
+            business.setName(jsonObject1.optString("name"));
+            listGetBusinessesData.add(business);
         }
         return  listGetBusinessesData;
     }

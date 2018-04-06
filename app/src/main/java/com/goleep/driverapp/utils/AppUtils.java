@@ -24,11 +24,11 @@ public class AppUtils {
     }
 
     public static Bitmap bitmapFromView(View v, int width, int height) {
-        Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
         v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
-        v.draw(c);
-        return b;
+        v.draw(canvas);
+        return bitmap;
     }
 
     public static File fileFromBitmap(Context context, Bitmap bitmap, String fileName) {

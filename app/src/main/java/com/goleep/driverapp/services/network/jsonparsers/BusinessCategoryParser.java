@@ -1,6 +1,6 @@
 package com.goleep.driverapp.services.network.jsonparsers;
 
-import com.goleep.driverapp.helpers.uimodels.BusinessCategoryAttribute;
+import com.goleep.driverapp.helpers.uimodels.Business;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,21 +13,20 @@ import java.util.List;
  */
 
 public class BusinessCategoryParser {
-    public List<BusinessCategoryAttribute> reportsDataByParsingJsonResponse(JSONObject jsonObject){
+    public List<Business> reportsDataByParsingJsonResponse(JSONObject jsonObject){
         if(jsonObject == null){
             return null;
         }else {
-                List<BusinessCategoryAttribute> listBusinessCategoryAttribute = new ArrayList<>();
+                List<Business> listBusinessData = new ArrayList<>();
             JSONArray jsonArrayData = jsonObject.optJSONArray("data");
             for(int index = 0; index<jsonArrayData.length();index++){
                 JSONObject jsonObject1 = jsonArrayData.optJSONObject(index);
-                BusinessCategoryAttribute businessCategoryAttribute =new BusinessCategoryAttribute();
-                businessCategoryAttribute.setId(jsonObject1.optInt("id"));
-                businessCategoryAttribute.setName(jsonObject1.optString("name"));
-                businessCategoryAttribute.setBusinessesCount(jsonObject1.optInt("businesses_count"));
-                listBusinessCategoryAttribute.add(businessCategoryAttribute);
+                Business business =new Business();
+                business.setId(jsonObject1.optInt("id"));
+                business.setName(jsonObject1.optString("name"));
+                listBusinessData.add(business);
             }
-            return  listBusinessCategoryAttribute;
+            return  listBusinessData;
         }
     }
 
