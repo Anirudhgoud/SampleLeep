@@ -89,18 +89,14 @@ public class DeliveryOrdersListFragment extends Fragment {
     }
 
     private void initialiseRadioButtons() {
-        rgFilterRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                onRadioSelectionChange(checkedId);
-            }
-        });
+        rgFilterRadioGroup.setOnCheckedChangeListener((group, checkedId) -> onRadioSelectionChange(checkedId));
     }
 
     private void fetchDeliveryOrders() {
-        ParentAppCompatActivity activity = ((ParentAppCompatActivity) getActivity());
-        if (activity == null) return;
-        activity.showProgressDialog();
+        FragmentActivity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
+        parentActivity.showProgressDialog();
         doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null, null);
     }
 
