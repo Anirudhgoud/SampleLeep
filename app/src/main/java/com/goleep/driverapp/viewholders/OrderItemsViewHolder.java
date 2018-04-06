@@ -69,6 +69,10 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(orderItem.getId(), orderItem.getMaxQuantity()));
     }
 
+    private String itemTotalPriceText(double value) {
+        return String.format(Locale.getDefault(), "%.02f", value);
+    }
+
     public void bindData(StockProductEntity stockProductEntity, int productType) {
         tvProductName.setText(stockProductEntity.getProductName() == null ? "" :
                 stockProductEntity.getProductName());
@@ -78,10 +82,11 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
 
         double value = stockProductEntity.getQuantity(productType) * stockProductEntity.getDefaultPrice();
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
-    }
 
-    private String itemTotalPriceText(double value) {
-        return String.format(Locale.getDefault(), "%.02f", value);
+        productCheckbox.setChecked(stockProductEntity.isSelected());
+        productCheckbox.setOnClickListener(v -> deliveryOrderItemEventListener.onCheckboxTap(
+                stockProductEntity.getId(), productCheckbox.isChecked()));
+        tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(
+                stockProductEntity.getId(), stockProductEntity.getMaxQuantity(productType)));
     }
-
 }

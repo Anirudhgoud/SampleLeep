@@ -19,6 +19,7 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 
 import org.json.JSONArray;
@@ -32,13 +33,12 @@ import java.util.List;
 public class CashSalesViewModel extends AndroidViewModel {
     private LiveData<DeliveryOrderEntity> driverDO;
     private LiveData<List<OrderItemEntity>> driverDoDetails;
-    private Context context;
     private  AppDatabase leepDatabase;
+    private WarehouseEntity warehouseEntity;
 
     public CashSalesViewModel(@NonNull Application application) {
         super(application);
-        context = application;
-        leepDatabase = RoomDBService.sharedInstance().getDatabase(context);
+        leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
 
     public LiveData<DeliveryOrderEntity> getDriverDo(){
@@ -51,11 +51,21 @@ public class CashSalesViewModel extends AndroidViewModel {
         return driverDoDetails;
     }
 
+    public void setWarehouse(int warehouseId) {
+        warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);
+    }
+
+    public WarehouseEntity getWarehouse() {
+        return warehouseEntity;
+    }
+
     public void fetchDriverDo(final UILevelNetworkCallback driverDOCallback){
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
                 getApplication().getApplicationContext(), SharedPreferenceKeys.DRIVER_ID);
-        String url = UrlConstants.DELIVERY_ORDERS_URL + "?type=driver&assignees="+"1"+"&statuses=assigned";
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context, url,
+        String url = UrlConstants.DELIVERY_ORDERS_URL + "?type=driver&assignees="+driverId+"&statuses=assigned";
+        if(warehouseEntity != null)
+            url += "&source_locations="+warehouseEntity.getId();
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), url,
                 true, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
@@ -80,7 +90,7 @@ public class CashSalesViewModel extends AndroidViewModel {
     }
 
     public void fetchDriverDoDetails(final int doId, final UILevelNetworkCallback doDetailsCallback){
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(context,
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {

@@ -97,7 +97,7 @@ public class DeliveryOrdersListFragment extends Fragment {
         if (activity == null || activity.isFinishing()) return;
         ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
         parentActivity.showProgressDialog();
-        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null, null);
+        doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null, null, -1);
     }
 
     private void onRadioSelectionChange(int checkedId) {

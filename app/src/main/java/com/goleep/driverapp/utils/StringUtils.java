@@ -41,6 +41,27 @@ public class StringUtils {
         return address;
     }
 
+    public static String getFullAddress(String line1, String line2, String city, String state,
+                                        String pincode){
+        String address = "";
+        if (line1 != null && !line1.equals("null")) {
+            address = line1;
+        }
+        if (line2 != null && !line2.equals("null")) {
+            if (line1 != null) {
+                address += ", ";
+            }
+            address = address + line2;
+        }
+        if(city != null && !city.isEmpty() && !city.equals("null"))
+            address += ", "+city;
+        if(state != null && !state.isEmpty() && !state.equals("null"))
+            address += ", "+state;
+        if(pincode != null && !pincode.isEmpty() && !pincode.equals("null"))
+            address += ", "+pincode;
+        return address;
+    }
+
     public static String amountToDisplay(Float amountString) {
         return (amountString != null ? currencyFormatter.format(amountString) : currencyFormatter.format(0));
     }
@@ -71,4 +92,11 @@ public class StringUtils {
         }
         return formattedString;
     }
+
+    public static String dateToDisplay(String dateString) {
+        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
+                DateTimeUtils.ORDER_SERVER_DATE_FORMAT, DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
+
+    }
+
 }

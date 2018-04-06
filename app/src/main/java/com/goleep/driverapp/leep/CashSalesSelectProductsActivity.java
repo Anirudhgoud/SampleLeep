@@ -107,8 +107,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
 
     @Override
     public void doInitialSetup() {
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         viewModel = ViewModelProviders.of(this).get(CashSalesSelectProductsViewModel.class);
         ButterKnife.bind(this);
         extractIntentData();
@@ -157,8 +155,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
                         break;
 
                     case 1:
-                        //TODO: hide keyboard
-                        //AppUtils.hideKeyboard();
+                        AppUtils.hideKeyboard(getCurrentFocus());
                         atvSearch.setVisibility(View.VISIBLE);
                         barcodeCapture.getView().setVisibility(View.GONE);
                         break;
@@ -213,7 +210,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 hideUpdateQuantityView();
-                AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+                AppUtils.hideKeyboard(etUnits);
             }
             return true;
         });
@@ -235,7 +232,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
                 if (newUnitsText.length() > 0) {
                     int newUnits = Integer.valueOf(newUnitsText);
                     boolean isValid = newUnits <= maxUnits && newUnits != 0;
-                    etUnits.setError(isValid ? null : invalidQuantityError.getText());
+                    invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
                     btUpdate.setEnabled(isValid);
                 } else {
                     btUpdate.setEnabled(false);
@@ -314,7 +311,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             updateQuantityLayout.setVisibility(View.VISIBLE);
             invalidQuantityError.setVisibility(View.INVISIBLE);
             btUpdate.setEnabled(false);
-            AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+            AppUtils.showKeyboard(etUnits);
         }
     }
 
@@ -327,8 +324,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     public void onClickWithId(int resourceId) {
         switch (resourceId) {
             case R.id.left_toolbar_button:
-                //TODO: hide keyboard
-                //AppUtils.hideKeyboard();
+                AppUtils.hideKeyboard(getCurrentFocus());
                 finish();
                 break;
 
@@ -376,7 +372,8 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             viewModel.addToScannedProduct(product);
         cashSalesListAdapter.notifyDataSetChanged();
         hideUpdateQuantityView();
-        AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+        getCurrentFocus().clearFocus();
+        AppUtils.hideKeyboard(etUnits);
     }
 
     @Override

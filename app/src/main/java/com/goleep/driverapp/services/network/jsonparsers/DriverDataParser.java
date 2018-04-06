@@ -1,9 +1,13 @@
 package com.goleep.driverapp.services.network.jsonparsers;
 
 import com.goleep.driverapp.services.room.entities.DriverEntity;
+import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by anurag on 06/03/18.
@@ -12,7 +16,7 @@ import org.json.JSONObject;
 public class DriverDataParser {
 
     public DriverEntity driverResponseByParsingJsonResponse(JSONArray jsonArray){
-        JSONObject firstObj = (JSONObject) jsonArray.opt(0);
+        JSONObject firstObj = jsonArray.optJSONObject(0);
         if(firstObj == null){
             return null;
         }
@@ -57,5 +61,29 @@ public class DriverDataParser {
             driverEntity.setBusinessId(workLocationJsonObject.optInt("business_id", 0));
         }
         return driverEntity;
+    }
+
+    public List<WarehouseEntity> warehouseByParsingResponse(JSONArray response) {
+
+        JSONObject firstObj = (JSONObject) response.opt(0);
+        if(firstObj == null){
+            return null;
+        } else {
+            List<WarehouseEntity> warehouseEntities = new ArrayList<>();
+            JSONObject jsonObject = firstObj.optJSONObject("work_location");
+            WarehouseEntity warehouseEntity = new WarehouseEntity();
+            warehouseEntity.setId(jsonObject.optInt("id"));
+            warehouseEntity.setAddressLine1(jsonObject.optString("address_line_1"));
+            warehouseEntity.setAddressLine2(jsonObject.optString("address_line_2"));
+            warehouseEntity.setCity(jsonObject.optString("city"));
+            warehouseEntity.setState(jsonObject.optString("state"));
+            warehouseEntity.setCountryName(jsonObject.optString("country_name"));
+            warehouseEntity.setPincode(jsonObject.optString("pin_code"));
+            warehouseEntity.setLatitude(jsonObject.optDouble("latitude", 0.0));
+            warehouseEntity.setLongitude(jsonObject.optDouble("longitude", 0.0));
+            warehouseEntity.setWareHouseName(jsonObject.optString("name"));
+            warehouseEntities.add(warehouseEntity);
+            return warehouseEntities;
+        }
     }
 }

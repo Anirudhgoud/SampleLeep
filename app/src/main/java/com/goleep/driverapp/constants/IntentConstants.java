@@ -15,4 +15,8 @@ public interface IntentConstants {
     String ORDER_ID = "order_id";
     String CONSUMER_LOCATION = "consumer_location";
     String PRODUCT_LIST = "product_list";
+    String WAREHOUSE_ID = "warehouse_id";
+    String RETURNABLE = "returnable";
+    String SELLABLE = "sellable";
+    String TASK_SUCCESSFUL = "task_successful";
 }
