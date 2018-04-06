@@ -34,7 +34,7 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
     private Customer consumerLocation;
     private Product selectedProduct;
     private int driverLocationId;
-    private List<Product> scannedProducts = new ArrayList<>();
+    private ArrayList<Product> scannedProducts = new ArrayList<>();
 
     public CashSalesSelectProductsViewModel(@NonNull Application application) {
         super(application);
@@ -112,7 +112,7 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
     }
 
     // getters and setters
-    public List<Product> getScannedProducts() {
+    public ArrayList<Product> getScannedProducts() {
         return scannedProducts;
     }
 

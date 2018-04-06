@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -21,10 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
-import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
@@ -62,6 +61,8 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     CustomTextView invalidQuantityError;
     @BindView(R.id.bt_update)
     CustomButton btUpdate;
+    @BindView(R.id.bt_confirm)
+    CustomButton btConfirm;
     @BindView(R.id.atv_search)
     CustomAppCompatAutoCompleteTextView atvSearch;
     @BindView(R.id.cash_sales_recyclerview)
@@ -76,9 +77,8 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         @Override
         public void onBarcodeScan(Barcode barcode) {
             runOnUiThread(() -> {
+                pauseBarcodeScanning();
                 onBarcodeDetected(barcode.displayValue);
-//                Toast.makeText(CashSalesSelectProductsActivity.this, barcode.displayValue, Toast.LENGTH_SHORT).show();
-//                barcodeCapture.pause();
             });
         }
 
@@ -116,11 +116,24 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         initialiseBarcodeScanner();
         initialiseRecyclerView();
         initialiseAutoCompleteTextView();
+        setClickListeners();
         initialiseUpdateQuantityView();
         fetchDriverLocationId();
     }
 
-    private void extractIntentData(){
+    @Override
+    protected void onPause() {
+        super.onPause();
+        barcodeCapture.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        barcodeCapture.onResume();
+    }
+
+    private void extractIntentData() {
         viewModel.setConsumerLocation(getIntent().getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
     }
 
@@ -194,7 +207,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void initialiseUpdateQuantityView() {
-        btUpdate.setOnClickListener(this);
         etUnits.setKeyImeChangeListener(this::hideUpdateQuantityView);
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
@@ -231,7 +243,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         });
     }
 
-    private void fetchDriverLocationId(){
+    private void fetchDriverLocationId() {
         viewModel.setDriverLocationId(viewModel.getSourceLocationId());
     }
 
@@ -246,7 +258,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count > 2){
+                if (count > 2) {
                     List<StockProductEntity> list = viewModel.sellebleProductsWithName(s.toString());
                     productSearchArrayAdapter.updateData(list);
                 }
@@ -256,7 +268,11 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             public void afterTextChanged(Editable s) {
             }
         });
+    }
 
+    private void setClickListeners() {
+        btUpdate.setOnClickListener(this);
+        btConfirm.setOnClickListener(this);
     }
 
     private void initialiseRecyclerView() {
@@ -271,13 +287,15 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         StockProductEntity stockProduct = viewModel.sellebleProductHavingBarcode(barcode);
         if (stockProduct == null) {
             Toast.makeText(CashSalesSelectProductsActivity.this, R.string.product_not_available, Toast.LENGTH_SHORT).show();
+            resumeBarcodeScanning();
             return;
         }
         addProductToSelectedList(viewModel.getProductFromStockProduct(stockProduct));
     }
 
-    private void addProductToSelectedList(Product product){
+    private void addProductToSelectedList(Product product) {
         if (viewModel.isProductInScannedList(product.getId())) {
+            resumeBarcodeScanning();
             Toast.makeText(CashSalesSelectProductsActivity.this, R.string.item_already_added, Toast.LENGTH_SHORT).show();
         } else {
             displayUpdateQuantityView(product);
@@ -299,6 +317,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void hideUpdateQuantityView() {
+        resumeBarcodeScanning();
         updateQuantityLayout.setVisibility(View.GONE);
     }
 
@@ -314,10 +333,14 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             case R.id.bt_update:
                 onUpdateButtonTap();
                 break;
+
+            case R.id.bt_confirm:
+                onConfirmButtonTap();
+                break;
         }
     }
 
-    private void onUpdateButtonTap(){
+    private void onUpdateButtonTap() {
         Product product = viewModel.getSelectedProduct();
         Customer customer = viewModel.getConsumerLocation();
         if (product != null && customer != null) {
@@ -332,18 +355,17 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             if (uiModels == null) {
                 if (toLogout) {
                     logoutUser();
-                }else {
+                } else {
                     updateProductDetails(0.0);
                 }
             } else if (uiModels.size() > 0) {
                 Double productPrice = (Double) uiModels.get(0);
                 updateProductDetails(productPrice);
-
             }
         });
     };
 
-    private void updateProductDetails(Double productPrice){
+    private void updateProductDetails(Double productPrice) {
         Product product = viewModel.getSelectedProduct();
         if (product == null) return;
         product.setQuantity(Integer.valueOf(etUnits.getText().toString()));
@@ -361,5 +383,27 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         if (stockProductEntity == null) return;
         Product product = viewModel.getProductFromStockProduct(stockProductEntity);
         addProductToSelectedList(product);
+    }
+
+    private void pauseBarcodeScanning() {
+        barcodeCapture.pause();
+    }
+
+    private void resumeBarcodeScanning() {
+        barcodeCapture.resume();
+    }
+
+    private void onConfirmButtonTap() {
+        ArrayList<Product> productList = viewModel.getScannedProducts();
+        if (productList.size() > 0) {
+            gotoNextActivity(viewModel.getConsumerLocation(), productList);
+        }
+    }
+
+    private void gotoNextActivity(Customer consumerLocation, ArrayList<Product> productList) {
+        Intent intent = new Intent();
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, consumerLocation);
+        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, productList);
+        startActivity(intent);
     }
 }

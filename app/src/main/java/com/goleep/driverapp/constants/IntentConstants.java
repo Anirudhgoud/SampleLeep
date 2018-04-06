@@ -14,4 +14,5 @@ public interface IntentConstants {
     String PAYMENT_METHOD = "payment_method";
     String ORDER_ID = "order_id";
     String CONSUMER_LOCATION = "consumer_location";
+    String PRODUCT_LIST = "product_list";
 }
