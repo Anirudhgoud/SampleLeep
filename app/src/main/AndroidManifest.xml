@@ -38,27 +38,60 @@
         </activity>
         <activity
             android:name=".leep.LoginActivity"
-            android:theme="@style/LoginTheme" />
+            android:theme="@style/LoginTheme"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".leep.HomeActivity"
-            android:theme="@style/HomeScreenTheme" />
+            android:theme="@style/HomeScreenTheme"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".leep.ForgotPasswordActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/LoginTheme" />
-        <activity android:name=".leep.PickupActivity" />
-        <activity android:name=".leep.PickupConfirmationActivity" />
-        <activity android:name=".leep.DropOffDeliveryOrdersActivity" />
-        <activity android:name=".leep.DropOffDeliveryOrderDetailsActivity" />
-        <activity android:name=".leep.DropOffPaymentCollectActivity" />
-        <activity android:name=".leep.DropOffCollectPaymentMethodActivity" />
-        <activity android:name=".leep.DropOffPaymentConfirmationActivity" />
-        <activity android:name=".leep.PickupMapActivity" />
-        <activity android:name=".leep.CashSalesActivity" />
-        <activity android:name=".leep.ReportsActivity" />
-        <activity android:name=".leep.StockActivity" />
-        <activity android:name=".leep.HistoryActivity" />
-        <activity android:name=".leep.HistoryDetailsActivity" />
-        <activity android:name=".leep.PickupWarehouseActivity" />
+        <activity
+            android:name=".leep.PickupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.PickupConfirmationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.DropOffDeliveryOrdersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.DropOffDeliveryOrderDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.DropOffPaymentCollectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.DropOffCollectPaymentMethodActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.DropOffPaymentConfirmationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.PickupMapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.CashSalesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.ReportsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.StockActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.HistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.HistoryDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.PickupWarehouseActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".leep.NewCustomerActivity"
             android:screenOrientation="portrait" />
