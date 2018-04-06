@@ -95,7 +95,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.CashSalesSelectProductsActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".leep.CashSalesConfirmationActivity"
             android:screenOrientation="portrait" />
     </application>
 
