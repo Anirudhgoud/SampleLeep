@@ -82,7 +82,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     private void initialise() {
         doViewModel = ViewModelProviders.of(getActivity()).get(PickupDeliveryOrderViewModel.class);
-        doViewModel.setWarehouse(doViewModel.getWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1)));
+        doViewModel.setWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1));
         initRecyclerView();
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,8 +135,8 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     @Override
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
         if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().
-                containsKey(doDetails.get(0).getOrderId())) {
-            final int pos = doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
+                indexOfKey(doDetails.get(0).getOrderId()) > 0) {
+            final int pos = (int) doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
             final int doId = doDetails.get(0).getOrderId();
             List<BaseListItem> listItems = new ArrayList<>();
             for(OrderItemEntity orderItemEntity : doDetails){

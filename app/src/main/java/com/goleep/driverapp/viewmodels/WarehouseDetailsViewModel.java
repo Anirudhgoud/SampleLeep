@@ -31,16 +31,11 @@ public class WarehouseDetailsViewModel extends AndroidViewModel {
                 warehouseEntity.getAddressLine1(), warehouseEntity.getAddressLine2());
      }
 
-     public WarehouseEntity getWarehouse(int warehouseId){
-         warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);
-        return warehouseEntity;
-     }
-
      public WarehouseEntity getWarehouse(){
          return warehouseEntity;
      }
 
-    public void setWarehouse(WarehouseEntity warehouse) {
-        warehouseEntity = warehouse;
+    public void setWarehouse(int warehouseId) {
+        warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);
     }
 }
