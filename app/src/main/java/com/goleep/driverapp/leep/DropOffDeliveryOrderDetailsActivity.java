@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
@@ -159,6 +161,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     public void onClickWithId(int resourceId) {
         switch (resourceId) {
             case R.id.left_toolbar_button:
+                AppUtils.hideKeyboard(this.getCurrentFocus());
                 finish();
                 break;
         }

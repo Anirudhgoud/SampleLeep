@@ -35,7 +35,7 @@ public class HistoryViewModel extends DeliveryOrderViewModel {
                 !startDate.isEmpty() && !endDate.isEmpty()){
             this.startDate = startDate;
             this.endDate = endDate;
-            fetchAllDeliveryOrders(doNetworkCallback, "delivered", startDate, endDate);
+            fetchAllDeliveryOrders(doNetworkCallback, "delivered", startDate, endDate, -1);
         }
     }
 
@@ -43,7 +43,7 @@ public class HistoryViewModel extends DeliveryOrderViewModel {
     public void fetchDeliveryOrders(UILevelNetworkCallback doNetworkCallback){
         if(startDate != null && endDate != null &&
                 !startDate.isEmpty() && !endDate.isEmpty()){
-            fetchAllDeliveryOrders(doNetworkCallback, "delivered", startDate, endDate);
+            fetchAllDeliveryOrders(doNetworkCallback, "delivered", startDate, endDate, -1);
         }
     }
 

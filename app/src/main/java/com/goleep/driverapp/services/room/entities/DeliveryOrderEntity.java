@@ -15,6 +15,7 @@ import com.goleep.driverapp.helpers.uimodels.Distance;
 public class DeliveryOrderEntity extends BaseListItem{
 
     @PrimaryKey
+
     private int id;
     private String doNumber;
     private String status;
@@ -31,6 +32,13 @@ public class DeliveryOrderEntity extends BaseListItem{
     private String customerName;
     private double destinationLatitude;
     private double destinationLongitude;
+    private double sourceLatitude;
+    private double sourceLongitude;
+    private String city;
+    private String state;
+    private String pincode;
+    private String sourceAddressLine1;
+    private String sourceAddressLine2;
     private String destinationAddressLine1;
     private String destinationAddressLine2;
     private int deliveryOrderItemsCount;
@@ -210,5 +218,61 @@ public class DeliveryOrderEntity extends BaseListItem{
 
     public void setDestinationLongitude(double destinationLongitude) {
         this.destinationLongitude = destinationLongitude;
+    }
+
+    public String getSourceAddressLine1() {
+        return sourceAddressLine1;
+    }
+
+    public void setSourceAddressLine1(String sourceAddressLine1) {
+        this.sourceAddressLine1 = sourceAddressLine1;
+    }
+
+    public String getSourceAddressLine2() {
+        return sourceAddressLine2;
+    }
+
+    public void setSourceAddressLine2(String sourceAddressLine2) {
+        this.sourceAddressLine2 = sourceAddressLine2;
+    }
+
+    public double getSourceLatitude() {
+        return sourceLatitude;
+    }
+
+    public void setSourceLatitude(double sourceLatitude) {
+        this.sourceLatitude = sourceLatitude;
+    }
+
+    public double getSourceLongitude() {
+        return sourceLongitude;
+    }
+
+    public void setSourceLongitude(double sourceLongitude) {
+        this.sourceLongitude = sourceLongitude;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
     }
 }

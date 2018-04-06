@@ -85,9 +85,6 @@
             android:name=".leep.HistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".leep.WarehouseDropoffActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".leep.HistoryDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -95,7 +92,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.CashSalesSelectProductsActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".leep.DropoffWarehouseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.DropoffActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.WarehouseDropoffConfirmationActivity"
             android:screenOrientation="portrait" />
     </application>
 

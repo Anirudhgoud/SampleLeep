@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
+import android.util.SparseArray;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
@@ -16,6 +17,7 @@ import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +38,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     private List<BaseListItem> doList = new ArrayList<>();
     private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
-    private Map<Integer, Integer> positionMap = new HashMap<>();
-
+    private SparseArray positionMap = new SparseArray();
 
 
     public PickupDeliveryOrderViewModel(@NonNull Application application) {
@@ -104,39 +105,13 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         this.doUpdateMap = doUpdateMap;
     }
 
-    public Map<Integer, Integer> getPositionMap() {
+    public SparseArray getPositionMap() {
         return positionMap;
-    }
-
-    public void setPositionMap(Map<Integer, Integer> positionMap) {
-        this.positionMap = positionMap;
     }
 
     public void confirmPickup(List<OrderItemEntity> cashDoItems, ArrayList<Integer> selectedDeliveryOrders,
                               final UILevelNetworkCallback pickupConfirmCallBack) {
-        Map<String, Object> requestBody = new HashMap<>();
-        try {
-            JSONArray selectedDeliveryOrdersArray = new JSONArray();
-            for (Integer doId : selectedDeliveryOrders) {
-                selectedDeliveryOrdersArray.put(doId);
-            }
-            requestBody.put("delivery_order_ids", selectedDeliveryOrdersArray);
-            if(cashDoItems.size() > 0) {
-                JSONObject cashSalesObject = new JSONObject();
-                cashSalesObject.put("id", cashDoItems.get(0).getOrderId());
-                JSONArray itemsArray = new JSONArray();
-                for (OrderItemEntity orderItemEntity : cashDoItems) {
-                    JSONObject itemObject = new JSONObject();
-                    itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
-                    itemObject.put("_destroy", false);
-                    itemsArray.put(itemObject);
-                }
-                cashSalesObject.put("cash_sales_items", itemsArray);
-                requestBody.put("cash_sales", cashSalesObject);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Map<String, Object> requestBody = generateRequestmap(selectedDeliveryOrders, cashDoItems);
         if (requestBody.containsKey("delivery_order_ids") || requestBody.containsKey("cash_sales")) {
             NetworkService.sharedInstance().getNetworkClient().makeJsonPutRequest(
                     getApplication().getApplicationContext(), UrlConstants.PICKUP_CONFIRMATION, true,
@@ -150,7 +125,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                                     break;
                                 case NetworkConstants.FAILURE:
                                     pickupConfirmCallBack.onResponseReceived(null,
-                                            false, errorMessage, false);
+                                            true, errorMessage, false);
                                     break;
                                 case NetworkConstants.NETWORK_ERROR:
                                     pickupConfirmCallBack.onResponseReceived(null,
@@ -164,6 +139,32 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                     });
         }
 
+    }
+
+    private Map<String, Object> generateRequestmap(ArrayList<Integer> selectedDeliveryOrders,
+                                                   List<OrderItemEntity> cashDoItems){
+        Map<String, Object> requestBody = new HashMap<>();
+        if(selectedDeliveryOrders.size() > 0) {
+            int[] selectedDeliveryOrdersArray = new int[selectedDeliveryOrders.size()];
+            for (int i=0;i < selectedDeliveryOrders.size();i++) {
+                selectedDeliveryOrdersArray[i] = selectedDeliveryOrders.get(i);
+            }
+            requestBody.put("delivery_order_ids", selectedDeliveryOrdersArray);
+        }
+        if(cashDoItems.size() > 0) {
+            Map<String, Object> cashSalesObject = new HashMap();
+            cashSalesObject.put("id", cashDoItems.get(0).getOrderId());
+            List<Map<String, Object>> orderItemMapList = new ArrayList<>();
+            for (OrderItemEntity orderItemEntity : cashDoItems) {
+                Map<String, Object> itemObject = new HashMap<>();
+                itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
+                itemObject.put("_destroy", true);
+                orderItemMapList.add(itemObject);
+            }
+            cashSalesObject.put("cash_sales_items", orderItemMapList);
+            requestBody.put("cash_sales", cashSalesObject);
+        }
+        return requestBody;
     }
 
     public void deleteDeliveryOrders(ArrayList<Integer> selectedDeliveryOrders, List<OrderItemEntity> cashSalesItems) {

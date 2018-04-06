@@ -27,9 +27,15 @@ public class StockProductParser {
             stockProductEntity.setCategory(productJson.optString("category"));
             stockProductEntity.setDefaultPrice(productJson.optDouble("default_price", 0.0));
             stockProductEntity.setProductName(productJson.optString("product_name"));
-            stockProductEntity.setDeliverableQuantity(productJson.optInt("deliverable_quantity"));
-            stockProductEntity.setSellableQuantity(productJson.optInt("sellable_quantity"));
-            stockProductEntity.setReturnableQuantity(productJson.optInt("returnable_quantity"));
+            int deliverableQuantity = productJson.optInt("deliverable_quantity");
+            stockProductEntity.setDeliverableQuantity(deliverableQuantity);
+            stockProductEntity.setMaxDeliverableQuantity(deliverableQuantity);
+            int sellableQuantity = productJson.optInt("sellable_quantity");
+            stockProductEntity.setSellableQuantity(sellableQuantity);
+            stockProductEntity.setMaxSellableQuantity(sellableQuantity);
+            int returnableQuantity = productJson.optInt("returnable_quantity");
+            stockProductEntity.setReturnableQuantity(returnableQuantity);
+            stockProductEntity.setMaxReturnableQuantity(returnableQuantity);
             stockProductEntity.setBarcode(productJson.optString("barcode"));
             stockProductEntity.setWeight(productJson.optString("weight"));
             stockProductEntity.setWeightUnit(productJson.optString("weight_unit"));

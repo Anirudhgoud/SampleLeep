@@ -56,4 +56,10 @@ public class AppUtils {
         }
     }
 
+    public static void hideKeyboard(View focusView) {
+        if (focusView != null) {
+            InputMethodManager imm = (InputMethodManager)focusView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+        }
+    }
 }

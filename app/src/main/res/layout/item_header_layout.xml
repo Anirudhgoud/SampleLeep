@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingLeft="14dp"
+
     android:layout_gravity="center_vertical"
     android:layout_height="wrap_content">
 
@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingLeft="14dp"
         android:layout_height="44dp">
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
@@ -41,4 +43,8 @@
             android:text="@string/value"
             android:textColor="@color/light_grey" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/divider_grey" />
 </LinearLayout>

@@ -63,6 +63,13 @@
     <string name="storage_permission_denied">Please provide external storage permissions</string>
     <string name="image_picker">"Select Image From Gallery"</string>
 
+    <!--Dropoff-->
+    <string name="dropoff_stock">Drop Off</string>
+    <string name="sellable_stocks">Sellable Stocks</string>
+    <string name="to">To:</string>
+    <string name="confirm_dropoff">Confirm Drop Off</string>
+    <string name="dropoff_success">Drop Items Updated Successfully</string>
+
     <!--Reports-->
     <string name="reports">Reports</string>
     <string name="total_sales">Total Sales</string>
@@ -133,7 +140,7 @@
 
     <!--dashboard string-->
     <string name="pick_up__below_text">From Warehouse, Returns</string>
-    <string name="drop_off_below_text">Delivery Orders, Cash Sales Drop Off to Warehouse</string>
+    <string name="drop_off_below_text">Delivery Orders, Cash Sales, Drop Off to Warehouse</string>
     <string name="information_below_text">Stock, History, Reports</string>
 
     <!-- TODO: Remove or change this placeholder text -->
