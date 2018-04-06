@@ -92,8 +92,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.CashSalesSelectProductsActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".leep.DropoffWarehouseActivity"
             android:screenOrientation="portrait" />

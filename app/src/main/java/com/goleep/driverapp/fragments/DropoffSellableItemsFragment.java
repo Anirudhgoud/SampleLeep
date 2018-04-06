@@ -136,7 +136,7 @@ public class DropoffSellableItemsFragment extends Fragment {
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 hideUpdateQuantityView();
-                AppUtils.toggleKeyboard(etUnits, getContext().getApplicationContext());
+                AppUtils.toggleKeyboard(etUnits);
             }
             return true;
         });
@@ -170,7 +170,7 @@ public class DropoffSellableItemsFragment extends Fragment {
                         Integer.valueOf(etUnits.getText().toString()), ProductListAdapter.TYPE_SELLABLE);
                 adapter.updateList(stocksViewModel.getStockList(ProductListAdapter.TYPE_SELLABLE));
                 hideUpdateQuantityView();
-                AppUtils.toggleKeyboard(etUnits, getContext().getApplicationContext());
+                AppUtils.toggleKeyboard(etUnits);
             }
         });
     }
@@ -193,7 +193,7 @@ public class DropoffSellableItemsFragment extends Fragment {
             updateQuantityLayout.setVisibility(View.VISIBLE);
             invalidQuantityError.setVisibility(View.INVISIBLE);
             btUpdate.setEnabled(false);
-            AppUtils.toggleKeyboard(etUnits, getContext().getApplicationContext());
+            AppUtils.toggleKeyboard(etUnits);
         }
     }
 }

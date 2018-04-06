@@ -52,7 +52,6 @@ public class DropoffActivity extends ParentAppCompatActivity {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_dropoff);
-        fromTextView = findViewById(R.id.from_text_view);
     }
 
     @Override
