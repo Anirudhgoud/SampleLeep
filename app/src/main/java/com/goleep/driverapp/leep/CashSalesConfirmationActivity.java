@@ -1,6 +1,7 @@
 package com.goleep.driverapp.leep;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -16,9 +17,10 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.CashSalesConfirmationViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -65,8 +67,10 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
     }
 
     private void extractIntentData() {
-        viewModel.setConsumerLocation(getIntent().getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(getIntent().getParcelableArrayListExtra(IntentConstants.PRODUCT_LIST));
+        Intent intent = getIntent();
+        if (intent == null) return;
+        viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
+        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.PRODUCT_LIST));
     }
 
     private void initialiseToolbar() {
@@ -80,9 +84,9 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
 
         Customer customer = viewModel.getConsumerLocation();
         if (customer == null) return;
-        tvCustomerName.setText(customer.getName() == null ? "" : customer.getName());
+        tvCustomerName.setText(StringUtils.toString(customer.getName(), ""));
         tvCustomerName.setTextSize(24);
-        tvAddress.setText(customer.getArea() == null ? "" : customer.getArea());
+        tvAddress.setText(StringUtils.toString(customer.getArea(), ""));
         tvCurrentDate.setText(viewModel.currentDateToDisplay());
         tvCurrentTime.setText(viewModel.currentTimeToDisplay());
     }
@@ -94,7 +98,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
     }
 
     private void showProductList() {
-        ArrayList<Product> scannedProducts = viewModel.getScannedProducts();
+        List<Product> scannedProducts = viewModel.getScannedProducts();
 
         llItemListLayout.addView(listHeaderView());
         llItemListLayout.addView(dividerView());
@@ -117,19 +121,17 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
 
     private View productListItemView(Product product) {
         View orderItemView = LayoutInflater.from(this).inflate(R.layout.do_details_list_item, llItemListLayout, false);
+        if (product == null) return orderItemView;
+
         CustomTextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
         CustomTextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
         CustomTextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
         CustomTextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
         CheckBox productCheckbox = orderItemView.findViewById(R.id.product_checkbox);
         productCheckbox.setVisibility(View.GONE);
-
-        if (product != null) {
-            tvProductName.setText(product.getProductName() == null ? "" : product.getProductName());
-        }
+        tvProductName.setText(StringUtils.toString(product.getProductName(), ""));
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
         tvUnits.setText(String.valueOf(product.getQuantity()));
-
         double value = product.getQuantity() * product.getPrice();
         tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", value)));
         return orderItemView;

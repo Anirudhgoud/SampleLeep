@@ -9,12 +9,14 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.utils.DateTimeUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 public class CashSalesConfirmationViewModel extends AndroidViewModel {
 
     private Customer consumerLocation;
-    private ArrayList<Product> scannedProducts;
+    private List<Product> scannedProducts;
 
     public CashSalesConfirmationViewModel(@NonNull Application application) {
         super(application);
@@ -40,8 +42,8 @@ public class CashSalesConfirmationViewModel extends AndroidViewModel {
         this.consumerLocation = consumerLocation;
     }
 
-    public ArrayList<Product> getScannedProducts() {
-        return scannedProducts == null ? new ArrayList<>() : scannedProducts;
+    public List<Product> getScannedProducts() {
+        return scannedProducts == null ? Collections.emptyList() : scannedProducts;
     }
 
     public void setScannedProducts(ArrayList<Product> scannedProducts) {
