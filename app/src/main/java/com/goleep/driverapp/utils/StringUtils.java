@@ -100,7 +100,7 @@ public class StringUtils {
     }
 
     public static String validateString(String string){
-        if(string != null && string != "null")
+        if(string != null && !string.equals("null"))
             return string;
         else return "";
     }
