@@ -99,4 +99,10 @@ public class StringUtils {
 
     }
 
+    public static String validateString(String string){
+        if(string != null && string != "null")
+            return string;
+        else return "";
+    }
+
 }
