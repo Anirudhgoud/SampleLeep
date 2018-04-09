@@ -25,6 +25,7 @@
             app:typeface="NotoSans-Regular" />
 
         <LinearLayout
+            android:id="@+id/ll_do_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -72,7 +73,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
-            android:text="afadf"
             android:textColor="@color/doTabTextColor"
             android:textSize="12sp"
             app:typeface="NotoSans-Bold" />
