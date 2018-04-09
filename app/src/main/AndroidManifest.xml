@@ -103,11 +103,13 @@
         <activity
             android:name=".leep.WarehouseDropoffConfirmationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.ReturnsSelectReasonActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".leep.ReturnConfirmActivity"
+        <activity
+            android:name=".leep.ReturnsSelectReasonActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".leep.ReturnConfirmActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".leep.ReturnsCustomerSelectActivity"></activity>
     </application>
 
 </manifest>
