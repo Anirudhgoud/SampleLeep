@@ -12,6 +12,8 @@ public class Product implements Parcelable {
     private int maxQuantity;
     private String weight;
     private String weightUnit;
+    private String returnReason;
+    private int returnQuantity;
 
     public Product(){
     }
@@ -73,6 +75,22 @@ public class Product implements Parcelable {
         this.weightUnit = weightUnit;
     }
 
+    public String getReturnReason() {
+        return returnReason;
+    }
+
+    public void setReturnReason(String returnReason) {
+        this.returnReason = returnReason;
+    }
+
+    public int getReturnQuantity() {
+        return returnQuantity;
+    }
+
+    public void setReturnQuantity(int returnQuantity) {
+        this.returnQuantity = returnQuantity;
+    }
+
     //Parcel
     protected Product(Parcel in) {
         id = in.readInt();
@@ -82,6 +100,8 @@ public class Product implements Parcelable {
         maxQuantity = in.readInt();
         weight = in.readString();
         weightUnit = in.readString();
+        returnReason = in.readString();
+        returnQuantity = in.readInt();
     }
 
     @Override
@@ -98,6 +118,8 @@ public class Product implements Parcelable {
         dest.writeInt(maxQuantity);
         dest.writeString(weight);
         dest.writeString(weightUnit);
+        dest.writeString(returnReason);
+        dest.writeInt(returnQuantity);
     }
 
     @SuppressWarnings("unused")

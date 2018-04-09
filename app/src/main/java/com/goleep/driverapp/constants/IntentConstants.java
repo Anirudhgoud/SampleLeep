@@ -20,6 +20,6 @@ public interface IntentConstants {
     String SELLABLE = "sellable";
     String TASK_SUCCESSFUL = "task_successful";
     String FLOW = "flow";
-    String TITLE = "title";
-    String TITLE_ICON = "icon_res_id";
+    String PRODUCT = "product";
+    String RETURN_REASON = "return_reason";
 }

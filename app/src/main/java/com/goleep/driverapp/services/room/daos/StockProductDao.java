@@ -38,6 +38,9 @@ public abstract class StockProductDao {
     @Query("Select * from StockProductEntity WHERE sellableQuantity != 0 AND productName LIKE '%' || :text  || '%'")
     public abstract List<StockProductEntity> sellebleProductsWithName(String text);
 
+    @Query("Select * from StockProductEntity WHERE productName LIKE '%' || :text  || '%'")
+    public abstract List<StockProductEntity> allProductsWithName(String text);
+
     @Query("DELETE FROM StockProductEntity")
     protected abstract void deleteAllStockProducts();
 

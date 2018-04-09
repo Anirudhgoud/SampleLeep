@@ -56,6 +56,12 @@ public class ReturnReasonListAdapter extends RecyclerView.Adapter<ReturnReasonVi
         return returnReasons.size();
     }
 
+    public ReturnReason getSelectedReason(){
+        if(selectedIndex != -1)
+            return returnReasons.get(selectedIndex);
+         return null;
+    }
+
     public void updateList(List<ReturnReason> returnReasons) {
         this.returnReasons = returnReasons;
         notifyDataSetChanged();

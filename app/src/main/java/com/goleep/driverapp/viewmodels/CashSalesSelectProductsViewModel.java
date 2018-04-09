@@ -50,6 +50,10 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
         return leepDatabase.stockProductDao().sellebleProductsWithName(searchText);
     }
 
+    public List<StockProductEntity> allProductsWithName(String searchText) {
+        return leepDatabase.stockProductDao().allProductsWithName(searchText);
+    }
+
     public int getFlow() {
         return flow;
     }
