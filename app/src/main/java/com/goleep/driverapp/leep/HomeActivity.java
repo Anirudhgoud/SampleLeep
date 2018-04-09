@@ -163,19 +163,19 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     private void displayDriverProfile(DriverEntity driverEntity) {
         View view = findViewById(R.id.profile_layout);
-        ((CustomTextView) view.findViewById(R.id.name_textView)).setText(StringUtils.validateString(driverEntity.getFirstName())
-                + " " + StringUtils.validateString(driverEntity.getLastName()));
-        String cityCountryName = StringUtils.validateString(driverEntity.getCity());
-        String countryName = StringUtils.validateString(driverEntity.getCountryName());
+        ((CustomTextView) view.findViewById(R.id.name_textView)).setText(StringUtils.toString(driverEntity.getFirstName(), "")
+                + " " + StringUtils.toString(driverEntity.getLastName(), ""));
+        String cityCountryName = StringUtils.toString(driverEntity.getCity(), "");
+        String countryName = StringUtils.toString(driverEntity.getCountryName(), "");
         if(!countryName.isEmpty())
             cityCountryName += ", " + countryName;
         ((CustomTextView) view.findViewById(R.id.place_text_view)).setText(cityCountryName);
         ((CustomTextView) view.findViewById(R.id.deliveries_value_textview)).setText(
-                StringUtils.validateString(String.valueOf(driverEntity.getCompletedDeliveryOrdersCount())));
+                StringUtils.toString(String.valueOf(driverEntity.getCompletedDeliveryOrdersCount()), ""));
         ((CustomTextView) view.findViewById(R.id.payment_collected_values_textview)).setText(
-                StringUtils.validateString(String.valueOf(driverEntity.getPaymentCollected())));
+                StringUtils.toString(String.valueOf(driverEntity.getPaymentCollected()), ""));
         ((CustomTextView) view.findViewById(R.id.locations_layout_value_textview)).setText(
-                StringUtils.validateString(String.valueOf(driverEntity.getDeliveryLocationsCount())));
+                StringUtils.toString(String.valueOf(driverEntity.getDeliveryLocationsCount()), ""));
         ((CustomTextView) view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
         ((CustomTextView) view.findViewById(R.id.address_text_view)).setText(StringUtils.getAddress(
                 driverEntity.getAddressLine1(),driverEntity.getAddressLine2()));

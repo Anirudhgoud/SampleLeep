@@ -99,10 +99,8 @@ public class StringUtils {
 
     }
 
-    public static String validateString(String string){
-        if(string != null && !string.equals("null"))
-            return string;
-        else return "";
+    public static String toString(String string, String nullDefault){
+        return (string == null || string.equals("null")) ? nullDefault : string;
     }
 
 }

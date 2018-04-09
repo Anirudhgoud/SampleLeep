@@ -4,10 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="25dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="25dp">
+    android:padding="16dp">
 
     <LinearLayout
         android:id="@+id/product_layout"
@@ -32,7 +29,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/text_light_grey_title"
             android:textSize="14sp"
-            android:layout_marginBottom="10dp"
             app:typeface="NotoSans-Regular" />
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
@@ -41,6 +37,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/red"
             android:visibility="gone"
+            android:layout_marginTop="10dp"
             android:textSize="11sp"
             app:typeface="NotoSans-Regular" />
 
