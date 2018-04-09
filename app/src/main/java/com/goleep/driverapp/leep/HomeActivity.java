@@ -37,7 +37,6 @@ import com.goleep.driverapp.helpers.uimodels.Summary;
 import com.goleep.driverapp.interfaces.OnPermissionResult;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
-import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.HomeViewModel;
 
@@ -175,7 +174,6 @@ public class HomeActivity extends ParentAppCompatActivity {
     private BroadcastReceiver taskSuccessBroadcast = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            LogUtils.error("Home", "onReceive");
             viewModel.getSummary();
         }
     };
@@ -207,7 +205,6 @@ public class HomeActivity extends ParentAppCompatActivity {
         populateProfile();
         populateSummary();
         registerBroadcastReceiver();
-        LogUtils.error("Home", "DoInitialSetup");
     }
 
     private void registerBroadcastReceiver() {
@@ -217,7 +214,6 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     @Override
     public void onNewIntent(Intent intent){
-        LogUtils.error("Home", "onNewIntent");
         if(intent != null && intent.getBooleanExtra(IntentConstants.TASK_SUCCESSFUL, false)){
             viewPager.setCurrentItem(0);
         }
@@ -256,7 +252,6 @@ public class HomeActivity extends ParentAppCompatActivity {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.setResources(R.layout.activity_home);
-        LogUtils.error("Home", "OnActivityCreated");
     }
 
     @Override
