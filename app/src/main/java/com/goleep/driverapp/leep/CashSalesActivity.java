@@ -115,5 +115,4 @@ public class CashSalesActivity extends ParentAppCompatActivity {
             }
         }
     }
-
 }

@@ -4,7 +4,7 @@ package com.goleep.driverapp.helpers.uimodels;
  * Created by shubham on 03/04/2018.
  */
 
-public class MapAttribute {
+public class MapData {
     private String totalAddress;
     private String postalCode;
     private String addressLine1;

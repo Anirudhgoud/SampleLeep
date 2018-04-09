@@ -2,6 +2,7 @@ package com.goleep.driverapp.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,30 +20,31 @@ import java.util.List;
  */
 
 public class BusinessesListAdapter extends ArrayAdapter<Business> {
-    private Context context;
-     private List<Business> listGetBusinessesData;
-     private  List<Business>  fullList;
+    private List<Business> listGetBusinessesData;
+    private List<Business> fullList;
+
     public BusinessesListAdapter(Context context, int res, int textViewResourceId, List<Business> listGetBusinesses) {
         super(context, res, textViewResourceId, listGetBusinesses);
-        this.context = context;
-        listGetBusinessesData=listGetBusinesses;
+        listGetBusinessesData = listGetBusinesses;
         fullList = new ArrayList<>();
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @Nullable ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext())
                     .inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
         }
         Business business = getItem(position);
-        if(business != null) {
+        if (business != null) {
             TextView textView = convertView.findViewById(android.R.id.text1);
             textView.setText(business.getName());
         }
         return convertView;
     }
-    public  void updateData(List<Business> listdata){
+
+    public void updateData(List<Business> listdata) {
         listGetBusinessesData.clear();
         listGetBusinessesData.addAll(listdata);
         fullList.addAll(listdata);
@@ -78,15 +80,15 @@ public class BusinessesListAdapter extends ArrayAdapter<Business> {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (results != null && results.count>0) {
+            if (results != null && results.count > 0) {
                 clear();
-                addAll((List<Business>) results.values);
-            }
-            if (results.count > 0) {
+                @SuppressWarnings("unchecked")
+                List<Business> data = (List<Business>) results.values;
+                addAll(data);
                 notifyDataSetChanged();
-            } else {
+            }else
                 notifyDataSetInvalidated();
-            }
+
         }
 
         @Override

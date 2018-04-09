@@ -18,9 +18,10 @@ import com.goleep.driverapp.helpers.uihelpers.PermissionHelper;
 import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.helpers.uimodels.CustomerInfo;
-import com.goleep.driverapp.helpers.uimodels.MapAttribute;
+import com.goleep.driverapp.helpers.uimodels.MapData;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.services.network.jsonparsers.CountryDataParser;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.NewCustomerViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +33,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,9 +68,8 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
     CustomTextView tvConfirm;
 
     private GoogleMap googleMap;
-
     private Marker marker;
-    private NewCustomerViewModel newCustomerViewModel;
+    private NewCustomerViewModel viewModel;
     private PermissionHelper permissionHelper;
 
     @Override
@@ -72,27 +79,34 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
 
     @Override
     public void doInitialSetup() {
+        viewModel = ViewModelProviders.of(NewCustomerActivity.this).get(NewCustomerViewModel.class);
         ButterKnife.bind(NewCustomerActivity.this);
-        newCustomerViewModel = ViewModelProviders.of(NewCustomerActivity.this).get(NewCustomerViewModel.class);
         initialiseToolbar();
         initialiseMapView();
-        CustomerInfo customerInfo = getIntent().getExtras().getParcelable(IntentConstants.CUSTOMER_INFO);
-        newCustomerViewModel.setCustomerInfo(customerInfo);
+        getCustomerInfo();
         tvConfirm.setOnClickListener(this);
-    }
-
-    private void initialiseMapView() {
-        showProgressDialog();
-        newCustomerViewModel.getCountries(getCountriesCallBack);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(NewCustomerActivity.this);
     }
 
     private void initialiseToolbar() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.new_customer), R.drawable.ic_new_customer);
+    }
+
+    private void initialiseMapView() {
+        viewModel.setCountryAttributeList(getCountries());
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(NewCustomerActivity.this);
+    }
+
+
+    private void getCustomerInfo() {
+        CustomerInfo customerInfo = null;
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) return;
+        customerInfo = bundle.getParcelable(IntentConstants.CUSTOMER_INFO);
+        viewModel.setCustomerInfo(customerInfo);
     }
 
     @Override
@@ -105,25 +119,23 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
                 finish();
                 break;
         }
-
     }
 
     private void actionOnConfirmButtonClick() {
         if (checkInputFiledVaidation())
-            if (newCustomerViewModel.getCustomerInfo().getBusinessId() == 0)
+            if (viewModel.getCustomerInfo().getBusinessId() == 0)
                 createNewCustomerCall();
             else
-                createNewLocationCall(newCustomerViewModel.getCustomerInfo().getBusinessId());
-
+                createNewLocationCall(viewModel.getCustomerInfo().getBusinessId());
     }
 
     private boolean checkInputFiledVaidation() {
-        newCustomerViewModel.setPostalCode(etPostalCode.getText().toString());
+        viewModel.setPostalCode(etPostalCode.getText().toString());
         String areaName = etLocation.getText().toString();
-        if (areaName.length() == 0) {
+        if (areaName.isEmpty()) {
             etLocation.setError("location name could not be empty");
             return false;
-        } else if (newCustomerViewModel.getPostalCode().length() == 0) {
+        } else if (viewModel.getPostalCode().length() == 0) {
             etPostalCode.setError("postalcode could not be empty");
             return false;
         }
@@ -168,37 +180,29 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
             checkForLocationPermission();
         else
             fetchUserLocation();
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+        googleMap.setOnMarkerDragListener(this);
     }
 
     @Override
     public void onLastKnownLocationReceived(Location location) {
-        googleMap.setOnMarkerDragListener(this);
         if (location == null) {
             Toast.makeText(NewCustomerActivity.this, NewCustomerActivity.this.getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
         } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            runOnUiThread(() -> {
 
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    getAddressFromLatLng(location.getLatitude(), location.getLongitude());
-                    newCustomerViewModel.setLatitude(location.getLatitude());
-                    newCustomerViewModel.setLongitude(location.getLongitude());
-                    LogUtils.debug("newCusto", latLng + "");
-                    marker = googleMap.addMarker(new
-                            MarkerOptions()
-                            .position(latLng)
-                            .title("your location").draggable(true));
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_selected));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                }
-            });
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        getAddressFromLatLng(location.getLatitude(), location.getLongitude());
+                        viewModel.setLastLatLng(latLng);
+                        LogUtils.debug("newCusto", latLng + "");
+                        marker = googleMap.addMarker(new
+                                MarkerOptions()
+                                .position(latLng)
+                                .title("your location").draggable(true));
+                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_selected));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    }
+            );
         }
-
     }
 
     @Override
@@ -211,9 +215,6 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         return false;
     }
 
-    private void getAddressFromLatLng(double latitude, double longitude) {
-        newCustomerViewModel.getAddressFromLatitudeLongitude(mapCallBack, String.valueOf(latitude), String.valueOf(longitude));
-    }
 
     @Override
     public void onMarkerDragStart(Marker marker) {
@@ -226,49 +227,77 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
     @Override
     public void onMarkerDragEnd(Marker marker) {
         LogUtils.debug("new Cust", marker.getPosition().latitude + " " + marker.getPosition().longitude);
+        showProgressDialog();
         getAddressFromLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
     }
 
-    private void setUiElements(MapAttribute mapAttribute) {
-        marker.setTitle(mapAttribute.getTotalAddress());
-        tvAddress.setText(mapAttribute.getTotalAddress());
-        etPostalCode.setText(mapAttribute.getPostalCode());
-        etAddressLine1.setText(mapAttribute.getAddressLine1());
-        etAddressLine2.setText(mapAttribute.getAddressLine2());
-        etCity.setText(mapAttribute.getCity());
-        etState.setText(mapAttribute.getState());
-        etCountry.setText(mapAttribute.getCountry());
+    private void getAddressFromLatLng(double latitude, double longitude) {
+        viewModel.getAddressFromLatitudeLongitude(mapCallBack, String.valueOf(latitude), String.valueOf(longitude));
+    }
+
+    private void setUiElements(MapData mapData) {
+        marker.setTitle(mapData.getTotalAddress());
+        tvAddress.setText(mapData.getTotalAddress());
+        etPostalCode.setText(mapData.getPostalCode());
+        etAddressLine1.setText(mapData.getAddressLine1());
+        etAddressLine2.setText(mapData.getAddressLine2());
+        etCity.setText(mapData.getCity());
+        etState.setText(mapData.getState());
+        etCountry.setText(mapData.getCountry());
     }
 
     private void createNewCustomerCall() {
         showProgressDialog();
-        newCustomerViewModel.createNewCustomer(newCustomerCallBack, newCustomerViewModel.getCountry_id(),
-                newCustomerViewModel.getCustomerInfo().getBusinessName(),
-                newCustomerViewModel.getCustomerInfo().getEmail(), newCustomerViewModel.getCustomerInfo().getContactName(),
-                newCustomerViewModel.getCustomerInfo().getContactNumber(), newCustomerViewModel.getCustomerInfo().getDesignation(),
-                newCustomerViewModel.getPostalCode(),
-                newCustomerViewModel.getCustomerInfo().getBusinessTypeId());
+        viewModel.createNewCustomer(newCustomerCallBack, viewModel.getCountry_id(),
+                viewModel.getCustomerInfo().getBusinessName(),
+                viewModel.getCustomerInfo().getEmail(), viewModel.getCustomerInfo().getContactName(),
+                viewModel.getCustomerInfo().getContactNumber(), viewModel.getCustomerInfo().getDesignation(),
+                viewModel.getPostalCode(),
+                viewModel.getCustomerInfo().getBusinessTypeId());
     }
 
     private void createNewLocationCall(int businessId) {
         showProgressDialog();
-        newCustomerViewModel.createNewLocation(newLocationCallBack, etLocation.getText().toString()
+        viewModel.createNewLocation(newLocationCallBack, etLocation.getText().toString()
                 , etAddressLine1.getText().toString(), etAddressLine2.getText().toString(),
                 etCity.getText().toString(), etState.getText().toString(),
-                newCustomerViewModel.getCountry_id(), newCustomerViewModel.getPostalCode(),
-                etAddressLine1.getText().toString(), newCustomerViewModel.getLatitude(),
-                newCustomerViewModel.getLongitude(), newCustomerViewModel.getCustomerInfo().getContactName(),
-                newCustomerViewModel.getCustomerInfo().getDesignation(), newCustomerViewModel.getCustomerInfo().getEmail(),
-                newCustomerViewModel.getCustomerInfo().getContactNumber(), businessId);
+                viewModel.getCountry_id(), viewModel.getPostalCode(),
+                etAddressLine1.getText().toString(), viewModel.getLastLatLng().latitude,
+                viewModel.getLastLatLng().longitude, viewModel.getCustomerInfo().getContactName(),
+                viewModel.getCustomerInfo().getDesignation(), viewModel.getCustomerInfo().getEmail(),
+                viewModel.getCustomerInfo().getContactNumber(), businessId);
     }
 
+    private List<Country> getCountries() {
+        String json = null;
+        try (InputStream inputStream = getAssets().open("country.json");
+             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String content;
+            while ((content = bufferedReader.readLine()) != null) {
+                stringBuilder.append(content);
+            }
+            json = stringBuilder.toString();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return new CountryDataParser().reportsDataByParsingJsonResponse(jsonObject);
+    }
 
     /*network callbacks*/
     private UILevelNetworkCallback mapCallBack = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
-            dismissProgressDialog();
             runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
         }
     };
@@ -283,18 +312,16 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
                 showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
-            runOnUiThread(() -> {
-                MapAttribute mapAttribute = (MapAttribute) uiModels.get(0);
-                setUiElements(mapAttribute);
-                for (Country country : newCustomerViewModel.getCountryAttributeList()) {
-                    String countryName = mapAttribute.getCountry().toLowerCase().trim();
-                    if (country.getName().toLowerCase().trim().contains(countryName)) {
-                        Toast.makeText(this, country.getName() + " " + country.getId(), Toast.LENGTH_LONG).show();
-                        newCustomerViewModel.setCountry_id(country.getId());
-                        break;
-                    }
+            MapData mapData = (MapData) uiModels.get(0);
+            setUiElements(mapData);
+            for (Country country : viewModel.getCountryAttributeList()) {
+                String countryName = mapData.getCountry().toLowerCase().trim();
+                if (country.getName().toLowerCase().trim().contains(countryName)) {
+                    Toast.makeText(this, country.getName() + " " + country.getId(), Toast.LENGTH_LONG).show();
+                    viewModel.setCountry_id(country.getId());
+                    break;
                 }
-            });
+            }
         }
     }
 
@@ -316,36 +343,12 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
                 showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
-                Business business = (Business) uiModels.get(0);
-                Toast.makeText(this, "Customer Ctreated" + business.getId() + "", Toast.LENGTH_LONG).show();
-                newCustomerViewModel.getCustomerInfo().setBusinessId(business.getId());
-                createNewLocationCall(business.getId());
+            Business business = (Business) uiModels.get(0);
+            Toast.makeText(this, "Customer Ctreated" + business.getId() + "", Toast.LENGTH_LONG).show();
+            viewModel.getCustomerInfo().setBusinessId(business.getId());
+            createNewLocationCall(business.getId());
         }
     }
-
-    private UILevelNetworkCallback getCountriesCallBack = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            runOnUiThread(() -> handleCountries(uiModels, isDialogToBeShown, errorMessage, toLogout));
-        }
-    };
-
-    private void handleCountries(List<?> uiModels, boolean isDialogToBeShown,
-                                 String errorMessage, boolean toLogout) {
-        dismissProgressDialog();
-        if (uiModels == null) {
-            if (toLogout) {
-                logoutUser();
-            } else if (isDialogToBeShown) {
-                showNetworkRelatedDialogs(errorMessage);
-            }
-        } else if (uiModels.size() > 0) {
-                List<Country> listCountryAttributeList = (List<Country>) uiModels;
-                newCustomerViewModel.setCountryAttributeList(listCountryAttributeList);
-        }
-    }
-
 
     private UILevelNetworkCallback newLocationCallBack = new UILevelNetworkCallback() {
         @Override
@@ -365,10 +368,10 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
                 showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
-                List<com.goleep.driverapp.helpers.uimodels.Location> listLocation = (List<com.goleep.driverapp.helpers.uimodels.Location>) uiModels;
-                com.goleep.driverapp.helpers.uimodels.Location location = listLocation.get(0);
-                Toast.makeText(this, "Location created " + location.getId(), Toast.LENGTH_LONG).show();
+            @SuppressWarnings("unchecked")
+            List<com.goleep.driverapp.helpers.uimodels.Location> listLocation = (List<com.goleep.driverapp.helpers.uimodels.Location>) uiModels;
+            com.goleep.driverapp.helpers.uimodels.Location location = listLocation.get(0);
+            Toast.makeText(this, "Location created " + location.getId(), Toast.LENGTH_LONG).show();
         }
     }
-
 }

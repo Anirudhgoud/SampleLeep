@@ -11,8 +11,7 @@ import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
-import com.goleep.driverapp.services.network.jsonparsers.BusinessCategoryParser;
-import com.goleep.driverapp.services.network.jsonparsers.GetBusinessesDataParser;
+import com.goleep.driverapp.services.network.jsonparsers.BusinessDataParser;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,15 +24,10 @@ import java.util.List;
 
 public class CashSalesNewCustomerViewModel extends AndroidViewModel {
 
-    private List<Business> listBusinessData;
     private String strBusinesstype;
     private int businessTypeId, selectedBusinessId;
     public Bundle bundle;
     private List<Business> listGetBusinessesData;
-
-    public List<Business> getListBusinessData() {
-        return listBusinessData;
-    }
 
     public String getStrBusinesstype() {
         return strBusinesstype;
@@ -49,11 +43,6 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
 
     public List<Business> getListGetBusinessesData() {
         return listGetBusinessesData;
-    }
-
-
-    public void setListBusinessData(List<Business> listBusinessData) {
-        this.listBusinessData = listBusinessData;
     }
 
     public void setStrBusinesstype(String strBusinesstype) {
@@ -84,7 +73,7 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
                                 JSONObject userObj = (JSONObject) response.opt(0);
-                                List<Business> listBusinessData = new BusinessCategoryParser().reportsDataByParsingJsonResponse(userObj);
+                                List<Business> listBusinessData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(userObj);
                                 newBusinessCategoryCallBack.onResponseReceived(listBusinessData, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
@@ -94,12 +83,11 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
                             case NetworkConstants.UNAUTHORIZED:
                                 newBusinessCategoryCallBack.onResponseReceived(null, false, errorMessage, true);
                         }
-
                     }
                 });
     }
 
-    public void getBusinessesData(final UILevelNetworkCallback newBusinessCategoryCallBack) {
+    public void getBusinessData(final UILevelNetworkCallback newBusinessCategoryCallBack) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.BUSINESSES_URL,
                 null, true, new NetworkAPICallback() {
                     @Override
@@ -107,7 +95,7 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
                                 JSONObject userObj = (JSONObject) response.opt(0);
-                                List<Business> lisGetBusinessesData = new GetBusinessesDataParser().reportsDataByParsingJsonResponse(userObj);
+                                List<Business> lisGetBusinessesData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(userObj);
                                 newBusinessCategoryCallBack.onResponseReceived(lisGetBusinessesData, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
@@ -117,7 +105,6 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
                             case NetworkConstants.UNAUTHORIZED:
                                 newBusinessCategoryCallBack.onResponseReceived(null, false, errorMessage, true);
                         }
-
                     }
                 });
     }

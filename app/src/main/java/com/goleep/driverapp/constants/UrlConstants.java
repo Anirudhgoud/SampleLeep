@@ -39,13 +39,14 @@ public interface UrlConstants {
     //Reports
     String REPORT_URL = BASE_URL + "/reports";
     //Maps base url
-    String DISTANCE_MATRIX_API = "https://maps.googleapis.com/maps/api/distancematrix/json?";
-    String LAT_LONG_TO_ADDRESS_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+    String MAP_API_BASE_URL = "https://maps.googleapis.com/maps/api";
+    String DISTANCE_MATRIX_API = MAP_API_BASE_URL + "/distancematrix/json?";
+    String LAT_LONG_TO_ADDRESS_URL = MAP_API_BASE_URL + "/geocode/json?";
 
     //Drop off
-    String BUSINESS_CATEGORIES_URL = BASE_URL+"/business_categories";
-    String BUSINESSES_URL = BASE_URL+"/businesses";
+    String BUSINESS_CATEGORIES_URL = BASE_URL + "/business_categories";
+    String BUSINESSES_URL = BASE_URL + "/businesses";
 
     //Util
-    String COUNTRY_URL = BASE_URL+"/countries";
+    String COUNTRY_URL = BASE_URL + "/countries";
 }

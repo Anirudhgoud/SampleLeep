@@ -11,15 +11,14 @@ import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.helpers.uimodels.CustomerInfo;
 import com.goleep.driverapp.helpers.uimodels.Location;
-import com.goleep.driverapp.helpers.uimodels.MapAttribute;
+import com.goleep.driverapp.helpers.uimodels.MapData;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.BusinessDataParser;
-import com.goleep.driverapp.services.network.jsonparsers.CountryDataParser;
 import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
 import com.goleep.driverapp.services.network.jsonparsers.MapAddressParser;
-import com.goleep.driverapp.utils.LogUtils;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,12 +33,10 @@ import java.util.Map;
  */
 
 public class NewCustomerViewModel extends AndroidViewModel {
-    String TAG = "NewCusViewModLog";
     private List<Country> countryAttributeList;
-    private int country_id;
+    private int countryId;
     private String postalCode;
-    private double latitude;
-    private double longitude;
+    private LatLng lastLatLng;
     private CustomerInfo customerInfo;
 
 
@@ -47,20 +44,20 @@ public class NewCustomerViewModel extends AndroidViewModel {
         this.countryAttributeList = countryAttributeList;
     }
 
-    public void setCountry_id(int country_id) {
-        this.country_id = country_id;
+    public LatLng getLastLatLng() {
+        return lastLatLng;
+    }
+
+    public void setLastLatLng(LatLng lastLatLng) {
+        this.lastLatLng = lastLatLng;
+    }
+
+    public void setCountry_id(int countryId) {
+        this.countryId = countryId;
     }
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public List<Country> getCountryAttributeList() {
@@ -68,19 +65,11 @@ public class NewCustomerViewModel extends AndroidViewModel {
     }
 
     public int getCountry_id() {
-        return country_id;
+        return countryId;
     }
 
     public String getPostalCode() {
         return postalCode;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
     }
 
     public CustomerInfo getCustomerInfo() {
@@ -96,7 +85,6 @@ public class NewCustomerViewModel extends AndroidViewModel {
     }
 
     public void getAddressFromLatitudeLongitude(final UILevelNetworkCallback newCustomerCallBack, String latitude, String longitude) {
-        LogUtils.debug(TAG, UrlConstants.LAT_LONG_TO_ADDRESS_URL + getQueryParameter(latitude, longitude));
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.LAT_LONG_TO_ADDRESS_URL + getQueryParameter(latitude, longitude),
                 null, true, new NetworkAPICallback() {
                     @Override
@@ -104,10 +92,10 @@ public class NewCustomerViewModel extends AndroidViewModel {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
                                 JSONObject userObj = (JSONObject) response.opt(0);
-                                MapAttribute mapAttribute = new MapAddressParser().reportsDataByParsingJsonResponse(userObj);
-                                List<MapAttribute> lisMapAttributes = new ArrayList<>();
-                                lisMapAttributes.add(mapAttribute);
-                                newCustomerCallBack.onResponseReceived(lisMapAttributes, false, null, false);
+                                MapData mapData = new MapAddressParser().reportsDataByParsingJsonResponse(userObj);
+                                List<MapData> lisMapData = new ArrayList<>();
+                                lisMapData.add(mapData);
+                                newCustomerCallBack.onResponseReceived(lisMapData, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
                                 newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
@@ -143,7 +131,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
                 switch (type) {
                     case NetworkConstants.SUCCESS:
                         JSONObject userObj = (JSONObject) response.opt(0);
-                        Business business = new BusinessDataParser().reportsDataByParsingJsonResponse(userObj);
+                        Business business = new BusinessDataParser().customerBusinessDataByparsingJsonResponse(userObj);
                         List<Business> listBusinessAttribute = new ArrayList<>();
                         listBusinessAttribute.add(business);
                         newCustomerCallBack.onResponseReceived(listBusinessAttribute, false, null, false);
@@ -157,7 +145,6 @@ public class NewCustomerViewModel extends AndroidViewModel {
                     case NetworkConstants.UNAUTHORIZED:
                         newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
                 }
-
             }
         });
     }
@@ -171,7 +158,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
         body.put("address_line_2", addressLine2);
         body.put("city", city);
         body.put("state", state);
-        body.put("country_id", country_id);
+        body.put("country_id", countryId);
         body.put("pin_code", pincode);
         body.put("area", area);
         body.put("latitude", latitude);
@@ -202,33 +189,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
                             case NetworkConstants.UNAUTHORIZED:
                                 newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
                         }
-
                     }
                 });
     }
-
-    public void getCountries(final UILevelNetworkCallback newCustomerCallBack) {
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.COUNTRY_URL, true, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type) {
-                    case NetworkConstants.SUCCESS:
-                        JSONObject userObj = (JSONObject) response.opt(0);
-                        List<Country> listcountryAttribute = new CountryDataParser().reportsDataByParsingJsonResponse(userObj);
-                        newCustomerCallBack.onResponseReceived(listcountryAttribute, false, null, false);
-                        break;
-                    case NetworkConstants.FAILURE:
-                        newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                        newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
-                }
-
-            }
-        });
-    }
-
 }
