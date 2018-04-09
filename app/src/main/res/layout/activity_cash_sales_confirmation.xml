@@ -31,7 +31,7 @@
                 android:layout_height="45dp"
                 android:fontFamily="@font/noto_sans"
                 android:textColor="@android:color/white"
-                android:background="@color/red"
+                android:background="@drawable/rounded_rect_red"
                 android:layout_margin="16dp"
                 android:layout_below="@+id/ll_top_layout"
                 android:paddingLeft="20dp"
