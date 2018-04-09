@@ -48,7 +48,7 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_weight="5"
         android:orientation="vertical"
@@ -57,14 +57,16 @@
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:id="@+id/units_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:paddingTop="5dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="5dp"
             android:paddingLeft="5dp"
             android:visibility="visible"
             android:textColor="@color/text_light_grey_title"
             android:textSize="12sp"
-            android:text="xxx"
             app:typeface="NotoSans-Regular" />
         <TextView
             android:layout_width="wrap_content"
@@ -72,8 +74,7 @@
             android:id="@+id/tv_returned_units"
             android:textSize="13sp"
             android:paddingLeft="5dp"
-            android:visibility="visible"
-            android:text="xxx"
+            android:visibility="gone"
             android:fontFamily="@font/noto_sans"
             android:textColor="@color/red"/>
 
@@ -81,7 +82,7 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_weight="5"
         android:orientation="vertical"
@@ -94,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="7"
         android:paddingLeft="5dp"
-        android:text="xxx"
+        android:gravity="center_vertical"
         android:textColor="@color/doTabTextColor"
         android:textSize="14sp"
         app:typeface="NotoSans-Regular" />
@@ -105,8 +106,7 @@
             android:id="@+id/tv_returned_value"
             android:textSize="13sp"
             android:paddingLeft="5dp"
-            android:text="xxx"
-            android:visibility="visible"
+            android:visibility="gone"
             android:fontFamily="@font/noto_sans"
             android:textColor="@color/red"/>
 

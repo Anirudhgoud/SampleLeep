@@ -100,7 +100,8 @@
         <activity
             android:name=".leep.WarehouseDropoffConfirmationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.ReturnsSelectReasonActivity"></activity>
+        <activity android:name=".leep.ReturnsSelectReasonActivity" />
+        <activity android:name=".leep.ReturnConfirmActivity"></activity>
     </application>
 
 </manifest>
