@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
+import com.goleep.driverapp.viewmodels.CashSalesConfirmationViewModel;
 
 import butterknife.ButterKnife;
 
