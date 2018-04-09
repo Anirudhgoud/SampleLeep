@@ -14,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -25,6 +24,7 @@ import android.widget.Toast;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
@@ -133,13 +133,23 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void extractIntentData() {
-        viewModel.setConsumerLocation(getIntent().getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
+        Intent intent = getIntent();
+        viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
+        viewModel.setFlow(intent.getIntExtra(IntentConstants.FLOW, -1));
+
     }
 
     private void initialiseToolbar() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
+        switch (viewModel.getFlow()){
+            case AppConstants.CASH_SALES_FLOW:
+                setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
+                break;
+            case AppConstants.RETURNS_FLOW:
+                default:
+                setTitleIconAndText(getString(R.string.returns), R.drawable.ic_returns_title_icon);
+        }
     }
 
     private void initialiseTabBar() {
@@ -257,7 +267,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count > 2) {
+                if (s.length() > 2) {
                     List<StockProductEntity> list = viewModel.sellebleProductsWithName(s.toString());
                     productSearchArrayAdapter.updateData(list);
                 }

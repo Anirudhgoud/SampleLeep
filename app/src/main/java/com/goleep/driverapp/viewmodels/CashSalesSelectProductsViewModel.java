@@ -35,6 +35,7 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
     private Product selectedProduct;
     private int driverLocationId;
     private ArrayList<Product> scannedProducts = new ArrayList<>();
+    private int flow = -1;
 
     public CashSalesSelectProductsViewModel(@NonNull Application application) {
         super(application);
@@ -47,6 +48,14 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
 
     public List<StockProductEntity> sellebleProductsWithName(String searchText) {
         return leepDatabase.stockProductDao().sellebleProductsWithName(searchText);
+    }
+
+    public int getFlow() {
+        return flow;
+    }
+
+    public void setFlow(int flow) {
+        this.flow = flow;
     }
 
     public void getProductPricing(int sourceLocationId, int destinationLocationId, int productId, UILevelNetworkCallback networkCallback) {

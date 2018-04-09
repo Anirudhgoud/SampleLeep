@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.CustomerListAdapter;
 import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.Permissions;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
@@ -31,8 +32,10 @@ import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.interfaces.CustomerClickEventListener;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.CashSalesActivity;
 import com.goleep.driverapp.leep.CashSalesSelectProductsActivity;
 import com.goleep.driverapp.leep.ParentAppCompatActivity;
+import com.goleep.driverapp.leep.ReturnsCustomerSelectActivity;
 import com.goleep.driverapp.viewmodels.CashSalesExistingCustomerViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -60,7 +63,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     private CustomerSearchArrayAdapter customerSearchListAdapter;
     private PermissionHelper permissionHelper;
 
-    private CustomerClickEventListener customerClickEventListener = this::gotoSelectProductActivity;
+    private CustomerClickEventListener customerClickEventListener = this::gotoNextScreen;
 
     public CashSalesExistingCustomerFragment() {
     }
@@ -215,13 +218,26 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Customer customer = (Customer) parent.getAdapter().getItem(position);
-        gotoSelectProductActivity(customer);
+        gotoNextScreen((Customer) parent.getAdapter().getItem(position));
     }
 
-    private void gotoSelectProductActivity(Customer customer) {
+    private void gotoNextScreen(Customer customer) {
+        FragmentActivity activity = getActivity();
+        if(activity != null && !activity.isFinishing()){
+            if(activity instanceof CashSalesActivity) {
+                gotoSelectProductActivity(activity, customer, AppConstants.CASH_SALES_FLOW);
+            } else if(activity instanceof ReturnsCustomerSelectActivity) {
+                gotoSelectProductActivity(activity, customer, AppConstants.RETURNS_FLOW) ;
+            }
+        }
+    }
+
+
+
+    private void gotoSelectProductActivity(FragmentActivity activity, Customer customer, int flow) {
         if (customer == null) return;
-        Intent intent = new Intent(getActivity(), CashSalesSelectProductsActivity.class);
+        Intent intent = new Intent(activity, CashSalesSelectProductsActivity.class);
+        intent.putExtra(IntentConstants.FLOW, flow);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, customer);
         startActivity(intent);
     }

@@ -109,7 +109,8 @@
         <activity
             android:name=".leep.ReturnConfirmActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.ReturnsCustomerSelectActivity"></activity>
+        <activity android:name=".leep.ReturnsCustomerSelectActivity" />
+        <activity android:name=".leep.ReturnsSelectProductsActivity"></activity>
     </application>
 
 </manifest>
