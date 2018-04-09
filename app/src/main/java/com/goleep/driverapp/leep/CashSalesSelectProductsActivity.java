@@ -410,7 +410,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void gotoNextActivity(Customer consumerLocation, ArrayList<Product> productList) {
-        Intent intent = new Intent();
+        Intent intent = new Intent(this, CashSalesConfirmationActivity.class);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, consumerLocation);
         intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, productList);
         startActivity(intent);
