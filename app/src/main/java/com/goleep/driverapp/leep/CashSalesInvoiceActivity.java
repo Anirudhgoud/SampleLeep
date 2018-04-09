@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
@@ -18,16 +19,15 @@ import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.CashSalesConfirmationViewModel;
+import com.goleep.driverapp.viewmodels.CashSalesInvoiceViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
+public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
     CustomTextView tvCustomerName;
@@ -41,23 +41,21 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
     CustomTextView tvItemCount;
     @BindView(R.id.ll_item_list_layout)
     LinearLayout llItemListLayout;
-    @BindView(R.id.bt_take_returns)
+    @BindView(R.id.bt_continue)
     Button btTakeReturns;
-    @BindView(R.id.bt_skip_payment)
-    Button btSkipPayment;
-    @BindView(R.id.bt_collect_payment)
-    Button btCollectPayment;
+    @BindView(R.id.ll_item_summary_layout)
+    LinearLayout llItemSummaryLayout;
 
-    private CashSalesConfirmationViewModel viewModel;
+    private CashSalesInvoiceViewModel viewModel;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        setResources(R.layout.activity_cash_sales_confirmation);
+        setResources(R.layout.activity_cash_sales_invoice);
     }
 
     @Override
     public void doInitialSetup() {
-        viewModel = ViewModelProviders.of(this).get(CashSalesConfirmationViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(CashSalesInvoiceViewModel.class);
         ButterKnife.bind(this);
         extractIntentData();
         initialiseToolbar();
@@ -95,7 +93,6 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
     private void updateItemSummaryUI() {
         int productCount = viewModel.getScannedProducts().size();
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, productCount, productCount)));
-        findViewById(R.id.iv_expandable_indicator).setVisibility(View.GONE);
     }
 
     private void displayProductList() {
@@ -140,8 +137,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
 
     private void setClickListeners() {
         btTakeReturns.setOnClickListener(this);
-        btSkipPayment.setOnClickListener(this);
-        btCollectPayment.setOnClickListener(this);
+        llItemSummaryLayout.setOnClickListener(this);
     }
 
     @Override
@@ -151,24 +147,18 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
                 finish();
                 break;
 
-            case R.id.bt_skip_payment:
-                onSkipPaymentTap();
+            case R.id.bt_continue:
+                onContinueButtonTap();
                 break;
 
-            case R.id.bt_collect_payment:
-                onCollectPaymentTap();
+            case R.id.ll_item_summary_layout:
+                llItemListLayout.setVisibility(llItemListLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                ((ImageView) findViewById(R.id.iv_expandable_indicator)).setImageResource(llItemListLayout.getVisibility() == View.VISIBLE ? R.drawable.ic_expandable_indicator_close : R.drawable.ic_expandable_indicator_open);
                 break;
         }
     }
 
-    private void onSkipPaymentTap(){
-        //TODO:
-    }
+    private void onContinueButtonTap() {
 
-    private void onCollectPaymentTap(){
-        Intent intent = new Intent(this, CashSalesInvoiceActivity.class);
-        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
-        startActivity(intent);
     }
 }

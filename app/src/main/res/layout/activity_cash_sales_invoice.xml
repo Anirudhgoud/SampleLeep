@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_bottom_buttons"
+        android:layout_below="@+id/toolbar_container">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/ll_top_layout"
+                layout="@layout/delivery_order_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bt_take_returns"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_below="@+id/ll_top_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_rect_red"
+                android:fontFamily="@font/noto_sans"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/take_returns"
+                android:textColor="@android:color/white"
+                android:textSize="22sp" />
+
+            <include
+                android:id="@+id/divider_view_1"
+                layout="@layout/divider_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/bt_take_returns" />
+
+            <include
+                android:id="@+id/layout_item_list_summary"
+                layout="@layout/item_list_summary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/divider_view_1" />
+
+            <include
+                android:id="@+id/divider_view_2"
+                layout="@layout/divider_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/layout_item_list_summary" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_item_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider_view_2"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bt_continue"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/blue"
+        android:fontFamily="@font/noto_sans"
+        android:text="@string/continue_text"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</RelativeLayout>
+
