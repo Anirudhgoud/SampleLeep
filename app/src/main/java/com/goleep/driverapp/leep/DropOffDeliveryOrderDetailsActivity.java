@@ -164,6 +164,11 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
                 AppUtils.hideKeyboard(this.getCurrentFocus());
                 finish();
                 break;
+
+            case R.id.bt_update:
+                onUpdateButtonTap();
+                break;
+
         }
     }
 
@@ -215,7 +220,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 hideUpdateQuantityView();
-                AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+                AppUtils.hideKeyboard(etUnits);
             }
             return true;
         });
@@ -245,13 +250,15 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
             }
         });
 
-        btUpdate.setOnClickListener(v -> {
-            if (viewModel.getSelectedOrderItem() != null) {
-                viewModel.updateOrderItemQuantity(viewModel.getSelectedOrderItem().getId(), Integer.valueOf(etUnits.getText().toString()));
-                hideUpdateQuantityView();
-                AppUtils.toggleKeyboard(etUnits, getApplicationContext());
-            }
-        });
+        btUpdate.setOnClickListener(this);
+    }
+
+    private void onUpdateButtonTap(){
+        if (viewModel.getSelectedOrderItem() != null) {
+            viewModel.updateOrderItemQuantity(viewModel.getSelectedOrderItem().getId(), Integer.valueOf(etUnits.getText().toString()));
+            hideUpdateQuantityView();
+            AppUtils.hideKeyboard(etUnits);
+        }
     }
 
     private void displayUpdateQuantityView(int itemId, int currentUnits) {
@@ -266,7 +273,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
             updateQuantityLayout.setVisibility(View.VISIBLE);
             invalidQuantityError.setVisibility(View.INVISIBLE);
             btUpdate.setEnabled(false);
-            AppUtils.toggleKeyboard(etUnits, getApplicationContext());
+            AppUtils.showKeyboard(etUnits);
         }
     }
 

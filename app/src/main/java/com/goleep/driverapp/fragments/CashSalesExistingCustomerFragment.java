@@ -2,10 +2,12 @@ package com.goleep.driverapp.fragments;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +16,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.CustomerListAdapter;
 import com.goleep.driverapp.adapters.CustomerSearchArrayAdapter;
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.Permissions;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
@@ -27,6 +31,7 @@ import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.interfaces.CustomerClickEventListener;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.CashSalesSelectProductsActivity;
 import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.viewmodels.CashSalesExistingCustomerViewModel;
 import com.google.android.gms.maps.model.LatLng;
@@ -43,7 +48,7 @@ import static com.goleep.driverapp.constants.AppConstants.LOCATION_PERMISSION_RE
  * Created by anurag on 19/03/18.
  */
 
-public class CashSalesExistingCustomerFragment extends Fragment implements LocationChangeListener {
+public class CashSalesExistingCustomerFragment extends Fragment implements LocationChangeListener, AdapterView.OnItemClickListener {
 
     @BindView(R.id.customer_recycler_view)
     RecyclerView customersRecyclerView;
@@ -55,9 +60,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     private CustomerSearchArrayAdapter customerSearchListAdapter;
     private PermissionHelper permissionHelper;
 
-    private CustomerClickEventListener customerClickEventListener = customerId -> {
-
-    };
+    private CustomerClickEventListener customerClickEventListener = this::gotoSelectProductActivity;
 
     public CashSalesExistingCustomerFragment() {
     }
@@ -73,7 +76,9 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     }
 
     private void initialise() {
-        viewModel = ViewModelProviders.of(getActivity()).get(CashSalesExistingCustomerViewModel.class);
+        FragmentActivity activity = getActivity();
+        if (activity == null) return;
+        viewModel = ViewModelProviders.of(activity).get(CashSalesExistingCustomerViewModel.class);
         initialiseRecyclerView();
         initialiseAutoCompleteTextView();
     }
@@ -90,7 +95,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     private void initialiseAutoCompleteTextView() {
         customerSearchListAdapter = new CustomerSearchArrayAdapter(getContext(), new ArrayList());
         atvSearch.setAdapter(customerSearchListAdapter);
-
+        atvSearch.setOnItemClickListener(this::onItemClick);
         atvSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -98,12 +103,12 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 2)
+                    fetchCustomerList(false, false, null, s.toString(), customerSuggestionsNetworkCallback);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 2)
-                    fetchCustomerList(false, false, null, s.toString(), customerSuggestionsNetworkCallback);
             }
         });
     }
@@ -133,7 +138,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
 
     private void fetchUserLocation() {
         Activity activity = getActivity();
-        if (activity != null){
+        if (activity != null && !activity.isFinishing()) {
             LocationHelper locationHelper = new LocationHelper(activity);
             locationHelper.setLocationChangeListener(this);
             locationHelper.getLastKnownLocation(activity);
@@ -175,8 +180,6 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
                 if (uiModels == null) {
                     if (toLogout) {
                         parentActivity.logoutUser();
-                    } else if (isDialogToBeShown) {
-                        parentActivity.showNetworkRelatedDialogs(errorMessage);
                     }
                 } else if (uiModels.size() > 0) {
                     List<Customer> customerList = (List<Customer>) uiModels;
@@ -187,10 +190,12 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     };
 
     private void fetchCustomerList(boolean showLoading, boolean lastDeliveryDateRequired, LatLng currentLocation, String searchText, UILevelNetworkCallback networkCallback) {
-        Activity activity = getActivity();
-        if (activity == null || activity.isFinishing()) return;
-        ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
-        parentActivity.showProgressDialog();
+        if (showLoading) {
+            Activity activity = getActivity();
+            if (activity == null || activity.isFinishing()) return;
+            ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
+            parentActivity.showProgressDialog();
+        }
         viewModel.fetchCustomerList(lastDeliveryDateRequired, currentLocation, searchText, networkCallback);
     }
 
@@ -206,6 +211,19 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     @Override
     public void onLastKnownLocationError(String errorMessage) {
         Toast.makeText(getContext(), getContext().getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Customer customer = (Customer) parent.getAdapter().getItem(position);
+        gotoSelectProductActivity(customer);
+    }
+
+    private void gotoSelectProductActivity(Customer customer) {
+        if (customer == null) return;
+        Intent intent = new Intent(getActivity(), CashSalesSelectProductsActivity.class);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, customer);
+        startActivity(intent);
     }
 
     @Override

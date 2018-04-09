@@ -92,6 +92,9 @@
             android:name=".leep.PickupWarehouseActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".leep.CashSalesSelectProductsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".leep.DropoffWarehouseActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -100,8 +103,11 @@
         <activity
             android:name=".leep.WarehouseDropoffConfirmationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.ReturnsSelectReasonActivity" />
-        <activity android:name=".leep.ReturnConfirmActivity"></activity>
+        <activity android:name=".leep.ReturnsSelectReasonActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".leep.ReturnConfirmActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.goleep.driverapp.leep.CashSalesSelectProductsActivity">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/toolbar_container"
+        app:tabBackground="@drawable/tab_background_color"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="0dp"
+        app:tabSelectedTextColor="@color/doTabTextColor"
+        app:tabTextColor="@color/doTabTextColor" />
+
+    <LinearLayout
+        android:id="@+id/barcode_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tab_layout"
+        android:orientation="horizontal">
+
+        <fragment
+            android:id="@+id/barcode"
+            android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:gvb_auto_focus="true"
+            app:gvb_code_format="ean_13"
+            app:gvb_flash="false"
+            app:gvb_rect_colors="@array/rect_color" />
+
+        <com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView
+            android:id="@+id/atv_search"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_rect_with_grey_border"
+            android:drawableRight="@drawable/ic_search_inactive"
+            android:fontFamily="@font/noto_sans"
+            android:hint="@string/search_product"
+            android:padding="8dp"
+            android:textColor="@color/doTabTextColor"
+            android:textCursorDrawable="@null"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/items_header"
+        layout="@layout/item_header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/barcode_layout" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cash_sales_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttons_layout"
+        android:layout_below="@id/items_header"
+        android:isScrollContainer="true" />
+
+    <LinearLayout
+        android:id="@+id/buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <include
+            layout="@layout/update_quantity_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/bt_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/green"
+            android:fontFamily="@font/noto_sans"
+            android:text="@string/confirm"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>
+

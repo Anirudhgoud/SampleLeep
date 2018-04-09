@@ -100,6 +100,15 @@ public class OrderItemParser {
         return product;
     }
 
+    public double getProductPriceByParsingJsonArray(JSONArray jsonArray){
+        JSONObject jsonObject = (JSONObject) jsonArray.opt(0);
+        if(jsonObject == null){
+            return 0.0;
+        }
+        return jsonObject.optDouble("price", 0.0);
+    }
+
+
     public int getDestinationBusinessIdParsingDoDetailsJson(JSONArray jsonArray) {
         JSONObject jsonObject = (JSONObject) jsonArray.opt(0);
         if (jsonObject == null) {
