@@ -11,12 +11,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
+import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.CashSalesInvoiceViewModel;
@@ -42,9 +45,19 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     @BindView(R.id.ll_item_list_layout)
     LinearLayout llItemListLayout;
     @BindView(R.id.bt_continue)
-    Button btTakeReturns;
+    Button btContinue;
     @BindView(R.id.ll_item_summary_layout)
     LinearLayout llItemSummaryLayout;
+
+    @BindView(R.id.tv_returned)
+    TextView tvReturned;
+    @BindView(R.id.tv_current_sale)
+    TextView tvCurrentSales;
+    @BindView(R.id.tv_previous_balance)
+    TextView tvPreviousBalance;
+    @BindView(R.id.tv_grand_total)
+    TextView tvGrandTotal;
+
 
     private CashSalesInvoiceViewModel viewModel;
 
@@ -62,6 +75,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         setClickListeners();
         updateTopLayoutUI();
         updateItemSummaryUI();
+        fetchLocationDetails();
         displayProductList();
     }
 
@@ -130,14 +144,20 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         tvProductName.setText(StringUtils.toString(product.getProductName(), ""));
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
         tvUnits.setText(String.valueOf(product.getQuantity()));
-        double value = product.getQuantity() * product.getPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", value)));
+        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
         return orderItemView;
     }
 
     private void setClickListeners() {
-        btTakeReturns.setOnClickListener(this);
+        btContinue.setOnClickListener(this);
         llItemSummaryLayout.setOnClickListener(this);
+    }
+
+    private void fetchLocationDetails(){
+        Customer consumer = viewModel.getConsumerLocation();
+        if (consumer == null) return;
+        showProgressDialog();
+        viewModel.fetchBusinessLocation(consumer.getBusinessId(), consumer.getId(), locationNetworkCallback);
     }
 
     @Override
@@ -161,4 +181,40 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     private void onContinueButtonTap() {
 
     }
+
+    private void onLocationDetailsFetched(Location location){
+        if (location == null) return;
+        String address = viewModel.getAddress(location);
+        tvAddress.setText(address);
+        viewModel.updateAreaInConsumerLocation(address);
+        double outstandingBalance = location.getOutstandingBalance();
+        viewModel.setOutstandingBalance(outstandingBalance);
+        updateAmountDetails(outstandingBalance);
+    }
+
+    private void updateAmountDetails(double outstandingBalance){
+        double totalReturns = viewModel.totalReturnsValue();
+        double totalCurrentSales = viewModel.totalCurrentSales();
+        tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(totalReturns)));
+        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(totalCurrentSales)));
+        tvPreviousBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(outstandingBalance)));
+        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.grandTotal(totalReturns, totalCurrentSales, outstandingBalance))));
+    }
+
+
+
+    UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        dismissProgressDialog();
+        if (uiModels == null) {
+            if (toLogout) {
+                logoutUser();
+            } else {
+                showNetworkRelatedDialogs(errorMessage);
+            }
+        } else if (uiModels.size() > 0) {
+            btContinue.setVisibility(View.VISIBLE);
+            Location location = (Location) uiModels.get(0);
+            onLocationDetailsFetched(location);
+        }
+    });
 }
