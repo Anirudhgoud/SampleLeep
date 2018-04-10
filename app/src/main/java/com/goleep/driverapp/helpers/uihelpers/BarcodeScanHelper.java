@@ -1,9 +1,7 @@
 package com.goleep.driverapp.helpers.uihelpers;
 
-import android.content.res.Resources;
 import android.util.SparseArray;
 
-import com.goleep.driverapp.R;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -15,8 +13,9 @@ import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever;
 public class BarcodeScanHelper implements BarcodeRetriever {
 
     private BarcodeScanListener barcodeScanListener;
+    private final String CAMERA_PERMISSION_DENIED = "Camera Permission denied.";
 
-    public void setBarcodeScanListener(BarcodeScanListener barcodeScanListener){
+    public void setBarcodeScanListener(BarcodeScanListener barcodeScanListener) {
         this.barcodeScanListener = barcodeScanListener;
     }
 
@@ -43,6 +42,6 @@ public class BarcodeScanHelper implements BarcodeRetriever {
 
     @Override
     public void onPermissionRequestDenied() {
-        if (barcodeScanListener != null) barcodeScanListener.onBarcodeScanFailure(Resources.getSystem().getString(R.string.camera_permission_denied));
+        if (barcodeScanListener != null) barcodeScanListener.onBarcodeScanFailure(CAMERA_PERMISSION_DENIED);
     }
 }

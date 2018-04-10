@@ -49,4 +49,11 @@ public class DateTimeUtils {
         return null;
     }
 
+    public static String currentDateToDisplay() {
+        return DateTimeUtils.convertedDate(new Date(), DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
+    }
+
+    public static String currentTimeToDisplay() {
+        return DateTimeUtils.convertedDate(new Date(), DateTimeUtils.TWELVE_HOUR_TIME_FORMAT);
+    }
 }

@@ -12,11 +12,9 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
-import com.goleep.driverapp.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class CashSalesInvoiceViewModel extends AndroidViewModel {
@@ -27,14 +25,6 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
 
     public CashSalesInvoiceViewModel(@NonNull Application application) {
         super(application);
-    }
-
-    public String currentDateToDisplay() {
-        return DateTimeUtils.convertedDate(new Date(), DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
-    }
-
-    public String currentTimeToDisplay() {
-        return DateTimeUtils.convertedDate(new Date(), DateTimeUtils.TWELVE_HOUR_TIME_FORMAT);
     }
 
     public void fetchBusinessLocation(int businessId, int locationId, final UILevelNetworkCallback locationCallBack) {
@@ -67,12 +57,12 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
         consumerLocation.setArea(updatedAddress);
     }
 
-    public double totalReturnsValue(){
+    public double totalReturnsValue() {
         //TODO: Implement on completion of returns flow
         return 0;
     }
 
-    public double totalCurrentSales(){
+    public double totalCurrentSales() {
         double totalSales = 0;
         for (Product product : scannedProducts) {
             if (product == null) continue;
@@ -81,7 +71,7 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
         return totalSales;
     }
 
-    public double grandTotal(double returns, double currentSales, double outstandingBalance){
+    public double grandTotal(double returns, double currentSales, double outstandingBalance) {
         return currentSales + outstandingBalance - returns;
     }
 
