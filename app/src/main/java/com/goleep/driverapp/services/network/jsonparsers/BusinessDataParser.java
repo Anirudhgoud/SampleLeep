@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class BusinessDataParser {
-    public Business customerBusinessDataByparsingJsonResponse(JSONArray response) {
+    public Business customerBusinessDataByParsingJsonResponse(JSONArray response) {
         JSONObject jsonObject = response.optJSONObject(0);
         if (jsonObject == null) {
             return null;
@@ -30,18 +30,18 @@ public class BusinessDataParser {
 
         if (jsonObject == null) {
             return null;
-        } else {
-            List<Business> listBusinessData = new ArrayList<>();
-            JSONArray jsonArrayData = jsonObject.optJSONArray("data");
-            int jsonArrayLength = jsonArrayData.length();
-            for (int index = 0; index < jsonArrayLength; index++) {
-                JSONObject jsonObject1 = jsonArrayData.optJSONObject(index);
-                Business business = new Business();
-                business.setId(jsonObject1.optInt("id"));
-                business.setName(jsonObject1.optString("name"));
-                listBusinessData.add(business);
-            }
-            return listBusinessData;
         }
+        List<Business> listBusinessData = new ArrayList<>();
+        JSONArray jsonArrayData = jsonObject.optJSONArray("data");
+        if(jsonArrayData == null) return null;
+        int jsonArrayLength = jsonArrayData.length();
+        for (int index = 0; index < jsonArrayLength; index++) {
+            JSONObject jsonObject1 = jsonArrayData.optJSONObject(index);
+            Business business = new Business();
+            business.setId(jsonObject1.optInt("id"));
+            business.setName(jsonObject1.optString("name"));
+            listBusinessData.add(business);
+        }
+        return listBusinessData;
     }
 }

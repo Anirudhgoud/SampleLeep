@@ -19,8 +19,9 @@ import java.util.List;
 
 public class BusinessCategoryAdapter extends ArrayAdapter<Business> {
 
-    public BusinessCategoryAdapter(Context context, int res, List<Business> listGetBusinesses) {
-        super(context, res, listGetBusinesses);
+    public BusinessCategoryAdapter(Context context, int res) {
+        super(context, res);
+
     }
 
     @NonNull

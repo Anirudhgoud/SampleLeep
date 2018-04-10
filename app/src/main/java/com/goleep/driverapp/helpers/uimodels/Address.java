@@ -4,8 +4,8 @@ package com.goleep.driverapp.helpers.uimodels;
  * Created by shubham on 03/04/2018.
  */
 
-public class MapData {
-    private String totalAddress;
+public class Address {
+    private String formattedAddress;
     private String postalCode;
     private String addressLine1;
     private String addressLine2;
@@ -13,8 +13,8 @@ public class MapData {
     private String state;
     private String country;
 
-    public void setTotalAddress(String totalAddress) {
-        this.totalAddress = totalAddress;
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
     }
 
     public void setPostalCode(String postalCode) {
@@ -41,8 +41,8 @@ public class MapData {
         this.country = country;
     }
 
-    public String getTotalAddress() {
-        return totalAddress;
+    public String getFormattedAddress() {
+        return formattedAddress;
     }
 
     public String getPostalCode() {

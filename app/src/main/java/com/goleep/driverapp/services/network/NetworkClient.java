@@ -41,13 +41,13 @@ public class NetworkClient {
 
     public void makeFormPutRequest(Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
                                    final NetworkAPICallback networkAPICallback) {
-        requestHandler(context, requestUrl, isAuthRequired, bodyParams, "form",
+        requestHandler(context, requestUrl, isAuthRequired, bodyParams,  RequestConstants.CONTENT_TYPE_FORM,
                 NetworkConstants.PUT_REQUEST, networkAPICallback, null);
     }
 
     public void makeFormPostRequest(Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
                                     final NetworkAPICallback networkAPICallback) {
-        requestHandler(context, requestUrl, isAuthRequired, bodyParams, "form",
+        requestHandler(context, requestUrl, isAuthRequired, bodyParams, RequestConstants.CONTENT_TYPE_FORM,
                 NetworkConstants.POST_REQUEST, networkAPICallback, null);
     }
 

@@ -20,13 +20,13 @@ import java.util.List;
  */
 
 public class BusinessesListAdapter extends ArrayAdapter<Business> {
-    private List<Business> listGetBusinessesData;
-    private List<Business> fullList;
+    private List<Business> listBusinessesData;
+    private List<Business> mainListBusinessData;
 
     public BusinessesListAdapter(Context context, int res, int textViewResourceId, List<Business> listGetBusinesses) {
         super(context, res, textViewResourceId, listGetBusinesses);
-        listGetBusinessesData = listGetBusinesses;
-        fullList = new ArrayList<>();
+        listBusinessesData = listGetBusinesses;
+        mainListBusinessData = new ArrayList<>();
     }
 
     @NonNull
@@ -45,9 +45,10 @@ public class BusinessesListAdapter extends ArrayAdapter<Business> {
     }
 
     public void updateData(List<Business> listdata) {
-        listGetBusinessesData.clear();
-        listGetBusinessesData.addAll(listdata);
-        fullList.addAll(listdata);
+        listBusinessesData.clear();
+        mainListBusinessData.clear();
+        listBusinessesData.addAll(listdata);
+        mainListBusinessData.addAll(listdata);
         notifyDataSetChanged();
     }
 
@@ -63,10 +64,10 @@ public class BusinessesListAdapter extends ArrayAdapter<Business> {
             FilterResults results = new FilterResults();
             List<Business> suggestions = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
-                suggestions.addAll(fullList);
+                suggestions.addAll(mainListBusinessData);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Business data : fullList) {
+                for (Business data : mainListBusinessData) {
                     if (data.getName().toLowerCase().contains(filterPattern)) {
                         suggestions.add(data);
                     }
@@ -82,7 +83,6 @@ public class BusinessesListAdapter extends ArrayAdapter<Business> {
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results != null && results.count > 0) {
                 clear();
-                @SuppressWarnings("unchecked")
                 List<Business> data = (List<Business>) results.values;
                 addAll(data);
                 notifyDataSetChanged();

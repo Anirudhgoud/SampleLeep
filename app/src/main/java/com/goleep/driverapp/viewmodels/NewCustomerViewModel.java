@@ -11,17 +11,15 @@ import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.helpers.uimodels.CustomerInfo;
 import com.goleep.driverapp.helpers.uimodels.Location;
-import com.goleep.driverapp.helpers.uimodels.MapData;
+import com.goleep.driverapp.helpers.uimodels.Address;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.BusinessDataParser;
 import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
-import com.goleep.driverapp.services.network.jsonparsers.MapAddressParser;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,16 +82,16 @@ public class NewCustomerViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void getAddressFromLatitudeLongitude(final UILevelNetworkCallback newCustomerCallBack, String latitude, String longitude) {
+    public void getAddressFromLatitudeLongitude(final UILevelNetworkCallback newCustomerCallBack, double latitude, double longitude) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.LAT_LONG_TO_ADDRESS_URL + getQueryParameter(latitude, longitude),
                 null, true, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
-                                MapData mapData = new MapAddressParser().reportsDataByParsingJsonResponse(response);
-                                List<MapData> lisMapData = new ArrayList<>();
-                                lisMapData.add(mapData);
+                                Address address = new LocationParser().getAddressByParsingJsonResponse(response);
+                                List<Address> lisMapData = new ArrayList<>();
+                                lisMapData.add(address);
                                 newCustomerCallBack.onResponseReceived(lisMapData, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
@@ -110,7 +108,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
                 });
     }
 
-    private String getQueryParameter(String latitude, String longitude) {
+    private String getQueryParameter(double latitude, double longitude) {
         return "latlng=" + latitude + "," + longitude + "&key=" + getApplication().getResources().getString(R.string.map_key);
     }
 
@@ -121,7 +119,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
             public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                 switch (type) {
                     case NetworkConstants.SUCCESS:
-                        Business business = new BusinessDataParser().customerBusinessDataByparsingJsonResponse(response);
+                        Business business = new BusinessDataParser().customerBusinessDataByParsingJsonResponse(response);
                         List<Business> listBusinessAttribute = new ArrayList<>();
                         listBusinessAttribute.add(business);
                         newCustomerCallBack.onResponseReceived(listBusinessAttribute, false, null, false);

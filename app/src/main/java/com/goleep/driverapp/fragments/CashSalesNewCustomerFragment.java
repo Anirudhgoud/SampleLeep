@@ -83,7 +83,7 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
     }
 
     private void initAdapters() {
-        businessTypeAdapter = new BusinessCategoryAdapter(getContext(), R.layout.custom_spinner_layout, new ArrayList<Business>());
+        businessTypeAdapter = new BusinessCategoryAdapter(getContext(), R.layout.custom_spinner_layout);
         businessTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBusinessType.setAdapter(businessTypeAdapter);
         businessListAdapter = new BusinessesListAdapter(getContext(), R.layout.fragment_cash_sales_new_customer, android.R.id.text1, new ArrayList<Business>());
@@ -113,27 +113,34 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         String strContactNumber = etContactNumber.getText().toString();
         String strDesignation = etDesignation.getText().toString();
         String strEmailId = etEmailId.getText().toString();
+        boolean returnValue = true;
         if (strBusinesName.isEmpty()) {
-            acTvBusinessName.setError("Business Name could not be empty");
-            return false;
-        } else if (viewModel.getBusinessTypeId() == 0) {
+            acTvBusinessName.setError(getResources().getString(R.string.business_name_field_empty));
+            returnValue = false;
+        }
+        if (viewModel.getBusinessTypeId() == 0) {
             Activity activity = getActivity();
             if (activity == null || activity.isFinishing()) return false;
-            Toast.makeText(activity, "Please select business type ", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (strDesignation.isEmpty()) {
-            etDesignation.setError("Designation could not be empty");
-            return false;
-        } else if (strContactName.isEmpty()) {
-            etContactName.setError("Contact Name could not be empty");
-            return false;
-        } else if (strContactNumber.length() != 10) {
-            etContactNumber.setError("Contact Number should be 10 digits");
-            return false;
-        } else if (!AppUtils.isValidEmail(strEmailId)) {
-            etEmailId.setError("please Enter valid email id");
+            Toast.makeText(activity, getResources().getString(R.string.business_type_dropdown_error), Toast.LENGTH_LONG).show();
+            returnValue = false;
         }
-        return true;
+        if (strDesignation.isEmpty()) {
+            etDesignation.setError(getResources().getString(R.string.designation_field_empty));
+            returnValue = false;
+        }
+        if (strContactName.isEmpty()) {
+            etContactName.setError(getResources().getString(R.string.invalid_name_error));
+            returnValue = false;
+        }
+        if (strContactNumber.length() != 10) {
+            etContactNumber.setError(getResources().getString(R.string.invalid_contact_number));
+            returnValue = false;
+        }
+        if (!AppUtils.isValidEmail(strEmailId)) {
+            etEmailId.setError(getResources().getString(R.string.email_field_empty));
+            returnValue = false;
+        }
+        return returnValue;
     }
 
     @Override
