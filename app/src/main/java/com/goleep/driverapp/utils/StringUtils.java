@@ -99,4 +99,8 @@ public class StringUtils {
 
     }
 
+    public static String toString(String string, String nullDefault){
+        return (string == null || string.equals("null")) ? nullDefault : string;
+    }
+
 }

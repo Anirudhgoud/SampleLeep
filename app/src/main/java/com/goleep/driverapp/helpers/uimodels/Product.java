@@ -73,6 +73,10 @@ public class Product implements Parcelable {
         this.weightUnit = weightUnit;
     }
 
+    public double getTotalPrice(){
+        return price * quantity;
+    }
+
     //Parcel
     protected Product(Parcel in) {
         id = in.readInt();

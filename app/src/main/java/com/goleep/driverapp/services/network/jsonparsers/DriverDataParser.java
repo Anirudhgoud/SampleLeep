@@ -70,20 +70,24 @@ public class DriverDataParser {
             return null;
         } else {
             List<WarehouseEntity> warehouseEntities = new ArrayList<>();
-            JSONArray jsonArray  = firstObj.optJSONArray("work_locations");
-            JSONObject jsonObject = jsonArray.optJSONObject(0);
-            WarehouseEntity warehouseEntity = new WarehouseEntity();
-            warehouseEntity.setId(jsonObject.optInt("id"));
-            warehouseEntity.setAddressLine1(jsonObject.optString("address_line_1"));
-            warehouseEntity.setAddressLine2(jsonObject.optString("address_line_2"));
-            warehouseEntity.setCity(jsonObject.optString("city"));
-            warehouseEntity.setState(jsonObject.optString("state"));
-            warehouseEntity.setCountryName(jsonObject.optString("country_name"));
-            warehouseEntity.setPincode(jsonObject.optString("pin_code"));
-            warehouseEntity.setLatitude(jsonObject.optDouble("latitude", 0.0));
-            warehouseEntity.setLongitude(jsonObject.optDouble("longitude", 0.0));
-            warehouseEntity.setWareHouseName(jsonObject.optString("name"));
-            warehouseEntities.add(warehouseEntity);
+
+            JSONArray locationsJsonArray = firstObj.optJSONArray("work_locations");
+            int length = locationsJsonArray.length();
+            for(int i=0;i<length;i++) {
+                JSONObject jsonObject = locationsJsonArray.optJSONObject(i);
+                WarehouseEntity warehouseEntity = new WarehouseEntity();
+                warehouseEntity.setId(jsonObject.optInt("id"));
+                warehouseEntity.setAddressLine1(jsonObject.optString("address_line_1"));
+                warehouseEntity.setAddressLine2(jsonObject.optString("address_line_2"));
+                warehouseEntity.setCity(jsonObject.optString("city"));
+                warehouseEntity.setState(jsonObject.optString("state"));
+                warehouseEntity.setCountryName(jsonObject.optString("country_name"));
+                warehouseEntity.setPincode(jsonObject.optString("pin_code"));
+                warehouseEntity.setLatitude(jsonObject.optDouble("latitude", 0.0));
+                warehouseEntity.setLongitude(jsonObject.optDouble("longitude", 0.0));
+                warehouseEntity.setWareHouseName(jsonObject.optString("name"));
+                warehouseEntities.add(warehouseEntity);
+            }
             return warehouseEntities;
         }
     }

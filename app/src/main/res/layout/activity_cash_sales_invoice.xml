@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bt_continue"
+        android:layout_below="@+id/toolbar_container">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/ll_top_layout"
+                layout="@layout/delivery_order_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/divider_view_1"
+                layout="@layout/divider_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_top_layout" />
+
+            <include
+                layout="@layout/item_list_summary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/divider_view_1" />
+
+            <include
+                android:id="@+id/divider_view_2"
+                layout="@layout/divider_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_item_summary_layout" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_item_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider_view_2"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical" />
+
+            <include
+                android:id="@+id/amount_summary_layout"
+                layout="@layout/cash_sales_amount_summary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_item_list_layout"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/payment_collected_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/amount_summary_layout"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/noto_sans"
+                android:paddingLeft="16dp"
+                android:text="@string/payment_collected"
+                android:textColor="@color/light_grey"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/collect_payment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/payment_collected_label"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:id="@+id/tv_collected_amount_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="₹"
+                    android:textColor="@color/light_grey"
+                    android:textSize="32sp" />
+
+                <EditText
+                    android:id="@+id/et_payment_collected"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/noto_sans"
+                    android:hint="25,000"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/doTabTextColor"
+                    android:textCursorDrawable="@null"
+                    android:textSize="32sp" />
+
+            </LinearLayout>
+
+            <include
+                layout="@layout/divider_view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/collect_payment_layout"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/light_grey_text" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bt_continue"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/green"
+        android:fontFamily="@font/noto_sans"
+        android:text="@string/continue_text"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+</RelativeLayout>
+
