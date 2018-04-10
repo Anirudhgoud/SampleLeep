@@ -52,7 +52,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
         this.lastLatLng = lastLatLng;
     }
 
-    public void setCountry_id(int countryId) {
+    public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
 
@@ -64,7 +64,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
         return countryAttributeList;
     }
 
-    public int getCountry_id() {
+    public int getCountryId() {
         return countryId;
     }
 

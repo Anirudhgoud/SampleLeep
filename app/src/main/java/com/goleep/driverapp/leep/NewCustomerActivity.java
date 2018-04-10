@@ -2,7 +2,10 @@ package com.goleep.driverapp.leep;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -29,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -122,22 +126,59 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
     }
 
     private void actionOnConfirmButtonClick() {
-        if (checkInputFiledVaidation())
-            if (viewModel.getCustomerInfo().getBusinessId() == 0)
+        if (checkInputFiledVaidation()) {
+            CustomerInfo customerInfo = viewModel.getCustomerInfo();
+            if (customerInfo == null) return;
+            if (customerInfo.getBusinessId() == 0)
                 createNewCustomerCall();
             else
-                createNewLocationCall(viewModel.getCustomerInfo().getBusinessId());
+                createNewLocationCall(customerInfo.getBusinessId());
+        }
     }
 
     private boolean checkInputFiledVaidation() {
         viewModel.setPostalCode(etPostalCode.getText().toString());
         String areaName = etLocation.getText().toString();
+        String strPostalCode = etPostalCode.getText().toString();
+        String strAddressLine1 = etAddressLine1.getText().toString();
+        String strAddressLine2 = etAddressLine2.getText().toString();
+        String strCity = etCity.getText().toString();
+        String strState = etState.getText().toString();
+        String strCountry = etCountry.getText().toString();
+        viewModel.setCountryId(0);
         if (areaName.isEmpty()) {
             etLocation.setError("location name could not be empty");
             return false;
-        } else if (viewModel.getPostalCode().length() == 0) {
-            etPostalCode.setError("postalcode could not be empty");
+        } else if (strPostalCode.isEmpty() || strPostalCode.length() < 6) {
+            etPostalCode.setError("please enter 6 digit postal code");
             return false;
+        } else if (strAddressLine1.isEmpty()) {
+            etAddressLine1.setError("address could not be empty");
+            return false;
+        } else if (strAddressLine2.isEmpty()) {
+            etAddressLine1.setError("address could not be empty");
+            return false;
+        } else if (strCity.isEmpty()) {
+            etCity.setError("city could not be empty");
+            return false;
+        } else if (strState.isEmpty()) {
+            etState.setError("state could not be empty");
+            return false;
+        } else if (strCountry.isEmpty()) {
+            etCountry.setError("country could not be empty");
+            return false;
+        } else {
+            for (Country country : viewModel.getCountryAttributeList()) {
+                strCountry = strCountry.toLowerCase().trim();
+                if (country.getName().toLowerCase().trim().contains(strCountry)) {
+                    viewModel.setCountryId(country.getId());
+                    break;
+                }
+            }
+            if (viewModel.getCountryId() == 0) {
+                Toast.makeText(this, "please select your address on the map", Toast.LENGTH_LONG).show();
+                return false;
+            }
         }
         return true;
     }
@@ -189,7 +230,7 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
             Toast.makeText(NewCustomerActivity.this, NewCustomerActivity.this.getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
         } else {
             runOnUiThread(() -> {
-
+                        showProgressDialog();
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                         getAddressFromLatLng(location.getLatitude(), location.getLongitude());
                         viewModel.setLastLatLng(latLng);
@@ -226,7 +267,6 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        LogUtils.debug("new Cust", marker.getPosition().latitude + " " + marker.getPosition().longitude);
         showProgressDialog();
         getAddressFromLatLng(marker.getPosition().latitude, marker.getPosition().longitude);
     }
@@ -248,7 +288,7 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
 
     private void createNewCustomerCall() {
         showProgressDialog();
-        viewModel.createNewCustomer(newCustomerCallBack, viewModel.getCountry_id(),
+        viewModel.createNewCustomer(newCustomerCallBack, viewModel.getCountryId(),
                 viewModel.getCustomerInfo().getBusinessName(),
                 viewModel.getCustomerInfo().getEmail(), viewModel.getCustomerInfo().getContactName(),
                 viewModel.getCustomerInfo().getContactNumber(), viewModel.getCustomerInfo().getDesignation(),
@@ -261,7 +301,7 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         viewModel.createNewLocation(newLocationCallBack, etLocation.getText().toString()
                 , etAddressLine1.getText().toString(), etAddressLine2.getText().toString(),
                 etCity.getText().toString(), etState.getText().toString(),
-                viewModel.getCountry_id(), viewModel.getPostalCode(),
+                viewModel.getCountryId(), viewModel.getPostalCode(),
                 etAddressLine1.getText().toString(), viewModel.getLastLatLng().latitude,
                 viewModel.getLastLatLng().longitude, viewModel.getCustomerInfo().getContactName(),
                 viewModel.getCustomerInfo().getDesignation(), viewModel.getCustomerInfo().getEmail(),
@@ -314,14 +354,6 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         } else if (uiModels.size() > 0) {
             MapData mapData = (MapData) uiModels.get(0);
             setUiElements(mapData);
-            for (Country country : viewModel.getCountryAttributeList()) {
-                String countryName = mapData.getCountry().toLowerCase().trim();
-                if (country.getName().toLowerCase().trim().contains(countryName)) {
-                    Toast.makeText(this, country.getName() + " " + country.getId(), Toast.LENGTH_LONG).show();
-                    viewModel.setCountry_id(country.getId());
-                    break;
-                }
-            }
         }
     }
 
