@@ -2,7 +2,6 @@ package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
@@ -26,7 +25,6 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
 
     private String strBusinesstype;
     private int businessTypeId, selectedBusinessId;
-    public Bundle bundle;
     private List<Business> listGetBusinessesData;
 
     public String getStrBusinesstype() {
@@ -72,8 +70,7 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
-                                JSONObject userObj = (JSONObject) response.opt(0);
-                                List<Business> listBusinessData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(userObj);
+                                List<Business> listBusinessData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(response);
                                 newBusinessCategoryCallBack.onResponseReceived(listBusinessData, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
@@ -94,8 +91,7 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
-                                JSONObject userObj = (JSONObject) response.opt(0);
-                                List<Business> lisGetBusinessesData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(userObj);
+                                List<Business> lisGetBusinessesData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(response);
                                 newBusinessCategoryCallBack.onResponseReceived(lisGetBusinessesData, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:

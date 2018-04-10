@@ -18,14 +18,15 @@ public class CountryDataParser {
         if (jsonObject == null) {
             return null;
         }
-       JSONArray jsonArraydata=jsonObject.optJSONArray("data");
-        for(int index =0;index<jsonArraydata.length();index++){
-           JSONObject jsonObject1 = jsonArraydata.optJSONObject(index);
-           Country country = new Country();
-           country.setId(jsonObject1.optInt("id"));
-           country.setName(jsonObject1.optString("name"));
-           liscountryAttribute.add(country);
+        JSONArray jsonArraydata = jsonObject.optJSONArray("data");
+        int jsonArrayLength = jsonArraydata.length();
+        for (int index = 0; index < jsonArrayLength; index++) {
+            JSONObject jsonObject1 = jsonArraydata.optJSONObject(index);
+            Country country = new Country();
+            country.setId(jsonObject1.optInt("id"));
+            country.setName(jsonObject1.optString("name"));
+            liscountryAttribute.add(country);
         }
-       return  liscountryAttribute;
+        return liscountryAttribute;
     }
 }

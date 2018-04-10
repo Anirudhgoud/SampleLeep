@@ -91,8 +91,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
-                                JSONObject userObj = (JSONObject) response.opt(0);
-                                MapData mapData = new MapAddressParser().reportsDataByParsingJsonResponse(userObj);
+                                MapData mapData = new MapAddressParser().reportsDataByParsingJsonResponse(response);
                                 List<MapData> lisMapData = new ArrayList<>();
                                 lisMapData.add(mapData);
                                 newCustomerCallBack.onResponseReceived(lisMapData, false, null, false);
@@ -116,22 +115,13 @@ public class NewCustomerViewModel extends AndroidViewModel {
     }
 
     public void createNewCustomer(final UILevelNetworkCallback newCustomerCallBack, int countryId, String name, String contactEmail, String contactName, String contactNumber, String designation, String postalCode, int businessCategoryId) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("country_id", countryId);
-        body.put("name", name);
-        body.put("contact_email_1", contactEmail);
-        body.put("contact_name_1", contactName);
-        body.put("contact_number_1", contactNumber);
-        body.put("designation_1", designation);
-        body.put("postal_code", postalCode);
-        body.put("business_category_id", businessCategoryId);
+        Map<String, Object> body = getNewCustomerBody(countryId, name, contactEmail, contactName, contactNumber, designation, postalCode, businessCategoryId);
         NetworkService.sharedInstance().getNetworkClient().makeFormPostRequest(getApplication(), UrlConstants.BUSINESSES_URL, true, body, new NetworkAPICallback() {
             @Override
             public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                 switch (type) {
                     case NetworkConstants.SUCCESS:
-                        JSONObject userObj = (JSONObject) response.opt(0);
-                        Business business = new BusinessDataParser().customerBusinessDataByparsingJsonResponse(userObj);
+                        Business business = new BusinessDataParser().customerBusinessDataByparsingJsonResponse(response);
                         List<Business> listBusinessAttribute = new ArrayList<>();
                         listBusinessAttribute.add(business);
                         newCustomerCallBack.onResponseReceived(listBusinessAttribute, false, null, false);
@@ -148,10 +138,49 @@ public class NewCustomerViewModel extends AndroidViewModel {
             }
         });
     }
+    private  Map<String, Object> getNewCustomerBody( int countryId, String name, String contactEmail, String contactName, String contactNumber, String designation, String postalCode, int businessCategoryId){
+        Map<String, Object> body = new HashMap<>();
+        body.put("country_id", countryId);
+        body.put("name", name);
+        body.put("contact_email_1", contactEmail);
+        body.put("contact_name_1", contactName);
+        body.put("contact_number_1", contactNumber);
+        body.put("designation_1", designation);
+        body.put("postal_code", postalCode);
+        body.put("business_category_id", businessCategoryId);
+        return  body;
+    }
 
     public void createNewLocation(final UILevelNetworkCallback newCustomerCallBack, String name, String addressLine1, String addressLine2, String city,
                                   String state, int countryId, String pincode, String area, double latitude, double longitude,
                                   String contactName1, String designation, String email, String phone, int businessId) {
+        Map<String, Object> body = getNewLocationBody(name, addressLine1, addressLine2,city, state, countryId, pincode, area, latitude, longitude, contactName1, designation, email, phone);
+        NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(getApplication(),
+                UrlConstants.BUSINESSES_URL + "/" + businessId + "/locations", true, body, new NetworkAPICallback() {
+                    @Override
+                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                Location location = new LocationParser().getBusinessLocation(response);
+                                List<Location> listLocation = new ArrayList<>();
+                                listLocation.add(location);
+                                newCustomerCallBack.onResponseReceived(listLocation, false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
+                        }
+                    }
+                });
+    }
+    private  Map<String, Object> getNewLocationBody(String name, String addressLine1, String addressLine2, String city,
+                                                       String state, int countryId, String pincode, String area, double latitude, double longitude,
+                                                       String contactName1, String designation, String email, String phone){
         Map<String, Object> body = new HashMap<>();
         body.put("name", name);
         body.put("address_line_1", addressLine1);
@@ -168,28 +197,6 @@ public class NewCustomerViewModel extends AndroidViewModel {
         body.put("contact_email_1", email);
         body.put("contact_phone_1", phone);
         body.put("redistribution_centre", name);
-        NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(getApplication(),
-                UrlConstants.BUSINESSES_URL + "/" + businessId + "/locations", true, body, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                JSONObject userObj = (JSONObject) response.opt(0);
-                                Location location = new LocationParser().getBusinessLocation(userObj);
-                                List<Location> listLocation = new ArrayList<>();
-                                listLocation.add(location);
-                                newCustomerCallBack.onResponseReceived(listLocation, false, null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
-                                break;
-                            case NetworkConstants.NETWORK_ERROR:
-                                newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
-                        }
-                    }
-                });
+        return body ;
     }
 }

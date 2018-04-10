@@ -12,7 +12,8 @@ import org.json.JSONObject;
 public class MapAddressParser {
     MapData mapData;
 
-    public MapData reportsDataByParsingJsonResponse(JSONObject jsonObject) {
+    public MapData reportsDataByParsingJsonResponse(JSONArray response) {
+        JSONObject jsonObject =  response.optJSONObject(0);
         if (jsonObject == null) {
             return null;
         }
@@ -32,7 +33,8 @@ public class MapAddressParser {
 
     private void getTypeAndSetAttributes(JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.optJSONArray("types");
-        for (int typeLength = 0; typeLength < jsonArray.length(); typeLength++) {
+        int jsonArryLenght = jsonArray.length();
+        for (int typeLength = 0; typeLength < jsonArryLenght; typeLength++) {
             if (jsonArray.optString(typeLength).equals("street_number")) {
                 mapData.setAddressLine1(jsonObject.optString("long_name"));
             } else if (jsonArray.optString(typeLength).equals("route")) {

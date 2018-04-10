@@ -13,7 +13,8 @@ import java.util.List;
  */
 
 public class BusinessDataParser {
-    public Business customerBusinessDataByparsingJsonResponse(JSONObject jsonObject) {
+    public Business customerBusinessDataByparsingJsonResponse(JSONArray response) {
+        JSONObject jsonObject = response.optJSONObject(0);
         if (jsonObject == null) {
             return null;
         }
@@ -23,13 +24,17 @@ public class BusinessDataParser {
         return business;
     }
 
-    public List<Business> businessCategoryDataByParsingJsonResponse(JSONObject jsonObject) {
+    public List<Business> businessCategoryDataByParsingJsonResponse(JSONArray response) {
+
+        JSONObject jsonObject = response.optJSONObject(0);
+
         if (jsonObject == null) {
             return null;
         } else {
             List<Business> listBusinessData = new ArrayList<>();
             JSONArray jsonArrayData = jsonObject.optJSONArray("data");
-            for (int index = 0; index < jsonArrayData.length(); index++) {
+            int jsonArrayLength = jsonArrayData.length();
+            for (int index = 0; index < jsonArrayLength; index++) {
                 JSONObject jsonObject1 = jsonArrayData.optJSONObject(index);
                 Business business = new Business();
                 business.setId(jsonObject1.optInt("id"));
