@@ -30,13 +30,11 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
     }
 
     public String currentDateToDisplay() {
-        Date now = new Date();
-        return DateTimeUtils.convertedDate(now, DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
+        return DateTimeUtils.convertedDate(new Date(), DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
     }
 
     public String currentTimeToDisplay() {
-        Date now = new Date();
-        return DateTimeUtils.convertedDate(now, DateTimeUtils.TWELVE_HOUR_TIME_FORMAT);
+        return DateTimeUtils.convertedDate(new Date(), DateTimeUtils.TWELVE_HOUR_TIME_FORMAT);
     }
 
     public void fetchBusinessLocation(int businessId, int locationId, final UILevelNetworkCallback locationCallBack) {
@@ -55,8 +53,7 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
                             break;
 
                         case NetworkConstants.UNAUTHORIZED:
-                            locationCallBack.onResponseReceived(null,
-                                    false, errorMessage, true);
+                            locationCallBack.onResponseReceived(null, false, errorMessage, true);
                             break;
                     }
                 });
