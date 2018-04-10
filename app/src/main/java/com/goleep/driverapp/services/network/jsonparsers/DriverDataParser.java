@@ -70,7 +70,6 @@ public class DriverDataParser {
             return null;
         } else {
             List<WarehouseEntity> warehouseEntities = new ArrayList<>();
-
             JSONArray locationsJsonArray = firstObj.optJSONArray("work_locations");
             int length = locationsJsonArray.length();
             for(int i=0;i<length;i++) {
