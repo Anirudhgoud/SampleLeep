@@ -11,9 +11,6 @@ import java.util.Date;
  */
 
 public class DateTimeUtils {
-    private DateTimeUtils() {
-
-    }
 
     public static final DateFormat ORDER_SERVER_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     public static final DateFormat ORDER_DISPLAY_DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy");
@@ -22,7 +19,7 @@ public class DateTimeUtils {
     public static final DateFormat TWENTY_FOUR_HOUR_TIME_FORMAT = new SimpleDateFormat("HH:mm");
     public static final DateFormat TWELVE_HOUR_TIME_FORMAT = new SimpleDateFormat("hh:mma");
 
-    public static String convertdDate(String dateString, DateFormat fromFormat, DateFormat toFormat) {
+    public static String convertdDate(String dateString, DateFormat fromFormat, DateFormat toFormat){
         fromFormat.setLenient(false);
         toFormat.setLenient(false);
         Date date = null;
@@ -40,9 +37,9 @@ public class DateTimeUtils {
         return requiredDateFormat.format(date);
     }
 
-    public static Date dateFrom(String dateString, DateFormat dateFormat) {
-        if (dateString == null || dateFormat == null) {
-            return null;
+    public static Date dateFrom(String dateString, DateFormat dateFormat){
+        if(dateString == null || dateFormat == null){
+            return  null;
         }
         try {
             return dateFormat.parse(dateString);

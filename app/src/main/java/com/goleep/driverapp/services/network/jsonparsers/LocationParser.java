@@ -46,20 +46,5 @@ public class LocationParser {
         location.setOutstandingBalance(jsonObject.optDouble("outstanding_balance", 0));
         return location;
     }
-    public Location getBusinessLocation(JSONObject jsonObject) {
-        if (jsonObject == null) {
-            return null;
-        }
-        Location location = new Location();
-        location.setId(jsonObject.optInt("id"));
-        location.setAddressLine1(jsonObject.optString("address_line_1"));
-        location.setAddressLine2(jsonObject.optString("address_line_2"));
-        location.setCity(jsonObject.optString("city"));
-        location.setState(jsonObject.optString("state"));
-        location.setCountry(jsonObject.optString("country"));
-        location.setPincode(jsonObject.optString("pin_code"));
-        location.setOutstandingBalance(jsonObject.optDouble("outstanding_balance", 0));
-        return location;
-    }
 
 }

@@ -12,7 +12,6 @@ import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
-import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.ForgotPasswordViewModel;
 
 import java.util.List;
@@ -32,9 +31,9 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
     private UILevelNetworkCallback submitEmailCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if (toLogout)
+            if(toLogout)
                 logoutUser();
-            else if (errorMessage == null) {
+            else if(errorMessage == null){
                 finish();
             }
         }
@@ -59,7 +58,7 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId) {
+        switch (resourceId){
             case R.id.submit_button:
                 performSubmitEmail();
                 break;
@@ -67,7 +66,7 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
     }
 
     private void performSubmitEmail() {
-        if (AppUtils.isValidEmail(emailEditText.getText().toString())) {
+        if(isValidEmail()){
             submitEmail();
         }
     }
@@ -76,12 +75,19 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
         forgotPasswordViewModel.submitEmail(emailEditText.getText().toString(), submitEmailCallback);
     }
 
+    private boolean isValidEmail() {
+        final String PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        if(emailEditText.getText().toString().matches(PATTERN))
+            return true;
+        return false;
+    }
+
     @Override
     public void onTextChanged(int textLength) {
-        if (AppUtils.isValidEmail(emailEditText.getText().toString())) {
+        if(isValidEmail()){
             emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_correct, 0);
         } else {
-            if (textLength == 0)
+            if(textLength == 0)
                 emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             else
                 emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_error, 0);

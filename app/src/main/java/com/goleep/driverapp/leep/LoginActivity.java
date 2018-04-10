@@ -3,7 +3,6 @@ package com.goleep.driverapp.leep;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
@@ -28,7 +27,6 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     public static final int PHONE_NUMBER_LENGTH = 10;
     public static final int PASSWORD_MAX_LENGTH = 15;
     public static final int PASSWORD_MIN_LENGTH = 8;
-
 
     private LoginViewModel loginViewModel;
     @BindView(R.id.phone_editText)CustomEditText phoneEditText;
