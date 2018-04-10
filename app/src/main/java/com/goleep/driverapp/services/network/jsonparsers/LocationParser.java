@@ -47,6 +47,7 @@ public class LocationParser {
         location.setOutstandingBalance(jsonObject.optDouble("outstanding_balance", 0));
         return location;
     }
+
     public Location getBusinessLocation(JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;
@@ -64,43 +65,51 @@ public class LocationParser {
     }
 
     public Address getAddressByParsingJsonResponse(JSONArray response) {
-        JSONObject jsonObject =  response.optJSONObject(0);
+        JSONObject jsonObject = response.optJSONObject(0);
         if (jsonObject == null) {
             return null;
         }
         Address address = new Address();
         if (jsonObject.optString("status").equals("OK")) {
             JSONArray jsonArrayresults = jsonObject.optJSONArray("results");
-            JSONObject jsonObjectofResult = jsonArrayresults.optJSONObject(0);
-            address.setFormattedAddress(jsonObjectofResult.optString("formatted_address"));
-            JSONArray jsonArrayaddresscomponents = jsonObjectofResult.optJSONArray("address_components");
+            JSONObject jsonObjectResult = jsonArrayresults.optJSONObject(0);
+            address.setFormattedAddress(jsonObjectResult.optString("formatted_address"));
+            JSONArray jsonArrayaddresscomponents = jsonObjectResult.optJSONArray("address_components");
             for (int index = 0; index < jsonArrayaddresscomponents.length(); index++) {
-                getTypeAndSetAttributes(address,jsonArrayaddresscomponents.optJSONObject(index));
+                getTypeAndSetAttributes(address, jsonArrayaddresscomponents.optJSONObject(index));
             }
         }
         return address;
     }
 
-    private void getTypeAndSetAttributes(Address address ,JSONObject jsonObject) {
+    private void getTypeAndSetAttributes(Address address, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.optJSONArray("types");
         int jsonArryLenght = jsonArray.length();
         for (int index = 0; index < jsonArryLenght; index++) {
             if (jsonArray.optString(index).equals("street_number")) {
                 address.setAddressLine1(jsonObject.optString("long_name"));
+                break;
             } else if (jsonArray.optString(index).equals("route")) {
                 address.setAddressLine1(address.getAddressLine1() + " " + jsonObject.optString("long_name"));
+                break;
             } else if (jsonArray.optString(index).equals("sublocality_level_2")) {
                 address.setAddressLine2(jsonObject.optString("long_name"));
+                break;
             } else if (jsonArray.optString(index).equals("sublocality_level_1")) {
                 address.setAddressLine2(address.getAddressLine2() + " " + jsonObject.optString("long_name"));
+                break;
             } else if (jsonArray.optString(index).equals("administrative_area_level_2")) {
                 address.setCity(jsonObject.optString("long_name"));
+                break;
             } else if (jsonArray.optString(index).equals("administrative_area_level_1")) {
                 address.setState(jsonObject.optString("long_name"));
+                break;
             } else if (jsonArray.optString(index).equals("country")) {
                 address.setCountry(jsonObject.optString("long_name"));
+                break;
             } else if (jsonArray.optString(index).equals("postal_code")) {
                 address.setPostalCode(jsonObject.optString("long_name"));
+                break;
             }
         }
     }

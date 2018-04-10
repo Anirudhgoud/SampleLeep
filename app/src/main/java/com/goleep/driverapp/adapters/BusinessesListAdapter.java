@@ -83,6 +83,7 @@ public class BusinessesListAdapter extends ArrayAdapter<Business> {
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if (results != null && results.count > 0) {
                 clear();
+                @SuppressWarnings("unchecked")
                 List<Business> data = (List<Business>) results.values;
                 addAll(data);
                 notifyDataSetChanged();
