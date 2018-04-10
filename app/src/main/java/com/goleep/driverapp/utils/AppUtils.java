@@ -68,4 +68,15 @@ public class AppUtils {
         if (view == null) return null;
         return  (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
+
+    public static boolean isValidEmail(String strEmail) {
+        if (strEmail.length() == 0)
+            return false;
+        else {
+            final String PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+            if (strEmail.matches(PATTERN))
+                return true;
+            return false;
+        }
+    }
 }
