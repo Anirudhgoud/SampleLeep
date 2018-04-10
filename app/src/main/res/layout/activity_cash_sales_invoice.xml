@@ -57,7 +57,7 @@
 
             <include
                 android:id="@+id/amount_summary_layout"
-                layout="@layout/cash_sales_amount_summary_layout"
+                layout="@layout/cash_sales_amounts_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_item_list_layout"

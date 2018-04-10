@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bt_continue"
+        android:layout_below="@+id/toolbar_container">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/ll_top_layout"
+                layout="@layout/delivery_order_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bt_view_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/ll_top_layout"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_border_green"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/view_item_list"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="18sp" />
+
+            <include
+                android:id="@+id/amount_summary_layout"
+                layout="@layout/cash_sales_amount_summary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bt_view_item_list"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/tv_payment_method_label"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/amount_summary_layout"
+                android:fontFamily="@font/noto_sans"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/payment_method"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="22sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_payment_method_label"
+                android:layout_margin="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="3"
+                    android:fontFamily="@font/noto_sans"
+                    android:gravity="center_vertical"
+                    android:paddingRight="16dp"
+                    android:text="@string/cash"
+                    android:textColor="@color/doTabTextColor"
+                    android:textSize="22sp" />
+
+                <CheckBox
+                    android:id="@+id/payment_method_checkbox"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_weight="0"
+                    android:button="@drawable/do_item_checkbox_bg"
+                    android:checked="true"
+                    android:enabled="false" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bt_continue"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/green"
+        android:fontFamily="@font/noto_sans"
+        android:text="@string/continue_text"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</RelativeLayout>
+

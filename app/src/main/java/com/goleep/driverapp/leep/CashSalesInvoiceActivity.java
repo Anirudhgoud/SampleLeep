@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,9 +22,11 @@ import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.CashSalesInvoiceViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,7 +60,8 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     TextView tvPreviousBalance;
     @BindView(R.id.tv_grand_total)
     TextView tvGrandTotal;
-
+    @BindView(R.id.et_payment_collected)
+    EditText etPaymentCollected;
 
     private CashSalesInvoiceViewModel viewModel;
 
@@ -100,8 +104,8 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         tvCustomerName.setText(StringUtils.toString(customer.getName(), ""));
         tvCustomerName.setTextSize(24);
         tvAddress.setText(StringUtils.toString(customer.getArea(), ""));
-        tvCurrentDate.setText(viewModel.currentDateToDisplay());
-        tvCurrentTime.setText(viewModel.currentTimeToDisplay());
+        tvCurrentDate.setText(DateTimeUtils.currentDateToDisplay());
+        tvCurrentTime.setText(DateTimeUtils.currentTimeToDisplay());
     }
 
     private void updateItemSummaryUI() {
@@ -179,8 +183,10 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     }
 
     private void onContinueButtonTap() {
-
+        if (etPaymentCollected.getText().length() > 0) gotoNextActivity();
     }
+
+
 
     private void onLocationDetailsFetched(Location location){
         if (location == null) return;
@@ -196,12 +202,14 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         double totalReturns = viewModel.totalReturnsValue();
         double totalCurrentSales = viewModel.totalCurrentSales();
         tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(totalReturns)));
-        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(totalCurrentSales)));
-        tvPreviousBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(outstandingBalance)));
-        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.grandTotal(totalReturns, totalCurrentSales, outstandingBalance))));
+        tvCurrentSales.setText(amountWithCurrencySymbol(totalCurrentSales));
+        tvPreviousBalance.setText(amountWithCurrencySymbol(outstandingBalance));
+        tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, totalCurrentSales, outstandingBalance)));
     }
 
-
+    public String amountWithCurrencySymbol(Object amount){
+        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(amount));
+    }
 
     UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
         dismissProgressDialog();
@@ -217,4 +225,15 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
             onLocationDetailsFetched(location);
         }
     });
+
+    private void gotoNextActivity(){
+        Double paymentCollected = Double.valueOf(etPaymentCollected.getText().toString());
+        if (paymentCollected == null) return;
+        Intent intent = new Intent(this, CashSalesPaymentMethodActivity.class);
+        intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
+        intent.putExtra(IntentConstants.PREVIOUS_BALANCE, viewModel.getOutstandingBalance());
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        startActivity(intent);
+    }
 }
