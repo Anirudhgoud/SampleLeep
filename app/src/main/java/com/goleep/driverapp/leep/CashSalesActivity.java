@@ -1,5 +1,6 @@
 package com.goleep.driverapp.leep;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.fragments.CashSalesExistingCustomerFragment;
 import com.goleep.driverapp.fragments.CashSalesNewCustomerFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
@@ -20,6 +22,7 @@ public class CashSalesActivity extends ParentAppCompatActivity {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private Fragment fragmentCashSalesNewCustomer;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -78,6 +81,12 @@ public class CashSalesActivity extends ParentAppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == AppConstants.ACTIVITY_CLEAR_FORM)
+            fragmentCashSalesNewCustomer.onActivityResult(requestCode, resultCode, data);
+    }
+
     class CashSalesPagerAdapter extends FragmentPagerAdapter {
 
         private int NUMBER_OF_ITEMS = 2;
@@ -92,7 +101,8 @@ public class CashSalesActivity extends ParentAppCompatActivity {
                 case 0:
                     return new CashSalesExistingCustomerFragment();
                 case 1:
-                    return new CashSalesNewCustomerFragment();
+                    fragmentCashSalesNewCustomer = new CashSalesNewCustomerFragment();
+                    return fragmentCashSalesNewCustomer;
                 default:
                     return null;
             }

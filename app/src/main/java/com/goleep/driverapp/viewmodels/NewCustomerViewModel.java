@@ -125,7 +125,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
                         newCustomerCallBack.onResponseReceived(listBusinessAttribute, false, null, false);
                         break;
                     case NetworkConstants.FAILURE:
-                        newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
+                        newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
                         break;
                     case NetworkConstants.NETWORK_ERROR:
                         newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
@@ -165,7 +165,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
                                 newCustomerCallBack.onResponseReceived(listLocation, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
-                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
+                                newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
                                 break;
                             case NetworkConstants.NETWORK_ERROR:
                                 newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);

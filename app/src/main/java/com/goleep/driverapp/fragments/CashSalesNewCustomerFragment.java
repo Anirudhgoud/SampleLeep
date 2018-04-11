@@ -157,10 +157,25 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        rlAddCustomer.setVisibility(View.VISIBLE);
+        scrollView.setVisibility(View.GONE);
+        setFormFieldDefault();
+    }
+
     private void startNewActivity() {
         Intent intentCreateNewCustomer = new Intent(getContext(), NewCustomerActivity.class);
         intentCreateNewCustomer.putExtra(IntentConstants.CUSTOMER_INFO, getCustomerInfoParcelable());
-        startActivity(new Intent(intentCreateNewCustomer));
+        startActivityForResult(new Intent(intentCreateNewCustomer), 99);
+    }
+
+    private void setFormFieldDefault() {
+        acTvBusinessName.setText("");
+        etDesignation.setText("");
+        etContactNumber.setText("");
+        etContactName.setText("");
+        etEmailId.setText("");
     }
 
     private CustomerInfo getCustomerInfoParcelable() {
@@ -232,6 +247,7 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
             businessListAdapter.updateData(viewModel.getListGetBusinessesData());
         }
     }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
