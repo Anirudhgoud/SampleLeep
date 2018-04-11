@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.BusinessCategoryAdapter;
 import com.goleep.driverapp.adapters.BusinessesListAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
@@ -157,26 +158,30 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        rlAddCustomer.setVisibility(View.VISIBLE);
-        scrollView.setVisibility(View.GONE);
-        setFormFieldDefault();
-    }
-
     private void startNewActivity() {
         Intent intentCreateNewCustomer = new Intent(getContext(), NewCustomerActivity.class);
         intentCreateNewCustomer.putExtra(IntentConstants.CUSTOMER_INFO, getCustomerInfoParcelable());
-        startActivityForResult(new Intent(intentCreateNewCustomer), 99);
+        startActivityForResult(intentCreateNewCustomer, AppConstants.ACTIVITY_CLEAR_FORM);
     }
 
-    private void setFormFieldDefault() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == AppConstants.ACTIVITY_CLEAR_FORM) {
+            rlAddCustomer.setVisibility(View.VISIBLE);
+            scrollView.setVisibility(View.GONE);
+            clearCustomerFormData();
+        }
+    }
+
+
+    private void clearCustomerFormData() {
         acTvBusinessName.setText("");
         etDesignation.setText("");
         etContactNumber.setText("");
         etContactName.setText("");
         etEmailId.setText("");
     }
+
 
     private CustomerInfo getCustomerInfoParcelable() {
         CustomerInfo customerInfo = new CustomerInfo();
@@ -256,7 +261,6 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
             viewModel.setStrBusinesstype(business.getName());
             viewModel.setBusinessTypeId(business.getId());
         }
-
     }
 
     @Override

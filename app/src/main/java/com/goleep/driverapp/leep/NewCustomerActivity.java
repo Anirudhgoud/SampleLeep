@@ -382,13 +382,17 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         } else if (uiModels.size() > 0) {
             List<com.goleep.driverapp.helpers.uimodels.Location> listLocation = (List<com.goleep.driverapp.helpers.uimodels.Location>) uiModels;
             com.goleep.driverapp.helpers.uimodels.Location location = listLocation.get(0);
-            Customer customer = getCustomer(location);
-            Intent intent = new Intent(NewCustomerActivity.this,CashSalesSelectProductsActivity.class);
-            intent.putExtra(IntentConstants.CONSUMER_LOCATION,customer);
-            startActivity(intent);
-            setResult(AppConstants.ACTIVITY_CLEAR_FORM);
-            finish();
+            gotoNewActivity(location);
         }
+    }
+
+    private void  gotoNewActivity(com.goleep.driverapp.helpers.uimodels.Location location){
+        Customer customer = getCustomer(location);
+        Intent intent = new Intent(NewCustomerActivity.this,CashSalesSelectProductsActivity.class);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION,customer);
+        startActivity(intent);
+        setResult(AppConstants.ACTIVITY_CLEAR_FORM);
+        finish();
     }
 
     private Customer getCustomer(com.goleep.driverapp.helpers.uimodels.Location location) {
