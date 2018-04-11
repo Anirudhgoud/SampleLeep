@@ -1,26 +1,30 @@
 package com.goleep.driverapp.viewmodels;
 
-import android.arch.lifecycle.ViewModel;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
+import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 
 import java.util.List;
 
-public class CashSalesPaymentMethodViewModel extends ViewModel {
+public class CashSalesPaymentMethodViewModel extends AndroidViewModel {
 
-    private Customer consumerLocation;
-    private List<Product> scannedProducts;
-    private double previousBalance;
-    private double paymentCollected;
+    protected Customer consumerLocation;
+    protected List<Product> scannedProducts;
+    protected double previousBalance;
+    protected double paymentCollected;
 
+    public CashSalesPaymentMethodViewModel(@NonNull Application application) {
+        super(application);
+    }
 
-
-    public double getTotalReturns(){
+    public double getTotalReturns() {
         return 0;
     }
 
-    public double getCurrentSales(){
+    public double getCurrentSales() {
         double totalSales = 0;
         for (Product product : scannedProducts) {
             if (product == null) continue;

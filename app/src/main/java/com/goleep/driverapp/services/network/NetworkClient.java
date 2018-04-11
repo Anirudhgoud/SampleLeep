@@ -152,23 +152,29 @@ public class NetworkClient {
     }
 
     public void uploadImageWithMultipartFormData(final Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
-                                                 File file, String imageFileKey, final NetworkAPICallback networkAPICallback) {
+                                                 File file, String imageFileKey, String requestType, final NetworkAPICallback networkAPICallback) {
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(imageFileKey, imageFileKey + ".jpg", RequestBody.create(MediaType.parse("image/jpeg"), file));
 
         for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
             builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
+            LogUtils.error("", entry.getValue().toString());
         }
         RequestBody formBody = builder.build();
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .addHeader("Authorization", getOAuthToken(context))
+
+        Request.Builder requestBuilder = new Request.Builder()
                 .addHeader("Content-Type", "multipart/form-data")
                 .addHeader(RequestConstants.KEY_USER_AGENT, RequestConstants.USER_AGENT)
-                .url(requestUrl)
-                .put(formBody)
-                .build();
+                .url(requestUrl);
+        if (isAuthRequired) requestBuilder.addHeader("Authorization", getOAuthToken(context));
+        switch (requestType){
+            case NetworkConstants.POST_REQUEST: requestBuilder.post(formBody);
+            case NetworkConstants.PUT_REQUEST: requestBuilder.post(formBody);
+        }
+
+        Request request = requestBuilder.build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

@@ -3,11 +3,13 @@ package com.goleep.driverapp.fragments;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,6 +95,8 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
     }
 
     private void initialiseAutoCompleteTextView() {
+        Drawable rightDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.ic_search_inactive);
+        atvSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
         customerSearchListAdapter = new CustomerSearchArrayAdapter(getContext(), new ArrayList());
         atvSearch.setAdapter(customerSearchListAdapter);
         atvSearch.setOnItemClickListener(this::onItemClick);

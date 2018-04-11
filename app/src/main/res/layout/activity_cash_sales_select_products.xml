@@ -47,7 +47,6 @@
             android:layout_height="42dp"
             android:layout_margin="16dp"
             android:background="@drawable/rounded_rect_with_grey_border"
-            android:drawableRight="@drawable/ic_search_inactive"
             android:fontFamily="@font/noto_sans"
             android:hint="@string/search_product"
             android:padding="8dp"
