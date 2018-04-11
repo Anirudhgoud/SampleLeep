@@ -103,6 +103,9 @@
             android:name=".leep.CashSalesPaymentMethodActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".leep.NewSaleConfirmationActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".leep.DropoffWarehouseActivity"
             android:screenOrientation="portrait" />
         <activity

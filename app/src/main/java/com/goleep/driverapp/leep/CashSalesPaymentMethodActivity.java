@@ -9,12 +9,16 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
+import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.CashSalesPaymentMethodViewModel;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -128,7 +132,13 @@ public class CashSalesPaymentMethodActivity extends ParentAppCompatActivity {
     }
 
     private void onContinueButtonTap() {
-        //TODO: Goto Next Activity
+        Intent intent = new Intent(this, NewSaleConfirmationActivity.class);
+        intent.putExtra(IntentConstants.PAYMENT_COLLECTED, viewModel.getPaymentCollected());
+        intent.putExtra(IntentConstants.PREVIOUS_BALANCE, viewModel.getPreviousBalance());
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+        intent.putExtra(IntentConstants.PAYMENT_METHOD, PaymentMethod.CASH);
+        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        startActivity(intent);
     }
 
 }
