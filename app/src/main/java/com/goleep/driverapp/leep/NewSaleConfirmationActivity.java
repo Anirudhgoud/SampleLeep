@@ -196,6 +196,7 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
     }
 
     private void createCashSalesOrder() {
+        showProgressDialog();
         String contactNo = etContactNumber.getText().length() == 0 ? null : etContactNumber.getText().toString();
         File file = AppUtils.fileFromBitmap(getApplicationContext(), AppUtils.bitmapFromView(ivSignature, ivSignature.getWidth(), ivSignature.getHeight()), viewModel.RECEIVER_SIGNATURE);
         viewModel.createCashSalesdeliveryOrder(etReceivedFrom.getText().toString(), contactNo, file, cashSaleNetworkCallback);
@@ -205,6 +206,7 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             runOnUiThread(() -> {
+                dismissProgressDialog();
                 if (uiModels == null) {
                     if (toLogout) {
                         logoutUser();

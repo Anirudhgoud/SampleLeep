@@ -32,7 +32,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
     public void createCashSalesdeliveryOrder(String receivedBy, String contactNo, File file, final UILevelNetworkCallback deliverOrderNetworkCallBack) {
         LogUtils.debug(this.getClass().getSimpleName(), generateCashSalesRequestMap(receivedBy, contactNo).toString());
 
-        NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.CREATE_CASH_SALE_DO, true, generateCashSalesRequestMap(receivedBy, contactNo), file, RECEIVER_SIGNATURE, (type, response, errorMessage) -> {
+        NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.CREATE_CASH_SALE_DO, true, generateCashSalesRequestMap(receivedBy, contactNo), file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
             switch (type) {
                 case NetworkConstants.SUCCESS:
                     deliverOrderNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
