@@ -55,7 +55,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         Map<String, Object> requestForm = new HashMap<>();
         requestForm.put("type", "cash_sale");
         requestForm.put("destination_location_id", consumerLocation.getId());
-        requestForm.put("assignee_id", getAssigneeId());
+        requestForm.put("assignee_id", assigneeId());
         if (paymentCollected != 0) {
             requestForm.put("payment_collected", paymentCollected);
         }
@@ -82,7 +82,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
     }
 
 
-    private int getAssigneeId() {
+    private int assigneeId() {
         return LocalStorageService.sharedInstance().getLocalFileStore().getInt(getApplication().getApplicationContext(), SharedPreferenceKeys.DRIVER_ID);
     }
 

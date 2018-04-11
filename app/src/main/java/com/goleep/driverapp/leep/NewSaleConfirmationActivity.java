@@ -91,7 +91,7 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
         initialiseToolbar();
         setListeners();
         updateTopLayoutUI();
-        updateAmounts();
+        updateAmountLayoutUI();
     }
 
     private void extractIntentData() {
@@ -122,7 +122,7 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
         tvCurrentTime.setText(DateTimeUtils.currentTimeToDisplay());
     }
 
-    private void updateAmounts() {
+    private void updateAmountLayoutUI() {
         double returnedAmount = viewModel.getTotalReturns();
         double currentSalesAmount = viewModel.getCurrentSales();
         double previousBalance = viewModel.getPreviousBalance();
