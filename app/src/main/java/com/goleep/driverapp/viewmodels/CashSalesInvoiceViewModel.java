@@ -49,12 +49,8 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
                 });
     }
 
-    public String getAddress(Location location) {
-        return location == null ? (consumerLocation == null ? "" : consumerLocation.getArea()) : location.getAddressLine1() + ",\n" + location.getAddressLine2() + ",\n" + location.getCity() + ", " + location.getState() + " " + location.getPincode();
-    }
-
     public void updateAreaInConsumerLocation(String updatedAddress) {
-        consumerLocation.setArea(updatedAddress);
+        if (consumerLocation != null) consumerLocation.setArea(updatedAddress);
     }
 
     public double totalReturnsValue() {

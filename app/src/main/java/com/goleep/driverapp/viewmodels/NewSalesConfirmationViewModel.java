@@ -7,14 +7,18 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
+import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
+import com.goleep.driverapp.utils.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,7 @@ import java.util.Map;
 public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewModel {
 
     private boolean signatureAdded = false;
+    private boolean paymentSkipped = false;
     private String paymentMethod;
     public String RECEIVER_SIGNATURE = "receiver_signature";
 
@@ -29,7 +34,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         super(application);
     }
 
-    public void createCashSalesdeliveryOrder(String receivedBy, String contactNo, File file, final UILevelNetworkCallback deliverOrderNetworkCallBack) {
+    public void createCashSalesDeliveryOrder(String receivedBy, String contactNo, File file, final UILevelNetworkCallback deliverOrderNetworkCallBack) {
         LogUtils.debug(this.getClass().getSimpleName(), generateCashSalesRequestMap(receivedBy, contactNo).toString());
 
         NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.CREATE_CASH_SALE_DO, true, generateCashSalesRequestMap(receivedBy, contactNo), file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
@@ -49,6 +54,32 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
                     break;
             }
         });
+    }
+
+    public void fetchBusinessLocation(int businessId, int locationId, final UILevelNetworkCallback locationCallBack) {
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
+                UrlConstants.BUSINESS_LOCATIONS_URL + "/" + businessId + "/locations/" + locationId, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            LocationParser locationParser = new LocationParser();
+                            Location location = locationParser.getBusinessLocation(response);
+                            locationCallBack.onResponseReceived(Collections.singletonList(location), false, null, false);
+                            break;
+
+                        case NetworkConstants.FAILURE:
+                        case NetworkConstants.NETWORK_ERROR:
+                            locationCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+
+                        case NetworkConstants.UNAUTHORIZED:
+                            locationCallBack.onResponseReceived(null, false, errorMessage, true);
+                            break;
+                    }
+                });
+    }
+
+    public void updateAreaInConsumerLocation(String updatedAddress) {
+        if (consumerLocation != null) consumerLocation.setArea(updatedAddress);
     }
 
     private Map<String, Object> generateCashSalesRequestMap(String receivedBy, String contactNo) {
@@ -96,10 +127,18 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
     }
 
     public String getPaymentMethod() {
-        return paymentMethod;
+        return StringUtils.toString(paymentMethod, "NA");
     }
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public boolean isPaymentSkipped() {
+        return paymentSkipped;
+    }
+
+    public void setPaymentSkipped(boolean paymentSkipped) {
+        this.paymentSkipped = paymentSkipped;
     }
 }

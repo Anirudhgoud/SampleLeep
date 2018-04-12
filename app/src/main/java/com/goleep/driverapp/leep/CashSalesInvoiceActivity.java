@@ -190,7 +190,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
 
     private void onLocationDetailsFetched(Location location){
         if (location == null) return;
-        String address = viewModel.getAddress(location);
+        String address = StringUtils.getAddress(location, viewModel.getConsumerLocation());
         tvAddress.setText(address);
         viewModel.updateAreaInConsumerLocation(address);
         double outstandingBalance = location.getOutstandingBalance();

@@ -15,6 +15,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.viewmodels.DropOffCollectPaymentMethodViewModel;
 
 public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity {
@@ -103,8 +104,8 @@ public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(viewModel.getBusinessAddress());
             tvDoNumber.setText(deliveryOrder.getDoNumber() == null ? "-" : deliveryOrder.getDoNumber());
-            tvDate.setText(viewModel.currentDateToDisplay());
-            tvTime.setText(viewModel.currentTimeToDisplay());
+            tvDate.setText(DateTimeUtils.currentDateToDisplay());
+            tvTime.setText(DateTimeUtils.currentTimeToDisplay());
         }
     }
 
