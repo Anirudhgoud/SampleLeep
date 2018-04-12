@@ -73,49 +73,6 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
         return total;
     }
 
-    public String dateToDisplay(String dateString){
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
-                DateTimeUtils.ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT_COMMA);
-
-    }
-
-    public String timeToDisplay(String timeString){
-        if (timeString != null){
-            String[] times = timeString.split(" - ");
-            if(times.length == 2){
-                String startTime = DateTimeUtils.convertdDate(times[0].trim(),
-                        TWENTY_FOUR_HOUR_TIME_FORMAT, TWELVE_HOUR_TIME_FORMAT);
-                String endTime = DateTimeUtils.convertdDate(times[1].trim(),
-                        TWENTY_FOUR_HOUR_TIME_FORMAT, TWELVE_HOUR_TIME_FORMAT);
-                return startTime + " - " + endTime;
-            }
-        }
-        return "-";
-    }
-
-    public String getAddress(String line1, String line2){
-        String address = "";
-        if(line1 != null){
-            address = line1;
-        }
-        if(line2 != null){
-            if(line1 != null){
-                address += ", ";
-            }
-            address = address + line2;
-        }
-        return address;
-    }
-
-    public String getAddress(Location location) {
-        String address = "";
-        if (location == null) {
-            return address;
-        }
-        address = location.getAddressLine1() + ",\n" + location.getAddressLine2() + ",\n" + location.getCity() + ", " + location.getState() + " " + location.getPincode();
-        return address;
-    }
-
     //API calls
     public void fetchDeliveryOrderItems(final int doId, final UILevelNetworkCallback orderItemNetworkCallBack) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),

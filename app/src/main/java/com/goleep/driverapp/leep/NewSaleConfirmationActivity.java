@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.goleep.driverapp.R;
@@ -20,6 +21,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
 import com.goleep.driverapp.helpers.uimodels.Customer;
+import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -61,6 +63,8 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
     @BindView(R.id.tv_outstanding_balance)
     TextView tvOutstandingBalance;
 
+    @BindView(R.id.payment_method_layout)
+    LinearLayout llPaymentMethodLayout;
     @BindView(R.id.tv_payment_method)
     TextView tvPaymentMethod;
     @BindView(R.id.et_received_from)
@@ -92,6 +96,7 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
         setListeners();
         updateTopLayoutUI();
         updateAmountLayoutUI();
+        fetchLocationDetails();
     }
 
     private void extractIntentData() {
@@ -102,12 +107,13 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
         viewModel.setPreviousBalance(intent.getDoubleExtra(IntentConstants.PREVIOUS_BALANCE, 0.0));
         viewModel.setPaymentCollected(intent.getDoubleExtra(IntentConstants.PAYMENT_COLLECTED, 0.0));
         viewModel.setPaymentMethod(intent.getStringExtra(IntentConstants.PAYMENT_METHOD));
+        viewModel.setPaymentSkipped(intent.getBooleanExtra(IntentConstants.PAYMENT_SKIPPED, false));
     }
 
     private void initialiseToolbar() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
+        setTitleIconAndText(getString(R.string.cash_sales_title), R.drawable.ic_cash_sales);
     }
 
     private void updateTopLayoutUI() {
@@ -136,6 +142,9 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
         tvPaymentCollected.setText(amountWithCurrencySymbol(paymentCollected));
         tvGrandTotal.setText(amountWithCurrencySymbol(grandTotal));
         tvOutstandingBalance.setText(amountWithCurrencySymbol(outstandingBalance));
+
+        llPaymentMethodLayout.setVisibility(paymentCollected == 0 ? View.GONE : View.VISIBLE);
+        tvPaymentMethod.setText(viewModel.getPaymentMethod());
     }
 
     public String amountWithCurrencySymbol(Object amount) {
@@ -199,7 +208,7 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
         showProgressDialog();
         String contactNo = etContactNumber.getText().length() == 0 ? null : etContactNumber.getText().toString();
         File file = AppUtils.fileFromBitmap(getApplicationContext(), AppUtils.bitmapFromView(ivSignature, ivSignature.getWidth(), ivSignature.getHeight()), viewModel.RECEIVER_SIGNATURE);
-        viewModel.createCashSalesdeliveryOrder(etReceivedFrom.getText().toString(), contactNo, file, cashSaleNetworkCallback);
+        viewModel.createCashSalesDeliveryOrder(etReceivedFrom.getText().toString(), contactNo, file, cashSaleNetworkCallback);
     }
 
     private UILevelNetworkCallback cashSaleNetworkCallback = new UILevelNetworkCallback() {
@@ -220,6 +229,38 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
             });
         }
     };
+
+    UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        dismissProgressDialog();
+        if (uiModels == null) {
+            if (toLogout) {
+                logoutUser();
+            } else {
+                showNetworkRelatedDialogs(errorMessage);
+            }
+        } else if (uiModels.size() > 0) {
+            btContinue.setVisibility(View.VISIBLE);
+            Location location = (Location) uiModels.get(0);
+            onLocationDetailsFetched(location);
+        }
+    });
+
+    private void fetchLocationDetails(){
+        if (!viewModel.isPaymentSkipped()) return;
+        Customer consumer = viewModel.getConsumerLocation();
+        if (consumer == null) return;
+        showProgressDialog();
+        viewModel.fetchBusinessLocation(consumer.getBusinessId(), consumer.getId(), locationNetworkCallback);
+    }
+
+    private void onLocationDetailsFetched(Location location){
+        if (location == null) return;
+        String address = StringUtils.getAddress(location, viewModel.getConsumerLocation());
+        tvAddress.setText(address);
+        viewModel.updateAreaInConsumerLocation(address);
+        viewModel.setPreviousBalance(location.getOutstandingBalance());
+        updateAmountLayoutUI();
+    }
 
     private void showSuccessDialog() {
         LeepSuccessDialog successDialog = new LeepSuccessDialog(this, getString(R.string.delivery_successful));

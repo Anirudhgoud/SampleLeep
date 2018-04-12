@@ -1,7 +1,9 @@
 package com.goleep.driverapp.utils;
 
+import com.goleep.driverapp.helpers.uimodels.Customer;
+import com.goleep.driverapp.helpers.uimodels.Location;
+
 import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.Locale;
 
 import static com.goleep.driverapp.utils.DateTimeUtils.TWELVE_HOUR_TIME_FORMAT;
@@ -12,8 +14,8 @@ import static com.goleep.driverapp.utils.DateTimeUtils.TWENTY_FOUR_HOUR_TIME_FOR
  */
 
 public class StringUtils {
-   private final static NumberFormat currencyFormatter;
-   private final static NumberFormat numberFormatter;
+    private final static NumberFormat currencyFormatter;
+    private final static NumberFormat numberFormatter;
 
 
     static {
@@ -26,19 +28,20 @@ public class StringUtils {
     private StringUtils() {
     }
 
+    public static String getAddress(Location location) {
+        return location == null ? "" : location.getAddressLine1() + ",\n" + location.getAddressLine2() + ",\n" + location.getCity() + ", " + location.getState() + " " + location.getPincode();
+    }
+
+    public static String getAddress(Location location, Customer defaultLocation) {
+        return location == null ? (defaultLocation == null ? "" : defaultLocation.getArea()) : location.getAddressLine1() + ",\n" + location.getAddressLine2() + ",\n" + location.getCity() + ", " + location.getState() + " " + location.getPincode();
+    }
 
     public static String getAddress(String line1, String line2) {
-        String address = "";
-        if (line1 != null && !line1.equals("null")) {
-            address = line1;
-        }
-        if (line2 != null && !line2.equals("null")) {
-            if (line1 != null) {
-                address += ", ";
-            }
-            address = address + line2;
-        }
-        return address;
+        boolean isLine1Null = line1 == null || line1.equals("null");
+        String addressLine1 = isLine1Null ? "" : line1;
+        String addressLine2 = (line2 == null || line2.equals("null")) ? "" : line2;
+        String separator = isLine1Null ? "" : ", ";
+        return addressLine1 + separator + addressLine2;
     }
 
     public static String getFullAddress(String line1, String line2, String city, String state,

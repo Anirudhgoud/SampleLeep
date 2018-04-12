@@ -23,6 +23,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
@@ -38,15 +41,12 @@
         </activity>
         <activity
             android:name=".leep.LoginActivity"
-            android:theme="@style/LoginTheme"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/LoginTheme" />
         <activity
             android:name=".leep.HomeActivity"
-            android:theme="@style/HomeScreenTheme"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/HomeScreenTheme" />
         <activity
             android:name=".leep.ForgotPasswordActivity"
             android:screenOrientation="portrait"
@@ -120,9 +120,11 @@
         <activity
             android:name=".leep.WarehouseDropoffConfirmationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.ReturnsSelectReasonActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".leep.ReturnConfirmActivity"
+        <activity
+            android:name=".leep.ReturnsSelectReasonActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.ReturnConfirmActivity"
             android:screenOrientation="portrait" />
 
     </application>

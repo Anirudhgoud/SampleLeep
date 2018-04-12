@@ -19,20 +19,6 @@ public class DropOffPaymentCollectViewModel extends DropOffDoBaseViewModel {
         super(application);
     }
 
-    public String dateToDisplay(String dateString) {
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
-                DateTimeUtils.ORDER_SERVER_DATE_FORMAT, DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
-    }
-
-    public String getAddress(Location location) {
-        String address = "";
-        if (location == null) {
-            return address;
-        }
-        address = location.getAddressLine1() + ",\n" + location.getAddressLine2() + ",\n" + location.getCity() + ", " + location.getState() + " " + location.getPincode();
-        return address;
-    }
-
     //Getters and Setters
     public double getOutstandingBalance() {
         return outstandingBalance;

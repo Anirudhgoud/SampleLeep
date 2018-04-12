@@ -34,6 +34,8 @@
                 android:background="@drawable/rounded_border_green"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/view_item_list"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:textColor="@color/doTabTextColor"
                 android:textSize="18sp" />
 
@@ -50,10 +52,10 @@
                 android:id="@+id/payment_method_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_below="@+id/amount_summary_layout"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_below="@+id/amount_summary_layout"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <TextView

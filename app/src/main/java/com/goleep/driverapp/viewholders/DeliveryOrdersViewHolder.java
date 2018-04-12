@@ -9,13 +9,11 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.DeliveryOrderClickEventListener;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.StringUtils;
 
 import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA;
 import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
-import static com.goleep.driverapp.utils.DateTimeUtils.TWELVE_HOUR_TIME_FORMAT;
-import static com.goleep.driverapp.utils.DateTimeUtils.TWENTY_FOUR_HOUR_TIME_FORMAT;
 
 /**
  * Created by anurag on 16/02/18.
@@ -48,49 +46,21 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
         this.deliveryOrderClickEventListener = deliveryOrderClickEventListener;
     }
 
-    public void bindData(DeliveryOrderEntity deliveryOrder){
+    public void bindData(DeliveryOrderEntity deliveryOrder) {
         tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
-        tvStoreAddress.setText(getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
-        tvDoNumber.setText(deliveryOrder.getDoNumber() ==  null ? "-" : deliveryOrder.getDoNumber());
-        tvDate.setText(dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
-        tvSchedule.setText(timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
+        tvStoreAddress.setText(StringUtils.getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
+        tvDoNumber.setText(deliveryOrder.getDoNumber() == null ? "-" : deliveryOrder.getDoNumber());
+        tvDate.setText(DateTimeUtils.convertdDate(deliveryOrder.getPreferredDeliveryDate(), ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT_COMMA));
+        tvSchedule.setText(DateTimeUtils.timeDurationIn12HrFormat(deliveryOrder.getPreferredDeliveryTime()));
         tvDeliveryEstimatedTime.setText(getEstimatedDeliveryTimeText(deliveryOrder.getDistanceFromCurrentLocation()));
-        tvAmount.setText(amountToDisplay(deliveryOrder.getTotalValue()));
+        tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue()));
         tvItemsCount.setText(String.valueOf(deliveryOrder.getDeliveryOrderItemsCount()));
         setDeliverButtonClickEvent(deliveryOrder.getId());
     }
 
-    private void setDeliverButtonClickEvent(final Integer orderId){
+    private void setDeliverButtonClickEvent(final Integer orderId) {
+        itemView.setOnClickListener(v -> deliveryOrderClickEventListener.onDeliverClicked(orderId));
         btDeliver.setOnClickListener(v -> deliveryOrderClickEventListener.onDeliverClicked(orderId));
-    }
-
-    private String dateToDisplay(String dateString){
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString, ORDER_SERVER_DATE_FORMAT,
-                ORDER_DISPLAY_DATE_FORMAT_COMMA);
-    }
-
-    private String timeToDisplay(String timeString){
-        if (timeString != null){
-            String[] times = timeString.split(" - ");
-            if(times.length == 2){
-                String startTime = DateTimeUtils.convertdDate(times[0].trim(), TWENTY_FOUR_HOUR_TIME_FORMAT, TWELVE_HOUR_TIME_FORMAT);
-                String endTime = DateTimeUtils.convertdDate(times[1].trim(), TWENTY_FOUR_HOUR_TIME_FORMAT, TWELVE_HOUR_TIME_FORMAT);
-                return startTime + " - " + endTime;
-            }
-        }
-        return "-";
-    }
-
-    private String amountToDisplay(Float amountString){
-        String currencySymbol = AppUtils.userCurrencySymbol();
-        return amountString != null ? (currencySymbol + " " + Math.round(amountString)) : (currencySymbol + " 0");
-    }
-
-    private String getAddress(String line1, String line2){
-        String addressLine1 = line1 == null ? "" : line1;
-        String addressLine2 = line2 == null ? "" : line2;
-        String separator = line1 == null ? "" : ", ";
-        return addressLine1 + separator + addressLine2;
     }
 
     private String getEstimatedDeliveryTimeText(Distance distance) {

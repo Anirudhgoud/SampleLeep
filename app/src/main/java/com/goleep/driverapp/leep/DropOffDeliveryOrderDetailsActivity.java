@@ -29,11 +29,16 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
+import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.DropOffDeliveryOrderDetailsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA;
+import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
 
 public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity {
 
@@ -146,10 +151,10 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         DeliveryOrderEntity deliveryOrder = viewModel.getDeliveryOrder();
         if (deliveryOrder != null) {
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
-            tvStoreAddress.setText(viewModel.getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
+            tvStoreAddress.setText(StringUtils.getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
             tvDoNumber.setText(deliveryOrder.getDoNumber() == null ? "-" : deliveryOrder.getDoNumber());
-            tvDate.setText(viewModel.dateToDisplay(deliveryOrder.getPreferredDeliveryDate()));
-            tvSchedule.setText(viewModel.timeToDisplay(deliveryOrder.getPreferredDeliveryTime()));
+            tvDate.setText(DateTimeUtils.convertdDate(deliveryOrder.getPreferredDeliveryDate(), ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT_COMMA));
+            tvSchedule.setText(DateTimeUtils.timeDurationIn12HrFormat(deliveryOrder.getPreferredDeliveryTime()));
             int deliveryOrderCount = deliveryOrder.getDeliveryOrderItemsCount();
             tvItemsCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, deliveryOrderCount, deliveryOrderCount)));
         } else {
@@ -203,7 +208,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
             } else if (uiModels.size() > 0) {
                 runOnUiThread(() -> {
                     Location location = (Location) uiModels.get(0);
-                    viewModel.setBusinessAddress(viewModel.getAddress(location));
+                    viewModel.setBusinessAddress(StringUtils.getAddress(location));
                     viewModel.setOutstandingBalance(location.getOutstandingBalance());
                 });
             }

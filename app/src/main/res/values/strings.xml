@@ -120,6 +120,7 @@
     <string name="delivery_successful">Delivery Successful</string>
 
     <!--Cash Sales - New Sale-->
+    <string name="cash_sales_title">Cash Sales > Payment</string>
     <string name="existing_customer">Existing Customer</string>
     <string name="new_customer">New Customer</string>
     <string name="nearby_customers">Nearby Customers</string>
