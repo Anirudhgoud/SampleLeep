@@ -15,6 +15,7 @@ import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         if (contactNo != null) {
             requestForm.put("receiver_contact_number", contactNo);
         }
-        requestForm.put("delivery_order_items_attributes", generateProductItemsMap());
+        requestForm.put("delivery_order_items_attributes", new Gson().toJson(generateProductItemsMap()));
         return requestForm;
     }
 

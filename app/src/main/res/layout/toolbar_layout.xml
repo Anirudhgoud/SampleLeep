@@ -7,9 +7,9 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
+    android:layout_marginBottom="16dp"
     android:paddingLeft="12dp"
-    android:paddingRight="20dp"
-    android:layout_marginBottom="16dp">
+    android:paddingRight="16dp">
 
     <com.goleep.driverapp.helpers.customfont.CustomButton
         android:id="@+id/left_toolbar_button"
@@ -27,8 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:layout_toEndOf="@id/left_toolbar_button"
         android:layout_toRightOf="@id/left_toolbar_button"
         android:visibility="gone">
@@ -38,7 +38,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="4dp" />
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:id="@+id/activity_title"
