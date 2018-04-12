@@ -107,7 +107,7 @@ public class NewSaleConfirmationActivity extends ParentAppCompatActivity impleme
         viewModel.setPreviousBalance(intent.getDoubleExtra(IntentConstants.PREVIOUS_BALANCE, 0.0));
         viewModel.setPaymentCollected(intent.getDoubleExtra(IntentConstants.PAYMENT_COLLECTED, 0.0));
         viewModel.setPaymentMethod(intent.getStringExtra(IntentConstants.PAYMENT_METHOD));
-        viewModel.setPaymentSkipped(intent.getBooleanExtra(IntentConstants.IS_PAYMENT_SKIPPED, false));
+        viewModel.setPaymentSkipped(intent.getBooleanExtra(IntentConstants.PAYMENT_SKIPPED, false));
     }
 
     private void initialiseToolbar() {

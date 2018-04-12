@@ -13,7 +13,7 @@ public interface IntentConstants {
     String BUSINESS_ADDRESS = "business_address";
     String GRAND_TOTAL = "grand_total";
     String PAYMENT_METHOD = "payment_method";
-    String IS_PAYMENT_SKIPPED = "payment_skipped";
+    String PAYMENT_SKIPPED = "payment_skipped";
     String ORDER_ID = "order_id";
     String CONSUMER_LOCATION = "consumer_location";
     String CUSTOMER_INFO = "customer_info";

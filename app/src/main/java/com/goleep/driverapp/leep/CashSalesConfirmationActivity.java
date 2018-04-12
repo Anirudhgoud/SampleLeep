@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
@@ -165,7 +164,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
     private void onSkipPaymentTap(){
         Intent intent = new Intent(this, NewSaleConfirmationActivity.class);
         intent.putExtra(IntentConstants.PAYMENT_COLLECTED, 0);
-        intent.putExtra(IntentConstants.IS_PAYMENT_SKIPPED, true);
+        intent.putExtra(IntentConstants.PAYMENT_SKIPPED, true);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
         intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
         startActivity(intent);
