@@ -50,21 +50,25 @@ public class StockActivity extends ParentAppCompatActivity {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.stock), R.drawable.ic_stock_title_icon);
-        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
-        rbDeliverable.setTypeface(typeface);
-        rbSellable.setTypeface(typeface);
-        rbReturned.setTypeface(typeface);
         initialiseRadioButtons();
+        initRecyclerView();
+        rgListType.check(R.id.rb_deliverable);
+    }
+
+    private void initRecyclerView() {
         stocksRecyclerView.setLayoutManager(new LinearLayoutManager(StockActivity.this));
         stocksRecyclerView.addItemDecoration(new DividerItemDecoration(StockActivity.this,
                 DividerItemDecoration.VERTICAL));
         adapter = new ProductListAdapter(stocksViewModel.getStockList(
                 ProductListAdapter.TYPE_DELIVERABLE));
         stocksRecyclerView.setAdapter(adapter);
-        rgListType.check(R.id.rb_deliverable);
     }
 
     private void initialiseRadioButtons() {
+        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
+        rbDeliverable.setTypeface(typeface);
+        rbSellable.setTypeface(typeface);
+        rbReturned.setTypeface(typeface);
         rgListType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

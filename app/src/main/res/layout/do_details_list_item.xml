@@ -43,31 +43,71 @@
 
     </LinearLayout>
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
-        android:id="@+id/units_text_view"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:layout_gravity="start|center_vertical"
         android:layout_weight="5"
-        android:paddingLeft="5dp"
-        android:inputType="number"
+        android:orientation="vertical"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:textColor="@color/text_light_grey_title"
-        android:textSize="14sp"
-        app:typeface="NotoSans-Regular" />
+        android:layout_marginRight="16dp">
+
+        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:id="@+id/units_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:paddingTop="5dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:visibility="visible"
+            android:textColor="@color/text_light_grey_title"
+            android:textSize="12sp"
+            app:typeface="NotoSans-Regular" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_returned_units"
+            android:textSize="13sp"
+            android:paddingLeft="5dp"
+            android:visibility="gone"
+            android:fontFamily="@font/noto_sans"
+            android:textColor="@color/red"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:id="@+id/amount_text_view"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
         android:layout_weight="7"
         android:paddingLeft="5dp"
+        android:gravity="center_vertical"
         android:textColor="@color/doTabTextColor"
         android:textSize="14sp"
         app:typeface="NotoSans-Regular" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_returned_value"
+            android:textSize="13sp"
+            android:paddingLeft="5dp"
+            android:visibility="gone"
+            android:fontFamily="@font/noto_sans"
+            android:textColor="@color/red"/>
+
+    </LinearLayout>
 
     <CheckBox
         android:id="@+id/product_checkbox"

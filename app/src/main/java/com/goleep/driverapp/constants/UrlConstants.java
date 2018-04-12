@@ -28,6 +28,9 @@ public interface UrlConstants {
     String PRODUCT_PRICING_URL = BASE_URL + "/products/product_pricing";
     String CREATE_CASH_SALE_DO = BASE_URL + "/cash_sale";
 
+    //Return_Reasons
+    String RETURN_REASONS = BASE_URL + "/return_reasons";
+
     //Returned Orders
     String RETURNED_ORDERS = BASE_URL + "/return_orders";
 

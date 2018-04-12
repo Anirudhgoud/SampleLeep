@@ -127,7 +127,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
             fetchDriverDoDetails(((DeliveryOrderEntity)object).getId());
         } else if(object instanceof List){
             List<OrderItemEntity> orderItemEntities = (List<OrderItemEntity>)object;
-            if(orderItemEntities.size() >0) {
+            if(orderItemEntities.size() > 0) {
                 adapter.updateList(orderItemEntities);
             }
         }

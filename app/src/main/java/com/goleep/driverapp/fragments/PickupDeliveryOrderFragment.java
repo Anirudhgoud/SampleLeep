@@ -135,7 +135,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     @Override
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
         if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().
-                indexOfKey(doDetails.get(0).getOrderId()) > 0) {
+                indexOfKey(doDetails.get(0).getOrderId()) >= 0) {
             final int pos = (int) doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
             final int doId = doDetails.get(0).getOrderId();
             List<BaseListItem> listItems = new ArrayList<>();

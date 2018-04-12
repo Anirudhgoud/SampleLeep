@@ -17,7 +17,13 @@ public class StockProductParser {
     public List<StockProductEntity> getStockProduct(JSONArray response) {
         List<StockProductEntity> stockProductEntities = new ArrayList<>();
         JSONObject firstObject = response.optJSONObject(0);
+        if(firstObject == null)
+            return  null;
+
         JSONArray dataJson = firstObject.optJSONArray("data");
+        if(dataJson == null)
+            return null;
+
         int length = dataJson.length();
         for (int i = 0; i < length; i++) {
             JSONObject productJson = dataJson.optJSONObject(i);

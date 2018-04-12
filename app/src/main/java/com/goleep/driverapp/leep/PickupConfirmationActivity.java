@@ -3,6 +3,7 @@ package com.goleep.driverapp.leep;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,9 +43,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
     LinearLayout mapButton;
     private DoExpandableListAdapter adapter;
     private PickupDeliveryOrderViewModel pickupDeliveryOrderViewModel;
-    private ArrayList<Integer> cashDoItems = new ArrayList<>();
-    private ArrayList<Integer> selectedDeliveryOrders = new ArrayList<>();
-    private List<OrderItemEntity> cashSalesItems = new ArrayList<>();
+
 
     private UILevelNetworkCallback pickupConfirmCallBack = new UILevelNetworkCallback() {
         @Override
@@ -52,8 +51,15 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
                                        boolean toLogout) {
             dismissProgressDialog();
             if (!isDialogToBeShown && errorMessage == null && !toLogout) {
-                pickupDeliveryOrderViewModel.deleteDeliveryOrders(selectedDeliveryOrders, cashSalesItems);
-                showSuccessDialog();
+                pickupDeliveryOrderViewModel.deleteDeliveryOrders(pickupDeliveryOrderViewModel.
+                        getSelectedDeliveryOrders(), pickupDeliveryOrderViewModel.getCashSalesItems());
+                sendSuccessBroadcast();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showSuccessDialog();
+                    }
+                });
             }
         }
     };
@@ -75,8 +81,8 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
 
     private void handleIntent() {
         Intent intent = getIntent();
-        cashDoItems = intent.getIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY);
-        selectedDeliveryOrders = intent.getIntegerArrayListExtra(AppConstants.DO_IDS_KEY);
+        pickupDeliveryOrderViewModel.setCashDoItems(intent.getIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY));
+        pickupDeliveryOrderViewModel.setSelectedDeliveryOrders(intent.getIntegerArrayListExtra(AppConstants.DO_IDS_KEY));
     }
 
     private void initView() {
@@ -95,7 +101,8 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
                 DividerItemDecoration.VERTICAL));
         adapter = new DoExpandableListAdapter(PickupConfirmationActivity.this, new ArrayList<BaseListItem>());
         expandableListView.setAdapter(adapter);
-        adapter.addCombinedListItems(generateAdapterItemList(cashDoItems, selectedDeliveryOrders));
+        adapter.addCombinedListItems(generateAdapterItemList(pickupDeliveryOrderViewModel.getCashDoItems(),
+                pickupDeliveryOrderViewModel.getSelectedDeliveryOrders()));
     }
 
     private List<BaseListItem> generateAdapterItemList(ArrayList<Integer> cashDoItems,
@@ -128,20 +135,20 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         for (int cashSalesId : cashDoItems) {
             OrderItemEntity csOrderItem = pickupDeliveryOrderViewModel.getDeliveryOrderItem(cashSalesId);
             csOrderItem.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
-            cashSalesItems.add(csOrderItem);
+            pickupDeliveryOrderViewModel.getCashSalesItems().add(csOrderItem);
             totalValue += csOrderItem.getQuantity() * csOrderItem.getPrice();
         }
         BaseListItem cashSalesHeader = new BaseListItem();
         cashSalesHeader.setOrdersHeader(getString(R.string.cash_sales));
         cashSalesHeader.setItemType(AppConstants.TYPE_ORDERS_HEADER);
         baseListItems.add(cashSalesHeader);
-        BaseListItem cashSalesInfo = new CashSalesInfo(cashSalesItems.size(), totalValue);
+        BaseListItem cashSalesInfo = new CashSalesInfo(pickupDeliveryOrderViewModel.getCashSalesItems().size(), totalValue);
         cashSalesInfo.setItemType(AppConstants.TYPE_SALES_INFO);
         baseListItems.add(cashSalesInfo);
         BaseListItem itemsHeader = new BaseListItem();
         itemsHeader.setItemType(AppConstants.TYPE_ITEMS_HEADER);
         baseListItems.add(itemsHeader);
-        baseListItems.addAll(cashSalesItems);
+        baseListItems.addAll(pickupDeliveryOrderViewModel.getCashSalesItems());
         return baseListItems;
     }
 
@@ -168,7 +175,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
                 LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
             }
         });
-        successDialog.setPrintButtonVisibility(true);
+        successDialog.setPrintButtonVisibility(false);
     }
 
     private void goToHomeActivity() {
@@ -191,6 +198,13 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
 
     private void performConfirm() {
         showProgressDialog();
-        pickupDeliveryOrderViewModel.confirmPickup(cashSalesItems, selectedDeliveryOrders, pickupConfirmCallBack);
+        pickupDeliveryOrderViewModel.confirmPickup(pickupDeliveryOrderViewModel.getCashSalesItems(),
+                pickupDeliveryOrderViewModel.getSelectedDeliveryOrders(), pickupConfirmCallBack);
+    }
+
+    private void sendSuccessBroadcast(){
+        Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
