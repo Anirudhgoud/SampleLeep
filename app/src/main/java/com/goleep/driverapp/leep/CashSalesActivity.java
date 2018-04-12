@@ -1,5 +1,6 @@
 package com.goleep.driverapp.leep;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.fragments.CashSalesExistingCustomerFragment;
 import com.goleep.driverapp.fragments.CashSalesNewCustomerFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
@@ -76,6 +78,11 @@ public class CashSalesActivity extends ParentAppCompatActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     class CashSalesPagerAdapter extends FragmentPagerAdapter {

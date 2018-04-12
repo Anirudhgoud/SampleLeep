@@ -168,7 +168,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
                     case 0:
                         barcodeCapture.onPause();
                         break;
-
                     case 1:
                         atvSearch.clearFocus();
                         break;
