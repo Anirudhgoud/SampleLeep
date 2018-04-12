@@ -38,13 +38,15 @@
         </activity>
         <activity
             android:name=".leep.LoginActivity"
+            android:theme="@style/LoginTheme"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme" />
+            />
         <activity
             android:name=".leep.HomeActivity"
+            android:theme="@style/HomeScreenTheme"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/HomeScreenTheme" />
+            />
         <activity
             android:name=".leep.ForgotPasswordActivity"
             android:screenOrientation="portrait"
@@ -92,7 +94,22 @@
             android:name=".leep.PickupWarehouseActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".leep.NewCustomerActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".leep.CashSalesSelectProductsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.CashSalesConfirmationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.CashSalesInvoiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.CashSalesPaymentMethodActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.NewSaleConfirmationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.DropoffWarehouseActivity"

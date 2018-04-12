@@ -64,7 +64,7 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
     public void deliverOrder(String receivedBy, String contactNo, File file, final UILevelNetworkCallback deliverOrderNetworkCallBack) {
         LogUtils.debug(this.getClass().getSimpleName(), generateDeliverOrderRequestMap(receivedBy, contactNo).toString());
 
-        NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.DELIVER_DELIVERY_ORDER_URL, true, generateDeliverOrderRequestMap(receivedBy, contactNo), file, RECEIVER_SIGNATURE, (type, response, errorMessage) -> {
+        NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.DELIVER_DELIVERY_ORDER_URL, true, generateDeliverOrderRequestMap(receivedBy, contactNo), file, RECEIVER_SIGNATURE, NetworkConstants.PUT_REQUEST, (type, response, errorMessage) -> {
             switch (type) {
                 case NetworkConstants.SUCCESS:
                     deleteOrderWithItems();

@@ -26,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.facebook.stetho.common.StringUtil;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
@@ -181,13 +180,22 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     private void displayDriverProfile(DriverEntity driverEntity) {
         View view = findViewById(R.id.profile_layout);
-        ((CustomTextView) view.findViewById(R.id.name_textView)).setText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
-        ((CustomTextView) view.findViewById(R.id.place_text_view)).setText(driverEntity.getCity() + ", " + driverEntity.getCountryName());
-        ((CustomTextView) view.findViewById(R.id.deliveries_value_textview)).setText(driverEntity.getCompletedDeliveryOrdersCount() + "");
-        ((CustomTextView) view.findViewById(R.id.payment_collected_values_textview)).setText(driverEntity.getPaymentCollected() + "");
-        ((CustomTextView) view.findViewById(R.id.locations_layout_value_textview)).setText(driverEntity.getDeliveryLocationsCount() + "");
+        ((CustomTextView) view.findViewById(R.id.name_textView)).setText(StringUtils.toString(driverEntity.getFirstName(), "")
+                + " " + StringUtils.toString(driverEntity.getLastName(), ""));
+        String cityCountryName = StringUtils.toString(driverEntity.getCity(), "");
+        String countryName = StringUtils.toString(driverEntity.getCountryName(), "");
+        if(!countryName.isEmpty())
+            cityCountryName += ", " + countryName;
+        ((CustomTextView) view.findViewById(R.id.place_text_view)).setText(cityCountryName);
+        ((CustomTextView) view.findViewById(R.id.deliveries_value_textview)).setText(
+                StringUtils.toString(String.valueOf(driverEntity.getCompletedDeliveryOrdersCount()), ""));
+        ((CustomTextView) view.findViewById(R.id.payment_collected_values_textview)).setText(
+                StringUtils.toString(String.valueOf(driverEntity.getPaymentCollected()), ""));
+        ((CustomTextView) view.findViewById(R.id.locations_layout_value_textview)).setText(
+                StringUtils.toString(String.valueOf(driverEntity.getDeliveryLocationsCount()), ""));
         ((CustomTextView) view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
-        ((CustomTextView) view.findViewById(R.id.address_text_view)).setText(driverEntity.getAddressLine1() + "\n" + driverEntity.getAddressLine2());
+        ((CustomTextView) view.findViewById(R.id.address_text_view)).setText(StringUtils.getAddress(
+                driverEntity.getAddressLine1(),driverEntity.getAddressLine2()));
         ((CustomTextView) view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
         ((CustomTextView) view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
         setToolbarRightText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
@@ -404,6 +412,15 @@ public class HomeActivity extends ParentAppCompatActivity {
                     relativeLayout_pickup_cardview.setOnClickListener(dashboardItemClickListener);
                     relativeLayout_drop_off_cardview.setOnClickListener(dashboardItemClickListener);
                     relativeLayout_information_cardview.setOnClickListener(dashboardItemClickListener);
+                    findDashboardViewsAndSet(relativeLayout_pickup_cardview, R.string.pickup, R.drawable.pickup_icon_bg,
+                            R.drawable.ic_pickup_dashboard, R.string.pick_up__below_text);
+
+                    findDashboardViewsAndSet(relativeLayout_drop_off_cardview, R.string.dropoff, R.drawable.drop_off_icon_bg,
+                            R.drawable.ic_drop_off_dashboard, R.string.drop_off_below_text);
+
+                    findDashboardViewsAndSet(relativeLayout_information_cardview, R.string.information, R.drawable.info_icon_bg,
+                            R.drawable.ic_info_dashboard, R.string.information_below_text);
+
                     break;
                 case 1:
                     layout = (ViewGroup) inflater.inflate(R.layout.inner_dashboard_view, collection, false);
@@ -476,29 +493,26 @@ public class HomeActivity extends ParentAppCompatActivity {
     }
 
     private void findDashboardViewsAndSet(RelativeLayout layout, int mainText, int drawableIconBg,
-                                          int drawableDashboard, int belowText, String count) {
+                                          int drawableDashboard, int belowText) {
+
         ((CustomTextView) layout.findViewById(R.id.main_text)).setText(getResources().getText(mainText));
         (layout.findViewById(R.id.icon_layout)).setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
         ((ImageView) layout.findViewById(R.id.icon)).setImageResource(drawableDashboard);
         ((CustomTextView) layout.findViewById(R.id.sub_text)).setText(getResources().getText(belowText));
-        CustomTextView tvPickUpCount = layout.findViewById(R.id.count_text);
-        tvPickUpCount.setText(count);
-        tvPickUpCount.setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
+
+    }
+    private  void setCountValues(RelativeLayout layout,String count,int background) {
+        CustomTextView tvCount = layout.findViewById(R.id.count_text);
+        tvCount.setText(count);
+        tvCount.setBackground(ContextCompat.getDrawable(HomeActivity.this, background));
     }
 
     private void populateUiCount(Summary summary) {
-        findDashboardViewsAndSet(relativeLayout_pickup_cardview, R.string.pickup, R.drawable.pickup_icon_bg,
-                R.drawable.ic_pickup_dashboard, R.string.pick_up__below_text,
-                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())));
-
-        findDashboardViewsAndSet(relativeLayout_drop_off_cardview, R.string.dropoff, R.drawable.drop_off_icon_bg,
-                R.drawable.ic_drop_off_dashboard, R.string.drop_off_below_text,
-                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())));
-
-        findDashboardViewsAndSet(relativeLayout_information_cardview, R.string.information, R.drawable.info_icon_bg,
-                R.drawable.ic_info_dashboard, R.string.information_below_text,
-                addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())));
+       setCountValues(relativeLayout_pickup_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())),R.drawable.pickup_icon_bg);
+       setCountValues(relativeLayout_drop_off_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())),R.drawable.drop_off_icon_bg);
+       setCountValues(relativeLayout_information_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())),R.drawable.info_icon_bg);
     }
+
 
     private String addZeroToSingleCharacter(String str) {
         if (str.length() == 1)
