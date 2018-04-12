@@ -49,8 +49,6 @@ public class WarehouseDropoffConfirmationActivity extends ParentAppCompatActivit
     @BindView(R.id.rv_dropoff_list)
     LinearLayout dropoffItemsList;
 
-    private OrderItemsListAdapter adapter;
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_warehouse_dropoff_confirmation);

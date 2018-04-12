@@ -3,13 +3,17 @@ package com.goleep.driverapp.leep;
 import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
@@ -65,7 +69,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     final int START_GALLERY_REQUEST_CODE = 101;
     final int START_PICKUP_ACTIVITY_CODE = 102;
 
-    View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
+    private View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             setupInnerDashboard((String) view.getTag());
@@ -74,7 +78,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         }
     };
 
-    View.OnClickListener innerDashboardItemClickListener = new View.OnClickListener() {
+    private View.OnClickListener innerDashboardItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch ((String) view.getTag()) {
@@ -107,6 +111,11 @@ public class HomeActivity extends ParentAppCompatActivity {
                 case InnerDashboardUiModel.TAG_DROP_OFF:
                     Intent dropoffIntent = new Intent(HomeActivity.this, DropoffWarehouseActivity.class);
                     startActivity(dropoffIntent);
+                    break;
+                case InnerDashboardUiModel.TAG_RETURNS:
+                    Intent returnsIntent = new Intent(HomeActivity.this, ReturnsSelectReasonActivity.class);
+                    startActivity(returnsIntent);
+                    break;
             }
         }
     };
@@ -161,6 +170,14 @@ public class HomeActivity extends ParentAppCompatActivity {
         }
     };
 
+    private BroadcastReceiver taskSuccessBroadcast = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            viewModel.getSummary();
+        }
+    };
+
+
     private void displayDriverProfile(DriverEntity driverEntity) {
         View view = findViewById(R.id.profile_layout);
         ((CustomTextView) view.findViewById(R.id.name_textView)).setText(StringUtils.toString(driverEntity.getFirstName(), "")
@@ -195,6 +212,12 @@ public class HomeActivity extends ParentAppCompatActivity {
         initView();
         populateProfile();
         populateSummary();
+        registerBroadcastReceiver();
+    }
+
+    private void registerBroadcastReceiver() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(taskSuccessBroadcast,
+                new IntentFilter(IntentConstants.TASK_SUCCESSFUL));
     }
 
     @Override
@@ -237,7 +260,6 @@ public class HomeActivity extends ParentAppCompatActivity {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.setResources(R.layout.activity_home);
-
     }
 
     @Override
@@ -438,6 +460,12 @@ public class HomeActivity extends ParentAppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(taskSuccessBroadcast);
+        super.onDestroy();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == START_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
@@ -464,7 +492,9 @@ public class HomeActivity extends ParentAppCompatActivity {
         return result;
     }
 
-    private void findDashboardViewsAndSet(RelativeLayout layout, int mainText, int drawableIconBg, int drawableDashboard, int belowText) {
+    private void findDashboardViewsAndSet(RelativeLayout layout, int mainText, int drawableIconBg,
+                                          int drawableDashboard, int belowText) {
+
         ((CustomTextView) layout.findViewById(R.id.main_text)).setText(getResources().getText(mainText));
         (layout.findViewById(R.id.icon_layout)).setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
         ((ImageView) layout.findViewById(R.id.icon)).setImageResource(drawableDashboard);
