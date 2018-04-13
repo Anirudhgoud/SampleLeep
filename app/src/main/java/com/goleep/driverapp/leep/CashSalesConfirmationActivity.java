@@ -20,6 +20,7 @@ import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.CashSalesConfirmationViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -63,7 +64,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
         setClickListeners();
         updateTopLayoutUI();
         updateItemSummaryUI();
-        showProductList();
+        displayProductList();
     }
 
     private void extractIntentData() {
@@ -97,7 +98,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
         findViewById(R.id.iv_expandable_indicator).setVisibility(View.GONE);
     }
 
-    private void showProductList() {
+    private void displayProductList() {
         List<Product> scannedProducts = viewModel.getScannedProducts();
 
         llItemListLayout.addView(listHeaderView());
@@ -161,10 +162,18 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
     }
 
     private void onSkipPaymentTap(){
-        //TODO:
+        Intent intent = new Intent(this, NewSaleConfirmationActivity.class);
+        intent.putExtra(IntentConstants.PAYMENT_COLLECTED, 0);
+        intent.putExtra(IntentConstants.PAYMENT_SKIPPED, true);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        startActivity(intent);
     }
 
     private void onCollectPaymentTap(){
-        //TODO:
+        Intent intent = new Intent(this, CashSalesInvoiceActivity.class);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        startActivity(intent);
     }
 }

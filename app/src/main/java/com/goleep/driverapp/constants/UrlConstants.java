@@ -26,6 +26,7 @@ public interface UrlConstants {
     //New Sale
     String CONSUMER_LOCATIONS_URL = BASE_URL + "/consumer_locations";
     String PRODUCT_PRICING_URL = BASE_URL + "/products/product_pricing";
+    String CREATE_CASH_SALE_DO = BASE_URL + "/cash_sales";
 
     //Return_Reasons
     String RETURN_REASONS = BASE_URL + "/return_reasons";
@@ -40,7 +41,16 @@ public interface UrlConstants {
     String UPDATE_PROFILE_IMAGE = BASE_URL + "/users/";
 
     //Reports
-    String REPORT_URL = BASE_URL+"/reports";
+    String REPORT_URL = BASE_URL + "/reports";
     //Maps base url
-    String DISTANCE_MATRIX_API = "https://maps.googleapis.com/maps/api/distancematrix/json?";
+    String MAP_API_BASE_URL = "https://maps.googleapis.com/maps/api";
+    String DISTANCE_MATRIX_API = MAP_API_BASE_URL + "/distancematrix/json?";
+    String LAT_LONG_TO_ADDRESS_URL = MAP_API_BASE_URL + "/geocode/json?";
+
+    //Drop off
+    String BUSINESS_CATEGORIES_URL = BASE_URL + "/business_categories";
+    String BUSINESSES_URL = BASE_URL + "/businesses";
+
+    //Util
+    String COUNTRY_URL = BASE_URL + "/countries";
 }

@@ -120,6 +120,7 @@
     <string name="delivery_successful">Delivery Successful</string>
 
     <!--Cash Sales - New Sale-->
+    <string name="cash_sales_title">Cash Sales > Payment</string>
     <string name="existing_customer">Existing Customer</string>
     <string name="new_customer">New Customer</string>
     <string name="nearby_customers">Nearby Customers</string>
@@ -138,20 +139,53 @@
     <string name="invalid_contact_number">Please enter valid 10 digit contact number.</string>
     <string name="signature_error">Please add signature.</string>
 
+
     <!--Return Reasons-->
     <string name="select_reason">Select reason</string>
 
+
+
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="location_fetch_error">Unable to get user location</string>
+    <string name="location_field_empty">Location name could not be empty</string>
+    <string name="postal_code_error">Please enter 6 digit postal code</string>
+    <string name="address_error">address could not be empty</string>
+    <string name="city_field_empty">City could not be empty</string>
+    <string name="state_field_empty">State could not be empty</string>
+    <string name="country_field_empty">Country could not be empty</string>
+    <string name="business_name_field_empty">Business Name could not be empty</string>
+    <string name="business_type_dropdown_error">Please select business type</string>
+    <string name="designation_field_empty">Designation could not be empty</string>
+    <string name="email_field_empty">Please Enter valid email id</string>
 
     <!--dashboard string-->
     <string name="pick_up__below_text">From Warehouse, Returns</string>
     <string name="drop_off_below_text">Delivery Orders, Cash Sales, Drop Off to Warehouse</string>
     <string name="information_below_text">Stock, History, Reports</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="location_permission_denied">Location permission denied</string>
-    <string name="location_fetch_error">Unable to get user location</string>
+    <!--Customer strings-->
+    <string name="add_customer">Add Customer</string>
+    <string name="business_name">Business Name</string>
+    <string name="business_type">Business Type</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="designation">Designation</string>
+    <string name="email_id">Email Id</string>
+    <string name="name_your_location">Name your Location</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="address_line_1">Address Line 1</string>
+    <string name="address_line_2">Address Line 2</string>
+    <string name="floor">Floor</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="country">Country</string>
+
+    <!--Map-->
+    <string name="map_key">AIzaSyAq9pi62Es_ElwauRwDV6ZvW912wjghpHo</string>
+
+    <!--Instructions-->
+    <string name="map_drag_drop">Drag &amp; drop the pin to get the address</string>
     <string name="camera_permission_denied">Camera Permission denied.</string>
     <string name="item_already_added">Item already added in list.</string>
     <string name="product_not_available">Product not available in inventory.</string>
+
 </resources>

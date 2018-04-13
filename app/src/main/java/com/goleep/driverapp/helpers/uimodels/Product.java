@@ -75,6 +75,7 @@ public class Product implements Parcelable {
         this.weightUnit = weightUnit;
     }
 
+
     public String getReturnReason() {
         return returnReason;
     }
@@ -89,6 +90,10 @@ public class Product implements Parcelable {
 
     public void setReturnQuantity(int returnQuantity) {
         this.returnQuantity = returnQuantity;
+    }
+
+    public double getTotalPrice(){
+        return price * quantity;
     }
 
     //Parcel

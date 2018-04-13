@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -180,7 +181,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
                     case 0:
                         barcodeCapture.onPause();
                         break;
-
                     case 1:
                         atvSearch.clearFocus();
                         break;
@@ -261,6 +261,8 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void initialiseAutoCompleteTextView() {
+        Drawable rightDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_search_inactive);
+        atvSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
         productSearchArrayAdapter = new ProductSearchArrayAdapter(this, new ArrayList());
         atvSearch.setAdapter(productSearchArrayAdapter);
         atvSearch.setOnItemClickListener(this);

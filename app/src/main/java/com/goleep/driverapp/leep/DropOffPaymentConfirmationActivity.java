@@ -27,6 +27,7 @@ import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.DropOffPaymentConfirmationViewModel;
 
@@ -141,8 +142,8 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(viewModel.getBusinessAddress());
             tvDoNumber.setText(deliveryOrder.getDoNumber() == null ? "-" : deliveryOrder.getDoNumber());
-            tvDate.setText(viewModel.currentDateToDisplay());
-            tvTime.setText(viewModel.currentTimeToDisplay());
+            tvDate.setText(DateTimeUtils.currentDateToDisplay());
+            tvTime.setText(DateTimeUtils.currentTimeToDisplay());
         }
     }
 

@@ -178,7 +178,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 timeLayout.setVisibility(View.VISIBLE);
                 selectionIcon.setVisibility(View.VISIBLE);
                 DeliveryOrderEntity deliveryOrderEntity =  ((DeliveryOrderEntity) visibleItems.get(position));
-                if (((DeliveryOrderEntity) visibleItems.get(position)).getDeliveryOrderItemsCount() ==
+                if (deliveryOrderEntity.getDeliveryOrderItemsCount() ==
                         visibleItems.get(position).getSelectedCount()) {
                     selectionIcon.setImageResource(R.drawable.ic_do_selected);
                     itemCheckListener.itemChecked(deliveryOrder, true);
