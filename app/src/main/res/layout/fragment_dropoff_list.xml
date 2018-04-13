@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.goleep.driverapp.leep.StockActivity">
+    tools:context="com.goleep.driverapp.leep.info.StocksActivity">
 
     <include layout="@layout/item_header_layout"
         android:layout_alignParentTop="true"

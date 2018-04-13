@@ -53,7 +53,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
         productCheckbox.setVisibility(View.GONE);
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(product.getId(), product.getQuantity()));
-        if(!product.getReturnReason().isEmpty()){
+        if(product.getReturnReason() != null && !product.getReturnReason().isEmpty()){
             tvReturnReason.setText(product.getReturnReason());
             tvReturnReason.setVisibility(View.VISIBLE);
         } else {

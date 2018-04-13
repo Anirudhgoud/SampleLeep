@@ -15,7 +15,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.helpers.uimodels.CashSalesInfo;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
-import com.goleep.driverapp.leep.PickupActivity;
+import com.goleep.driverapp.leep.pickup.pickup.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.AppUtils;

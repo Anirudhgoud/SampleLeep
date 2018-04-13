@@ -23,10 +23,10 @@ import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
-import com.goleep.driverapp.leep.DropoffActivity;
+import com.goleep.driverapp.leep.dropoff.dropoff.DropoffActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.StocksViewModel;
+import com.goleep.driverapp.viewmodels.information.StocksViewModel;
 
 import java.util.ArrayList;
 
