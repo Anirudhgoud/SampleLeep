@@ -23,8 +23,8 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
-import com.goleep.driverapp.viewmodels.DeliveryOrderViewModel;
-import com.goleep.driverapp.viewmodels.HistoryViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DeliveryOrderViewModel;
+import com.goleep.driverapp.viewmodels.information.HistoryViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;

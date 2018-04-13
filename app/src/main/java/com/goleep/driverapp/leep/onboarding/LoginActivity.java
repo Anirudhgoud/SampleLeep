@@ -16,7 +16,7 @@ import com.goleep.driverapp.leep.main.HomeActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
-import com.goleep.driverapp.viewmodels.LoginViewModel;
+import com.goleep.driverapp.viewmodels.onboarding.LoginViewModel;
 
 import java.util.List;
 

@@ -31,7 +31,7 @@ import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.DropOffDeliveryOrderDetailsViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrderDetailsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

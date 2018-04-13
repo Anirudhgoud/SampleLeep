@@ -30,7 +30,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.dropoff.cashsales.NewCustomerActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.CashSalesNewCustomerViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesNewCustomerViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

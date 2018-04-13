@@ -22,7 +22,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.DropoffViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.dropoff.DropoffViewModel;
 
 import java.util.ArrayList;
 

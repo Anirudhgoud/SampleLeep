@@ -17,7 +17,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.ReportsViewModel;
+import com.goleep.driverapp.viewmodels.information.ReportsViewModel;
 
 import java.util.List;
 

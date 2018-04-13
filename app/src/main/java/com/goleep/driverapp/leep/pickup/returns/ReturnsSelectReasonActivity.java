@@ -17,7 +17,7 @@ import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.ReturnReasonsViewModel;
+import com.goleep.driverapp.viewmodels.pickup.returns.ReturnReasonsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

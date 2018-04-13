@@ -19,7 +19,7 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.CashSalesConfirmationViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesConfirmationViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -31,7 +31,7 @@ import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.NewSalesConfirmationViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.NewSalesConfirmationViewModel;
 
 import java.io.File;
 import java.util.List;

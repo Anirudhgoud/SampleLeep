@@ -26,7 +26,7 @@ import com.goleep.driverapp.leep.main.HomeActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.LogUtils;
-import com.goleep.driverapp.viewmodels.PickupDeliveryOrderViewModel;
+import com.goleep.driverapp.viewmodels.pickup.pickup.PickupDeliveryOrderViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

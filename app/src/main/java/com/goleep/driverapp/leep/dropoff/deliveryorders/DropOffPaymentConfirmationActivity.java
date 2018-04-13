@@ -30,7 +30,7 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
-import com.goleep.driverapp.viewmodels.DropOffPaymentConfirmationViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffPaymentConfirmationViewModel;
 
 import java.io.File;
 import java.util.List;

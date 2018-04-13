@@ -24,7 +24,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.dropoff.deliveryorders.DropOffDeliveryOrderDetailsActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

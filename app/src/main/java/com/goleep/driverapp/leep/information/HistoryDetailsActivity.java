@@ -18,7 +18,7 @@ import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.HistoryDetailsViewModel;
+import com.goleep.driverapp.viewmodels.information.HistoryDetailsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

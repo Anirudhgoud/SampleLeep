@@ -25,7 +25,7 @@ import com.goleep.driverapp.leep.pickup.pickup.PickupActivity;
 import com.goleep.driverapp.leep.pickup.pickup.PickupConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.viewmodels.CashSalesViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,7 +14,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ProductListAdapter;
 import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
-import com.goleep.driverapp.viewmodels.StocksViewModel;
+import com.goleep.driverapp.viewmodels.information.StocksViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

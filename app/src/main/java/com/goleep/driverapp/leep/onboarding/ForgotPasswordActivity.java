@@ -11,7 +11,7 @@ import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.ForgotPasswordViewModel;
+import com.goleep.driverapp.viewmodels.onboarding.ForgotPasswordViewModel;
 
 import java.util.List;
 

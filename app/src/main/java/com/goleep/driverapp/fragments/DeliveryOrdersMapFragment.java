@@ -26,7 +26,7 @@ import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

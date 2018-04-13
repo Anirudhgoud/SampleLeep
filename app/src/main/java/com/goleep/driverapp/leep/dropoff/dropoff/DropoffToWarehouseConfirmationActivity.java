@@ -17,7 +17,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.DropoffConfirmationViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.dropoff.DropoffConfirmationViewModel;
 
 import java.util.List;
 import java.util.Locale;

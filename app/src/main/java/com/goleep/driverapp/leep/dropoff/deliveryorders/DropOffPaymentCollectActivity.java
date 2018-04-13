@@ -24,7 +24,7 @@ import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
-import com.goleep.driverapp.viewmodels.DropOffPaymentCollectViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffPaymentCollectViewModel;
 
 import java.util.Locale;
 

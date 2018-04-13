@@ -26,7 +26,7 @@ import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.LogUtils;
-import com.goleep.driverapp.viewmodels.NewCustomerViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.NewCustomerViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

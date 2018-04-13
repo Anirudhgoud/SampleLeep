@@ -38,7 +38,7 @@ import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesActivity;
 import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesSelectProductsActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.pickup.returns.ReturnsCustomerSelectActivity;
-import com.goleep.driverapp.viewmodels.CashSalesExistingCustomerViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesExistingCustomerViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

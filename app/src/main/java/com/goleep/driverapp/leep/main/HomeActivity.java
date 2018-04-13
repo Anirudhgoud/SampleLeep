@@ -45,7 +45,7 @@ import com.goleep.driverapp.leep.information.ReportsActivity;
 import com.goleep.driverapp.leep.information.StocksActivity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.HomeViewModel;
+import com.goleep.driverapp.viewmodels.main.HomeViewModel;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -17,7 +17,7 @@ import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.CashSalesPaymentMethodViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesPaymentMethodViewModel;
 
 import java.util.ArrayList;
 

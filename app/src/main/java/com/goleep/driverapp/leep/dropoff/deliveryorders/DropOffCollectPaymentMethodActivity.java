@@ -17,7 +17,7 @@ import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
-import com.goleep.driverapp.viewmodels.DropOffCollectPaymentMethodViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffCollectPaymentMethodViewModel;
 
 public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity {
 

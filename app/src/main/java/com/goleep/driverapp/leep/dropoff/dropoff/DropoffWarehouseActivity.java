@@ -13,7 +13,7 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.WarehousePagerAdapter;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
-import com.goleep.driverapp.viewmodels.DropoffViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.dropoff.DropoffViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -41,7 +41,7 @@ import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.pickup.returns.ReturnsSelectReasonActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.CashSalesSelectProductsViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesSelectProductsViewModel;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
 import com.google.android.gms.vision.barcode.Barcode;
 

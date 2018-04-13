@@ -17,7 +17,7 @@ import com.goleep.driverapp.fragments.DeliveryOrdersListFragment;
 import com.goleep.driverapp.fragments.DeliveryOrdersMapFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
-import com.goleep.driverapp.viewmodels.DropOffDeliveryOrdersViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
