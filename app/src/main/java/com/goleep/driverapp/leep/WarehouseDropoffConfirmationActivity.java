@@ -3,9 +3,6 @@ package com.goleep.driverapp.leep;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +10,15 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.adapters.DoExpandableListAdapter;
-import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductListAdapter;
-import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.services.room.entities.ProductEntity;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.DropoffConfirmationViewModel;
-import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,6 +38,13 @@ public class WarehouseDropoffConfirmationActivity extends ParentAppCompatActivit
     CustomButton confirmButton;
     @BindView(R.id.rv_dropoff_list)
     LinearLayout dropoffItemsList;
+
+    private UILevelNetworkCallback dropoffConfirmCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -76,11 +73,11 @@ public class WarehouseDropoffConfirmationActivity extends ParentAppCompatActivit
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.dropoff_stock), R.drawable.ic_drop_off_title);
         setWareHouseDetails();
-        initRecyclerView();
+        initItemsList();
         confirmButton.setOnClickListener(this);
     }
 
-    private void initRecyclerView() {
+    private void initItemsList() {
         List<Integer> selectedSellableItems = dropoffConfirmationViewModel.getSelectedSellableIds();
         List<Integer> selectedReturnableIds = dropoffConfirmationViewModel.getSelectedReturnableIds();
         if(selectedReturnableIds != null && selectedReturnableIds.size() > 0){
@@ -157,7 +154,7 @@ public class WarehouseDropoffConfirmationActivity extends ParentAppCompatActivit
             case R.id.left_toolbar_button : finish();
                 break;
             case R.id.confirm_button:
-                showSuccessDialog(getString(R.string.dropoff_success));
+                dropoffConfirmationViewModel.confirmDropoff(dropoffConfirmCallback);
                 break;
         }
     }
