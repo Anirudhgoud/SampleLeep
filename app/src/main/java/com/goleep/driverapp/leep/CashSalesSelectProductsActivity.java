@@ -149,8 +149,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             case AppConstants.CASH_SALES_FLOW:
                 setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
                 break;
-            case AppConstants.RETURNS_FLOW:
-                default:
+            default:
                 setTitleIconAndText(getString(R.string.returns), R.drawable.ic_returns_title_icon);
         }
     }
