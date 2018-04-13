@@ -1,9 +1,8 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.onboarding;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
@@ -13,6 +12,9 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.ForgotPasswordActivity;
+import com.goleep.driverapp.leep.HomeActivity;
+import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.LoginViewModel;
@@ -31,10 +33,14 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
 
     private LoginViewModel loginViewModel;
-    @BindView(R.id.phone_editText)CustomEditText phoneEditText;
-    @BindView(R.id.password_editText) CustomEditText passwordEditText;
-    @BindView(R.id.login_button) CustomButton loginButton;
-    @BindView(R.id.forgot_password_textView) CustomTextView forgotPasswordTextView;
+    @BindView(R.id.phone_editText)
+    CustomEditText phoneEditText;
+    @BindView(R.id.password_editText)
+    CustomEditText passwordEditText;
+    @BindView(R.id.login_button)
+    CustomButton loginButton;
+    @BindView(R.id.forgot_password_textView)
+    CustomTextView forgotPasswordTextView;
 
     private UILevelNetworkCallback loginCallBack = new UILevelNetworkCallback() {
         @Override
@@ -60,13 +66,13 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.setResources(R.layout.activity_login);
-        if(isLoggedIn()){
+        if (isLoggedIn()) {
             startHomeActivity();
         }
     }
 
     private boolean isLoggedIn() {
-        if(!LocalStorageService.sharedInstance().getLocalFileStore().getString(
+        if (!LocalStorageService.sharedInstance().getLocalFileStore().getString(
                 LoginActivity.this, SharedPreferenceKeys.AUTH_TOKEN).isEmpty()) {
             LogUtils.error("AuthToken", LocalStorageService.sharedInstance().getLocalFileStore().getString(
                     LoginActivity.this, SharedPreferenceKeys.AUTH_TOKEN));
@@ -77,9 +83,10 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.login_button: performLoginOperation();
-            break;
+        switch (resourceId) {
+            case R.id.login_button:
+                performLoginOperation();
+                break;
             case R.id.forgot_password_textView:
                 startForgotPasswordActivity();
         }
@@ -100,7 +107,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private boolean isValidUsernamePassword() {
         final String PATTERN = ".*[A-Za-z0-9]+.*";
-        if(phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
+        if (phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
                 !passwordEditText.getText().toString().isEmpty() &&
                 passwordEditText.getText().toString().length() >= PASSWORD_MIN_LENGTH &&
                 passwordEditText.getText().toString().length() <= PASSWORD_MAX_LENGTH &&
@@ -116,7 +123,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void handleLoginResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
-        if(errorMessage != null)
+        if (errorMessage != null)
             showNetworkRelatedDialogs(errorMessage);
         else
             startHomeActivity();
@@ -131,10 +138,10 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     @Override
     public void onTextChanged(int textLength) {
-        if(textLength == PHONE_NUMBER_LENGTH){
+        if (textLength == PHONE_NUMBER_LENGTH) {
             phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_correct, 0);
         } else {
-            if(textLength == 0)
+            if (textLength == 0)
                 phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             else
                 phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_error, 0);

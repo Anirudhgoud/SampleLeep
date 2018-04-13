@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.uihelpers.FontProvider;
-import com.goleep.driverapp.leep.LeepApp;
 
 
 public class CustomTextView extends AppCompatTextView {
