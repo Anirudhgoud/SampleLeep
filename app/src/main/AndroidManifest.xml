@@ -129,8 +129,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".leep.ReturnsCustomerSelectActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".leep.ReturnsSelectProductsActivity"
-            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
