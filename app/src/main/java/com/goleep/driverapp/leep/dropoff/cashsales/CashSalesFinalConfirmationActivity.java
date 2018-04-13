@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.dropoff.cashsales;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -25,6 +25,8 @@ import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
+import com.goleep.driverapp.leep.main.HomeActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
@@ -37,7 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewSaleConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
+public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
 
     @BindView(R.id.tv_customer_name)
     CustomTextView tvCustomerName;
