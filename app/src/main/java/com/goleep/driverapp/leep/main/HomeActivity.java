@@ -40,9 +40,9 @@ import com.goleep.driverapp.leep.dropoff.deliveryorders.DropOffDeliveryOrdersAct
 import com.goleep.driverapp.leep.dropoff.dropoff.DropoffWarehouseActivity;
 import com.goleep.driverapp.leep.pickup.pickup.PickupWarehouseActivity;
 import com.goleep.driverapp.leep.pickup.returns.ReturnsCustomerSelectActivity;
-import com.goleep.driverapp.leep.information.HistoryActivity;
-import com.goleep.driverapp.leep.information.ReportsActivity;
-import com.goleep.driverapp.leep.information.StocksActivity;
+import com.goleep.driverapp.leep.info.HistoryActivity;
+import com.goleep.driverapp.leep.info.ReportsActivity;
+import com.goleep.driverapp.leep.info.StocksActivity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.main.HomeViewModel;

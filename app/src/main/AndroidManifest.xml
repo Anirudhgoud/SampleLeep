@@ -76,16 +76,16 @@
             android:name=".leep.dropoff.cashsales.CashSalesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".leep.information.ReportsActivity"
+            android:name=".leep.info.ReportsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".leep.information.StocksActivity"
+            android:name=".leep.info.StocksActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".leep.information.HistoryActivity"
+            android:name=".leep.info.HistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".leep.information.HistoryDetailsActivity"
+            android:name=".leep.info.HistoryDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.pickup.pickup.PickupWarehouseActivity"

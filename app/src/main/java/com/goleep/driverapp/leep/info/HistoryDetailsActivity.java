@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep.information;
+package com.goleep.driverapp.leep.info;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
