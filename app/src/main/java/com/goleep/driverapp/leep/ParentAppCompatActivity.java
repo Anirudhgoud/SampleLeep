@@ -88,7 +88,9 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     protected void setTitleIconAndText(String title, int resId){
         findViewById(R.id.title_layout).setVisibility(View.VISIBLE);
         ((CustomTextView)findViewById(R.id.activity_title)).setText(title);
-        findViewById(R.id.title_icon).setBackgroundResource(resId);
+        if(resId != -1) {
+            findViewById(R.id.title_icon).setBackgroundResource(resId);
+        }
     }
 
     protected void setToolbarRightText(String text){

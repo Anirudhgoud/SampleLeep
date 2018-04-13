@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
@@ -25,6 +26,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
     private Context context;
     private CustomTextView tvProductName, tvProductQuantity, tvAmount, tvUnits;
     private CheckBox productCheckbox;
+    private TextView tvReturnReason;
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener;
 
     public OrderItemsViewHolder(View itemView, DeliveryOrderItemEventListener deliveryOrderItemEventListener) {
@@ -36,7 +38,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvAmount = itemView.findViewById(R.id.amount_text_view);
         tvUnits = itemView.findViewById(R.id.units_text_view);
         productCheckbox = itemView.findViewById(R.id.product_checkbox);
-
+        tvReturnReason = itemView.findViewById(R.id.return_reason_tv);
         tvUnits.setBackground(context.getResources().getDrawable(R.drawable.rounded_border_green));
     }
 
@@ -51,6 +53,12 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
         productCheckbox.setVisibility(View.GONE);
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(product.getId(), product.getQuantity()));
+        if(!product.getReturnReason().isEmpty()){
+            tvReturnReason.setText(product.getReturnReason());
+            tvReturnReason.setVisibility(View.VISIBLE);
+        } else {
+            tvReturnReason.setVisibility(View.GONE);
+        }
     }
 
     public void bindData(final OrderItemEntity orderItem) {

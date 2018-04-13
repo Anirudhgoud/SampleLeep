@@ -23,6 +23,9 @@ public interface AppConstants {
     int TYPE_SELLABLE = 1;
     int TYPE_RETURNED = 2;
 
+    int CASH_SALES_FLOW = 1;
+    int RETURNS_FLOW = 2;
+
     //Permission codes
     int LOCATION_PERMISSION_REQUEST_CODE = 100;
 }

@@ -22,4 +22,7 @@ public interface IntentConstants {
     String RETURNABLE = "returnable";
     String SELLABLE = "sellable";
     String TASK_SUCCESSFUL = "task_successful";
+    String FLOW = "flow";
+    String PRODUCT = "product";
+    String RETURN_REASON = "return_reason";
 }

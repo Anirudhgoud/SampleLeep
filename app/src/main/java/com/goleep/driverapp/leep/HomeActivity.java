@@ -113,7 +113,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     startActivity(dropoffIntent);
                     break;
                 case InnerDashboardUiModel.TAG_RETURNS:
-                    Intent returnsIntent = new Intent(HomeActivity.this, ReturnsSelectReasonActivity.class);
+                    Intent returnsIntent = new Intent(HomeActivity.this, ReturnsCustomerSelectActivity.class);
                     startActivity(returnsIntent);
                     break;
             }
@@ -134,16 +134,14 @@ public class HomeActivity extends ParentAppCompatActivity {
                                        String errorMessage, boolean toLogout) {
             if (toLogout)
                 logoutUser();
-            else if (errorMessage == null) {
-                if (uiModels.size() > 0) {
-                    if (!HomeActivity.this.isFinishing())
-                        HomeActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                displayDriverProfile((DriverEntity) uiModels.get(0));
-                            }
-                        });
-                }
+            else if (errorMessage == null && uiModels != null && uiModels.size() > 0) {
+                if (!HomeActivity.this.isFinishing())
+                    HomeActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayDriverProfile((DriverEntity) uiModels.get(0));
+                        }
+                    });
             } else if (isDialogToBeShown) {
                 showNetworkRelatedDialogs(errorMessage);
             }
