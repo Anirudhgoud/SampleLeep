@@ -27,8 +27,8 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.CustomerInfo;
 import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.NewCustomerActivity;
-import com.goleep.driverapp.leep.ParentAppCompatActivity;
+import com.goleep.driverapp.leep.dropoff.cashsales.NewCustomerActivity;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.CashSalesNewCustomerViewModel;
 

@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.dropoff.cashsales;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
@@ -132,7 +133,7 @@ public class CashSalesPaymentMethodActivity extends ParentAppCompatActivity {
     }
 
     private void onContinueButtonTap() {
-        Intent intent = new Intent(this, NewSaleConfirmationActivity.class);
+        Intent intent = new Intent(this, CashSalesFinalConfirmationActivity.class);
         intent.putExtra(IntentConstants.PAYMENT_COLLECTED, viewModel.getPaymentCollected());
         intent.putExtra(IntentConstants.PREVIOUS_BALANCE, viewModel.getPreviousBalance());
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());

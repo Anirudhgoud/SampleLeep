@@ -1,9 +1,7 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.onboarding;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
@@ -11,7 +9,7 @@ import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.services.network.NetworkService;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.ForgotPasswordViewModel;
 
@@ -19,8 +17,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.goleep.driverapp.constants.UrlConstants.FORGOT_PASSWORD_URL;
 
 public class ForgotPasswordActivity extends ParentAppCompatActivity implements EditTextListener {
     @BindView(R.id.email_edit_text)

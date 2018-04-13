@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.information;
 
 
 import android.arch.lifecycle.ViewModelProviders;
@@ -15,17 +15,12 @@ import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 
 import com.goleep.driverapp.helpers.uihelpers.FontProvider;
-import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.ReportsViewModel;
 
 import java.util.List;
 
-
-import com.goleep.driverapp.helpers.uihelpers.FontProvider;
-
-import com.goleep.driverapp.utils.FontUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

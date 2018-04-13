@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.information;
 
 
 import android.arch.lifecycle.LiveData;
@@ -20,9 +20,9 @@ import com.goleep.driverapp.adapters.HistoryListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
-import com.goleep.driverapp.utils.FontUtils;
 import com.goleep.driverapp.viewmodels.DeliveryOrderViewModel;
 import com.goleep.driverapp.viewmodels.HistoryViewModel;
 

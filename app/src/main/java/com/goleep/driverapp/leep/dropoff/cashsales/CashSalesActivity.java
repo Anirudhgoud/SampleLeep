@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.dropoff.cashsales;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.fragments.CashSalesExistingCustomerFragment;
 import com.goleep.driverapp.fragments.CashSalesNewCustomerFragment;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 
 public class CashSalesActivity extends ParentAppCompatActivity {
 

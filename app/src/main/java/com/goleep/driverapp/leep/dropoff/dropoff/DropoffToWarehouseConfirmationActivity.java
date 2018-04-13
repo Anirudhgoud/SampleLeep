@@ -1,11 +1,8 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.dropoff.dropoff;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,29 +10,22 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.adapters.DoExpandableListAdapter;
-import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductListAdapter;
-import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
-import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.services.room.entities.ProductEntity;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.DropoffConfirmationViewModel;
-import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WarehouseDropoffConfirmationActivity extends ParentAppCompatActivity {
+public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActivity {
 
     private DropoffConfirmationViewModel dropoffConfirmationViewModel;
     @BindView(R.id.warehouse_info_text_view)

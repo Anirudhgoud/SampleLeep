@@ -1,10 +1,9 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.dropoff.cashsales;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -25,7 +24,7 @@ import com.goleep.driverapp.helpers.uimodels.CustomerInfo;
 import com.goleep.driverapp.helpers.uimodels.Address;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.services.network.jsonparsers.CountryDataParser;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.NewCustomerViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,13 +36,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import butterknife.BindView;

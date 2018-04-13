@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.main;
 
 import android.Manifest;
 import android.app.Activity;
@@ -35,6 +35,14 @@ import com.goleep.driverapp.helpers.uimodels.InnerDashboardUiModel;
 import com.goleep.driverapp.helpers.uimodels.Summary;
 import com.goleep.driverapp.interfaces.OnPermissionResult;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesActivity;
+import com.goleep.driverapp.leep.dropoff.deliveryorders.DropOffDeliveryOrdersActivity;
+import com.goleep.driverapp.leep.dropoff.dropoff.DropoffWarehouseActivity;
+import com.goleep.driverapp.leep.pickup.pickup.PickupWarehouseActivity;
+import com.goleep.driverapp.leep.pickup.returns.ReturnsCustomerSelectActivity;
+import com.goleep.driverapp.leep.information.HistoryActivity;
+import com.goleep.driverapp.leep.information.ReportsActivity;
+import com.goleep.driverapp.leep.information.StocksActivity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.HomeViewModel;
@@ -105,7 +113,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     startActivity(historyIntent);
                     break;
                 case InnerDashboardUiModel.TAG_STOCKS:
-                    Intent stocksIntent = new Intent(HomeActivity.this, StockActivity.class);
+                    Intent stocksIntent = new Intent(HomeActivity.this, StocksActivity.class);
                     startActivity(stocksIntent);
                     break;
                 case InnerDashboardUiModel.TAG_DROP_OFF:
