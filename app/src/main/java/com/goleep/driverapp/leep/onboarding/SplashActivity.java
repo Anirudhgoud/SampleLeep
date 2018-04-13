@@ -1,4 +1,4 @@
-package com.goleep.driverapp.leep;
+package com.goleep.driverapp.leep.onboarding;
 
 
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.leep.LoginActivity;
+import com.goleep.driverapp.leep.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.LogUtils;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
