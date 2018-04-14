@@ -171,7 +171,7 @@ public class NetworkClient {
         if (isAuthRequired) requestBuilder.addHeader("Authorization", getOAuthToken(context));
         switch (requestType){
             case NetworkConstants.POST_REQUEST: requestBuilder.post(formBody);
-            case NetworkConstants.PUT_REQUEST: requestBuilder.post(formBody);
+            case NetworkConstants.PUT_REQUEST: requestBuilder.put(formBody);
         }
 
         Request request = requestBuilder.build();

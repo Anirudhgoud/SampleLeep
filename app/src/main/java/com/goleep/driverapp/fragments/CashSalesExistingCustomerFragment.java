@@ -34,11 +34,11 @@ import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.interfaces.CustomerClickEventListener;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.CashSalesActivity;
-import com.goleep.driverapp.leep.CashSalesSelectProductsActivity;
-import com.goleep.driverapp.leep.ParentAppCompatActivity;
-import com.goleep.driverapp.leep.ReturnsCustomerSelectActivity;
-import com.goleep.driverapp.viewmodels.CashSalesExistingCustomerViewModel;
+import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesActivity;
+import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesSelectProductsActivity;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
+import com.goleep.driverapp.leep.pickup.returns.ReturnsCustomerSelectActivity;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesExistingCustomerViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

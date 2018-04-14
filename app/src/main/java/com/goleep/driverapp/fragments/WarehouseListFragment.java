@@ -15,15 +15,14 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.WarehouseListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.leep.DropoffActivity;
-import com.goleep.driverapp.leep.DropoffWarehouseActivity;
-import com.goleep.driverapp.leep.PickupWarehouseActivity;
+import com.goleep.driverapp.leep.dropoff.dropoff.DropoffActivity;
+import com.goleep.driverapp.leep.dropoff.dropoff.DropoffWarehouseActivity;
+import com.goleep.driverapp.leep.pickup.pickup.PickupWarehouseActivity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.PickupActivity;
+import com.goleep.driverapp.leep.pickup.pickup.PickupActivity;
 import com.goleep.driverapp.viewmodels.WarehouseViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

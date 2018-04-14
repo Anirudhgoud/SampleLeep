@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
     android:orientation="vertical"
-    tools:context="com.goleep.driverapp.leep.HistoryDetailsActivity">
+    tools:context="com.goleep.driverapp.leep.info.HistoryDetailsActivity">
 
     <include layout="@layout/toolbar_layout"
         android:layout_height="wrap_content"

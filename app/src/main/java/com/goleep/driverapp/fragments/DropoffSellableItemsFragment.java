@@ -1,6 +1,5 @@
 package com.goleep.driverapp.fragments;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,11 +25,11 @@ import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
-import com.goleep.driverapp.leep.DropoffActivity;
-import com.goleep.driverapp.leep.WarehouseDropoffConfirmationActivity;
+import com.goleep.driverapp.leep.dropoff.dropoff.DropoffActivity;
+import com.goleep.driverapp.leep.dropoff.dropoff.DropoffToWarehouseConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.StocksViewModel;
+import com.goleep.driverapp.viewmodels.information.StocksViewModel;
 
 import java.util.ArrayList;
 
@@ -100,7 +99,7 @@ public class DropoffSellableItemsFragment extends Fragment {
     private void startConfirmationActivity() {
         DropoffActivity activity = ((DropoffActivity) getActivity());
         if(activity != null && !activity.isFinishing()) {
-            Intent intent = new Intent(activity, WarehouseDropoffConfirmationActivity.class);
+            Intent intent = new Intent(activity, DropoffToWarehouseConfirmationActivity.class);
             int warehouseId = getArguments().getInt(IntentConstants.WAREHOUSE_ID);
             intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseId);
             if (activity.getSelectedReturnableIds().size() > 0) {

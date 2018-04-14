@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.uihelpers.FontProvider;
-import com.goleep.driverapp.leep.LeepApp;
 
 
 public class CustomEditText extends AppCompatEditText {
