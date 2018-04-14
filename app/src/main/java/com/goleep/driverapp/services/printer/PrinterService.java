@@ -15,7 +15,7 @@ public class PrinterService {
     private BluetoothPrinter printer;
 
     private PrinterService(){
-        printerService = new PrinterService();
+        printer = BluetoothPrinter.INSTANCE;
     }
 
     public static PrinterService sharedInstance(){

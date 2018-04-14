@@ -1,9 +1,12 @@
 package com.goleep.driverapp.leep;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
@@ -16,6 +19,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.LoginViewModel;
+import com.ngx.BluetoothPrinter;
 
 import java.util.List;
 
@@ -140,4 +144,39 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
                 phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_error, 0);
         }
     }
+
+    @SuppressLint("HandlerLeak")
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case BluetoothPrinter.MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case BluetoothPrinter.STATE_CONNECTED:
+                            Toast.makeText(LoginActivity.this, "Connected", Toast.LENGTH_LONG).show();
+                            break;
+                        case BluetoothPrinter.STATE_CONNECTING:
+                            //tvStatus.setText(title_connecting);
+                            break;
+                        case BluetoothPrinter.STATE_LISTEN:
+                        case BluetoothPrinter.STATE_NONE:
+                            //tvStatus.setText(title_not_connected);
+                            break;
+                    }
+                    break;
+                case BluetoothPrinter.MESSAGE_DEVICE_NAME:
+                    // save the connected device's name
+                    //mConnectedDeviceName = msg.getData().getString(
+                    // BluetoothPrinter.DEVICE_NAME);
+                    break;
+                case BluetoothPrinter.MESSAGE_STATUS:
+                    //tvStatus.setText(msg.getData().getString(
+                    // BluetoothPrinter.STATUS_TEXT));
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
 }
