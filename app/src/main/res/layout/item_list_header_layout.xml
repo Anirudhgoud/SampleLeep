@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_weight="12"
         android:gravity="center_vertical"
-        android:paddingLeft="16dp"
+        android:layout_marginLeft="16dp"
         android:text="@string/items_label"
         android:textColor="@color/doTabTextColor"
         android:textSize="14sp"
@@ -19,7 +19,6 @@
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="8dp"
         android:layout_weight="6"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/units"
@@ -30,9 +29,8 @@
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
         android:layout_weight="9"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|center_horizontal"
         android:text="@string/value"
         android:textColor="@color/doTabTextColor"
         android:textSize="14sp"

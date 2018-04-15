@@ -23,6 +23,9 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
     private List<Product> scannedProducts;
     private double outstandingBalance;
 
+    private int selectedProductCount = 0;
+    private int returnedProductCount = 0;
+
     public CashSalesInvoiceViewModel(@NonNull Application application) {
         super(application);
     }
@@ -100,5 +103,21 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
 
     public void setOutstandingBalance(double outstandingBalance) {
         this.outstandingBalance = outstandingBalance;
+    }
+
+    public int getSelectedProductCount() {
+        return selectedProductCount;
+    }
+
+    public void incrementSelectedProductCount() {
+        this.selectedProductCount++;
+    }
+
+    public int getReturnedProductCount() {
+        return returnedProductCount;
+    }
+
+    public void incrementReturnedProductCount() {
+        this.returnedProductCount++;
     }
 }
