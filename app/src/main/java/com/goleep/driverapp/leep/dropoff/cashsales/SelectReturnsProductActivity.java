@@ -31,8 +31,8 @@ import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
-import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
@@ -331,7 +331,7 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
         startActivityForResult(intent, RETURN_REASON_REQUEST_CODE);
     }
 
-    private void updateProductDetails(String returnReason) {
+    private void updateProductDetails(ReturnReason returnReason) {
         Product product = viewModel.getSelectedProduct();
         if (product == null) return;
         product.setReturnReason(returnReason);
@@ -360,16 +360,16 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     }
 
     private void onConfirmButtonTap() {
-        ArrayList<Product> productList = viewModel.getScannedProducts();
-        if (productList.size() > 0) {
-            gotoNextActivity(viewModel.getConsumerLocation(), productList);
+        if (viewModel.getScannedProducts().size() > 0) {
+            gotoNextActivity();
         }
     }
 
-    private void gotoNextActivity(Customer consumerLocation, ArrayList<Product> productList) {
-        Intent intent = new Intent(this, CashSalesConfirmationActivity.class);
-        intent.putExtra(IntentConstants.CONSUMER_LOCATION, consumerLocation);
-        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, productList);
+    private void gotoNextActivity() {
+        Intent intent = new Intent(this, CashSalesReturnsConfirmationActivity.class);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, viewModel.getSelectedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.RETURNED_PRODUCT_LIST, viewModel.getScannedProducts());
         startActivity(intent);
     }
 
@@ -377,7 +377,7 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RETURN_REASON_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                String returnReason = data.getStringExtra(IntentConstants.RETURN_REASON);
+                ReturnReason returnReason = data.getParcelableExtra(IntentConstants.RETURN_REASON);
                 updateProductDetails(returnReason);
             }
         }

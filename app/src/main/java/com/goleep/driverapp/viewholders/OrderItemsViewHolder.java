@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
@@ -53,8 +54,9 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
         productCheckbox.setVisibility(View.GONE);
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(product.getId(), product.getQuantity()));
-        if(product.getReturnReason() != null && !product.getReturnReason().isEmpty()){
-            tvReturnReason.setText(product.getReturnReason());
+        ReturnReason returnReason = product.getReturnReason();
+        if(returnReason != null && returnReason.getReason() != null){
+            tvReturnReason.setText(returnReason.getReason());
             tvReturnReason.setVisibility(View.VISIBLE);
         } else {
             tvReturnReason.setVisibility(View.GONE);
