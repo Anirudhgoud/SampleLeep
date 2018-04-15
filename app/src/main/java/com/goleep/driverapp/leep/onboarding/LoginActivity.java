@@ -1,13 +1,8 @@
 package com.goleep.driverapp.leep.onboarding;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.os.Handler;
-import android.os.Message;
-import android.widget.Toast;
 
 
 import com.goleep.driverapp.R;
