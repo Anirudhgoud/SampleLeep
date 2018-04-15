@@ -238,7 +238,14 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         viewModel.createCashSalesDeliveryOrder(etReceivedFrom.getText().toString(), contactNo, file, cashSaleNetworkCallback);
     }
 
-    private UILevelNetworkCallback cashSaleNetworkCallback = new UILevelNetworkCallback() {
+    private void createReturnsOrder() {
+        showProgressDialog();
+        String contactNo = etContactNumber.getText().length() == 0 ? null : etContactNumber.getText().toString();
+        File file = AppUtils.fileFromBitmap(getApplicationContext(), AppUtils.bitmapFromView(ivSignature, ivSignature.getWidth(), ivSignature.getHeight()), viewModel.RECEIVER_SIGNATURE);
+        viewModel.createReturnsDeliveryOrder(etReceivedFrom.getText().toString(), contactNo, file, returnsNetworkCallback);
+    }
+
+    private UILevelNetworkCallback returnsNetworkCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             runOnUiThread(() -> {
@@ -251,6 +258,25 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
                     }
                 } else {
                     showSuccessDialog();
+                    LogUtils.debug(this.getClass().getSimpleName(), "Returns order successful");
+                }
+            });
+        }
+    };
+
+    private UILevelNetworkCallback cashSaleNetworkCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            runOnUiThread(() -> {
+                dismissProgressDialog();
+                if (uiModels == null) {
+                    if (toLogout) {
+                        logoutUser();
+                    } else if (isDialogToBeShown) {
+                        showNetworkRelatedDialogs(errorMessage);
+                    }
+                } else {
+                    createReturnsOrder();
                     LogUtils.debug(this.getClass().getSimpleName(), "Cash sales order successful");
                 }
             });
