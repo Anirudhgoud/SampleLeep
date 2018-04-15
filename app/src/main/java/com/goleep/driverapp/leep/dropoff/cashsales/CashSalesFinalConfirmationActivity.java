@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
 import com.goleep.driverapp.helpers.uimodels.Customer;
@@ -26,8 +28,8 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.main.HomeActivity;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.ListUtils;
@@ -36,7 +38,6 @@ import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.NewSalesConfirmationViewModel;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,6 +55,8 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     CustomTextView tvCurrentTime;
     @BindView(R.id.bt_continue)
     Button btContinue;
+    @BindView(R.id.bt_view_item_list)
+    Button btViewItemList;
 
     @BindView(R.id.tv_returned)
     TextView tvReturned;
@@ -161,6 +164,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     private void setListeners() {
         btContinue.setOnClickListener(this);
         ivSignature.setOnClickListener(this);
+        btViewItemList.setOnClickListener(this);
         etReceivedFrom.addTextChangedListener(this);
         etContactNumber.addTextChangedListener(this);
     }
@@ -179,6 +183,10 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
             case R.id.iv_signature:
                 showSignatureDialog();
                 break;
+
+            case R.id.bt_view_item_list:
+                showItemListDialog();
+                break;
         }
     }
 
@@ -186,6 +194,18 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         if (checkValidations()) {
             createCashSalesOrder();
         }
+    }
+
+    private void showItemListDialog() {
+        String fragmentTag = CashSalesReturnsListDialogFragment.class.getSimpleName();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(fragmentTag);
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+        DialogFragment itemListDialogFragment = CashSalesReturnsListDialogFragment.newInstance(viewModel.getScannedProducts());
+        itemListDialogFragment.show(fragmentTransaction, fragmentTag);
     }
 
     private void showSignatureDialog() {
