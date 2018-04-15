@@ -24,6 +24,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.ListUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesInvoiceViewModel;
 
@@ -88,7 +89,9 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         Intent intent = getIntent();
         if (intent == null) return;
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST));
+        List<Product> selectedProducts = intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST);
+        List<Product> returnedProducts = intent.getParcelableArrayListExtra(IntentConstants.RETURNED_PRODUCT_LIST);
+        viewModel.setScannedProducts((ArrayList<Product>) new ListUtils().combinedList(selectedProducts, returnedProducts));
     }
 
     private void initialiseToolbar() {

@@ -98,8 +98,8 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
         if(product != null) {
             tvProductName.setText(product.getProductName());
             tvProductQuantity.setText(product.getWeight()+product.getWeightUnit());
-            tvUnits.setText(String.valueOf(product.getQuantity()));
-            tvValue.setText(StringUtils.amountToDisplay((float) (product.getQuantity() * product.getPrice())));
+            tvUnits.setText(String.valueOf(product.getReturnQuantity()));
+            tvValue.setText(StringUtils.amountToDisplay((float) product.getTotalReturnsPrice()));
         }
     }
 

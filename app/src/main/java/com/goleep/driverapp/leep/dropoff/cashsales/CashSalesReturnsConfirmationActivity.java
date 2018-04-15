@@ -134,7 +134,7 @@ public class CashSalesReturnsConfirmationActivity extends ParentAppCompatActivit
         orderItemView.findViewById(R.id.product_checkbox).setVisibility(View.GONE);
         tvProductName.setText(StringUtils.toString(product.getProductName(), ""));
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
-        tvUnits.setText(String.valueOf(product.getQuantity()));
+        tvUnits.setText(String.valueOf(product.getReturnQuantity()));
         tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
         ReturnReason returnReason = product.getReturnReason();
         if (returnReason != null && returnReason.getReason() != null) {

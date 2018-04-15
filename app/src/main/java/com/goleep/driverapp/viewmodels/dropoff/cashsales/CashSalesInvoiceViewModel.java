@@ -54,8 +54,12 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
     }
 
     public double totalReturnsValue() {
-        //TODO: Implement on completion of returns flow
-        return 0;
+        double totalReturns = 0;
+        for (Product product : scannedProducts) {
+            if (product == null) continue;
+            totalReturns += product.getTotalReturnsPrice();
+        }
+        return totalReturns;
     }
 
     public double totalCurrentSales() {
@@ -70,6 +74,8 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
     public double grandTotal(double returns, double currentSales, double outstandingBalance) {
         return currentSales + outstandingBalance - returns;
     }
+
+
 
     //Getters and setters
     public Customer getConsumerLocation() {

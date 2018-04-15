@@ -48,7 +48,6 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
                 product.getProductName());
         tvProductQuantity.setText(context.getString(R.string.weight_with_units,
                 product.getWeight(), product.getWeightUnit()));
-        tvUnits.setText(String.valueOf(product.getQuantity()));
 
         double value = product.getQuantity() * product.getPrice();
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
@@ -58,8 +57,12 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         if(returnReason != null && returnReason.getReason() != null){
             tvReturnReason.setText(returnReason.getReason());
             tvReturnReason.setVisibility(View.VISIBLE);
+            tvUnits.setText(String.valueOf(product.getReturnQuantity()));
+            tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(product.getTotalReturnsPrice())));
         } else {
             tvReturnReason.setVisibility(View.GONE);
+            tvUnits.setText(String.valueOf(product.getQuantity()));
+            tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(product.getTotalPrice())));
         }
     }
 
