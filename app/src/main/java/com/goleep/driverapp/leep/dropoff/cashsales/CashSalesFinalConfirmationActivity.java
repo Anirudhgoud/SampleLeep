@@ -22,6 +22,7 @@ import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -29,11 +30,13 @@ import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.main.HomeActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.ListUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.NewSalesConfirmationViewModel;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -105,11 +108,13 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         Intent intent = getIntent();
         if (intent == null) return;
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST));
         viewModel.setPreviousBalance(intent.getDoubleExtra(IntentConstants.PREVIOUS_BALANCE, 0.0));
         viewModel.setPaymentCollected(intent.getDoubleExtra(IntentConstants.PAYMENT_COLLECTED, 0.0));
         viewModel.setPaymentMethod(intent.getStringExtra(IntentConstants.PAYMENT_METHOD));
         viewModel.setPaymentSkipped(intent.getBooleanExtra(IntentConstants.PAYMENT_SKIPPED, false));
+        List<Product> selectedProducts = intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST);
+        List<Product> returnedProducts = intent.getParcelableArrayListExtra(IntentConstants.RETURNED_PRODUCT_LIST);
+        viewModel.setScannedProducts(new ListUtils().combinedList(selectedProducts, returnedProducts));
     }
 
     private void initialiseToolbar() {
