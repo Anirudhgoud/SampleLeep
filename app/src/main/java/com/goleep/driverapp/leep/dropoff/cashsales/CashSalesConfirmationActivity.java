@@ -72,7 +72,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
         Intent intent = getIntent();
         if (intent == null) return;
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.PRODUCT_LIST));
+        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST));
     }
 
     private void initialiseToolbar() {
@@ -159,7 +159,18 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
             case R.id.bt_collect_payment:
                 onCollectPaymentTap();
                 break;
+
+            case R.id.bt_take_returns:
+                gotoTakeReturnsActivity();
+                break;
         }
+    }
+
+    private void gotoTakeReturnsActivity(){
+        Intent intent = new Intent(this, SelectReturnsProductActivity.class);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        startActivity(intent);
     }
 
     private void onSkipPaymentTap(){
@@ -167,14 +178,14 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
         intent.putExtra(IntentConstants.PAYMENT_COLLECTED, 0);
         intent.putExtra(IntentConstants.PAYMENT_SKIPPED, true);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
         startActivity(intent);
     }
 
     private void onCollectPaymentTap(){
         Intent intent = new Intent(this, CashSalesInvoiceActivity.class);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
         startActivity(intent);
     }
 }

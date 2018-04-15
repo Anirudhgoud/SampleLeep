@@ -72,7 +72,7 @@ public class CashSalesPaymentMethodActivity extends ParentAppCompatActivity {
         Intent intent = getIntent();
         if (intent == null) return;
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.PRODUCT_LIST));
+        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST));
         viewModel.setPreviousBalance(intent.getDoubleExtra(IntentConstants.PREVIOUS_BALANCE, 0.0));
         viewModel.setPaymentCollected(intent.getDoubleExtra(IntentConstants.PAYMENT_COLLECTED, 0.0));
     }
@@ -138,7 +138,7 @@ public class CashSalesPaymentMethodActivity extends ParentAppCompatActivity {
         intent.putExtra(IntentConstants.PREVIOUS_BALANCE, viewModel.getPreviousBalance());
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
         intent.putExtra(IntentConstants.PAYMENT_METHOD, PaymentMethod.CASH);
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
         startActivity(intent);
     }
 

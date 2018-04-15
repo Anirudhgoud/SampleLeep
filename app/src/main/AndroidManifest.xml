@@ -109,6 +109,9 @@
             android:name=".leep.dropoff.cashsales.CashSalesFinalConfirmationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".leep.dropoff.cashsales.SelectReturnsProductActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".leep.dropoff.dropoff.DropoffWarehouseActivity"
             android:screenOrientation="portrait" />
         <activity

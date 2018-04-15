@@ -121,6 +121,7 @@
 
     <!--Cash Sales - New Sale-->
     <string name="cash_sales_title">Cash Sales > Payment</string>
+    <string name="cash_sales_returns_title">Cash Sales > Returns</string>
     <string name="existing_customer">Existing Customer</string>
     <string name="new_customer">New Customer</string>
     <string name="nearby_customers">Nearby Customers</string>
@@ -142,9 +143,6 @@
 
     <!--Return Reasons-->
     <string name="select_reason">Select reason</string>
-
-
-
     <string name="location_permission_denied">Location permission denied</string>
     <string name="location_fetch_error">Unable to get user location</string>
     <string name="location_field_empty">Location name could not be empty</string>

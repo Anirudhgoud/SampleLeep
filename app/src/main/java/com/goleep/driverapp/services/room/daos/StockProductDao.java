@@ -35,6 +35,9 @@ public abstract class StockProductDao {
     @Query("Select * from StockProductEntity WHERE sellableQuantity != 0 AND barcode =:barcode")
     public abstract StockProductEntity sellableProductHavingBarcode(String barcode);
 
+    @Query("Select * from StockProductEntity WHERE barcode =:barcode")
+    public abstract StockProductEntity productHavingBarcode(String barcode);
+
     @Query("Select * from StockProductEntity WHERE sellableQuantity != 0 AND productName LIKE '%' || :text  || '%'")
     public abstract List<StockProductEntity> sellebleProductsWithName(String text);
 
