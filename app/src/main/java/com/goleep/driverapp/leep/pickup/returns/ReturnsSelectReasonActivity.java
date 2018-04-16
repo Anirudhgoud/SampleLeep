@@ -79,7 +79,7 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         if(getIntent().getIntExtra(IntentConstants.FLOW, -1) == AppConstants.RETURNS_FLOW)
             setTitleIconAndText(getString(R.string.returns), R.drawable.ic_returns_title_icon);
-        else if(getIntent().getIntExtra(IntentConstants.FLOW, -1) == AppConstants.RETURNS_FLOW)
+        else if(getIntent().getIntExtra(IntentConstants.FLOW, -1) == AppConstants.CASH_SALES_FLOW)
             setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
     }
 

@@ -36,6 +36,7 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.pickup.returns.ReturnsSelectReasonActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
@@ -77,6 +78,13 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     private OrderItemsListAdapter returnsListAdapter;
     private ProductSearchArrayAdapter productSearchArrayAdapter;
     private BarcodeCapture barcodeCapture;
+
+    private UILevelNetworkCallback returnReasonsCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+
+        }
+    };
 
     private BarcodeScanListener barcodeScanListener = new BarcodeScanListener() {
         @Override
@@ -120,6 +128,7 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
         initialiseRecyclerView();
         initialiseAutoCompleteTextView();
         setClickListeners();
+        fetchReturnReasons();
         initialiseUpdateQuantityView();
         fetchDriverLocationId();
     }
@@ -225,6 +234,10 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
         viewModel.setDriverLocationId(viewModel.getSourceLocationId());
     }
 
+    private void fetchReturnReasons(){
+        viewModel.fetchReturnReasons(returnReasonsCallback);
+    }
+
     private void initialiseAutoCompleteTextView() {
         Drawable rightDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_search_inactive);
         atvSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
@@ -264,7 +277,7 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     }
 
     private void onBarcodeDetected(String barcode) {
-        StockProductEntity stockProduct = viewModel.sellebleProductHavingBarcode(barcode);
+        StockProductEntity stockProduct = viewModel.productsWithBarcode(barcode);
         if (stockProduct == null) {
             Toast.makeText(SelectReturnsProductActivity.this, R.string.product_not_available, Toast.LENGTH_SHORT).show();
             resumeBarcodeScanning();
@@ -333,10 +346,14 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     }
 
     private void goToReturnReasons(Product product) {
-        Intent intent = new Intent(this, ReturnsSelectReasonActivity.class);
-        intent.putExtra(IntentConstants.PRODUCT, product);
-        startActivityForResult(intent, RETURN_REASON_REQUEST_CODE);
-        intent.putExtra(IntentConstants.FLOW, AppConstants.CASH_SALES_FLOW);
+        ArrayList<ReturnReason> returnReasons = (ArrayList<ReturnReason>) viewModel.getReturnReasons();
+        if(returnReasons != null && returnReasons.size() > 0) {
+            Intent intent = new Intent(this, ReturnsSelectReasonActivity.class);
+            intent.putExtra(IntentConstants.PRODUCT, product);
+            intent.putExtra(IntentConstants.FLOW, AppConstants.CASH_SALES_FLOW);
+            intent.putParcelableArrayListExtra(IntentConstants.RETURN_REASONS, returnReasons);
+            startActivityForResult(intent, RETURN_REASON_REQUEST_CODE);
+        }
     }
 
     private void updateProductDetails(ReturnReason returnReason) {
