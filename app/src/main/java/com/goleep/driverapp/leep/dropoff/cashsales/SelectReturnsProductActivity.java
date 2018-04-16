@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomEditText;
@@ -335,6 +336,7 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
         Intent intent = new Intent(this, ReturnsSelectReasonActivity.class);
         intent.putExtra(IntentConstants.PRODUCT, product);
         startActivityForResult(intent, RETURN_REASON_REQUEST_CODE);
+        intent.putExtra(IntentConstants.FLOW, AppConstants.CASH_SALES_FLOW);
     }
 
     private void updateProductDetails(ReturnReason returnReason) {

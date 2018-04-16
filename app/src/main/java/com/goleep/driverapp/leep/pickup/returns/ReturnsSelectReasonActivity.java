@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ReturnReasonListAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
@@ -68,11 +69,18 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
     }
 
     private void initView() {
-        setToolBarColor(getResources().getColor(R.color.light_green));
-        setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        setTitleIconAndText(getString(R.string.returns), R.drawable.ic_returns_title_icon);
+        initToolbar();
         populateProductInfo();
         initListeners();
+    }
+
+    private void initToolbar() {
+        setToolBarColor(getResources().getColor(R.color.light_green));
+        setToolbarLeftIcon(R.drawable.ic_back_arrow);
+        if(getIntent().getIntExtra(IntentConstants.FLOW, -1) == AppConstants.RETURNS_FLOW)
+            setTitleIconAndText(getString(R.string.returns), R.drawable.ic_returns_title_icon);
+        else if(getIntent().getIntExtra(IntentConstants.FLOW, -1) == AppConstants.RETURNS_FLOW)
+            setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
     }
 
     private void initListeners() {

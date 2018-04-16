@@ -393,6 +393,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         Intent intent = new Intent(this, ReturnItemsConfirmActivity.class);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, consumerLocation);
         intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, productList);
+        intent.putExtra(IntentConstants.FLOW, AppConstants.RETURNS_FLOW);
         startActivity(intent);
     }
 
