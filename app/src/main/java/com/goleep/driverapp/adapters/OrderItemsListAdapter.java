@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
+import com.goleep.driverapp.interfaces.ProductCheckListener;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.viewholders.OrderItemsViewHolder;
@@ -32,14 +33,27 @@ public class OrderItemsListAdapter extends RecyclerView.Adapter<OrderItemsViewHo
         this.productsType = productsType;
     }
 
+    private ProductCheckListener productCheckListener = new ProductCheckListener() {
+        @Override
+        public void onItemChecked(StockProductEntity stockProductEntity, boolean checked, int position) {
+            List<StockProductEntity> stocks = (List<StockProductEntity>) itemsList;
+            stockProductEntity.setSelected(checked);
+            stocks.set(position, stockProductEntity);
+            itemsList = stocks;
+            notifyDataSetChanged();
+        }
+    };
+
     public void setOrderItemClickEventListener(DeliveryOrderItemEventListener deliveryOrderItemEventListener){
         this.deliveryOrderItemEventListener = deliveryOrderItemEventListener;
     }
 
     @Override
     public OrderItemsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new OrderItemsViewHolder(LayoutInflater.from(parent.getContext())
+        OrderItemsViewHolder viewHolder = new OrderItemsViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.do_details_list_item, parent, false), deliveryOrderItemEventListener);
+        viewHolder.setProductCheckListener(productCheckListener);
+        return viewHolder;
     }
 
     @Override
@@ -49,7 +63,7 @@ public class OrderItemsListAdapter extends RecyclerView.Adapter<OrderItemsViewHo
             holder.bindData(orderItem);
         }else if(itemsList.get(0) instanceof StockProductEntity && productsType != -1){
             StockProductEntity stockProductEntity = (StockProductEntity) itemsList.get(position);
-            holder.bindData(stockProductEntity, productsType);
+            holder.bindData(stockProductEntity, productsType, position);
         }else if(itemsList.get(0) instanceof Product){
             Product product = (Product) itemsList.get(position);
             holder.bindData(product);
