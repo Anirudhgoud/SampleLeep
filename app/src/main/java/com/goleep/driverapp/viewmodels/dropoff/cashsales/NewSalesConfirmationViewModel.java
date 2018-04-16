@@ -160,7 +160,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         if (contactNo != null) {
             requestForm.put("receiver_contact_number", contactNo);
         }
-        requestForm.put("delivery_order_items_attributes", new Gson().toJson(generateSelectedProductItemsMap()));
+        requestForm.put("return_order_items_attributes", new Gson().toJson(generateReturnsProductItemsMap()));
         return requestForm;
     }
 
