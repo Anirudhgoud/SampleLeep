@@ -261,12 +261,13 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                     doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
-            if (((Activity) context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
+            if (context instanceof PickupActivity) {
                 {
                     if(productCheckbox != null) {
                         productCheckbox.setVisibility(View.VISIBLE);
                         productCheckbox.setTag(doDetails.getOrderId());
                         productCheckbox.setOnCheckedChangeListener(null);
+                        LogUtils.debug("Test", doDetails.getId()+" "+visibleItems.get(position).isItemChecked());
                         productCheckbox.setChecked(visibleItems.get(position).isItemChecked());
                         productCheckbox.setOnCheckedChangeListener(checkListener);
                     }
