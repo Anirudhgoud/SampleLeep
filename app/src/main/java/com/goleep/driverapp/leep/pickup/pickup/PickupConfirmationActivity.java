@@ -85,6 +85,9 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         Intent intent = getIntent();
         pickupDeliveryOrderViewModel.setCashDoItems(intent.getIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY));
         pickupDeliveryOrderViewModel.setSelectedDeliveryOrders(intent.getIntegerArrayListExtra(AppConstants.DO_IDS_KEY));
+        int locationId = intent.getIntExtra(IntentConstants.WAREHOUSE_ID, -1);
+        if(locationId != -1)
+            pickupDeliveryOrderViewModel.setWarehouse(locationId);
     }
 
     private void initView() {

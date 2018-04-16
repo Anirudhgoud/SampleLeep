@@ -48,44 +48,6 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp" />
 
-            <LinearLayout
-                android:id="@+id/payment_method_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/amount_summary_layout"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/noto_sans"
-                    android:text="@string/payment_method"
-                    android:textColor="@color/light_grey"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:fontFamily="@font/noto_sans"
-                    android:text=":"
-                    android:textColor="@color/light_grey"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_payment_method"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/noto_sans"
-                    android:textColor="@color/doTabTextColor"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
             <include
                 layout="@layout/signature_layout"
                 android:layout_width="match_parent"
