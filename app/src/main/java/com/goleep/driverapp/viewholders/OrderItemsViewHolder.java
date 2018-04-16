@@ -95,8 +95,8 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
 
         double value = stockProductEntity.getQuantity(productType) * stockProductEntity.getDefaultPrice();
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
-
         productCheckbox.setChecked(stockProductEntity.isSelected());
+        notify();
         productCheckbox.setOnClickListener(v -> deliveryOrderItemEventListener.onCheckboxTap(
                 stockProductEntity.getId(), productCheckbox.isChecked()));
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(
