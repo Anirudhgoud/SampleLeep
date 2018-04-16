@@ -129,7 +129,7 @@
             android:name=".leep.pickup.returns.ReturnsSelectReasonActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".leep.pickup.returns.ReturnConfirmActivity"
+            android:name=".leep.pickup.returns.ReturnItemsConfirmActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.pickup.returns.ReturnsCustomerSelectActivity"
