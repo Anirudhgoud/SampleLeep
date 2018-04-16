@@ -31,15 +31,15 @@ import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
-import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
-import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
+import com.goleep.driverapp.leep.pickup.returns.ReturnsSelectReasonActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesSelectProductsViewModel;
+import com.goleep.driverapp.viewmodels.dropoff.cashsales.SelectReturnsProductViewModel;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -49,7 +49,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CashSalesSelectProductsActivity extends ParentAppCompatActivity implements AdapterView.OnItemClickListener {
+public class SelectReturnsProductActivity extends ParentAppCompatActivity implements AdapterView.OnItemClickListener {
 
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
@@ -70,8 +70,10 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     @BindView(R.id.cash_sales_recyclerview)
     RecyclerView cashSalesRecyclerView;
 
-    private CashSalesSelectProductsViewModel viewModel;
-    private OrderItemsListAdapter cashSalesListAdapter;
+    private final int RETURN_REASON_REQUEST_CODE = 101;
+
+    private SelectReturnsProductViewModel viewModel;
+    private OrderItemsListAdapter returnsListAdapter;
     private ProductSearchArrayAdapter productSearchArrayAdapter;
     private BarcodeCapture barcodeCapture;
 
@@ -86,7 +88,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
 
         @Override
         public void onBarcodeScanFailure(String reason) {
-            runOnUiThread(() -> Toast.makeText(CashSalesSelectProductsActivity.this, reason, Toast.LENGTH_SHORT).show());
+            runOnUiThread(() -> Toast.makeText(SelectReturnsProductActivity.this, reason, Toast.LENGTH_SHORT).show());
         }
     };
 
@@ -108,7 +110,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
 
     @Override
     public void doInitialSetup() {
-        viewModel = ViewModelProviders.of(this).get(CashSalesSelectProductsViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(SelectReturnsProductViewModel.class);
         ButterKnife.bind(this);
         extractIntentData();
         initialiseToolbar();
@@ -136,12 +138,13 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     private void extractIntentData() {
         Intent intent = getIntent();
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
+        viewModel.setSelectedProducts(intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST));
     }
 
     private void initialiseToolbar() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
-        setTitleIconAndText(getString(R.string.cash_sales), R.drawable.ic_cash_sales);
+        setTitleIconAndText(getString(R.string.cash_sales_returns_title), R.drawable.ic_cash_sales);
     }
 
     private void initialiseTabBar() {
@@ -215,31 +218,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             }
             return true;
         });
-        etUnits.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Product selectedProduct = viewModel.getSelectedProduct();
-                if (selectedProduct == null) return;
-                int maxUnits = selectedProduct.getMaxQuantity();
-                String newUnitsText = etUnits.getText().toString();
-                if (newUnitsText.length() > 0) {
-                    int newUnits = Integer.valueOf(newUnitsText);
-                    boolean isValid = newUnits <= maxUnits && newUnits != 0;
-                    invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
-                    btUpdate.setEnabled(isValid);
-                } else {
-                    btUpdate.setEnabled(false);
-                }
-            }
-        });
     }
 
     private void fetchDriverLocationId() {
@@ -260,7 +238,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 2) {
-                    List<StockProductEntity> list = viewModel.sellebleProductsWithName(s.toString());
+                    List<StockProductEntity> list = (viewModel.allProductsContainingName(s.toString()));
                     productSearchArrayAdapter.updateData(list);
                 }
             }
@@ -279,15 +257,15 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     private void initialiseRecyclerView() {
         cashSalesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cashSalesRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        cashSalesListAdapter = new OrderItemsListAdapter(viewModel.getScannedProducts());
-        cashSalesListAdapter.setOrderItemClickEventListener(deliveryOrderItemEventListener);
-        cashSalesRecyclerView.setAdapter(cashSalesListAdapter);
+        returnsListAdapter = new OrderItemsListAdapter(viewModel.getScannedProducts());
+        returnsListAdapter.setOrderItemClickEventListener(deliveryOrderItemEventListener);
+        cashSalesRecyclerView.setAdapter(returnsListAdapter);
     }
 
     private void onBarcodeDetected(String barcode) {
         StockProductEntity stockProduct = viewModel.sellebleProductHavingBarcode(barcode);
         if (stockProduct == null) {
-            Toast.makeText(CashSalesSelectProductsActivity.this, R.string.product_not_available, Toast.LENGTH_SHORT).show();
+            Toast.makeText(SelectReturnsProductActivity.this, R.string.product_not_available, Toast.LENGTH_SHORT).show();
             resumeBarcodeScanning();
             return;
         }
@@ -297,7 +275,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     private void addProductToSelectedList(Product product) {
         if (viewModel.isProductInScannedList(product.getId())) {
             resumeBarcodeScanning();
-            Toast.makeText(CashSalesSelectProductsActivity.this, R.string.item_already_added, Toast.LENGTH_SHORT).show();
+            Toast.makeText(SelectReturnsProductActivity.this, R.string.item_already_added, Toast.LENGTH_SHORT).show();
         } else {
             displayUpdateQuantityView(product);
         }
@@ -309,8 +287,8 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             etUnits.requestFocus();
             tvProductName.setText(product.getProductName() + " " + product.getWeight() + product.getWeightUnit());
             etUnits.setText("");
-            etUnits.setHint(String.valueOf(product.getMaxQuantity()));
-            btUpdate.setEnabled(false);
+            etUnits.setHint("");
+            btUpdate.setEnabled(true);
             updateQuantityLayout.setVisibility(View.VISIBLE);
             invalidQuantityError.setVisibility(View.INVISIBLE);
             AppUtils.showKeyboard(etUnits);
@@ -342,43 +320,24 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
 
     private void onUpdateButtonTap() {
         Product product = viewModel.getSelectedProduct();
-        updateQuantity(product);
+        product.setQuantity(Integer.valueOf(etUnits.getText().toString()));
+        viewModel.setSelectedProduct(product);
+        goToReturnReasons(product);
     }
 
-    private void updateQuantity(Product product) {
-
-        Customer customer = viewModel.getConsumerLocation();
-        if (product != null && customer != null) {
-            showProgressDialog();
-            viewModel.getProductPricing(viewModel.getDriverLocationId(), customer.getId(),
-                    product.getId(), productPricingCallback);
-        }
+    private void goToReturnReasons(Product product) {
+        Intent intent = new Intent(this, ReturnsSelectReasonActivity.class);
+        intent.putExtra(IntentConstants.PRODUCT, product);
+        startActivityForResult(intent, RETURN_REASON_REQUEST_CODE);
     }
 
-    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
-        runOnUiThread(() -> {
-            dismissProgressDialog();
-            if (uiModels == null) {
-                if (toLogout) {
-                    logoutUser();
-                } else {
-                    updateProductDetails(0.0);
-                }
-            } else if (uiModels.size() > 0) {
-                Double productPrice = (Double) uiModels.get(0);
-                updateProductDetails(productPrice);
-            }
-        });
-    };
-
-    private void updateProductDetails(Double productPrice) {
+    private void updateProductDetails(ReturnReason returnReason) {
         Product product = viewModel.getSelectedProduct();
         if (product == null) return;
-        product.setQuantity(Integer.valueOf(etUnits.getText().toString()));
-        if (productPrice != 0) product.setPrice(productPrice);
+        product.setReturnReason(returnReason);
         if (!viewModel.isProductInScannedList(product.getId()))
             viewModel.addToScannedProduct(product);
-        cashSalesListAdapter.notifyDataSetChanged();
+        returnsListAdapter.notifyDataSetChanged();
         hideUpdateQuantityView();
         getCurrentFocus().clearFocus();
         AppUtils.hideKeyboard(etUnits);
@@ -401,16 +360,26 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void onConfirmButtonTap() {
-        ArrayList<Product> productList = viewModel.getScannedProducts();
-        if (productList.size() > 0) {
-            gotoNextActivity(viewModel.getConsumerLocation(), productList);
+        if (viewModel.getScannedProducts().size() > 0) {
+            gotoNextActivity();
         }
     }
 
-    private void gotoNextActivity(Customer consumerLocation, ArrayList<Product> productList) {
-        Intent intent = new Intent(this, CashSalesConfirmationActivity.class);
-        intent.putExtra(IntentConstants.CONSUMER_LOCATION, consumerLocation);
-        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, productList);
+    private void gotoNextActivity() {
+        Intent intent = new Intent(this, CashSalesReturnsConfirmationActivity.class);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, viewModel.getSelectedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.RETURNED_PRODUCT_LIST, viewModel.getScannedProducts());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RETURN_REASON_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                ReturnReason returnReason = data.getParcelableExtra(IntentConstants.RETURN_REASON);
+                updateProductDetails(returnReason);
+            }
+        }
     }
 }

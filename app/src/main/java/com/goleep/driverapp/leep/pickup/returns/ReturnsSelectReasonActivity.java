@@ -130,7 +130,7 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
     private void setResultAndFinish() {
         Intent intent = new Intent();
         if(adapter.getSelectedReason() != null)
-            intent.putExtra(IntentConstants.RETURN_REASON, adapter.getSelectedReason().getReason());
+            intent.putExtra(IntentConstants.RETURN_REASON, adapter.getSelectedReason());
         setResult(RESULT_OK, intent);
         finish();
     }

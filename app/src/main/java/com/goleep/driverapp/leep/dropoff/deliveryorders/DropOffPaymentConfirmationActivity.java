@@ -26,11 +26,14 @@ import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
+import com.goleep.driverapp.services.printer.PrinterService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
+import com.goleep.driverapp.utils.PrinterUtils;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffPaymentConfirmationViewModel;
+import com.ngx.BluetoothPrinter;
 
 import java.io.File;
 import java.util.List;
@@ -272,6 +275,13 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
             @Override
             public void onPrintButtonTap() {
                 LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
+                BluetoothPrinter printer = PrinterService.sharedInstance().getPrinter();
+                if(printer.getState() == BluetoothPrinter.STATE_CONNECTED) {
+                    new PrinterUtils().printInvoice(viewModel.getDeliveryOrder(), viewModel.getSelectedOrderItems(),
+                            null, printer);
+                } else {
+                    printer.showDeviceList(DropOffPaymentConfirmationActivity.this);
+                }
             }
         });
         successDialog.setPrintButtonVisibility(true);

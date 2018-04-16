@@ -35,6 +35,7 @@ import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextV
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesConfirmationActivity;
@@ -172,7 +173,6 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     private void extractIntentData() {
         Intent intent = getIntent();
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setFlow(intent.getIntExtra(IntentConstants.FLOW, -1));
 
     }
 
@@ -347,9 +347,10 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         updateQuantityLayout.setVisibility(View.GONE);
     }
 
-    private void updateProductDetails(String returnReason) {
+    private void updateProductDetails(ReturnReason returnReason) {
         Product product = viewModel.getSelectedProduct();
         if (product == null) return;
+
         product.setReturnReason(returnReason);
         if (!viewModel.isProductInScannedList(product.getId()))
             viewModel.addToScannedProduct(product);
@@ -371,9 +372,9 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     }
 
     private void gotoNextActivity(Customer consumerLocation, ArrayList<Product> productList) {
-        Intent intent = new Intent(this, ReturnConfirmActivity.class);
+        Intent intent = new Intent(this, CashSalesConfirmationActivity.class);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, consumerLocation);
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, productList);
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, productList);
         startActivity(intent);
     }
 
@@ -381,7 +382,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RETURN_REASON_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                String returnReason = data.getStringExtra(IntentConstants.RETURN_REASON);
+                ReturnReason returnReason = data.getParcelableExtra(IntentConstants.RETURN_REASON);
                 updateProductDetails(returnReason);
             }
         }

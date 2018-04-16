@@ -88,7 +88,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         Intent intent = getIntent();
         if (intent == null) return;
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.PRODUCT_LIST));
+        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST));
     }
 
     private void initialiseToolbar() {
@@ -234,7 +234,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
         intent.putExtra(IntentConstants.PREVIOUS_BALANCE, viewModel.getOutstandingBalance());
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
         startActivity(intent);
     }
 }
