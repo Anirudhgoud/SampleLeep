@@ -61,10 +61,10 @@
             android:fontFamily="@font/noto_sans"
             android:textColor="@color/doTabTextColor"
             android:textSize="24sp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:fontFamily="@font/noto_sans"
             android:id="@+id/tv_payment_method"
             android:textColor="@color/light_grey"

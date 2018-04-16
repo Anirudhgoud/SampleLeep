@@ -20,6 +20,7 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -239,6 +240,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 if (isChecked)
                     allItems.get(doPositionMapAllItems.get(doId)).addSelection(1);
                 else allItems.get(doPositionMapAllItems.get(doId)).addSelection(-1);
+                LogUtils.debug("Selection", allItems.get(doPositionMapAllItems.get(doId)).getSelectedCount()+"");
                 notifyDataSetChanged();
             }
         };

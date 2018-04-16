@@ -244,7 +244,7 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
                 LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
             }
         });
-        successDialog.setPrintButtonVisibility(true);
+        successDialog.setPrintButtonVisibility(false);
     }
 
 

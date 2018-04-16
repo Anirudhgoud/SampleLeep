@@ -123,9 +123,7 @@ public class ReturnsFinalConfirmationViewModel extends ReturnsPaymentMethodViewM
         requestForm.put("type", "customer");
         requestForm.put("source_location_id", consumerLocation.getId());
         requestForm.put("assignee_id", assigneeId());
-        if (paymentCollected != 0) {
-            requestForm.put("payment_collected", paymentCollected);
-        }
+        requestForm.put("payment_collected", paymentCollected);
         requestForm.put("payment_mode", PaymentMethod.CASH);
         requestForm.put("received_by", receivedBy);
         if (contactNo != null) {
@@ -143,7 +141,7 @@ public class ReturnsFinalConfirmationViewModel extends ReturnsPaymentMethodViewM
             if (product.getReturnQuantity() > 0){
                 Map<String, Object> productMap = new HashMap<>();
                 productMap.put("product_id", product.getId());
-                productMap.put("quantity", product.getQuantity());
+                productMap.put("quantity", product.getReturnQuantity());
                 productMap.put("return_reason_id", product.getReturnReason().getId());
                 listOfMapProducts.add(productMap);
             }
