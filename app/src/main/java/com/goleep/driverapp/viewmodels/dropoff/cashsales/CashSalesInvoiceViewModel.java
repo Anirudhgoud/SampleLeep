@@ -23,6 +23,9 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
     private List<Product> scannedProducts;
     private double outstandingBalance;
 
+    private int selectedProductCount = 0;
+    private int returnedProductCount = 0;
+
     public CashSalesInvoiceViewModel(@NonNull Application application) {
         super(application);
     }
@@ -54,8 +57,12 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
     }
 
     public double totalReturnsValue() {
-        //TODO: Implement on completion of returns flow
-        return 0;
+        double totalReturns = 0;
+        for (Product product : scannedProducts) {
+            if (product == null) continue;
+            totalReturns += product.getTotalReturnsPrice();
+        }
+        return totalReturns;
     }
 
     public double totalCurrentSales() {
@@ -70,6 +77,8 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
     public double grandTotal(double returns, double currentSales, double outstandingBalance) {
         return currentSales + outstandingBalance - returns;
     }
+
+
 
     //Getters and setters
     public Customer getConsumerLocation() {
@@ -94,5 +103,21 @@ public class CashSalesInvoiceViewModel extends AndroidViewModel {
 
     public void setOutstandingBalance(double outstandingBalance) {
         this.outstandingBalance = outstandingBalance;
+    }
+
+    public int getSelectedProductCount() {
+        return selectedProductCount;
+    }
+
+    public void incrementSelectedProductCount() {
+        this.selectedProductCount++;
+    }
+
+    public int getReturnedProductCount() {
+        return returnedProductCount;
+    }
+
+    public void incrementReturnedProductCount() {
+        this.returnedProductCount++;
     }
 }

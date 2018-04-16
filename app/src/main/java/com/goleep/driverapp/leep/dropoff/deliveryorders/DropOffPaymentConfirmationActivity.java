@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -251,6 +252,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
                 }
             } else {
                 runOnUiThread(() -> {
+                    sendSuccessBroadcast();
                     showSuccessDialog();
                 });
                 LogUtils.debug(this.getClass().getSimpleName(), "Order Delivered");
@@ -319,5 +321,11 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         } else if (editable == etContactNumber.getEditableText()) {
             tvContactNumberError.setVisibility(etContactNumber.getText().length() == 10 ? View.GONE : View.VISIBLE);
         }
+    }
+
+    private void sendSuccessBroadcast(){
+        Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

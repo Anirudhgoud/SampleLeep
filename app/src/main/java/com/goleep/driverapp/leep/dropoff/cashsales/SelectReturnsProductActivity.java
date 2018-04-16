@@ -320,9 +320,15 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
 
     private void onUpdateButtonTap() {
         Product product = viewModel.getSelectedProduct();
-        product.setQuantity(Integer.valueOf(etUnits.getText().toString()));
-        viewModel.setSelectedProduct(product);
-        goToReturnReasons(product);
+        try {
+            product.setQuantity(0);
+            product.setReturnQuantity(Integer.valueOf(etUnits.getText().toString()));
+            viewModel.setSelectedProduct(product);
+            goToReturnReasons(product);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void goToReturnReasons(Product product) {

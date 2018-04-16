@@ -179,7 +179,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     private BroadcastReceiver taskSuccessBroadcast = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            viewModel.getSummary();
+            viewModel.getSummary(summaryCallback);
         }
     };
 
