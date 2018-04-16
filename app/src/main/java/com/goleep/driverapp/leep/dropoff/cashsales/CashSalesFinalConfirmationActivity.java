@@ -193,7 +193,8 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
 
     private void onContinueButtonTap() {
         if (checkValidations()) {
-            createCashSalesOrder();
+            createReturnsOrder();
+//            createCashSalesOrder();
         }
     }
 
@@ -285,7 +286,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         }
     };
 
-    UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+    private UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
         dismissProgressDialog();
         if (uiModels == null) {
             if (toLogout) {
