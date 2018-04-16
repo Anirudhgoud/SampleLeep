@@ -74,7 +74,7 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
         Intent intent = getIntent();
         Customer customer = intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION);
         viewModel.setCustomer(customer);
-        ArrayList<Product> products = intent.getParcelableArrayListExtra(IntentConstants.PRODUCT);
+        ArrayList<Product> products = intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST);
         viewModel.setProducts(products);
         populateInfo();
         initRecyclerView();
@@ -97,7 +97,7 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
 
     private void goToNextScreen(){
         Intent intent = new Intent(this, ReturnsPaymentActivity.class);
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT, viewModel.getProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, viewModel.getProducts());
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getCustomer());
         startActivity(intent);
     }
@@ -108,7 +108,7 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
             case R.id.left_toolbar_button:
                 finish();
                 break;
-            case R.id.bt_confirm:
+            case R.id.confirm_button:
                 goToNextScreen();
                 break;
         }

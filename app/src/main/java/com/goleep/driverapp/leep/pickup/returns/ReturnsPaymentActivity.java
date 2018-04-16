@@ -18,7 +18,9 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
+import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesPaymentMethodActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
@@ -57,8 +59,7 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_returned)
     TextView tvReturned;
-    @BindView(R.id.tv_current_sale)
-    TextView tvCurrentSales;
+
     @BindView(R.id.tv_outstanding_balance)
     TextView tvPreviousBalance;
     @BindView(R.id.tv_grand_total)
@@ -67,6 +68,29 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
     EditText etPaymentCollected;
 
     private ReturnsInvoiceViewModel viewModel;
+
+    private UILevelNetworkCallback locationNetworkCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            dismissProgressDialog();
+            if (uiModels == null) {
+                if (toLogout) {
+                    logoutUser();
+                } else {
+                    showNetworkRelatedDialogs(errorMessage);
+                }
+            } else if (uiModels.size() > 0) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        btContinue.setVisibility(View.VISIBLE);
+                        Location location = (Location) uiModels.get(0);
+                        onLocationDetailsFetched(location);
+                    }
+                });
+            }
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -82,6 +106,7 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
         setClickListeners();
         updateTopLayoutUI();
         updateItemSummaryUI();
+        fetchLocationDetails();
         displayProductList();
     }
 
@@ -103,6 +128,13 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
         llItemSummaryLayout.setOnClickListener(this);
     }
 
+    private void fetchLocationDetails(){
+        Customer consumer = viewModel.getConsumerLocation();
+        if (consumer == null) return;
+        showProgressDialog();
+        viewModel.fetchBusinessLocation(consumer.getBusinessId(), consumer.getId(), locationNetworkCallback);
+    }
+
     private void updateTopLayoutUI() {
         findViewById(R.id.ll_do_number).setVisibility(View.GONE);
 
@@ -119,6 +151,28 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
         int productCount = viewModel.getScannedProducts().size();
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, productCount, productCount)));
     }
+
+    private void onLocationDetailsFetched(Location location){
+        if (location == null) return;
+        String address = StringUtils.getAddress(location, viewModel.getConsumerLocation());
+        tvAddress.setText(address);
+        viewModel.updateAreaInConsumerLocation(address);
+        double outstandingBalance = location.getOutstandingBalance();
+        viewModel.setOutstandingBalance(outstandingBalance);
+        updateAmountDetails(outstandingBalance);
+    }
+
+    private void updateAmountDetails(double outstandingBalance) {
+        double totalReturns = viewModel.totalReturnsValue();
+        tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(totalReturns)));
+        tvPreviousBalance.setText(amountWithCurrencySymbol(outstandingBalance));
+        tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, outstandingBalance)));
+    }
+
+    public String amountWithCurrencySymbol(Object amount){
+        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(amount));
+    }
+
 
     private void displayProductList() {
         List<Product> scannedProducts = viewModel.getScannedProducts();
@@ -151,11 +205,14 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
         CustomTextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
         CustomTextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
         CheckBox productCheckbox = orderItemView.findViewById(R.id.product_checkbox);
+        CustomTextView returnReasonTextView = orderItemView.findViewById(R.id.return_reason_tv);
         productCheckbox.setVisibility(View.GONE);
         tvProductName.setText(StringUtils.toString(product.getProductName(), ""));
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
-        tvUnits.setText(String.valueOf(product.getQuantity()));
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
+        tvUnits.setText(String.valueOf(product.getReturnQuantity()));
+        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
+        returnReasonTextView.setText(product.getReturnReason().getReason());
+        returnReasonTextView.setVisibility(View.VISIBLE);
         return orderItemView;
     }
 
@@ -169,27 +226,27 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
                 break;
 
             case R.id.bt_continue:
-                onContinueButtonTap();
+                gotoNextActivity();
                 break;
 
             case R.id.ll_item_summary_layout:
                 llItemListLayout.setVisibility(llItemListLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-                ((ImageView) findViewById(R.id.iv_expandable_indicator)).setImageResource(llItemListLayout.getVisibility() == View.VISIBLE ? R.drawable.ic_expandable_indicator_close : R.drawable.ic_expandable_indicator_open);
+                ((ImageView) findViewById(R.id.iv_expandable_indicator)).setImageResource(
+                        llItemListLayout.getVisibility() == View.VISIBLE ? R.drawable.ic_expandable_indicator_close : R.drawable.ic_expandable_indicator_open);
                 break;
         }
     }
 
-    private void onContinueButtonTap() {
-        if (etPaymentCollected.getText().length() > 0) gotoNextActivity();
-    }
-
     private void gotoNextActivity(){
-        Double paymentCollected = Double.valueOf(etPaymentCollected.getText().toString());
-        if (paymentCollected == null) return;
-        Intent intent = new Intent(this, CashSalesPaymentMethodActivity.class);
+        Double paymentCollected = 0.0;
+        if(!etPaymentCollected.getText().toString().isEmpty())
+            paymentCollected = Double.valueOf(etPaymentCollected.getText().toString());
+        if (paymentCollected == null) paymentCollected = 0.0;
+        Intent intent = new Intent(this, ReturnsPaymentMethodActivity.class);
         intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST,
+                (ArrayList<Product>) viewModel.getScannedProducts());
         startActivity(intent);
     }
 }

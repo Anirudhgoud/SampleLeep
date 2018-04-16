@@ -134,7 +134,16 @@
         <activity
             android:name=".leep.pickup.returns.ReturnsCustomerSelectActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".leep.pickup.returns.ReturnsSelectProductActivity"></activity>
+        <activity android:name=".leep.pickup.returns.ReturnsSelectProductActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".leep.pickup.returns.ReturnsPaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.pickup.returns.ReturnsPaymentMethodActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".leep.pickup.returns.ReturnsFinalConfirmationActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

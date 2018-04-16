@@ -128,10 +128,12 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
     }
 
     private void setResultAndFinish() {
-        Intent intent = new Intent();
-        if(adapter.getSelectedReason() != null)
-            intent.putExtra(IntentConstants.RETURN_REASON, adapter.getSelectedReason());
-        setResult(RESULT_OK, intent);
-        finish();
+        if(adapter.getSelectedIndex() != -1) {
+            Intent intent = new Intent();
+            if (adapter.getSelectedReason() != null)
+                intent.putExtra(IntentConstants.RETURN_REASON, adapter.getSelectedReason());
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 }

@@ -34,6 +34,8 @@
                 android:background="@drawable/rounded_border_green"
                 android:fontFamily="@font/noto_sans"
                 android:text="@string/view_item_list"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:textColor="@color/doTabTextColor"
                 android:textSize="18sp" />
 
@@ -43,49 +45,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bt_view_item_list"
+                android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp" />
 
-            <TextView
-                android:id="@+id/tv_payment_method_label"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/amount_summary_layout"
-                android:fontFamily="@font/noto_sans"
-                android:gravity="center"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:text="@string/payment_method"
-                android:textColor="@color/doTabTextColor"
-                android:textSize="22sp" />
-
             <LinearLayout
+                android:id="@+id/payment_method_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_payment_method_label"
-                android:layout_margin="16dp"
+                android:layout_below="@+id/amount_summary_layout"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/noto_sans"
-                    android:gravity="center_vertical"
-                    android:paddingRight="16dp"
-                    android:text="@string/cash"
-                    android:textColor="@color/doTabTextColor"
-                    android:textSize="22sp" />
+                    android:text="@string/payment_method"
+                    android:textColor="@color/light_grey"
+                    android:textSize="14sp" />
 
-                <CheckBox
-                    android:id="@+id/payment_method_checkbox"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_weight="0"
-                    android:button="@drawable/do_item_checkbox_bg"
-                    android:checked="true"
-                    android:enabled="false" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text=":"
+                    android:textColor="@color/light_grey"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_payment_method"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/noto_sans"
+                    android:textColor="@color/doTabTextColor"
+                    android:textSize="14sp" />
+
             </LinearLayout>
+
+            <include
+                layout="@layout/signature_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/payment_method_layout"
+                android:layout_margin="16dp" />
 
         </RelativeLayout>
     </ScrollView>
