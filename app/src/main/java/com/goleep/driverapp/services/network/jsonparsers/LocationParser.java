@@ -44,7 +44,7 @@ public class LocationParser {
         location.setState(jsonObject.optString("state"));
         location.setCountry(jsonObject.optString("country"));
         location.setPincode(jsonObject.optString("pin_code"));
-        location.setOutstandingBalance(jsonObject.optDouble("outstanding_balance", 0));
+        location.setOutstandingBalance(jsonObject.optDouble("previous_balance", 0));
         return location;
     }
 
@@ -60,7 +60,7 @@ public class LocationParser {
         location.setState(jsonObject.optString("state"));
         location.setCountry(jsonObject.optString("country"));
         location.setPincode(jsonObject.optString("pin_code"));
-        location.setOutstandingBalance(jsonObject.optDouble("outstanding_balance", 0));
+        location.setOutstandingBalance(jsonObject.optDouble("previous_balance", 0));
         return location;
     }
 
