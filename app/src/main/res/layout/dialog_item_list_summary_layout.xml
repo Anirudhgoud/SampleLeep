@@ -47,7 +47,7 @@
             android:text="@string/grand_total"
             android:textColor="@color/light_grey"
             android:textSize="12sp"
-            app:typeface="NotoSans-Regular" />
+            android:fontFamily="@font/noto_sans" />
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:id="@+id/tv_grand_total"
@@ -57,7 +57,7 @@
             android:text="adsgadg"
             android:textColor="@color/doTabTextColor"
             android:textSize="18sp"
-            app:typeface="NotoSans-Light" />
+            android:fontFamily="@font/noto_sans" />
 
     </LinearLayout>
 

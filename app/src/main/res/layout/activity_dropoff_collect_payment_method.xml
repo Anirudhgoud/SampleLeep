@@ -53,7 +53,7 @@
                 android:text="@string/payment_collected"
                 android:textColor="@color/light_grey"
                 android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:fontFamily="@font/noto_sans" />
 
             <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:id="@+id/tv_payment_collected"
@@ -64,7 +64,7 @@
                 android:paddingRight="16dp"
                 android:textColor="@color/doTabTextColor"
                 android:textSize="32sp"
-                app:typeface="NotoSans-Light" />
+                android:fontFamily="@font/noto_sans" />
 
             <include
                 layout="@layout/divider_view"
