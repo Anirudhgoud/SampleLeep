@@ -154,15 +154,13 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         requestForm.put("type", "customer");
         requestForm.put("source_location_id", consumerLocation.getId());
         requestForm.put("assignee_id", assigneeId());
-        if (!paymentMadeInCashSales){
-            if (paymentCollected != 0) {
-                requestForm.put("payment_collected", paymentCollected);
-            }
-            requestForm.put("payment_mode", PaymentMethod.CASH);
-            requestForm.put("received_by", receivedBy);
-            if (contactNo != null) {
-                requestForm.put("receiver_contact_number", contactNo);
-            }
+        if (!paymentMadeInCashSales && paymentCollected != 0){
+            requestForm.put("payment_collected", paymentCollected);
+        }
+        requestForm.put("payment_mode", PaymentMethod.CASH);
+        requestForm.put("received_by", receivedBy);
+        if (contactNo != null) {
+            requestForm.put("receiver_contact_number", contactNo);
         }
         requestForm.put("return_order_items_attributes", new Gson().toJson(generateReturnsProductItemsMap()));
         return requestForm;
