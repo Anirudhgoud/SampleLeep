@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:name=".leep.main.LeepApp"
@@ -126,13 +128,13 @@
         <activity
             android:name=".leep.pickup.returns.ReturnsSelectReasonActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".leep.pickup.returns.ReturnConfirmActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.pickup.returns.ReturnsCustomerSelectActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".leep.pickup.returns.ReturnsSelectProductActivity"></activity>
     </application>
 
 </manifest>

@@ -139,4 +139,8 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
     public void setDriverLocationId(int driverLocationId) {
         this.driverLocationId = driverLocationId;
     }
+
+    public List<StockProductEntity> allProductsWithName(String searchText) {
+        return leepDatabase.stockProductDao().sellebleProductsWithName(searchText);
+    }
 }
