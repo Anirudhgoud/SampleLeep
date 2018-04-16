@@ -38,11 +38,13 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesConfirmationActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesSelectProductsViewModel;
+import com.goleep.driverapp.viewmodels.pickup.returns.ReturnsSelectProductViewModel;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -75,7 +77,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
 
     private final int RETURN_REASON_REQUEST_CODE = 101;
 
-    private CashSalesSelectProductsViewModel viewModel;
+    private ReturnsSelectProductViewModel viewModel;
     private OrderItemsListAdapter cashSalesListAdapter;
     private ProductSearchArrayAdapter productSearchArrayAdapter;
     private BarcodeCapture barcodeCapture;
@@ -106,6 +108,13 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         }
     };
 
+    private UILevelNetworkCallback returnReasonsCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+
+        }
+    };
+
     private void pauseBarcodeScanning() {
         barcodeCapture.pause();
     }
@@ -118,7 +127,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
 
     @Override
     public void doInitialSetup() {
-        viewModel = ViewModelProviders.of(this).get(CashSalesSelectProductsViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(ReturnsSelectProductViewModel.class);
         ButterKnife.bind(this);
         extractIntentData();
         initialiseToolbar();
@@ -127,6 +136,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         initialiseRecyclerView();
         initialiseAutoCompleteTextView();
         setClickListeners();
+        fetchReturnReasons();
         initialiseUpdateQuantityView();
         fetchDriverLocationId();
     }
@@ -259,6 +269,9 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         viewModel.setDriverLocationId(viewModel.getSourceLocationId());
     }
 
+    private void fetchReturnReasons(){
+        viewModel.fetchReturnReasons(returnReasonsCallback);
+    }
     private void initialiseAutoCompleteTextView() {
         Drawable rightDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_search_inactive);
         atvSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
@@ -325,9 +338,13 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     }
 
     private void goToReturnReasons(Product product) {
-        Intent intent = new Intent(this, ReturnsSelectReasonActivity.class);
-        intent.putExtra(IntentConstants.PRODUCT, product);
-        startActivityForResult(intent, RETURN_REASON_REQUEST_CODE);
+        ArrayList<ReturnReason> returnReasons = (ArrayList<ReturnReason>) viewModel.getReturnReasons();
+        if(returnReasons != null && returnReasons.size() > 0) {
+            Intent intent = new Intent(this, ReturnsSelectReasonActivity.class);
+            intent.putExtra(IntentConstants.PRODUCT, product);
+            intent.putParcelableArrayListExtra(IntentConstants.RETURN_REASONS, returnReasons);
+            startActivityForResult(intent, RETURN_REASON_REQUEST_CODE);
+        }
     }
 
     private void displayUpdateQuantityView(Product product) {

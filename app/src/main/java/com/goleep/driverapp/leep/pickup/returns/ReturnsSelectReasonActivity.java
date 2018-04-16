@@ -43,21 +43,6 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
 
     private ReturnReasonListAdapter adapter;
 
-    private UILevelNetworkCallback returnReasonsCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            if(uiModels != null && uiModels.size() > 0){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.updateList((List<ReturnReason>) uiModels);
-                    }
-                });
-            }
-        }
-    };
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_returns_select_reason);
@@ -70,7 +55,6 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
         processIntent();
         initView();
         initRecyclerView();
-        fetchReturnReasons();
     }
 
     private void initViewModel() {
@@ -78,7 +62,9 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
     }
 
     private void processIntent() {
-        returnReasonsViewModel.setProduct(getIntent().getParcelableExtra(IntentConstants.PRODUCT));
+        Intent intent = getIntent();
+        returnReasonsViewModel.setProduct(intent.getParcelableExtra(IntentConstants.PRODUCT));
+        returnReasonsViewModel.setReturnReasons(intent.getParcelableArrayListExtra(IntentConstants.RETURN_REASONS));
     }
 
     private void initView() {
@@ -103,16 +89,14 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
         }
     }
 
-    private void fetchReturnReasons() {
-        returnReasonsViewModel.fetchReturnReasons(returnReasonsCallback);
-    }
-
     private void initRecyclerView(){
         stocksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         stocksRecyclerView.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
-        adapter = new ReturnReasonListAdapter(new ArrayList<>());
-        stocksRecyclerView.setAdapter(adapter);
+        if(returnReasonsViewModel.getReturnReasons() != null) {
+            adapter = new ReturnReasonListAdapter(returnReasonsViewModel.getReturnReasons());
+            stocksRecyclerView.setAdapter(adapter);
+        }
     }
 
     @Override

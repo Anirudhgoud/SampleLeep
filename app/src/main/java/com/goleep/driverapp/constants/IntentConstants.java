@@ -26,4 +26,5 @@ public interface IntentConstants {
     String FLOW = "flow";
     String PRODUCT = "product";
     String RETURN_REASON = "return_reason";
+    String RETURN_REASONS = "return_reasons";
 }
