@@ -17,6 +17,7 @@ import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 
 import org.json.JSONArray;
@@ -41,6 +42,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     private List<BaseListItem> doList = new ArrayList<>();
     private Map<Integer, Boolean> doUpdateMap = new HashMap<>();
     private SparseArray positionMap = new SparseArray();
+    private WarehouseEntity warehouseEntity;
 
 
     public PickupDeliveryOrderViewModel(@NonNull Application application) {
@@ -102,9 +104,12 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         return doDetailsLiveData;
     }
 
+    public void setWarehouse(int warehouseId) {
+        warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);
+    }
+
     public String getWareHouseNameAddress(){
-        DriverEntity driverEntity = leepDatabase.driverDao().getDriver();
-        return driverEntity.getLocationName() + ", " + driverEntity.getAddressLine1() + ", " + driverEntity.getAddressLine2();
+        return warehouseEntity.getWareHouseName() + ", " + warehouseEntity.getAddressLine1() + ", " + warehouseEntity.getAddressLine2();
     }
 
     public DeliveryOrderEntity getDeliveryOrder(int doId) {

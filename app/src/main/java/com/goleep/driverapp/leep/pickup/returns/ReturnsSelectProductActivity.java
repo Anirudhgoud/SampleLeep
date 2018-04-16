@@ -343,6 +343,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
             Intent intent = new Intent(this, ReturnsSelectReasonActivity.class);
             intent.putExtra(IntentConstants.PRODUCT, product);
             intent.putParcelableArrayListExtra(IntentConstants.RETURN_REASONS, returnReasons);
+            intent.putExtra(IntentConstants.FLOW, AppConstants.RETURNS_FLOW);
             startActivityForResult(intent, RETURN_REASON_REQUEST_CODE);
         }
     }

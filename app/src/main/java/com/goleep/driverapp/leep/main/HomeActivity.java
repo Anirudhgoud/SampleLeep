@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
@@ -207,7 +208,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         setToolbarRightText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
         if (driverEntity.getImageUrl() != null) {
-
+            Glide.with(this).load(driverEntity.getImageUrl()).asBitmap().centerCrop().into(profileImage);
         }
     }
 

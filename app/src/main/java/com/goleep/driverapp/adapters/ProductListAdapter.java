@@ -43,7 +43,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<StocksListViewHolde
         else if(products.get(0) instanceof OrderItemEntity)
             holder.bind((OrderItemEntity)products.get(position));
         else if(products.get(0) instanceof Product)
-            holder.bind((Product) products.get(0));
+            holder.bind((Product) products.get(position));
 
     }
 

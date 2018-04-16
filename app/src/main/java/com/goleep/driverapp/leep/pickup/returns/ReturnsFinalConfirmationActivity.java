@@ -203,6 +203,7 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
         tvGrandTotal.setText(amountWithCurrencySymbol(grandTotal));
         tvOutstandingBalance.setText(amountWithCurrencySymbol(outstandingBalance));
         tvPaymentMethod.setText(String.format(getString(R.string.payment_method_label), paymentMethod));
+        tvPaymentMethod.setVisibility(View.VISIBLE);
     }
 
     public String amountWithCurrencySymbol(Object amount) {
