@@ -52,7 +52,7 @@
                 layout="@layout/signature_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/payment_method_layout"
+                android:layout_below="@+id/amount_summary_layout"
                 android:layout_margin="16dp" />
 
         </RelativeLayout>
