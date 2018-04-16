@@ -372,7 +372,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     }
 
     private void gotoNextActivity(Customer consumerLocation, ArrayList<Product> productList) {
-        Intent intent = new Intent(this, CashSalesConfirmationActivity.class);
+        Intent intent = new Intent(this, ReturnItemsConfirmActivity.class);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, consumerLocation);
         intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, productList);
         startActivity(intent);

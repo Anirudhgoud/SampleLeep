@@ -2,15 +2,16 @@ package com.goleep.driverapp.leep.pickup.returns;
 
 import android.os.Bundle;
 
+import com.goleep.driverapp.R;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 
 /**
  * Created by vishalm on 16/04/18.
  */
-public class ReturnsPayentConfirmationActivity extends ParentAppCompatActivity {
+public class ReturnsPaymentMethodActivity extends ParentAppCompatActivity {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
+        setResources(R.layout.activity_returns_payment_method);
     }
 
     @Override

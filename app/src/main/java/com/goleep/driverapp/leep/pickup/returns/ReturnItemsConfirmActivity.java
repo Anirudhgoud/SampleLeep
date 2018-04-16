@@ -2,7 +2,6 @@ package com.goleep.driverapp.leep.pickup.returns;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -97,7 +96,7 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
     }
 
     private void goToNextScreen(){
-        Intent intent = new Intent(this, ReturnsPayentConfirmationActivity.class);
+        Intent intent = new Intent(this, ReturnsPaymentActivity.class);
         intent.putParcelableArrayListExtra(IntentConstants.PRODUCT, viewModel.getProducts());
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getCustomer());
         startActivity(intent);

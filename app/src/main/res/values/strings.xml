@@ -144,6 +144,9 @@
     <!--Return Reasons-->
     <string name="select_reason">Select reason</string>
 
+    <!--Returns-->
+    <string name="current_return">Current Returns</string>
+
     <string name="location_permission_denied">Location permission denied</string>
     <string name="location_fetch_error">Unable to get user location</string>
     <string name="location_field_empty">Location name could not be empty</string>
