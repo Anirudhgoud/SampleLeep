@@ -94,22 +94,12 @@ public class CashSalesReturnsListDialogFragment extends DialogFragment {
 
     private void updateItemSummaryUI() {
         int selectedProductCount = viewModel.getSelectedProductCount();
-        if (selectedProductCount > 0) {
-            tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, selectedProductCount, selectedProductCount)));
-            tvItemCount.setVisibility(View.VISIBLE);
-        } else {
-            tvItemCount.setVisibility(View.GONE);
-        }
-
         int returnedProductCount = viewModel.getReturnedProductCount();
-        if (returnedProductCount > 0) {
-            tvReturnedItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, returnedProductCount, returnedProductCount)));
-            tvReturnedItemCount.setVisibility(View.VISIBLE);
-            llReturnedLabel.setVisibility(View.VISIBLE);
-        } else {
-            tvReturnedItemCount.setVisibility(View.GONE);
-            llReturnedLabel.setVisibility(View.GONE);
-        }
+        tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, selectedProductCount, selectedProductCount)));
+        tvItemCount.setVisibility(selectedProductCount > 0 ? View.VISIBLE: View.GONE);
+        tvReturnedItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, returnedProductCount, returnedProductCount)));
+        tvReturnedItemCount.setVisibility(returnedProductCount > 0 ? View.VISIBLE : View.GONE);
+        llReturnedLabel.setVisibility(returnedProductCount > 0 ? View.VISIBLE : View.GONE);
         ivExpandableIndicator.setVisibility(View.GONE);
     }
 
