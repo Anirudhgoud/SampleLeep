@@ -318,7 +318,8 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
 
     private void onUpdateButtonTap() {
         Product product = viewModel.getSelectedProduct();
-        product.setQuantity(Integer.valueOf(etUnits.getText().toString()));
+        product.setReturnQuantity(Integer.valueOf(etUnits.getText().toString()));
+        product.setQuantity(0);
         viewModel.setSelectedProduct(product);
         goToReturnReasons(product);
     }
@@ -372,7 +373,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     }
 
     private void gotoNextActivity(Customer consumerLocation, ArrayList<Product> productList) {
-        Intent intent = new Intent(this, CashSalesConfirmationActivity.class);
+        Intent intent = new Intent(this, ReturnItemsConfirmActivity.class);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, consumerLocation);
         intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, productList);
         startActivity(intent);

@@ -38,6 +38,10 @@ public class ReturnReasonListAdapter extends RecyclerView.Adapter<ReturnReasonVi
         this.returnReasons = returnReasons;
     }
 
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
     @Override
     public ReturnReasonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ReturnReasonViewHolder holder = new ReturnReasonViewHolder(LayoutInflater.from(parent.getContext()).inflate(

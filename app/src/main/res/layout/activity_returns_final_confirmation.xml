@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bt_continue"
+        android:layout_below="@+id/toolbar_container">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/ll_top_layout"
+                layout="@layout/delivery_order_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/bt_view_item_list"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/ll_top_layout"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_border_green"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/view_item_list"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textColor="@color/doTabTextColor"
+                android:textSize="18sp" />
+
+            <include
+                android:id="@+id/amount_summary_layout"
+                layout="@layout/layout_returns_payment_method_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bt_view_item_list"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp" />
+
+            <LinearLayout
+                android:id="@+id/payment_method_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/amount_summary_layout"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@string/payment_method"
+                    android:textColor="@color/light_grey"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text=":"
+                    android:textColor="@color/light_grey"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_payment_method"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/noto_sans"
+                    android:textColor="@color/doTabTextColor"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <include
+                layout="@layout/signature_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/payment_method_layout"
+                android:layout_margin="16dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bt_continue"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/green"
+        android:fontFamily="@font/noto_sans"
+        android:text="@string/continue_text"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</RelativeLayout>
+
