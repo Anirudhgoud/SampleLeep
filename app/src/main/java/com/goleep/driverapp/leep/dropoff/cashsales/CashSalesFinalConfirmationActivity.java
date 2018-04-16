@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -257,6 +258,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
                         showNetworkRelatedDialogs(errorMessage);
                     }
                 } else {
+                    sendSuccessBroadcast();
                     showSuccessDialog();
                     LogUtils.debug(this.getClass().getSimpleName(), "Returns order successful");
                 }
@@ -367,5 +369,11 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void sendSuccessBroadcast(){
+        Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
