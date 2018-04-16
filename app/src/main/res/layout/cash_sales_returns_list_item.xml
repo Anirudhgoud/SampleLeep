@@ -74,6 +74,10 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="4dp"
+                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_return_item" />
 
             <TextView
@@ -81,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
+                android:layout_gravity="center_vertical"
                 android:textColor="@color/red"
                 android:textSize="14sp" />
 
