@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
     android:layout_height="match_parent"
     tools:context="com.goleep.driverapp.leep.pickup.returns.ReturnItemsConfirmActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/delivery_order_top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <include
+        layout="@layout/divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+    <include
+        layout="@layout/item_header_layout"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_return_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/confirm_button"/>
+
+        <com.goleep.driverapp.helpers.customfont.CustomButton
+            android:id="@+id/confirm_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green"
+            android:text="@string/confirm"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:visibility="visible"
+            android:layout_alignParentBottom="true"
+            app:typeface="NotoSans-Regular" />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

@@ -19,6 +19,7 @@ import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.StringUtils;
+import com.goleep.driverapp.viewmodels.pickup.returns.ReturnsItemsConfirmationViewModel;
 
 import java.util.ArrayList;
 
@@ -29,21 +30,17 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
     CustomTextView tvCustomerName;
-    @BindView(R.id.tv_do_number_label)
-    CustomTextView tvDoNumberLabel;
     @BindView(R.id.tv_store_address)
     CustomTextView tvStoreAddress;
     @BindView(R.id.ll_do_number)
     LinearLayout llDoNumber;
-    @BindView(R.id.tv_date)
-    CustomTextView tvDate;
     @BindView(R.id.tv_time)
     CustomTextView tvTime;
     @BindView(R.id.rv_return_items)
     RecyclerView returnList;
     @BindView(R.id.confirm_button)
     CustomButton btConfirm;
-    private ReturnsConfirmationViewModel viewModel;
+    private ReturnsItemsConfirmationViewModel viewModel;
     private ProductListAdapter adapter;
 
     @Override
@@ -60,7 +57,7 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
     }
 
     private void initViewModel(){
-        viewModel = ViewModelProviders.of(this).get(ReturnsConfirmationViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(ReturnsItemsConfirmationViewModel.class);
     }
 
     private void initView() {
