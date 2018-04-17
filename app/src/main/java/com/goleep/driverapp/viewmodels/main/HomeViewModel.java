@@ -90,7 +90,7 @@ public class HomeViewModel extends AndroidViewModel {
                         }
                         List<WarehouseEntity> warehouseEntities = driverDataParser.warehouseByParsingResponse(response);
                         if(warehouseEntities != null) {
-                            leepDatabase.warehouseDao().insertWarehouseEntities(warehouseEntities);
+                            leepDatabase.warehouseDao().updateWarehouseDetails(warehouseEntities);
                         }
                         driverProfileCallback.onResponseReceived(driverEntities, false, null, false);
                         break;
