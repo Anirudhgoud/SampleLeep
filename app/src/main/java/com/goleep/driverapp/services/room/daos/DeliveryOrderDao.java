@@ -26,6 +26,9 @@ public abstract class DeliveryOrderDao {
     @Query("Select * from DeliveryOrderEntity where status = :status and type = :type")
     public abstract LiveData<List<DeliveryOrderEntity>> getCustomerDeliveryOrders(String type, String status);
 
+    @Query("Select * from DeliveryOrderEntity where status = :status and type = :type and sourceLocationId = :sourceLocationId")
+    public abstract LiveData<List<DeliveryOrderEntity>> getCustomerDeliveryOrders(String type, String status, int sourceLocationId);
+
     @Query("Delete from DeliveryOrderEntity")
     public abstract void deleteAllDeliveryOrders();
 

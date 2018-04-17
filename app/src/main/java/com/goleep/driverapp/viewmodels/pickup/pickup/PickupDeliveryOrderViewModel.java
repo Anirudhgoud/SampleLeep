@@ -106,6 +106,11 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
 
     public void setWarehouse(int warehouseId) {
         warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);
+        System.out.print("");
+    }
+
+    public WarehouseEntity getWarehouse(){
+        return warehouseEntity;
     }
 
     public String getWareHouseNameAddress(){

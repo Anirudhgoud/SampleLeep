@@ -139,9 +139,11 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         int totalValue = 0;
         for (int cashSalesId : cashDoItems) {
             OrderItemEntity csOrderItem = pickupDeliveryOrderViewModel.getDeliveryOrderItem(cashSalesId);
-            csOrderItem.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
-            pickupDeliveryOrderViewModel.getCashSalesItems().add(csOrderItem);
-            totalValue += csOrderItem.getQuantity() * csOrderItem.getPrice();
+            if(csOrderItem != null) {
+                csOrderItem.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
+                pickupDeliveryOrderViewModel.getCashSalesItems().add(csOrderItem);
+                totalValue += csOrderItem.getQuantity() * csOrderItem.getPrice();
+            }
         }
         BaseListItem cashSalesHeader = new BaseListItem();
         cashSalesHeader.setOrdersHeader(getString(R.string.cash_sales));

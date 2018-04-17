@@ -26,6 +26,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.pickup.pickup.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.pickup.pickup.PickupDeliveryOrderViewModel;
 
@@ -82,6 +83,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     private void initialise() {
         doViewModel = ViewModelProviders.of(getActivity()).get(PickupDeliveryOrderViewModel.class);
+        int i = getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1);
         doViewModel.setWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1));
         initRecyclerView();
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +101,9 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         adapter.setItemCheckListener(itemCheckListener);
         adapter.setHeaderClickListener(headerClickListener);
         expandableListView.setAdapter(adapter);
+        WarehouseEntity e = doViewModel.getWarehouse();
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
-                DropOffDeliveryOrdersViewModel.STATUS_ASSIGNED).observe(
+                DropOffDeliveryOrdersViewModel.STATUS_ASSIGNED, doViewModel.getWarehouse().getId()).observe(
                         PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderEntity>>() {
             @Override
             public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrders) {

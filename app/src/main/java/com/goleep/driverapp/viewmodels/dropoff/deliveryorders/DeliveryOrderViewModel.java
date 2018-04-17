@@ -51,6 +51,11 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
         return deliveryOrders;
     }
 
+    public LiveData<List<DeliveryOrderEntity>> getDeliveryOrders(String type, String status, int sourceLocationId) {
+        deliveryOrders = leepDatabase.deliveryOrderDao().getCustomerDeliveryOrders(type, status, sourceLocationId);
+        return deliveryOrders;
+    }
+
     public void setWarehouse(int warehouseId) {
         warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);;
     }
