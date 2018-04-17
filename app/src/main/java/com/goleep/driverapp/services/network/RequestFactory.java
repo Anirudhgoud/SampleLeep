@@ -62,6 +62,7 @@ public class RequestFactory {
                     exception.printStackTrace();
                     value = entry.getValue().toString();
                 }
+                LogUtils.error(this.getClass().getSimpleName(), entry.getKey()+" "+value);
                 bodyBuilder.add(entry.getKey(), value);
             }
             requestBody = bodyBuilder.build();

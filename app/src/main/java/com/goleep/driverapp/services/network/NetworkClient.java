@@ -192,6 +192,46 @@ public class NetworkClient {
         });
     }
 
+    public void uploadImageWithMultipartFormData(final Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
+                                                 String requestType, final NetworkAPICallback networkAPICallback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM);
+
+        for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
+            builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
+            LogUtils.error("", entry.getValue().toString());
+        }
+        RequestBody formBody = builder.build();
+        OkHttpClient client = new OkHttpClient();
+
+        Request.Builder requestBuilder = new Request.Builder()
+                .addHeader("Content-Type", "multipart/form-data")
+                .addHeader(RequestConstants.KEY_USER_AGENT, RequestConstants.USER_AGENT)
+                .url(requestUrl);
+        if (isAuthRequired) requestBuilder.addHeader("Authorization", getOAuthToken(context));
+        switch (requestType){
+            case NetworkConstants.POST_REQUEST: requestBuilder.post(formBody); break;
+            case NetworkConstants.PUT_REQUEST: requestBuilder.put(formBody); break;
+        }
+
+        Request request = requestBuilder.build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                networkAPICallback.onNetworkResponse(NetworkConstants.FAILURE, null,
+                        NetworkStringConstants.REQUEST_FAILURE);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Object[] objects = responseValidator.validateResponse(response);
+                networkAPICallback.onNetworkResponse(getNetworkState(objects), getResponse(objects),
+                        getErrorMessage(objects));
+                LogUtils.error("response", response.toString());
+            }
+        });
+    }
+
     private String getOAuthToken(Context context) {
         LocalFileStore localFileStore = LocalStorageService.sharedInstance().getLocalFileStore();
         return localFileStore.getString(context, SharedPreferenceKeys.AUTH_TOKEN);

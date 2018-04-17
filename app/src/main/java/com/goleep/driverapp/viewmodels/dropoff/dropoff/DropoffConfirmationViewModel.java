@@ -14,11 +14,13 @@ import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,14 +60,14 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
 
     public void confirmDropoff(final UILevelNetworkCallback dropoffConfirmCallBack) {
         Map<String, Object> requestBody = generateRequestMap();
-        NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(
+        NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(
                 getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true,
-                requestBody, new NetworkAPICallback() {
+                requestBody, NetworkConstants.POST_REQUEST,new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
-                                dropoffConfirmCallBack.onResponseReceived(null,
+                                dropoffConfirmCallBack.onResponseReceived(new ArrayList<>(),
                                         false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
@@ -91,7 +93,7 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
         requestMap.put("assignee_id", leepDatabase.driverDao().getDriver().getId());
         requestMap.put("destination_location_id", getWarehouse().getId());
         try {
-            requestMap.put("return_order_items_attributes", generateReturnOrdersJson());
+            requestMap.put("return_order_items_attributes", new Gson().toJson(generateReturnOrdersJson()));
         }catch (JSONException e){
             System.out.print("");
         }
@@ -100,23 +102,27 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
 
     private Object generateReturnOrdersJson() throws JSONException {
         List<HashMap<String,Object>> returnItemsArray = new ArrayList<>();
-        int length = selectedReturnableIds.size();
-        for(int i=0;i<length;i++){
-            StockProductEntity product = getStockProduct(selectedReturnableIds.get(i));
-            HashMap<String, Object> productJSON = new HashMap<>();
-            productJSON.put("product_id", product.getId());
-            productJSON.put("quantity", product.getQuantity(AppConstants.TYPE_RETURNED));
-            productJSON.put("type", "returnable");
-            returnItemsArray.add(productJSON);
+        if(selectedReturnableIds != null) {
+            int length = selectedReturnableIds.size();
+            for (int i = 0; i < length; i++) {
+                StockProductEntity product = getStockProduct(selectedReturnableIds.get(i));
+                HashMap<String, Object> productJSON = new HashMap<>();
+                productJSON.put("product_id", product.getId());
+                productJSON.put("quantity", product.getQuantity(AppConstants.TYPE_RETURNED));
+                productJSON.put("type", "returnable");
+                returnItemsArray.add(productJSON);
+            }
         }
-        length = selectedSellableIds.size();
-        for(int i=0;i<length;i++){
-            StockProductEntity product = getStockProduct(selectedSellableIds.get(i));
-            HashMap<String, Object> productJSON = new HashMap<>();
-            productJSON.put("product_id", product.getId());
-            productJSON.put("quantity", product.getQuantity(AppConstants.TYPE_SELLABLE));
-            productJSON.put("type", "sellable");
-            returnItemsArray.add(productJSON);
+        if(selectedSellableIds != null) {
+            int length = selectedSellableIds.size();
+            for (int i = 0; i < length; i++) {
+                StockProductEntity product = getStockProduct(selectedSellableIds.get(i));
+                HashMap<String, Object> productJSON = new HashMap<>();
+                productJSON.put("product_id", product.getId());
+                productJSON.put("quantity", product.getQuantity(AppConstants.TYPE_SELLABLE));
+                productJSON.put("type", "sellable");
+                returnItemsArray.add(productJSON);
+            }
         }
         return returnItemsArray;
     }
