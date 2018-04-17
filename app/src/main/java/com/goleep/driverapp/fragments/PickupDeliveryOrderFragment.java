@@ -83,7 +83,6 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     private void initialise() {
         doViewModel = ViewModelProviders.of(getActivity()).get(PickupDeliveryOrderViewModel.class);
-        int i = getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1);
         doViewModel.setWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1));
         initRecyclerView();
         confirmButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +100,6 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         adapter.setItemCheckListener(itemCheckListener);
         adapter.setHeaderClickListener(headerClickListener);
         expandableListView.setAdapter(adapter);
-        WarehouseEntity e = doViewModel.getWarehouse();
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_ASSIGNED, doViewModel.getWarehouse().getId()).observe(
                         PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderEntity>>() {
