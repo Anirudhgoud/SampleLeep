@@ -193,8 +193,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
 
     private void onContinueButtonTap() {
         if (checkValidations()) {
-            createReturnsOrder();
-//            createCashSalesOrder();
+            createCashSalesOrder();
         }
     }
 
