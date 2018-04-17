@@ -64,4 +64,8 @@ public abstract class StockProductDao {
 
     @Query("UPDATE StockProductEntity SET returnableQuantity = :updatedQuantity WHERE id = :id")
     public abstract void updateReturnableQuantity(int id, int updatedQuantity);
+
+    public List<StockProductEntity> allProductsWithBarcoed(String barcode) {
+        return null;
+    }
 }

@@ -141,6 +141,10 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
     }
 
     public List<StockProductEntity> allProductsWithName(String searchText) {
-        return leepDatabase.stockProductDao().sellebleProductsWithName(searchText);
+        return leepDatabase.stockProductDao().allProductsWithName(searchText);
+    }
+
+    public StockProductEntity productsWithBarcode(String barcode) {
+        return leepDatabase.stockProductDao().productHavingBarcode(barcode);
     }
 }

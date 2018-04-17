@@ -311,7 +311,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     }
 
     private void onBarcodeDetected(String barcode) {
-        StockProductEntity stockProduct = viewModel.sellebleProductHavingBarcode(barcode);
+        StockProductEntity stockProduct = viewModel.productsWithBarcode(barcode);
         if (stockProduct == null) {
             Toast.makeText(this, R.string.product_not_available, Toast.LENGTH_SHORT).show();
             resumeBarcodeScanning();
