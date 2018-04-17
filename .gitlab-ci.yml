@@ -30,6 +30,8 @@ build:
   stage: build
   script:
     - ./gradlew assembleDebug
+  tags:
+    - build
   artifacts:
     paths:
     - app/build/outputs/
