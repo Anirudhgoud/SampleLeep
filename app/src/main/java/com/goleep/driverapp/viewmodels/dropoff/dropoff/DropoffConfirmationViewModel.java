@@ -59,7 +59,7 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
     public void confirmDropoff(final UILevelNetworkCallback dropoffConfirmCallBack) {
         Map<String, Object> requestBody = generateRequestMap();
         NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(
-                getApplication().getApplicationContext(), UrlConstants.RETURN_REASONS, true,
+                getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true,
                 requestBody, new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
@@ -93,28 +93,30 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
         try {
             requestMap.put("return_order_items_attributes", generateReturnOrdersJson());
         }catch (JSONException e){
-
+            System.out.print("");
         }
         return requestMap;
     }
 
     private Object generateReturnOrdersJson() throws JSONException {
-        JSONArray returnItemsArray = new JSONArray();
+        List<HashMap<String,Object>> returnItemsArray = new ArrayList<>();
         int length = selectedReturnableIds.size();
         for(int i=0;i<length;i++){
             StockProductEntity product = getStockProduct(selectedReturnableIds.get(i));
-            JSONObject productJSON = new JSONObject();
+            HashMap<String, Object> productJSON = new HashMap<>();
             productJSON.put("product_id", product.getId());
             productJSON.put("quantity", product.getQuantity(AppConstants.TYPE_RETURNED));
             productJSON.put("type", "returnable");
+            returnItemsArray.add(productJSON);
         }
         length = selectedSellableIds.size();
         for(int i=0;i<length;i++){
             StockProductEntity product = getStockProduct(selectedSellableIds.get(i));
-            JSONObject productJSON = new JSONObject();
+            HashMap<String, Object> productJSON = new HashMap<>();
             productJSON.put("product_id", product.getId());
             productJSON.put("quantity", product.getQuantity(AppConstants.TYPE_SELLABLE));
             productJSON.put("type", "sellable");
+            returnItemsArray.add(productJSON);
         }
         return returnItemsArray;
     }

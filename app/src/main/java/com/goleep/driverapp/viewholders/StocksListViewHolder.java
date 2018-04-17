@@ -33,7 +33,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
     public void bind(StockProductEntity stockProductEntity, int listType){
         productNameTv.setText(stockProductEntity.getProductName());
         double value = stockProductEntity.getQuantity(listType) * stockProductEntity.getDefaultPrice();
-        unitsTv.setText(String.valueOf(stockProductEntity.getDeliverableQuantity()));
+        unitsTv.setText(String.valueOf(stockProductEntity.getQuantity(listType)));
         productQuantityTv.setText(stockProductEntity.getWeight()+" "+ stockProductEntity.getWeightUnit());
         amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
     }

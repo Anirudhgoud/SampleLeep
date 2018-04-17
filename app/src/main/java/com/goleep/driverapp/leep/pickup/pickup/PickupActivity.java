@@ -138,7 +138,7 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
                 cashDoItems.removeAll(Arrays.asList(((OrderItemEntity) item).getId()));
             }
         } else if (item instanceof DeliveryOrderEntity) {
-            if (checked) {
+            if (checked && !selectedDeliveryOrders.contains(((DeliveryOrderEntity) item).getId())) {
                 selectedDeliveryOrders.add(((DeliveryOrderEntity) item).getId());
             } else if (selectedDeliveryOrders.contains(((DeliveryOrderEntity) item).getId())) {
                 selectedDeliveryOrders.removeAll(Arrays.asList(((DeliveryOrderEntity) item).getId()));
