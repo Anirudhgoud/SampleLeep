@@ -69,7 +69,9 @@ public class LocationHelper implements OnSuccessListener<Location>, OnFailureLis
     }
 
     public void stopLocationUpdates(){
-        mFusedLocationClient.removeLocationUpdates(locationCallback);
+        if (mFusedLocationClient != null && locationCallback != null){
+            mFusedLocationClient.removeLocationUpdates(locationCallback);
+        }
     }
 
     @Override

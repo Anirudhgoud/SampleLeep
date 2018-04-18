@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -46,7 +49,6 @@ import com.goleep.driverapp.leep.info.HistoryActivity;
 import com.goleep.driverapp.leep.info.ReportsActivity;
 import com.goleep.driverapp.leep.info.StocksActivity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
-import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.main.HomeViewModel;
 
@@ -528,12 +530,23 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     private void startDriverLocationUpdateService(){
         Intent intent = new Intent(this, DriverLocationUpdateService.class);
-        startService(intent);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 
     @Override
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(taskSuccessBroadcast);
+        unbindService(serviceConnection);
         super.onDestroy();
     }
 }

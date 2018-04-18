@@ -3,6 +3,7 @@ package com.goleep.driverapp.services.system;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -20,8 +21,9 @@ import java.util.Map;
 
 public class DriverLocationUpdateService extends Service implements LocationChangeListener {
 
-    private final long LOCATION_INTERVAL_IN_MILLIS = 10000;
+    private final long LOCATION_INTERVAL_IN_MILLIS = 300000; // 5 Minutes
     private LocationHelper locationHelper;
+    private IBinder mBinder = new Binder();
 
     @Override
     public void onLastKnownLocationReceived(Location location) {
@@ -38,6 +40,10 @@ public class DriverLocationUpdateService extends Service implements LocationChan
             LogUtils.error("", location.toString());
             updateCurrentLocation(location);
         }
+    }
+
+    private void stopLocationUpdates(){
+        if (locationHelper != null) locationHelper.stopLocationUpdates();
     }
 
     private void updateCurrentLocation(Location location) {
@@ -61,7 +67,14 @@ public class DriverLocationUpdateService extends Service implements LocationChan
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        stopLocationUpdates();
+        stopSelf();
+        return super.onUnbind(intent);
     }
 
     @Override
@@ -73,16 +86,8 @@ public class DriverLocationUpdateService extends Service implements LocationChan
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        return START_STICKY;
-
-    }
-
-    @Override
     public void onDestroy() {
-        if (locationHelper != null) locationHelper.stopLocationUpdates();
-        LogUtils.error("", "onStopJob");
+        stopLocationUpdates();
         super.onDestroy();
     }
 }
