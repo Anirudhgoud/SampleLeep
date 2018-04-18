@@ -35,9 +35,7 @@
             android:name=".services.system.DriverLocationUpdateService"
             android:exported="false"
             android:stopWithTask="true">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
-            </intent-filter>
+
         </service>
 
         <activity

@@ -1,9 +1,11 @@
 package com.goleep.driverapp.services.system;
 
+import android.app.Service;
+import android.content.Intent;
 import android.location.Location;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 
-import com.firebase.jobdispatcher.JobParameters;
-import com.firebase.jobdispatcher.JobService;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
@@ -16,26 +18,10 @@ import org.json.JSONArray;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DriverLocationUpdateService extends JobService implements LocationChangeListener {
+public class DriverLocationUpdateService extends Service implements LocationChangeListener {
 
-    private final long LOCATION_INTERVAL_IN_MILLIS = 20000;
+    private final long LOCATION_INTERVAL_IN_MILLIS = 10000;
     private LocationHelper locationHelper;
-
-    @Override
-    public boolean onStartJob(JobParameters job) {
-        LogUtils.error("", "onStartJob");
-        locationHelper = new LocationHelper(this, LOCATION_INTERVAL_IN_MILLIS);
-        locationHelper.setLocationChangeListener(this);
-        locationHelper.startLocationUpdates();
-        return true;
-    }
-
-    @Override
-    public boolean onStopJob(JobParameters job) {
-        if (locationHelper != null) locationHelper.stopLocationUpdates();
-        LogUtils.error("", "onStopJob");
-        return false;
-    }
 
     @Override
     public void onLastKnownLocationReceived(Location location) {
@@ -72,4 +58,31 @@ public class DriverLocationUpdateService extends JobService implements LocationC
         return httpBody;
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        locationHelper = new LocationHelper(this, LOCATION_INTERVAL_IN_MILLIS);
+        locationHelper.setLocationChangeListener(this);
+        locationHelper.startLocationUpdates();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
+
+    }
+
+    @Override
+    public void onDestroy() {
+        if (locationHelper != null) locationHelper.stopLocationUpdates();
+        LogUtils.error("", "onStopJob");
+        super.onDestroy();
+    }
 }
