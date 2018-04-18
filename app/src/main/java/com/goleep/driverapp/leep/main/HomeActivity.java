@@ -27,6 +27,13 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
+import com.goleep.driverapp.services.system.DriverLocationUpdateService;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
@@ -45,6 +52,7 @@ import com.goleep.driverapp.leep.info.HistoryActivity;
 import com.goleep.driverapp.leep.info.ReportsActivity;
 import com.goleep.driverapp.leep.info.StocksActivity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.main.HomeViewModel;
 
@@ -74,6 +82,9 @@ public class HomeActivity extends ParentAppCompatActivity {
     private RelativeLayout relativeLayout_pickup_cardview;
     private RelativeLayout relativeLayout_drop_off_cardview;
     private RelativeLayout relativeLayout_information_cardview;
+
+    private FirebaseJobDispatcher dispatcher;
+    private Job driverLocationUpdateJob;
 
     final int START_GALLERY_REQUEST_CODE = 101;
     final int START_PICKUP_ACTIVITY_CODE = 102;
@@ -220,6 +231,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         populateProfile();
         populateSummary();
         registerBroadcastReceiver();
+        initialiseFirebaseJobDispatcher();
     }
 
     private void registerBroadcastReceiver() {
@@ -466,11 +478,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(taskSuccessBroadcast);
-        super.onDestroy();
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -525,5 +533,47 @@ public class HomeActivity extends ParentAppCompatActivity {
         if (str.length() == 1)
             return "0" + str;
         else return str;
+    }
+
+    private void initialiseFirebaseJobDispatcher(){
+        dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        driverLocationUpdateJob = createJob(dispatcher);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LogUtils.error("", "onStartJob:Activity");
+        startDriverLocationUpdateService();
+//        startJob();
+    }
+
+//    private void startJob(){
+//        Intent intent = new Intent(this, DriverLocationUpdateService.class);
+//        startService(intent);
+//    }
+
+
+    private void startDriverLocationUpdateService(){
+        dispatcher.mustSchedule(driverLocationUpdateJob);
+    }
+
+    private Job createJob(FirebaseJobDispatcher dispatcher){
+        return dispatcher.newJobBuilder()
+                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                .setService(DriverLocationUpdateService.class)
+                .setTag(this.getLocalClassName())
+                .setRecurring(false)
+                .setTrigger(Trigger.NOW)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .build();
+    }
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(taskSuccessBroadcast);
+        LogUtils.error("", "onStopJob:Activity");
+        dispatcher.cancel(this.getLocalClassName());
+        super.onDestroy();
     }
 }
