@@ -1,8 +1,10 @@
-package com.goleep.driverapp.utils;
+package com.goleep.driverapp.helpers.uihelpers;
 
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.StringUtils;
 import com.ngx.BluetoothPrinter;
 import com.ngx.BtpCommands;
 
@@ -11,7 +13,7 @@ import java.util.List;
 /**
  * Created by vishalm on 14/04/18.
  */
-public class PrinterUtils {
+public class PrinterHelper {
     public void printInvoice(DeliveryOrderEntity deliveryOrder,
                              List<OrderItemEntity> products, List<Product> returnedProducts, BluetoothPrinter printer){
         printer.setPrintFontStyle(BtpCommands.FONT_STYLE_BOLD);

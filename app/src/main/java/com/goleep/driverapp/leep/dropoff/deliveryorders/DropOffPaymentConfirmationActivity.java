@@ -32,7 +32,7 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
-import com.goleep.driverapp.utils.PrinterUtils;
+import com.goleep.driverapp.helpers.uihelpers.PrinterHelper;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffPaymentConfirmationViewModel;
 import com.ngx.BluetoothPrinter;
 
@@ -279,7 +279,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
                 LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
                 BluetoothPrinter printer = PrinterService.sharedInstance().getPrinter();
                 if(printer.getState() == BluetoothPrinter.STATE_CONNECTED) {
-                    new PrinterUtils().printInvoice(viewModel.getDeliveryOrder(), viewModel.getSelectedOrderItems(),
+                    new PrinterHelper().printInvoice(viewModel.getDeliveryOrder(), viewModel.getSelectedOrderItems(),
                             null, printer);
                 } else {
                     printer.showDeviceList(DropOffPaymentConfirmationActivity.this);
