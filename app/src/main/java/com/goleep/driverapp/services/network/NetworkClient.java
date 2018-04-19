@@ -125,85 +125,21 @@ public class NetworkClient {
         });
     }
 
-    public void uploadImage(String authToken, String url, File file, String fileName) {
-        MultipartBody.Builder builder = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("file", fileName, RequestBody.create(MediaType.parse("image/jpeg"), file));
-        RequestBody formBody = builder.build();
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .addHeader("Authorization", authToken)
-                .url(url)
-                .put(formBody)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.out.print("");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                System.out.print("");
-                Object[] objects = responseValidator.validateResponse(response);
-                LogUtils.error("response", response.toString());
-            }
-        });
-    }
-
     public void uploadImageWithMultipartFormData(final Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
                                                  File file, String imageFileKey, String requestType, final NetworkAPICallback networkAPICallback) {
         MultipartBody.Builder builder = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart(imageFileKey, imageFileKey + ".jpg", RequestBody.create(MediaType.parse("image/jpeg"), file));
-
-        for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
-            builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
-            LogUtils.error("", entry.getValue().toString());
-        }
-        RequestBody formBody = builder.build();
-        OkHttpClient client = new OkHttpClient();
-
-        Request.Builder requestBuilder = new Request.Builder()
-                .addHeader("Content-Type", "multipart/form-data")
-                .addHeader(RequestConstants.KEY_USER_AGENT, RequestConstants.USER_AGENT)
-                .url(requestUrl);
-        if (isAuthRequired) requestBuilder.addHeader("Authorization", getOAuthToken(context));
-        switch (requestType){
-            case NetworkConstants.POST_REQUEST: requestBuilder.post(formBody); break;
-            case NetworkConstants.PUT_REQUEST: requestBuilder.put(formBody); break;
-        }
-
-        Request request = requestBuilder.build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                networkAPICallback.onNetworkResponse(NetworkConstants.FAILURE, null,
-                        NetworkStringConstants.REQUEST_FAILURE);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Object[] objects = responseValidator.validateResponse(response);
-                networkAPICallback.onNetworkResponse(getNetworkState(objects), getResponse(objects),
-                        getErrorMessage(objects));
-                LogUtils.error("response", response.toString());
-            }
-        });
-    }
-
-    public void uploadImageWithMultipartFormData(final Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
-                                                 String requestType, final NetworkAPICallback networkAPICallback) {
-        MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
-
-        for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
-            builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
-            LogUtils.error("", entry.getValue().toString());
+        if (file != null && imageFileKey != null)
+                builder.addFormDataPart(imageFileKey, imageFileKey + ".jpg", RequestBody.create(MediaType.parse("image/jpeg"), file));
+        if (bodyParams != null){
+            for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
+                builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
+                LogUtils.error("", entry.getValue().toString());
+            }
         }
+
         RequestBody formBody = builder.build();
         OkHttpClient client = new OkHttpClient();
-
         Request.Builder requestBuilder = new Request.Builder()
                 .addHeader("Content-Type", "multipart/form-data")
                 .addHeader(RequestConstants.KEY_USER_AGENT, RequestConstants.USER_AGENT)

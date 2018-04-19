@@ -62,7 +62,7 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
         Map<String, Object> requestBody = generateRequestMap();
         NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(
                 getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true,
-                requestBody, NetworkConstants.POST_REQUEST,new NetworkAPICallback() {
+                requestBody, null, null, NetworkConstants.POST_REQUEST,new NetworkAPICallback() {
                     @Override
                     public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                         switch (type) {
