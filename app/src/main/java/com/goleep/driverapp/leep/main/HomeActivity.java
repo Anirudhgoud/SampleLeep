@@ -57,7 +57,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends ParentAppCompatActivity {
-    HomeViewModel viewModel;
+
     @BindView(R.id.left_toolbar_button)
     CustomButton profileButton;
     @BindView(R.id.drawer_layout)
@@ -70,6 +70,8 @@ public class HomeActivity extends ParentAppCompatActivity {
     CustomButton signOutButton;
     @BindView(R.id.edit_profile_imageview)
     CircleImageView profileImage;
+
+    private HomeViewModel viewModel;
 
     private RelativeLayout relativeLayout_pickup_cardview;
     private RelativeLayout relativeLayout_drop_off_cardview;
@@ -90,10 +92,15 @@ public class HomeActivity extends ParentAppCompatActivity {
     private View.OnClickListener innerDashboardItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Summary summary = viewModel.getSummary();
             switch ((String) view.getTag()) {
                 case InnerDashboardUiModel.TAG_DELIVERY_ORDERS:
-                    Intent doIntent = new Intent(HomeActivity.this, DropOffDeliveryOrdersActivity.class);
-                    startActivity(doIntent);
+                    if (summary.getDropOffDeliveryOrdersCount() != 0) {
+                        Intent doIntent = new Intent(HomeActivity.this, DropOffDeliveryOrdersActivity.class);
+                        startActivity(doIntent);
+                    }else {
+                        Toast.makeText(HomeActivity.this, getString(R.string.no_delivery_orders), Toast.LENGTH_SHORT).show();
+                    }
                     break;
 
                 case InnerDashboardUiModel.TAG_CASH_SALES:
@@ -102,8 +109,12 @@ public class HomeActivity extends ParentAppCompatActivity {
                     break;
 
                 case InnerDashboardUiModel.TAG_PICKUP:
-                    Intent pickupIntent = new Intent(HomeActivity.this, PickupWarehouseActivity.class);
-                    startActivityForResult(pickupIntent, START_PICKUP_ACTIVITY_CODE);
+                    if (summary.getPickUpCount() != 0) {
+                        Intent pickupIntent = new Intent(HomeActivity.this, PickupWarehouseActivity.class);
+                        startActivityForResult(pickupIntent, START_PICKUP_ACTIVITY_CODE);
+                    }else {
+                        Toast.makeText(HomeActivity.this, getString(R.string.no_pickup_orders), Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case InnerDashboardUiModel.TAG_REPORTS:
                     Intent reportsIntent = new Intent(HomeActivity.this, ReportsActivity.class);
@@ -118,8 +129,12 @@ public class HomeActivity extends ParentAppCompatActivity {
                     startActivity(stocksIntent);
                     break;
                 case InnerDashboardUiModel.TAG_DROP_OFF:
-                    Intent dropoffIntent = new Intent(HomeActivity.this, DropoffWarehouseActivity.class);
-                    startActivity(dropoffIntent);
+                    if (summary.getPickUpCount() != 0) {
+                        Intent dropoffIntent = new Intent(HomeActivity.this, DropoffWarehouseActivity.class);
+                        startActivity(dropoffIntent);
+                    }else {
+                        Toast.makeText(HomeActivity.this, getString(R.string.no_dropoff_orders), Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case InnerDashboardUiModel.TAG_RETURNS:
                     Intent returnsIntent = new Intent(HomeActivity.this, ReturnsCustomerSelectActivity.class);
@@ -129,31 +144,16 @@ public class HomeActivity extends ParentAppCompatActivity {
         }
     };
 
-    private UILevelNetworkCallback logoutCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            logoutUser();
-        }
-    };
+    private UILevelNetworkCallback logoutCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> logoutUser();
 
-    private UILevelNetworkCallback driverProfileCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            if (toLogout)
-                logoutUser();
-            else if (errorMessage == null && uiModels != null && uiModels.size() > 0) {
-                if (!HomeActivity.this.isFinishing())
-                    HomeActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            displayDriverProfile((DriverEntity) uiModels.get(0));
-                        }
-                    });
-            } else if (isDialogToBeShown) {
-                showNetworkRelatedDialogs(errorMessage);
-            }
+    private UILevelNetworkCallback driverProfileCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        if (toLogout)
+            logoutUser();
+        else if (errorMessage == null && uiModels != null && uiModels.size() > 0) {
+            if (!HomeActivity.this.isFinishing())
+                HomeActivity.this.runOnUiThread(() -> displayDriverProfile((DriverEntity) uiModels.get(0)));
+        } else if (isDialogToBeShown) {
+            showNetworkRelatedDialogs(errorMessage);
         }
     };
 
@@ -161,17 +161,17 @@ public class HomeActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(final List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {
-            if (toLogout) {
-                logoutUser();
-            } else if (isDialogToBeShown) {
-                showNetworkRelatedDialogs(errorMessage);
+            if (uiModels == null) {
+                if (toLogout) {
+                    logoutUser();
+                } else {
+                    showNetworkRelatedDialogs(errorMessage);
+                }
             } else if (uiModels.size() > 0) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        populateUiCount((Summary) uiModels.get(0));
-                    }
+                runOnUiThread(() -> {
+                    Summary summary = (Summary) uiModels.get(0);
+                    viewModel.setSummary(summary);
+                    populateUiCount(summary);
                 });
             }
         }
@@ -323,55 +323,66 @@ public class HomeActivity extends ParentAppCompatActivity {
         final String TAG_DROPOFF = "1";
         final String TAG_INFO = "2";
 
+        Summary summary = viewModel.getSummary();
         switch (tag) {
             case TAG_PICKUP:
-                setUpPickupDashboard();
+                setUpPickupDashboard(summary);
                 break;
             case TAG_DROPOFF:
-                setUpReturnsDashboard();
+                setUpReturnsDashboard(summary);
                 break;
             case TAG_INFO:
-                setupInformationDashboard();
+                setupInformationDashboard(summary);
                 break;
         }
     }
 
-    private void setupInformationDashboard() {
+    private void setupInformationDashboard(Summary summary) {
+        int stocksCount = summary.getInformationStocks();
+        int historyCount = summary.getInformationOnHistory();
+        int reportsCount = summary.getInformationOnReports();
+
         List<InnerDashboardUiModel> innerDashboardUiModels = new ArrayList<>();
         innerDashboardUiModels.add(new InnerDashboardUiModel("Stocks", "",
-                "Items", String.valueOf(viewModel.getSummary().getInformationStocks()), R.drawable.ic_stocks,
+                "Items", String.valueOf(stocksCount == -1 ? 0 : stocksCount), R.drawable.ic_stocks,
                 R.drawable.rounded_rect_orange, InnerDashboardUiModel.TAG_STOCKS));
         innerDashboardUiModels.add(new InnerDashboardUiModel("History", "",
-                "Dos", String.valueOf(viewModel.getSummary().getInformationOnHistory()), R.drawable.ic_history,
+                "Dos", String.valueOf(historyCount == -1 ? 0 : historyCount), R.drawable.ic_history,
                 R.drawable.rounded_rect_bahama_blue, InnerDashboardUiModel.TAG_HISTORY));
         innerDashboardUiModels.add(new InnerDashboardUiModel("Reports", "",
-                "Invoices", String.valueOf(viewModel.getSummary().getInformationOnReports()), R.drawable.ic_reports,
+                "Invoices", String.valueOf(reportsCount == -1 ? 0 : reportsCount), R.drawable.ic_reports,
                 R.drawable.rounded_rect_olive, InnerDashboardUiModel.TAG_REPORTS));
         populateInnerDashboard(innerDashboardUiModels);
-
     }
 
-    private void setUpReturnsDashboard() {
+    private void setUpReturnsDashboard(Summary summary) {
+        int deliveryOrderCount = summary.getDropOffDeliveryOrdersCount();
+        int cashSalesCount = summary.getDropOffCashSales();
+        int dropoffCount = summary.getDropOffToWarehouse();
+
         List<InnerDashboardUiModel> innerDashboardUiModels = new ArrayList<>();
         innerDashboardUiModels.add(new InnerDashboardUiModel("Delivery Orders", "",
-                "Items", String.valueOf(viewModel.getSummary().getDropOffDeliveryOrdersCount()), R.drawable.ic_delivery_orders,
+                "Items", String.valueOf(deliveryOrderCount == -1 ? 0 : deliveryOrderCount), R.drawable.ic_delivery_orders,
                 R.drawable.rounded_rect_green, InnerDashboardUiModel.TAG_DELIVERY_ORDERS));
         innerDashboardUiModels.add(new InnerDashboardUiModel("Cash Sales", "Sellable Items",
-                "Today", String.valueOf(viewModel.getSummary().getDropOffCashSales()), R.drawable.ic_cash_sales, R.drawable.rounded_rect_red,
+                "Today", String.valueOf(cashSalesCount == -1 ? 0 : cashSalesCount), R.drawable.ic_cash_sales, R.drawable.rounded_rect_red,
                 InnerDashboardUiModel.TAG_CASH_SALES));
         innerDashboardUiModels.add(new InnerDashboardUiModel("Drop Off", "To Warehouse",
-                "Items", String.valueOf(viewModel.getSummary().getDropOffToWarehouse()), R.drawable.ic_drop_off_warehouse,
+                "Items", String.valueOf(dropoffCount == -1 ? 0 : dropoffCount), R.drawable.ic_drop_off_warehouse,
                 R.drawable.rounded_rect_purple, InnerDashboardUiModel.TAG_DROP_OFF));
         populateInnerDashboard(innerDashboardUiModels);
     }
 
-    private void setUpPickupDashboard() {
+    private void setUpPickupDashboard(Summary summary) {
+        int pickUpCount = summary.getPickUpFromWarehouse();
+        int returnsCount = summary.getReturnsFromCustomers();
+
         List<InnerDashboardUiModel> innerDashboardUiModels = new ArrayList<>();
         innerDashboardUiModels.add(new InnerDashboardUiModel("Pick Up", "From Warehouse",
-                "Items", String.valueOf(viewModel.getSummary().getPickUpFromWarehouse()), R.drawable.ic_pickup_warehouse,
+                "Items", String.valueOf(pickUpCount == -1 ? 0 : pickUpCount), R.drawable.ic_pickup_warehouse,
                 R.drawable.rounded_rect_blue, InnerDashboardUiModel.TAG_PICKUP));
         innerDashboardUiModels.add(new InnerDashboardUiModel("Returns", "From Customer",
-                "Today", String.valueOf(viewModel.getSummary().getReturnsFromCustomers()), R.drawable.ic_returns_customers,
+                "Today", String.valueOf(returnsCount == -1 ? 0 : returnsCount), R.drawable.ic_returns_customers,
                 R.drawable.rounded_rect_red, InnerDashboardUiModel.TAG_RETURNS));
         populateInnerDashboard(innerDashboardUiModels);
     }
@@ -515,9 +526,12 @@ public class HomeActivity extends ParentAppCompatActivity {
     }
 
     private void populateUiCount(Summary summary) {
-       setCountValues(relativeLayout_pickup_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getPickUpCount())),R.drawable.pickup_icon_bg);
-       setCountValues(relativeLayout_drop_off_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getDropoffCount())),R.drawable.drop_off_icon_bg);
-       setCountValues(relativeLayout_information_cardview,addZeroToSingleCharacter(summary == null ? "0" : StringUtils.formatToOneDecimal(summary.getInformationCount())),R.drawable.info_icon_bg);
+        int pickupCount = summary.getPickUpCount();
+        int dropoffCount = summary.getDropoffCount();
+        int informationCount = summary.getInformationCount();
+        setCountValues(relativeLayout_pickup_cardview,StringUtils.formatToOneDecimal(pickupCount == -1 ? 0 : pickupCount),R.drawable.pickup_icon_bg);
+        setCountValues(relativeLayout_drop_off_cardview,StringUtils.formatToOneDecimal(dropoffCount == -1 ? 0 : dropoffCount),R.drawable.drop_off_icon_bg);
+        setCountValues(relativeLayout_information_cardview,StringUtils.formatToOneDecimal(informationCount == -1 ? 0 : informationCount),R.drawable.info_icon_bg);
     }
 
 

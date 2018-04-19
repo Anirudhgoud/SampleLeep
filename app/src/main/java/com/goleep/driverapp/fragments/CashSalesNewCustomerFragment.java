@@ -215,8 +215,6 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         if (uiModels == null) {
             if (toLogout) {
                 parentActivity.logoutUser();
-            } else if (isDialogToBeShown) {
-                parentActivity.showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
             @SuppressWarnings("unchecked") final List<Business> data = (List<Business>) uiModels;
@@ -243,8 +241,6 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         if (uiModels == null) {
             if (toLogout) {
                 parentActivity.logoutUser();
-            } else if (isDialogToBeShown) {
-                parentActivity.showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
             @SuppressWarnings("unchecked") final List<Business> data = (List<Business>) uiModels;

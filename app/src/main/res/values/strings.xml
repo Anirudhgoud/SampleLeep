@@ -185,11 +185,15 @@
 
     <!--Map-->
     <string name="map_key">AIzaSyAq9pi62Es_ElwauRwDV6ZvW912wjghpHo</string>
-
-    <!--Instructions-->
     <string name="map_drag_drop">Drag &amp; drop the pin to get the address</string>
     <string name="camera_permission_denied">Camera Permission denied.</string>
+
+    <!--Select Product screen-->
     <string name="item_already_added">Item already added in list.</string>
     <string name="product_not_available">Product not available in inventory.</string>
 
+    <!--Others-->
+    <string name="no_delivery_orders">No orders to deliver.</string>
+    <string name="no_dropoff_orders">No orders to drop off.</string>
+    <string name="no_pickup_orders">No orders to pick up.</string>
 </resources>
