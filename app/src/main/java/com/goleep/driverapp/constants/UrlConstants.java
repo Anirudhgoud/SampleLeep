@@ -38,7 +38,7 @@ public interface UrlConstants {
     String PICKUP_CONFIRMATION = DELIVERY_ORDERS_URL + "/in_transit";
 
     //Update profile image
-    String UPDATE_PROFILE_IMAGE = BASE_URL + "/users/";
+    String UPDATE_PROFILE_IMAGE = BASE_URL + "/profile_update/";
 
     //Reports
     String REPORT_URL = BASE_URL + "/reports";
