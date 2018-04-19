@@ -13,12 +13,12 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.Permissions;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.helpers.uihelpers.PermissionHelper;
@@ -54,7 +54,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     private CustomTextView tvDeliveryDate;
     private CustomTextView tvPreferredTime;
     private CustomTextView tvTimeToReach;
-    private CustomButton btNavigate;
+    private ImageView ivNavigate;
     private LinearLayout llMapAddressLayout;
 
     private DropOffDeliveryOrdersViewModel viewModel;
@@ -90,12 +90,12 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
         tvDeliveryDate = view.findViewById(R.id.tv_date);
         tvPreferredTime = view.findViewById(R.id.tv_preferred_time);
         tvTimeToReach = view.findViewById(R.id.tv_time_to_reach);
-        btNavigate = view.findViewById(R.id.bt_navigate);
+        ivNavigate = view.findViewById(R.id.bt_navigate);
         llMapAddressLayout = view.findViewById(R.id.ll_map_address_layout);
     }
 
     private void addListeners() {
-        btNavigate.setOnClickListener(v -> openDirectionsOnGoogleMaps());
+        ivNavigate.setOnClickListener(v -> openDirectionsOnGoogleMaps());
     }
 
     @Override

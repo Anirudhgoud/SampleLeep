@@ -139,7 +139,7 @@
             android:textSize="18sp"
             app:typeface="NotoSans-Regular" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomButton
+        <ImageView
             android:id="@+id/bt_navigate"
             android:layout_width="56dp"
             android:layout_height="56dp"
