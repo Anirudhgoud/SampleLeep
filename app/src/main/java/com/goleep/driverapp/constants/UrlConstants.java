@@ -51,6 +51,9 @@ public interface UrlConstants {
     String BUSINESS_CATEGORIES_URL = BASE_URL + "/business_categories";
     String BUSINESSES_URL = BASE_URL + "/businesses";
 
+    //Driver location update
+    String DRIVER_CURRENT_LOCATION_URL = BASE_URL + "/current_location";
+
     //Util
     String COUNTRY_URL = BASE_URL + "/countries";
 }

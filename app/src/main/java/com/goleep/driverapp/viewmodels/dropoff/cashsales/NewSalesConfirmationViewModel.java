@@ -29,6 +29,8 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
     private boolean signatureAdded = false;
     private boolean paymentSkipped = false;
     private boolean paymentMadeInCashSales = false;
+    private boolean cashSalesAvailable = false;
+    private boolean returnsAvailable = false;
     private String paymentMethod;
     public String RECEIVER_SIGNATURE = "receiver_signature";
 
@@ -40,7 +42,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         LogUtils.debug(this.getClass().getSimpleName(), generateCashSalesRequestMap(receivedBy, contactNo).toString());
 
         Map<String, Object> requestMap = generateCashSalesRequestMap(receivedBy, contactNo);
-        if (requestMap.keySet().size() == 0){
+        if (!cashSalesAvailable){
             deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
         }else {
             NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.CREATE_CASH_SALE_DO, true, requestMap, file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
@@ -68,7 +70,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         LogUtils.debug(this.getClass().getSimpleName(), generateReturnOrderRequestMap(receivedBy, contactNo).toString());
 
         Map<String, Object> requestMap = generateReturnOrderRequestMap(receivedBy, contactNo);
-        if (requestMap.keySet().size() == 0){
+        if (!returnsAvailable){
             deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
         }else {
             NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true, requestMap, file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
@@ -130,7 +132,9 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         if (contactNo != null) {
             requestForm.put("receiver_contact_number", contactNo);
         }
-        requestForm.put("delivery_order_items_attributes", new Gson().toJson(generateSelectedProductItemsMap()));
+        List<Map<String, Object>> cashSalesProducts = generateSelectedProductItemsMap();
+        cashSalesAvailable = cashSalesProducts.size() > 0;
+        requestForm.put("delivery_order_items_attributes", new Gson().toJson(cashSalesProducts));
         return requestForm;
     }
 
@@ -162,7 +166,9 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         if (contactNo != null) {
             requestForm.put("receiver_contact_number", contactNo);
         }
-        requestForm.put("return_order_items_attributes", new Gson().toJson(generateReturnsProductItemsMap()));
+        List<Map<String, Object>> returnsProducts = generateReturnsProductItemsMap();
+        returnsAvailable = returnsProducts.size() > 0;
+        requestForm.put("return_order_items_attributes", new Gson().toJson(returnsProducts));
         return requestForm;
     }
 

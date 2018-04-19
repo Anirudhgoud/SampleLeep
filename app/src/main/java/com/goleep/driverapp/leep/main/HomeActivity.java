@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.goleep.driverapp.services.system.DriverLocationUpdateService;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
@@ -220,6 +224,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         populateProfile();
         populateSummary();
         registerBroadcastReceiver();
+        startDriverLocationUpdateService();
     }
 
     private void registerBroadcastReceiver() {
@@ -477,11 +482,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(taskSuccessBroadcast);
-        super.onDestroy();
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -539,5 +540,27 @@ public class HomeActivity extends ParentAppCompatActivity {
         if (str.length() == 1)
             return "0" + str;
         else return str;
+    }
+
+    private void startDriverLocationUpdateService(){
+        Intent intent = new Intent(this, DriverLocationUpdateService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(taskSuccessBroadcast);
+        unbindService(serviceConnection);
+        super.onDestroy();
     }
 }

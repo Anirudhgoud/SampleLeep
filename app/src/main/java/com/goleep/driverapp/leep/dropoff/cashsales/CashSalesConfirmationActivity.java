@@ -174,7 +174,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
 
     private void onSkipPaymentTap() {
         Intent intent = new Intent(this, CashSalesFinalConfirmationActivity.class);
-        intent.putExtra(IntentConstants.PAYMENT_COLLECTED, 0);
+        intent.putExtra(IntentConstants.PAYMENT_COLLECTED, 0.0);
         intent.putExtra(IntentConstants.PAYMENT_SKIPPED, true);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
         intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getSelectedProducts());
