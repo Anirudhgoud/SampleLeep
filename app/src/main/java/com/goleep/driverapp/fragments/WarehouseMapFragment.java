@@ -25,8 +25,7 @@ import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.utils.DateTimeUtils;
+
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.WarehouseViewModel;
 import com.google.android.gms.maps.CameraUpdate;
@@ -215,7 +214,7 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
     private void updateMarkers(Marker marker, WarehouseEntity warehouseEntity) {
         Marker previousMarker = warehouseViewModel.getPreviouslySelectedMarker();
         if (previousMarker != null && previousMarker != warehouseViewModel.getSelectedMarker()) {
-            DeliveryOrderEntity prevMarkerDO = (DeliveryOrderEntity) previousMarker.getTag();
+            WarehouseEntity prevMarkerDO = (WarehouseEntity) previousMarker.getTag();
             if (prevMarkerDO != null) {
                 previousMarker.setIcon(BitmapDescriptorFactory.fromBitmap(warehouseViewModel.getMarkerBitmapFromView(prevMarkerDO.getDistanceFromCurrentLocation().getDurationText(), false)));
             }

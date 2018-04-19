@@ -28,6 +28,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
 
     private boolean signatureAdded = false;
     private boolean paymentSkipped = false;
+    private boolean paymentMadeInCashSales = false;
     private String paymentMethod;
     public String RECEIVER_SIGNATURE = "receiver_signature";
 
@@ -38,23 +39,56 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
     public void createCashSalesDeliveryOrder(String receivedBy, String contactNo, File file, final UILevelNetworkCallback deliverOrderNetworkCallBack) {
         LogUtils.debug(this.getClass().getSimpleName(), generateCashSalesRequestMap(receivedBy, contactNo).toString());
 
-        NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.CREATE_CASH_SALE_DO, true, generateCashSalesRequestMap(receivedBy, contactNo), file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
-            switch (type) {
-                case NetworkConstants.SUCCESS:
-                    deliverOrderNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
-                    break;
+        Map<String, Object> requestMap = generateCashSalesRequestMap(receivedBy, contactNo);
+        if (requestMap.keySet().size() == 0){
+            deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
+        }else {
+            NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.CREATE_CASH_SALE_DO, true, requestMap, file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
+                switch (type) {
+                    case NetworkConstants.SUCCESS:
+                        paymentMadeInCashSales = true;
+                        deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
+                        break;
 
-                case NetworkConstants.FAILURE:
-                case NetworkConstants.NETWORK_ERROR:
-                    deliverOrderNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
-                    break;
+                    case NetworkConstants.FAILURE:
+                    case NetworkConstants.NETWORK_ERROR:
+                        deliverOrderNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                        break;
 
-                case NetworkConstants.UNAUTHORIZED:
-                    deliverOrderNetworkCallBack.onResponseReceived(null,
-                            false, errorMessage, true);
-                    break;
-            }
-        });
+                    case NetworkConstants.UNAUTHORIZED:
+                        deliverOrderNetworkCallBack.onResponseReceived(null,
+                                false, errorMessage, true);
+                        break;
+                }
+            });
+        }
+    }
+
+    public void createReturnsDeliveryOrder(String receivedBy, String contactNo, File file, final UILevelNetworkCallback deliverOrderNetworkCallBack) {
+        LogUtils.debug(this.getClass().getSimpleName(), generateReturnOrderRequestMap(receivedBy, contactNo).toString());
+
+        Map<String, Object> requestMap = generateReturnOrderRequestMap(receivedBy, contactNo);
+        if (requestMap.keySet().size() == 0){
+            deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
+        }else {
+            NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true, requestMap, file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
+                switch (type) {
+                    case NetworkConstants.SUCCESS:
+                        deliverOrderNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
+                        break;
+
+                    case NetworkConstants.FAILURE:
+                    case NetworkConstants.NETWORK_ERROR:
+                        deliverOrderNetworkCallBack.onResponseReceived(null, true, errorMessage, false);
+                        break;
+
+                    case NetworkConstants.UNAUTHORIZED:
+                        deliverOrderNetworkCallBack.onResponseReceived(null,
+                                false, errorMessage, true);
+                        break;
+                }
+            });
+        }
     }
 
     public void fetchBusinessLocation(int businessId, int locationId, final UILevelNetworkCallback locationCallBack) {
@@ -96,19 +130,54 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
         if (contactNo != null) {
             requestForm.put("receiver_contact_number", contactNo);
         }
-        requestForm.put("delivery_order_items_attributes", new Gson().toJson(generateProductItemsMap()));
+        requestForm.put("delivery_order_items_attributes", new Gson().toJson(generateSelectedProductItemsMap()));
         return requestForm;
     }
 
-    private List<Map<String, Object>> generateProductItemsMap(){
+    private List<Map<String, Object>> generateSelectedProductItemsMap(){
         List<Map<String, Object>> listOfMapProducts = new ArrayList<>();
 
         for (Product product : scannedProducts) {
-            Map<String, Object> productMap = new HashMap<>();
             if (product == null) continue;
-            productMap.put("product_id", product.getId());
-            productMap.put("quantity", product.getQuantity());
-            listOfMapProducts.add(productMap);
+            if (product.getQuantity() > 0){
+                Map<String, Object> productMap = new HashMap<>();
+                productMap.put("product_id", product.getId());
+                productMap.put("quantity", product.getQuantity());
+                listOfMapProducts.add(productMap);
+            }
+        }
+        return listOfMapProducts;
+    }
+
+    private Map<String, Object> generateReturnOrderRequestMap(String receivedBy, String contactNo) {
+        Map<String, Object> requestForm = new HashMap<>();
+        requestForm.put("type", "customer");
+        requestForm.put("source_location_id", consumerLocation.getId());
+        requestForm.put("assignee_id", assigneeId());
+        if (!paymentMadeInCashSales && paymentCollected != 0){
+            requestForm.put("payment_collected", paymentCollected);
+        }
+        requestForm.put("payment_mode", PaymentMethod.CASH);
+        requestForm.put("received_by", receivedBy);
+        if (contactNo != null) {
+            requestForm.put("receiver_contact_number", contactNo);
+        }
+        requestForm.put("return_order_items_attributes", new Gson().toJson(generateReturnsProductItemsMap()));
+        return requestForm;
+    }
+
+    private List<Map<String, Object>> generateReturnsProductItemsMap(){
+        List<Map<String, Object>> listOfMapProducts = new ArrayList<>();
+
+        for (Product product : scannedProducts) {
+            if (product == null) continue;
+            if (product.getReturnQuantity() > 0){
+                Map<String, Object> productMap = new HashMap<>();
+                productMap.put("product_id", product.getId());
+                productMap.put("quantity", product.getReturnQuantity());
+                productMap.put("return_reason_id", product.getReturnReason().getId());
+                listOfMapProducts.add(productMap);
+            }
         }
         return listOfMapProducts;
     }

@@ -38,6 +38,7 @@ import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesActivity;
 import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesSelectProductsActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.pickup.returns.ReturnsCustomerSelectActivity;
+import com.goleep.driverapp.leep.pickup.returns.ReturnsSelectProductActivity;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesExistingCustomerViewModel;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -229,16 +230,23 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
         FragmentActivity activity = getActivity();
         if(activity != null && !activity.isFinishing()){
             if(activity instanceof CashSalesActivity) {
-                gotoSelectProductActivity(activity, customer, AppConstants.CASH_SALES_FLOW);
+                gotoCashSalesSelectProductActivity(activity, customer, AppConstants.CASH_SALES_FLOW);
             } else if(activity instanceof ReturnsCustomerSelectActivity) {
-                gotoSelectProductActivity(activity, customer, AppConstants.RETURNS_FLOW) ;
+                gotoReturnsSelectProductActivity(activity, customer, AppConstants.RETURNS_FLOW) ;
             }
         }
     }
 
+    private void gotoReturnsSelectProductActivity(FragmentActivity activity, Customer customer, int flow) {
+        if (customer == null) return;
+        Intent intent = new Intent(activity, ReturnsSelectProductActivity.class);
+        intent.putExtra(IntentConstants.FLOW, flow);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, customer);
+        startActivity(intent);
+    }
 
 
-    private void gotoSelectProductActivity(FragmentActivity activity, Customer customer, int flow) {
+    private void gotoCashSalesSelectProductActivity(FragmentActivity activity, Customer customer, int flow) {
         if (customer == null) return;
         Intent intent = new Intent(activity, CashSalesSelectProductsActivity.class);
         intent.putExtra(IntentConstants.FLOW, flow);

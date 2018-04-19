@@ -21,7 +21,12 @@ public class CashSalesPaymentMethodViewModel extends AndroidViewModel {
     }
 
     public double getTotalReturns() {
-        return 0;
+        double totalReturns = 0;
+        for (Product product : scannedProducts) {
+            if (product == null) continue;
+            totalReturns += product.getTotalReturnsPrice();
+        }
+        return totalReturns;
     }
 
     public double getCurrentSales() {

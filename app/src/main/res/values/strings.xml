@@ -102,6 +102,7 @@
     <string name="done">Done</string>
     <string name="continue_text">Continue</string>
     <string name="payment_method">Payment Method</string>
+    <string name="payment_method_label">Payment Method: %1s</string>
     <string name="cash_collected">Cash Collected</string>
     <string name="close">Close</string>
     <string name="received_from">Received From</string>
@@ -121,6 +122,7 @@
 
     <!--Cash Sales - New Sale-->
     <string name="cash_sales_title">Cash Sales > Payment</string>
+    <string name="cash_sales_returns_title">Cash Sales > Returns</string>
     <string name="existing_customer">Existing Customer</string>
     <string name="new_customer">New Customer</string>
     <string name="nearby_customers">Nearby Customers</string>
@@ -143,7 +145,9 @@
     <!--Return Reasons-->
     <string name="select_reason">Select reason</string>
 
-
+    <!--Returns-->
+    <string name="current_return">Current Returns</string>
+    <string name="returns_success">Update Successful</string>
 
     <string name="location_permission_denied">Location permission denied</string>
     <string name="location_fetch_error">Unable to get user location</string>

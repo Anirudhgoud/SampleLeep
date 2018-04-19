@@ -49,8 +49,8 @@
         android:gravity="center_vertical"
         android:layout_weight="5"
         android:orientation="vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
 
         <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:id="@+id/units_text_view"
@@ -83,8 +83,8 @@
         android:gravity="center_vertical"
         android:layout_weight="5"
         android:orientation="vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
 
     <com.goleep.driverapp.helpers.customfont.CustomTextView
         android:id="@+id/amount_text_view"
@@ -111,10 +111,9 @@
 
     <CheckBox
         android:id="@+id/product_checkbox"
-        android:layout_width="0dp"
+        android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="end|center_vertical"
-        android:layout_weight="2"
         android:button="@drawable/do_item_checkbox_bg" />
 
 </LinearLayout>

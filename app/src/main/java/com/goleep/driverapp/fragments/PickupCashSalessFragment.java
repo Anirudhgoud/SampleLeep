@@ -112,6 +112,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
             if (((PickupActivity) getActivity()).getSelectedCashSalesIds().size() > 0 ||
                     ((PickupActivity) getActivity()).getSelectedDoIds().size() > 0) {
                 Intent intent = new Intent(getActivity(), PickupConfirmationActivity.class);
+                intent.putExtra(IntentConstants.WAREHOUSE_ID, cashSalesViewModel.getWarehouse().getId());
                 intent.putIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY,
                         (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedCashSalesIds());
                 intent.putIntegerArrayListExtra(AppConstants.DO_IDS_KEY,

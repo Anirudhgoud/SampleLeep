@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.goleep.driverapp.R;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
@@ -41,6 +42,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<StocksListViewHolde
             holder.bind((ReturnOrderItem)products.get(position));
         else if(products.get(0) instanceof OrderItemEntity)
             holder.bind((OrderItemEntity)products.get(position));
+        else if(products.get(0) instanceof Product)
+            holder.bind((Product) products.get(position));
 
     }
 

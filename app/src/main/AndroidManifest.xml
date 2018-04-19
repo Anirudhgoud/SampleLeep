@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:name=".leep.main.LeepApp"
@@ -109,6 +111,12 @@
             android:name=".leep.dropoff.cashsales.CashSalesFinalConfirmationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".leep.dropoff.cashsales.SelectReturnsProductActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.dropoff.cashsales.CashSalesReturnsConfirmationActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".leep.dropoff.dropoff.DropoffWarehouseActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -120,13 +128,22 @@
         <activity
             android:name=".leep.pickup.returns.ReturnsSelectReasonActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name=".leep.pickup.returns.ReturnConfirmActivity"
+            android:name=".leep.pickup.returns.ReturnItemsConfirmActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.pickup.returns.ReturnsCustomerSelectActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".leep.pickup.returns.ReturnsSelectProductActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".leep.pickup.returns.ReturnsPaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".leep.pickup.returns.ReturnsPaymentMethodActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".leep.pickup.returns.ReturnsFinalConfirmationActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

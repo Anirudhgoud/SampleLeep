@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.goleep.driverapp.R;
@@ -18,6 +17,7 @@ import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesConfirmationViewModel;
 
@@ -72,7 +72,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
         Intent intent = getIntent();
         if (intent == null) return;
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.PRODUCT_LIST));
+        viewModel.setSelectedProducts(intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST));
     }
 
     private void initialiseToolbar() {
@@ -89,18 +89,18 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
         tvCustomerName.setText(StringUtils.toString(customer.getName(), ""));
         tvCustomerName.setTextSize(24);
         tvAddress.setText(StringUtils.toString(customer.getArea(), ""));
-        tvCurrentDate.setText(viewModel.currentDateToDisplay());
-        tvCurrentTime.setText(viewModel.currentTimeToDisplay());
+        tvCurrentDate.setText(DateTimeUtils.currentDateToDisplay());
+        tvCurrentTime.setText(DateTimeUtils.currentTimeToDisplay());
     }
 
     private void updateItemSummaryUI() {
-        int productCount = viewModel.getScannedProducts().size();
+        int productCount = viewModel.getSelectedProducts().size();
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, productCount, productCount)));
         findViewById(R.id.iv_expandable_indicator).setVisibility(View.GONE);
     }
 
     private void displayProductList() {
-        List<Product> scannedProducts = viewModel.getScannedProducts();
+        List<Product> scannedProducts = viewModel.getSelectedProducts();
 
         llItemListLayout.addView(listHeaderView());
         llItemListLayout.addView(dividerView());
@@ -129,8 +129,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
         CustomTextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
         CustomTextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
         CustomTextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
-        CheckBox productCheckbox = orderItemView.findViewById(R.id.product_checkbox);
-        productCheckbox.setVisibility(View.GONE);
+        orderItemView.findViewById(R.id.product_checkbox).setVisibility(View.GONE);
         tvProductName.setText(StringUtils.toString(product.getProductName(), ""));
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
         tvUnits.setText(String.valueOf(product.getQuantity()));
@@ -159,22 +158,33 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
             case R.id.bt_collect_payment:
                 onCollectPaymentTap();
                 break;
+
+            case R.id.bt_take_returns:
+                gotoTakeReturnsActivity();
+                break;
         }
     }
 
-    private void onSkipPaymentTap(){
+    private void gotoTakeReturnsActivity() {
+        Intent intent = new Intent(this, SelectReturnsProductActivity.class);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getSelectedProducts());
+        startActivity(intent);
+    }
+
+    private void onSkipPaymentTap() {
         Intent intent = new Intent(this, CashSalesFinalConfirmationActivity.class);
         intent.putExtra(IntentConstants.PAYMENT_COLLECTED, 0);
         intent.putExtra(IntentConstants.PAYMENT_SKIPPED, true);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getSelectedProducts());
         startActivity(intent);
     }
 
-    private void onCollectPaymentTap(){
+    private void onCollectPaymentTap() {
         Intent intent = new Intent(this, CashSalesInvoiceActivity.class);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getSelectedProducts());
         startActivity(intent);
     }
 }

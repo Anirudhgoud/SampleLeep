@@ -20,6 +20,7 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -239,6 +240,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 if (isChecked)
                     allItems.get(doPositionMapAllItems.get(doId)).addSelection(1);
                 else allItems.get(doPositionMapAllItems.get(doId)).addSelection(-1);
+                LogUtils.debug("Selection", allItems.get(doPositionMapAllItems.get(doId)).getSelectedCount()+"");
                 notifyDataSetChanged();
             }
         };
@@ -259,12 +261,13 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                     doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
-            if (((Activity) context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
+            if (context instanceof PickupActivity) {
                 {
                     if(productCheckbox != null) {
                         productCheckbox.setVisibility(View.VISIBLE);
                         productCheckbox.setTag(doDetails.getOrderId());
                         productCheckbox.setOnCheckedChangeListener(null);
+                        LogUtils.debug("Test", doDetails.getId()+" "+visibleItems.get(position).isItemChecked());
                         productCheckbox.setChecked(visibleItems.get(position).isItemChecked());
                         productCheckbox.setOnCheckedChangeListener(checkListener);
                     }

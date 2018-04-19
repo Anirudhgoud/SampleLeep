@@ -35,12 +35,12 @@ public class ReturnReasonViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         reasonTextView = itemView.findViewById(R.id.tv_reason);
         radioButton = itemView.findViewById(R.id.rb_reason);
-        radioButton.setOnClickListener(checkedChangeListener);
+        itemView.setOnClickListener(checkedChangeListener);
     }
 
     public void bind(ReturnReason returnReason, int position) {
         reasonTextView.setText(returnReason.getReason());
-        radioButton.setTag(position);
+        itemView.setTag(position);
         if(returnReason.isSelected())
             radioButton.setImageResource(R.drawable.ic_selected_radio_button);
         else

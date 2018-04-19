@@ -3,6 +3,7 @@ package com.goleep.driverapp.leep.dropoff.dropoff;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,14 @@ import com.goleep.driverapp.adapters.ProductListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
+import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
+import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.main.HomeActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.dropoff.dropoff.DropoffConfirmationViewModel;
 
 import java.util.List;
@@ -39,6 +45,26 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
     @BindView(R.id.rv_dropoff_list)
     LinearLayout dropoffItemsList;
 
+    private UILevelNetworkCallback dropoffConfirmCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            runOnUiThread(() -> {
+                dismissProgressDialog();
+                if (uiModels == null) {
+                    if (toLogout) {
+                        logoutUser();
+                    } else if (isDialogToBeShown) {
+                        showNetworkRelatedDialogs(errorMessage);
+                    }
+                } else {
+                    sendSuccessBroadcast();
+                    showSuccessDialog();
+                    LogUtils.debug(this.getClass().getSimpleName(), "Drop off to warehouse successful");
+                }
+            });
+        }
+    };
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_warehouse_dropoff_confirmation);
@@ -55,40 +81,40 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
     private void processIntent() {
         Intent intent = getIntent();
         int locationId = intent.getIntExtra(IntentConstants.WAREHOUSE_ID, -1);
-        if(locationId != -1)
+        if (locationId != -1)
             dropoffConfirmationViewModel.setWarehouse(locationId);
         dropoffConfirmationViewModel.setSelectedReturnableIds(intent.getIntegerArrayListExtra(IntentConstants.RETURNABLE));
         dropoffConfirmationViewModel.setSelectedSellableIds(intent.getIntegerArrayListExtra(IntentConstants.SELLABLE));
     }
 
-    private void initView(){
+    private void initView() {
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.dropoff_stock), R.drawable.ic_drop_off_title);
         setWareHouseDetails();
-        initRecyclerView();
+        initItemsList();
         confirmButton.setOnClickListener(this);
     }
 
-    private void initRecyclerView() {
+    private void initItemsList() {
         List<Integer> selectedSellableItems = dropoffConfirmationViewModel.getSelectedSellableIds();
         List<Integer> selectedReturnableIds = dropoffConfirmationViewModel.getSelectedReturnableIds();
-        if(selectedReturnableIds != null && selectedReturnableIds.size() > 0){
+        if (selectedReturnableIds != null && selectedReturnableIds.size() > 0) {
             dropoffItemsList.addView(orderHeaderView(getString(R.string.returned)));
             dropoffItemsList.addView(listHeaderView());
             dropoffItemsList.addView(dividerView());
-            for(Integer id : selectedReturnableIds){
+            for (Integer id : selectedReturnableIds) {
                 View view = stockProductView(dropoffConfirmationViewModel.getStockProduct(id),
                         ProductListAdapter.TYPE_RETURNED);
                 dropoffItemsList.addView(view);
                 dropoffItemsList.addView(dividerView());
             }
         }
-        if(selectedSellableItems != null && selectedSellableItems.size() > 0){
+        if (selectedSellableItems != null && selectedSellableItems.size() > 0) {
             dropoffItemsList.addView(orderHeaderView(getString(R.string.sellable)));
             dropoffItemsList.addView(listHeaderView());
             dropoffItemsList.addView(dividerView());
-            for(Integer id : selectedSellableItems){
+            for (Integer id : selectedSellableItems) {
                 View view = stockProductView(dropoffConfirmationViewModel.getStockProduct(id),
                         ProductListAdapter.TYPE_SELLABLE);
                 dropoffItemsList.addView(view);
@@ -97,7 +123,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
         }
     }
 
-    private View orderHeaderView(String header){
+    private View orderHeaderView(String header) {
         View view = LayoutInflater.from(this).inflate(R.layout.orders_header_layout, dropoffItemsList, false);
         CustomTextView textView = view.findViewById(R.id.orders_header_text_view);
         textView.setText(header);
@@ -143,12 +169,46 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
 
     @Override
     public void onClickWithId(int resourceId) {
-        switch (resourceId){
-            case R.id.left_toolbar_button : finish();
+        switch (resourceId) {
+            case R.id.left_toolbar_button:
+                finish();
                 break;
             case R.id.confirm_button:
-                showSuccessDialog(getString(R.string.dropoff_success));
+                dropoffConfirmationViewModel.confirmDropoff(dropoffConfirmCallback);
                 break;
         }
+    }
+
+    private void showSuccessDialog() {
+        LeepSuccessDialog successDialog = new LeepSuccessDialog(this, getString(R.string.delivery_successful));
+        successDialog.show();
+        successDialog.setSuccessDialogEventListener(new SuccessDialogEventListener() {
+            @Override
+            public void onOkButtonTap() {
+                goBackToHomeScreen();
+            }
+
+            @Override
+            public void onCloseButtonTap() {
+                goBackToHomeScreen();
+            }
+
+            @Override
+            public void onPrintButtonTap() {
+                LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
+            }
+        });
+    }
+
+    private void sendSuccessBroadcast(){
+        Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void goBackToHomeScreen() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

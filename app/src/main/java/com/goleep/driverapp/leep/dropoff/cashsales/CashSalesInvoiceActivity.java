@@ -20,10 +20,12 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.ListUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesInvoiceViewModel;
 
@@ -46,6 +48,10 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     CustomTextView tvCurrentTime;
     @BindView(R.id.tv_item_count)
     CustomTextView tvItemCount;
+    @BindView(R.id.tv_returned_item_count)
+    TextView tvReturnedItemCount;
+    @BindView(R.id.ll_returned_label)
+    LinearLayout llReturnedLabel;
     @BindView(R.id.ll_item_list_layout)
     LinearLayout llItemListLayout;
     @BindView(R.id.bt_continue)
@@ -79,16 +85,18 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         initialiseToolbar();
         setClickListeners();
         updateTopLayoutUI();
-        updateItemSummaryUI();
         fetchLocationDetails();
         displayProductList();
+        updateItemSummaryUI();
     }
 
     private void extractIntentData() {
         Intent intent = getIntent();
         if (intent == null) return;
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.PRODUCT_LIST));
+        List<Product> selectedProducts = intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST);
+        List<Product> returnedProducts = intent.getParcelableArrayListExtra(IntentConstants.RETURNED_PRODUCT_LIST);
+        viewModel.setScannedProducts((ArrayList<Product>) new ListUtils().combinedList(selectedProducts, returnedProducts));
     }
 
     private void initialiseToolbar() {
@@ -110,8 +118,22 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     }
 
     private void updateItemSummaryUI() {
-        int productCount = viewModel.getScannedProducts().size();
-        tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, productCount, productCount)));
+        int selectedProductCount = viewModel.getSelectedProductCount();
+        int returnedProductCount = viewModel.getReturnedProductCount();
+        if (selectedProductCount > 0){
+            tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, selectedProductCount, selectedProductCount)));
+            tvItemCount.setVisibility(View.VISIBLE);
+        }else {
+            tvItemCount.setVisibility(View.GONE);
+        }
+        if (returnedProductCount > 0){
+            tvReturnedItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, returnedProductCount, returnedProductCount)));
+            tvReturnedItemCount.setVisibility(View.VISIBLE);
+            llReturnedLabel.setVisibility(View.VISIBLE);
+        }else {
+            tvReturnedItemCount.setVisibility(View.GONE);
+            llReturnedLabel.setVisibility(View.GONE);
+        }
     }
 
     private void displayProductList() {
@@ -137,19 +159,44 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     }
 
     private View productListItemView(Product product) {
-        View orderItemView = LayoutInflater.from(this).inflate(R.layout.do_details_list_item, llItemListLayout, false);
+        View orderItemView = LayoutInflater.from(this).inflate(R.layout.cash_sales_returns_list_item, llItemListLayout, false);
         if (product == null) return orderItemView;
 
-        CustomTextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
-        CustomTextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
-        CustomTextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
-        CustomTextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
-        CheckBox productCheckbox = orderItemView.findViewById(R.id.product_checkbox);
-        productCheckbox.setVisibility(View.GONE);
+        TextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
+        TextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
+        TextView tvAmount = orderItemView.findViewById(R.id.tv_amount);
+        TextView tvUnits = orderItemView.findViewById(R.id.tv_units);
+        LinearLayout llReturnedLabel = orderItemView.findViewById(R.id.ll_returned_label);
+        TextView tvReturnedAmount = orderItemView.findViewById(R.id.tv_returned_amount);
+        TextView tvReturnedUnits = orderItemView.findViewById(R.id.tv_return_units);
+        TextView tvReturnreason = orderItemView.findViewById(R.id.tv_return_reason);
+
         tvProductName.setText(StringUtils.toString(product.getProductName(), ""));
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
-        tvUnits.setText(String.valueOf(product.getQuantity()));
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
+
+        if (product.getQuantity() > 0){
+            tvUnits.setText(String.valueOf(product.getQuantity()));
+            tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
+            viewModel.incrementSelectedProductCount();
+        }else {
+            tvUnits.setVisibility(View.GONE);
+            tvAmount.setVisibility(View.GONE);
+        }
+
+        if (product.getReturnQuantity() > 0){
+            tvReturnedUnits.setText(String.valueOf(product.getReturnQuantity()));
+            tvReturnedAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
+            llReturnedLabel.setVisibility(View.VISIBLE);
+            tvReturnedAmount.setVisibility(View.VISIBLE);
+            tvReturnreason.setVisibility(View.VISIBLE);
+            ReturnReason returnReason = product.getReturnReason();
+            if (returnReason != null && returnReason.getReason() != null) tvReturnreason.setText(returnReason.getReason());
+            viewModel.incrementReturnedProductCount();
+        }else {
+            llReturnedLabel.setVisibility(View.GONE);
+            tvReturnedAmount.setVisibility(View.GONE);
+            tvReturnreason.setVisibility(View.GONE);
+        }
         return orderItemView;
     }
 
@@ -234,7 +281,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
         intent.putExtra(IntentConstants.PREVIOUS_BALANCE, viewModel.getOutstandingBalance());
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST, (ArrayList<Product>) viewModel.getScannedProducts());
         startActivity(intent);
     }
 }

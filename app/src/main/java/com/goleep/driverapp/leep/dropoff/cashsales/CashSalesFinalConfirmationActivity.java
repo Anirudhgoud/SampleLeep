@@ -4,8 +4,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -18,17 +20,20 @@ import android.widget.TextView;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.main.HomeActivity;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
+import com.goleep.driverapp.utils.ListUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.NewSalesConfirmationViewModel;
@@ -51,6 +56,8 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     CustomTextView tvCurrentTime;
     @BindView(R.id.bt_continue)
     Button btContinue;
+    @BindView(R.id.bt_view_item_list)
+    Button btViewItemList;
 
     @BindView(R.id.tv_returned)
     TextView tvReturned;
@@ -105,11 +112,13 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         Intent intent = getIntent();
         if (intent == null) return;
         viewModel.setConsumerLocation(intent.getParcelableExtra(IntentConstants.CONSUMER_LOCATION));
-        viewModel.setScannedProducts(intent.getParcelableArrayListExtra(IntentConstants.PRODUCT_LIST));
         viewModel.setPreviousBalance(intent.getDoubleExtra(IntentConstants.PREVIOUS_BALANCE, 0.0));
         viewModel.setPaymentCollected(intent.getDoubleExtra(IntentConstants.PAYMENT_COLLECTED, 0.0));
         viewModel.setPaymentMethod(intent.getStringExtra(IntentConstants.PAYMENT_METHOD));
         viewModel.setPaymentSkipped(intent.getBooleanExtra(IntentConstants.PAYMENT_SKIPPED, false));
+        List<Product> selectedProducts = intent.getParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST);
+        List<Product> returnedProducts = intent.getParcelableArrayListExtra(IntentConstants.RETURNED_PRODUCT_LIST);
+        viewModel.setScannedProducts(new ListUtils().combinedList(selectedProducts, returnedProducts));
     }
 
     private void initialiseToolbar() {
@@ -156,6 +165,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     private void setListeners() {
         btContinue.setOnClickListener(this);
         ivSignature.setOnClickListener(this);
+        btViewItemList.setOnClickListener(this);
         etReceivedFrom.addTextChangedListener(this);
         etContactNumber.addTextChangedListener(this);
     }
@@ -174,6 +184,10 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
             case R.id.iv_signature:
                 showSignatureDialog();
                 break;
+
+            case R.id.bt_view_item_list:
+                showItemListDialog();
+                break;
         }
     }
 
@@ -181,6 +195,18 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         if (checkValidations()) {
             createCashSalesOrder();
         }
+    }
+
+    private void showItemListDialog() {
+        String fragmentTag = CashSalesReturnsListDialogFragment.class.getSimpleName();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(fragmentTag);
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+        DialogFragment itemListDialogFragment = CashSalesReturnsListDialogFragment.newInstance(viewModel.getScannedProducts());
+        itemListDialogFragment.show(fragmentTransaction, fragmentTag);
     }
 
     private void showSignatureDialog() {
@@ -213,6 +239,33 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         viewModel.createCashSalesDeliveryOrder(etReceivedFrom.getText().toString(), contactNo, file, cashSaleNetworkCallback);
     }
 
+    private void createReturnsOrder() {
+        showProgressDialog();
+        String contactNo = etContactNumber.getText().length() == 0 ? null : etContactNumber.getText().toString();
+        File file = AppUtils.fileFromBitmap(getApplicationContext(), AppUtils.bitmapFromView(ivSignature, ivSignature.getWidth(), ivSignature.getHeight()), viewModel.RECEIVER_SIGNATURE);
+        viewModel.createReturnsDeliveryOrder(etReceivedFrom.getText().toString(), contactNo, file, returnsNetworkCallback);
+    }
+
+    private UILevelNetworkCallback returnsNetworkCallback = new UILevelNetworkCallback() {
+        @Override
+        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+            runOnUiThread(() -> {
+                dismissProgressDialog();
+                if (uiModels == null) {
+                    if (toLogout) {
+                        logoutUser();
+                    } else if (isDialogToBeShown) {
+                        showNetworkRelatedDialogs(errorMessage);
+                    }
+                } else {
+                    sendSuccessBroadcast();
+                    showSuccessDialog();
+                    LogUtils.debug(this.getClass().getSimpleName(), "Returns order successful");
+                }
+            });
+        }
+    };
+
     private UILevelNetworkCallback cashSaleNetworkCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
@@ -225,14 +278,14 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
                         showNetworkRelatedDialogs(errorMessage);
                     }
                 } else {
-                    showSuccessDialog();
+                    createReturnsOrder();
                     LogUtils.debug(this.getClass().getSimpleName(), "Cash sales order successful");
                 }
             });
         }
     };
 
-    UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+    private UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
         dismissProgressDialog();
         if (uiModels == null) {
             if (toLogout) {
@@ -316,5 +369,11 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void sendSuccessBroadcast(){
+        Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

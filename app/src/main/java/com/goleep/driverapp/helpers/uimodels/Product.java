@@ -10,10 +10,10 @@ public class Product implements Parcelable {
     private double price;
     private int quantity;
     private int maxQuantity;
+    private int returnQuantity;
     private String weight;
     private String weightUnit;
-    private String returnReason;
-    private int returnQuantity;
+    private ReturnReason returnReason;
 
     public Product(){
     }
@@ -75,15 +75,6 @@ public class Product implements Parcelable {
         this.weightUnit = weightUnit;
     }
 
-
-    public String getReturnReason() {
-        return returnReason;
-    }
-
-    public void setReturnReason(String returnReason) {
-        this.returnReason = returnReason;
-    }
-
     public int getReturnQuantity() {
         return returnQuantity;
     }
@@ -92,8 +83,20 @@ public class Product implements Parcelable {
         this.returnQuantity = returnQuantity;
     }
 
+    public ReturnReason getReturnReason() {
+        return returnReason;
+    }
+
+    public void setReturnReason(ReturnReason returnReason) {
+        this.returnReason = returnReason;
+    }
+
     public double getTotalPrice(){
         return price * quantity;
+    }
+
+    public double getTotalReturnsPrice(){
+        return price * returnQuantity;
     }
 
     //Parcel
@@ -103,10 +106,10 @@ public class Product implements Parcelable {
         price = in.readDouble();
         quantity = in.readInt();
         maxQuantity = in.readInt();
+        returnQuantity = in.readInt();
         weight = in.readString();
         weightUnit = in.readString();
-        returnReason = in.readString();
-        returnQuantity = in.readInt();
+        returnReason = (ReturnReason) in.readValue(ReturnReason.class.getClassLoader());
     }
 
     @Override
@@ -121,10 +124,10 @@ public class Product implements Parcelable {
         dest.writeDouble(price);
         dest.writeInt(quantity);
         dest.writeInt(maxQuantity);
+        dest.writeInt(returnQuantity);
         dest.writeString(weight);
         dest.writeString(weightUnit);
-        dest.writeString(returnReason);
-        dest.writeInt(returnQuantity);
+        dest.writeValue(returnReason);
     }
 
     @SuppressWarnings("unused")

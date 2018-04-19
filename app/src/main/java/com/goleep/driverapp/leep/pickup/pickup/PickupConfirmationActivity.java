@@ -85,6 +85,9 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         Intent intent = getIntent();
         pickupDeliveryOrderViewModel.setCashDoItems(intent.getIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY));
         pickupDeliveryOrderViewModel.setSelectedDeliveryOrders(intent.getIntegerArrayListExtra(AppConstants.DO_IDS_KEY));
+        int locationId = intent.getIntExtra(IntentConstants.WAREHOUSE_ID, -1);
+        if(locationId != -1)
+            pickupDeliveryOrderViewModel.setWarehouse(locationId);
     }
 
     private void initView() {
@@ -136,9 +139,11 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         int totalValue = 0;
         for (int cashSalesId : cashDoItems) {
             OrderItemEntity csOrderItem = pickupDeliveryOrderViewModel.getDeliveryOrderItem(cashSalesId);
-            csOrderItem.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
-            pickupDeliveryOrderViewModel.getCashSalesItems().add(csOrderItem);
-            totalValue += csOrderItem.getQuantity() * csOrderItem.getPrice();
+            if(csOrderItem != null) {
+                csOrderItem.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
+                pickupDeliveryOrderViewModel.getCashSalesItems().add(csOrderItem);
+                totalValue += csOrderItem.getQuantity() * csOrderItem.getPrice();
+            }
         }
         BaseListItem cashSalesHeader = new BaseListItem();
         cashSalesHeader.setOrdersHeader(getString(R.string.cash_sales));

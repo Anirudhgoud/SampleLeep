@@ -6,6 +6,7 @@ import android.widget.CheckBox;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
@@ -32,7 +33,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
     public void bind(StockProductEntity stockProductEntity, int listType){
         productNameTv.setText(stockProductEntity.getProductName());
         double value = stockProductEntity.getQuantity(listType) * stockProductEntity.getDefaultPrice();
-        unitsTv.setText(String.valueOf(stockProductEntity.getDeliverableQuantity()));
+        unitsTv.setText(String.valueOf(stockProductEntity.getQuantity(listType)));
         productQuantityTv.setText(stockProductEntity.getWeight()+" "+ stockProductEntity.getWeightUnit());
         amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
     }
@@ -54,6 +55,18 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         if(returnReasonTv != null){
             returnReasonTv.setVisibility(View.VISIBLE);
             returnReasonTv.setText(orderItem.getReason());
+        }
+    }
+
+    public void bind(Product product) {
+        productNameTv.setText(product.getProductName());
+        double value = product.getReturnQuantity() * product.getPrice();
+        unitsTv.setText(String.valueOf(product.getReturnQuantity()));
+        productQuantityTv.setText(product.getWeight()+" "+ product.getWeightUnit());
+        amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+        if(returnReasonTv != null && product.getReturnReason() != null){
+            returnReasonTv.setVisibility(View.VISIBLE);
+            returnReasonTv.setText(product.getReturnReason().getReason());
         }
     }
 }

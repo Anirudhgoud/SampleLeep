@@ -68,8 +68,13 @@ public class HistoryViewModel extends DeliveryOrderViewModel {
                         leepDatabase.returnOrderDao().updateAllDeliveryOrders(entities);
                         doNetworkCallback.onResponseReceived(entities, false, null, false);
                         break;
-                        default:
-                            doNetworkCallback.onResponseReceived(null, false, null, false);
+                    case NetworkConstants.UNAUTHORIZED:
+                        doNetworkCallback.onResponseReceived(null, false, null, true);
+                        break;
+                    case NetworkConstants.NETWORK_ERROR:
+                    case NetworkConstants.FAILURE:
+                        doNetworkCallback.onResponseReceived(null, true, errorMessage, true);
+                        break;
                 }
             }
         });
