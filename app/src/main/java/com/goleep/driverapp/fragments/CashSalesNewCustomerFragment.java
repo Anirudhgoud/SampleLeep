@@ -291,14 +291,10 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        try {
-            Business business = businessTypeAdapter.getItem(position);
-            if (business != null) {
-                viewModel.setStrBusinesstype(business.getName());
-                viewModel.setBusinessTypeId(business.getId());
-            }
-        }catch (Exception e){
-
+        Business business = businessTypeAdapter.getItem(position);
+        if (business != null) {
+            viewModel.setStrBusinesstype(business.getName());
+            viewModel.setBusinessTypeId(business.getId());
         }
     }
 
