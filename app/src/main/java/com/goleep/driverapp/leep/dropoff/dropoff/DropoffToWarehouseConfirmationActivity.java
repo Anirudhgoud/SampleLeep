@@ -156,7 +156,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
         tvUnits.setText(String.valueOf(stockProductEntity.getQuantity(type)));
 
         double value = stockProductEntity.getQuantity(type) * stockProductEntity.getDefaultPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(),
+        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this),
                 String.format(Locale.getDefault(), "%.02f", value)));
         return orderItemView;
     }

@@ -25,7 +25,7 @@ public class CountryDataParser {
             country.setId(jsonObject1.optInt("id"));
             country.setName(jsonObject1.optString("name"));
             country.setDialCode(jsonObject1.optString("country_code"));
-            country.setCurrencySymbol(jsonObject1.optString("country_code"));
+            country.setCurrencySymbol(jsonObject1.optString("currency_symbol"));
             liscountryAttribute.add(country);
         }
         return liscountryAttribute;

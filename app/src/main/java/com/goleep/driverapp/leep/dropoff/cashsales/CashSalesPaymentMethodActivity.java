@@ -118,7 +118,7 @@ public class CashSalesPaymentMethodActivity extends ParentAppCompatActivity {
     }
 
     public String amountWithCurrencySymbol(Object amount) {
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(amount));
+        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 
     private void setClickListeners() {

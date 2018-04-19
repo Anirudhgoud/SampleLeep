@@ -134,7 +134,7 @@ public class CashSalesConfirmationActivity extends ParentAppCompatActivity {
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
         tvUnits.setText(String.valueOf(product.getQuantity()));
         double value = product.getQuantity() * product.getPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", value)));
+        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", value)));
         return orderItemView;
     }
 

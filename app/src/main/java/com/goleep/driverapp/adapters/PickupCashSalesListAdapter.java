@@ -86,7 +86,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             double value = doDetails.getQuantity() * doDetails.getPrice();
             productQuantityTv.setText(productEntity.getWeight()+" "+ productEntity.getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
-            amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+            amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
             productCheckbox.setVisibility(View.VISIBLE);
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
