@@ -140,6 +140,7 @@
     <string name="invalid_name_error">Please enter valid name.</string>
     <string name="invalid_contact_number">Please enter valid 10 digit contact number.</string>
     <string name="signature_error">Please add signature.</string>
+    <string name="invalid_country_code">Please select proper country code</string>
 
 
     <!--Return Reasons-->

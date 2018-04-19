@@ -16,8 +16,11 @@ import com.goleep.driverapp.helpers.uimodels.Country;
  */
 public class CountryCodeAdapter extends ArrayAdapter<Country> {
 
-    public CountryCodeAdapter(Context context, int res){
+    private int colorRes;
+
+    public CountryCodeAdapter(Context context, int res, int colorRes){
         super(context, res);
+        this.colorRes = colorRes;
     }
 
     @Override
@@ -31,6 +34,7 @@ public class CountryCodeAdapter extends ArrayAdapter<Country> {
         if (country != null) {
             TextView textView = convertView.findViewById(R.id.text1);
             textView.setText(country.getDialCode());
+            textView.setTextColor(colorRes);
         }
         convertView.setPadding(0, convertView.getPaddingTop(), 0, convertView.getPaddingBottom());
         return convertView;

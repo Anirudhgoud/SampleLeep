@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.Business;
+import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
@@ -26,6 +27,8 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
     private String strBusinesstype;
     private int businessTypeId, selectedBusinessId;
     private List<Business> listGetBusinessesData;
+    private List<Country> countryList;
+    private Country selectedCountry;
 
     public String getStrBusinesstype() {
         return strBusinesstype;
@@ -57,6 +60,22 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
 
     public void setListGetBusinessesData(List<Business> listGetBusinessesData) {
         this.listGetBusinessesData = listGetBusinessesData;
+    }
+
+    public List<Country> getCountryList() {
+        return countryList;
+    }
+
+    public void setCountryList(List<Country> countryList) {
+        this.countryList = countryList;
+    }
+
+    public Country getSelectedCountry() {
+        return selectedCountry;
+    }
+
+    public void setSelectedCountry(Country selectedCountry) {
+        this.selectedCountry = selectedCountry;
     }
 
     public CashSalesNewCustomerViewModel(@NonNull Application application) {

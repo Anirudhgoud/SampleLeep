@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/rl_btn_add_customer"
@@ -54,7 +54,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:scrollbars="none"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -175,14 +175,18 @@
                 android:background="@drawable/rounded_rect_with_grey_border"
                 android:orientation="horizontal">
 
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                <Spinner
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="+91"
-                    android:textSize="18sp"
-                    app:typeface="NotoSans-Regular" />
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:theme="@style/ThemeSpinner"
+                    android:background="@null"
+                    android:paddingLeft="10dp"
+                    android:dropDownWidth="wrap_content"
+                    android:enabled="true"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/country_code_spinner"/>
 
                 <com.goleep.driverapp.helpers.customfont.CustomEditText
                     android:id="@+id/et_contact_number"
