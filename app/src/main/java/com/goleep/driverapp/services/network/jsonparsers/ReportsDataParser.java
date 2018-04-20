@@ -14,8 +14,8 @@ public class ReportsDataParser {
             return null;
         }
         Report report =new Report();
-        report.setTotalSales(jsonObject.optInt("total_sales"));
-        report.setCashCollected(jsonObject.optInt("cash_collected"));
+        report.setTotalSales(jsonObject.optDouble("total_sales"));
+        report.setCashCollected(jsonObject.optDouble("cash_collected"));
         report.setUnits(jsonObject.optInt("units"));
         report.setReturns(jsonObject.optInt("returns"));
         report.setLocations(jsonObject.optInt("locations"));
