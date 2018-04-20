@@ -7,7 +7,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
@@ -26,9 +25,8 @@ import java.util.Locale;
 public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
 
     private Context context;
-    private CustomTextView tvProductName, tvProductQuantity, tvAmount, tvUnits;
+    private TextView tvProductName, tvProductQuantity, tvAmount, tvUnits, tvReturnReason;
     private CheckBox productCheckbox;
-    private TextView tvReturnReason;
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener;
     private ProductCheckListener productCheckListener;
 

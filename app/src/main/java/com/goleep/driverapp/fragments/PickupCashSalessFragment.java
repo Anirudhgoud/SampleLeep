@@ -7,20 +7,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.pickup.pickup.PickupActivity;
 import com.goleep.driverapp.leep.pickup.pickup.PickupConfirmationActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
@@ -42,24 +44,26 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     RecyclerView recyclerView;
 
     @BindView(R.id.confirm_button)
-    CustomButton confirmButton;
+    Button confirmButton;
     private CashSalesViewModel cashSalesViewModel;
     private PickupCashSalesListAdapter adapter;
     private ItemCheckListener itemCheckListener;
 
-    private UILevelNetworkCallback driverDoCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if(toLogout)
-                ((PickupActivity)getActivity()).logoutUser();
-        }
+    private UILevelNetworkCallback driverDoCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        FragmentActivity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
+        parentActivity.runOnUiThread(() -> {
+            if(toLogout) parentActivity.logoutUser();
+        });
     };
-    private UILevelNetworkCallback driverDoDetailsCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if(toLogout)
-                ((PickupActivity)getActivity()).logoutUser();
-        }
+    private UILevelNetworkCallback driverDoDetailsCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        FragmentActivity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        ParentAppCompatActivity parentActivity = ((ParentAppCompatActivity) activity);
+        parentActivity.runOnUiThread(() -> {
+            if(toLogout) parentActivity.logoutUser();
+        });
     };
 
     @Override

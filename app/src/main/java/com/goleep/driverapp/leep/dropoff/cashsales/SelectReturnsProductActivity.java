@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
@@ -27,9 +28,7 @@ import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
 import com.goleep.driverapp.helpers.uimodels.Product;
@@ -60,11 +59,11 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     @BindView(R.id.et_units)
     CustomEditText etUnits;
     @BindView(R.id.product_name_text_view)
-    CustomTextView tvProductName;
+    TextView tvProductName;
     @BindView(R.id.invalid_quantity_error)
-    CustomTextView invalidQuantityError;
+    TextView invalidQuantityError;
     @BindView(R.id.bt_update)
-    CustomButton btUpdate;
+    Button btUpdate;
     @BindView(R.id.bt_confirm)
     Button btConfirm;
     @BindView(R.id.atv_search)
@@ -79,12 +78,7 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     private ProductSearchArrayAdapter productSearchArrayAdapter;
     private BarcodeCapture barcodeCapture;
 
-    private UILevelNetworkCallback returnReasonsCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-
-        }
-    };
+    private UILevelNetworkCallback returnReasonsCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> { };
 
     private BarcodeScanListener barcodeScanListener = new BarcodeScanListener() {
         @Override
@@ -202,7 +196,7 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
 
     private View getTabView(String title, Drawable iconDrawable) {
         View listTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
-        CustomTextView textView = listTab.findViewById(R.id.title_text);
+        TextView textView = listTab.findViewById(R.id.title_text);
         ImageView icon = listTab.findViewById(R.id.icon);
         listTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(title);

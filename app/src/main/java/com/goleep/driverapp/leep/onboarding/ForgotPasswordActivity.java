@@ -2,10 +2,10 @@ package com.goleep.driverapp.leep.onboarding;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
 import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -13,27 +13,26 @@ import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.viewmodels.onboarding.ForgotPasswordViewModel;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ForgotPasswordActivity extends ParentAppCompatActivity implements EditTextListener {
+
     @BindView(R.id.email_edit_text)
-    CustomEditText emailEditText;
+    EditText emailEditText;
     @BindView(R.id.submit_button)
-    CustomButton submitButton;
+    Button submitButton;
     private ForgotPasswordViewModel forgotPasswordViewModel;
 
-    private UILevelNetworkCallback submitEmailCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
+    private UILevelNetworkCallback submitEmailCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        runOnUiThread(() -> {
             if (toLogout)
                 logoutUser();
             else if (errorMessage == null) {
                 finish();
             }
-        }
+        });
+
     };
 
     @Override

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
-    android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:paddingLeft="12dp"
-    android:paddingRight="16dp">
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
 
-    <com.goleep.driverapp.helpers.customfont.CustomButton
+    <Button
         android:id="@+id/left_toolbar_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -41,24 +40,24 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="4dp" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/activity_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
             android:lines="1"
             android:textColor="@color/text_black"
-            android:textSize="24sp"
-            app:typeface="NotoSans-Regular" />
+            android:textSize="24sp" />
     </LinearLayout>
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:id="@+id/right_toolbar_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:fontFamily="@font/noto_sans"
         android:textColor="@color/dark_grey"
-        android:textSize="18sp"
-        app:typeface="NotoSans-Regular" />
+        android:textSize="18sp" />
 </RelativeLayout>

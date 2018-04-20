@@ -48,6 +48,7 @@
     <string name="distance">Distance</string>
     <string name="preferred_time">Preferred Time:</string>
     <string name="delivery_by">Delivery By:</string>
+    <string name="colon">:</string>
 
     <!--Order Items-->
     <plurals name="item_count_text">

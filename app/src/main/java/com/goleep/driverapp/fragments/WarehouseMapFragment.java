@@ -16,10 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.helpers.uimodels.Distance;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
@@ -50,21 +50,19 @@ import butterknife.ButterKnife;
 
 public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener, LocationChangeListener {
-    private WarehouseViewModel warehouseViewModel;
-    private GoogleMap mGoogleMap;
-    private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_do_number)
-    CustomTextView tvDONumber;
+    TextView tvDONumber;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_date)
-    CustomTextView tvDeliveryDate;
+    TextView tvDeliveryDate;
     @BindView(R.id.tv_preferred_time)
-    CustomTextView tvPreferredTime;
+    TextView tvPreferredTime;
     @BindView(R.id.tv_time_to_reach)
-    CustomTextView tvTimeToReach;
+    TextView tvTimeToReach;
     @BindView(R.id.bt_navigate)
     ImageView ivNavigate;
     @BindView(R.id.ll_map_address_layout)
@@ -75,6 +73,10 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
     LinearLayout datelayout;
     @BindView(R.id.ll_time)
     LinearLayout timeLayout;
+
+    private WarehouseViewModel warehouseViewModel;
+    private GoogleMap mGoogleMap;
+    private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
     private UILevelNetworkCallback deliveryOrdersUILevelCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
@@ -175,6 +177,7 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
 
     private void displayMarkersOnMap(List<WarehouseEntity> warehouseEntities) {
         mGoogleMap.clear();
+        int count = 0;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (int i = 0; i < warehouseEntities.size(); i++) {
             WarehouseEntity warehouseEntity = warehouseEntities.get(i);
@@ -183,11 +186,13 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
                 Marker marker = mGoogleMap.addMarker(markerOptions);
                 marker.setTag(warehouseEntity);
                 builder.include(marker.getPosition());
+                count++;
                 if (i == 0) {
                     onMarkerClick(marker);
                 }
             }
         }
+        if (count == 0) return;
         LatLngBounds bounds = builder.build();
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;

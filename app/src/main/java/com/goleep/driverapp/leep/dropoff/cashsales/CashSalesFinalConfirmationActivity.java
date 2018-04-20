@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
@@ -47,13 +46,13 @@ import butterknife.ButterKnife;
 public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
 
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_date)
-    CustomTextView tvCurrentDate;
+    TextView tvCurrentDate;
     @BindView(R.id.tv_time)
-    CustomTextView tvCurrentTime;
+    TextView tvCurrentTime;
     @BindView(R.id.bt_continue)
     Button btContinue;
     @BindView(R.id.bt_view_item_list)
@@ -83,11 +82,11 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     @BindView(R.id.iv_signature)
     ImageView ivSignature;
     @BindView(R.id.tv_received_from_error)
-    CustomTextView tvReceivedFromError;
+    TextView tvReceivedFromError;
     @BindView(R.id.tv_contact_number_error)
-    CustomTextView tvContactNumberError;
+    TextView tvContactNumberError;
     @BindView(R.id.tv_signature_error)
-    CustomTextView tvSignatureError;
+    TextView tvSignatureError;
 
     NewSalesConfirmationViewModel viewModel;
 

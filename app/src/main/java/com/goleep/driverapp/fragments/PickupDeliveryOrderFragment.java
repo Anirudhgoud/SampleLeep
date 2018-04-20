@@ -14,19 +14,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.pickup.pickup.PickupActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 import com.goleep.driverapp.viewmodels.pickup.pickup.PickupDeliveryOrderViewModel;
 
@@ -47,7 +46,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     @BindView(R.id.expandable_list)
     RecyclerView expandableListView;
     @BindView(R.id.confirm_button)
-    CustomButton confirmButton;
+    Button confirmButton;
 
     private ItemCheckListener itemCheckListener;
     private DoExpandableListAdapter adapter;

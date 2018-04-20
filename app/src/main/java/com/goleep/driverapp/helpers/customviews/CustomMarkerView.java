@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 
 /**
  * Created by anurag on 22/03/18.
@@ -15,7 +15,7 @@ import com.goleep.driverapp.helpers.customfont.CustomTextView;
 public class CustomMarkerView extends LinearLayout {
 
     private ImageView ivMarkerImage;
-    private CustomTextView tvText;
+    private TextView tvText;
 
     public CustomMarkerView(Context context, String text, boolean isSelected) {
         super(context);

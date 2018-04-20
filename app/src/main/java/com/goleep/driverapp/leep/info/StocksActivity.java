@@ -2,7 +2,6 @@ package com.goleep.driverapp.leep.info;
 
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import android.widget.RadioGroup;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ProductListAdapter;
-import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.viewmodels.information.StocksViewModel;
 
@@ -66,10 +64,6 @@ public class StocksActivity extends ParentAppCompatActivity {
     }
 
     private void initialiseRadioButtons() {
-        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
-        rbDeliverable.setTypeface(typeface);
-        rbSellable.setTypeface(typeface);
-        rbReturned.setTypeface(typeface);
         rgListType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

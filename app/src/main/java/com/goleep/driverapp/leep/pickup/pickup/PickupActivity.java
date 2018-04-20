@@ -11,13 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.fragments.PickupCashSalessFragment;
 import com.goleep.driverapp.fragments.PickupDeliveryOrderFragment;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
@@ -40,7 +40,7 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.warehouse_info_text_view)
-    CustomTextView wareHouseInfoTextView;
+    TextView wareHouseInfoTextView;
     @BindView(R.id.map_button)
     LinearLayout mapButton;
     private WarehouseDetailsViewModel warehouseDetailsViewModel;
@@ -98,7 +98,7 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
 
     private void setupTabIcons() {
         View doTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
-        CustomTextView textView = doTab.findViewById(R.id.title_text);
+        TextView textView = doTab.findViewById(R.id.title_text);
         ImageView icon = doTab.findViewById(R.id.icon);
         doTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
@@ -113,18 +113,6 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
         textView.setText(getString(R.string.cash_sales));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.cash_sales_tab));
         tabLayout.getTabAt(1).setCustomView(cashSalesTab);
-    }
-
-    public void showProgressDialog(){
-      //  showProgressDialog();
-    }
-
-    public void dismissProgressDialog(){
-       // dismissProgressDialog();
-    }
-
-    public void logoutUser(){
-        super.logoutUser();
     }
 
     @Override

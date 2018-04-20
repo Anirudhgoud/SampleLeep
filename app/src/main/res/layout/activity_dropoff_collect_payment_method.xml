@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,12 +27,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomButton
+            <Button
                 android:id="@+id/bt_view_item_list"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_margin="16dp"
                 android:background="@drawable/rounded_border_green"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/view_item_list"
                 android:textColor="@color/doTabTextColor"
                 android:textSize="18sp" />
@@ -44,43 +44,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/noto_sans"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:text="@string/payment_collected"
                 android:textColor="@color/light_grey"
-                android:textSize="14sp"
-                android:fontFamily="@font/noto_sans" />
+                android:textSize="14sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:id="@+id/tv_payment_collected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:fontFamily="@font/noto_sans"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:textColor="@color/doTabTextColor"
-                android:textSize="32sp"
-                android:fontFamily="@font/noto_sans" />
+                android:textSize="32sp" />
 
             <include
                 layout="@layout/divider_view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:fontFamily="@font/noto_sans"
                 android:gravity="center"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:text="@string/payment_method"
                 android:textColor="@color/doTabTextColor"
-                android:textSize="22sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="22sp" />
 
             <include
                 layout="@layout/divider_view"
@@ -95,16 +95,16 @@
                 android:layout_marginRight="16dp"
                 android:orientation="horizontal">
 
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="3"
+                    android:fontFamily="@font/noto_sans"
                     android:gravity="center_vertical"
                     android:paddingRight="16dp"
                     android:text="@string/cash"
                     android:textColor="@color/doTabTextColor"
-                    android:textSize="22sp"
-                    app:typeface="NotoSans-Regular" />
+                    android:textSize="22sp" />
 
                 <CheckBox
                     android:id="@+id/payment_method_checkbox"
@@ -114,21 +114,22 @@
                     android:layout_weight="0"
                     android:button="@drawable/do_item_checkbox_bg"
                     android:checked="true"
-                    android:enabled="false" />
+                    android:enabled="false"
+                    android:fontFamily="@font/noto_sans" />
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
 
-    <com.goleep.driverapp.helpers.customfont.CustomButton
+    <Button
         android:id="@+id/bt_continue"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/green"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/continue_text"
         android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:typeface="NotoSans-Regular" />
+        android:textSize="18sp" />
 
 </LinearLayout>

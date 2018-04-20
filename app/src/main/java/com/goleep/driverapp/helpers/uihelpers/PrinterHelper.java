@@ -56,7 +56,7 @@ public class PrinterHelper {
         printer.printText("----------------------------------------");
     }
 
-    private static String trim(String string, int maxLength) {
+    private String trim(String string, int maxLength) {
         if(string.length() <= maxLength)
             return string;
         return string.substring(0, maxLength);

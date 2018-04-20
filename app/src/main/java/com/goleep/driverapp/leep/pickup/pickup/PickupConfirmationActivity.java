@@ -8,14 +8,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.DoExpandableListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.helpers.uimodels.CashSalesInfo;
@@ -36,11 +36,11 @@ import butterknife.ButterKnife;
 
 public class PickupConfirmationActivity extends ParentAppCompatActivity {
     @BindView(R.id.warehouse_info_text_view)
-    CustomTextView wareHouseInfoTextView;
+    TextView wareHouseInfoTextView;
     @BindView(R.id.expandable_list)
     RecyclerView expandableListView;
     @BindView(R.id.confirm_button)
-    CustomButton confirmButton;
+    Button confirmButton;
     @BindView(R.id.map_button)
     LinearLayout mapButton;
     private DoExpandableListAdapter adapter;
@@ -51,18 +51,21 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage,
                                        boolean toLogout) {
-            dismissProgressDialog();
-            if (!isDialogToBeShown && errorMessage == null && !toLogout) {
-                pickupDeliveryOrderViewModel.deleteDeliveryOrders(pickupDeliveryOrderViewModel.
-                        getSelectedDeliveryOrders(), pickupDeliveryOrderViewModel.getCashSalesItems());
-                sendSuccessBroadcast();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showSuccessDialog();
+            runOnUiThread(() -> {
+                dismissProgressDialog();
+                if (uiModels == null) {
+                    if (toLogout) {
+                        logoutUser();
+                    } else {
+                        showNetworkRelatedDialogs(errorMessage);
                     }
-                });
-            }
+                } else if (uiModels.size() > 0) {
+                    pickupDeliveryOrderViewModel.deleteDeliveryOrders(pickupDeliveryOrderViewModel.
+                            getSelectedDeliveryOrders(), pickupDeliveryOrderViewModel.getCashSalesItems());
+                    sendSuccessBroadcast();
+                    showSuccessDialog();
+                }
+            });
         }
     };
 

@@ -15,15 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.leep.dropoff.dropoff.DropoffActivity;
 import com.goleep.driverapp.leep.dropoff.dropoff.DropoffToWarehouseConfirmationActivity;
@@ -50,13 +50,13 @@ public class DropoffSellableItemsFragment extends Fragment {
     @BindView(R.id.et_units)
     CustomEditText etUnits;
     @BindView(R.id.product_name_text_view)
-    CustomTextView tvProductName;
+    TextView tvProductName;
     @BindView(R.id.invalid_quantity_error)
-    CustomTextView invalidQuantityError;
+    TextView invalidQuantityError;
     @BindView(R.id.bt_update)
-    CustomButton btUpdate;
+    Button btUpdate;
     @BindView(R.id.confirm_button)
-    CustomButton confirmButton;
+    Button confirmButton;
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener = new DeliveryOrderItemEventListener() {
         @Override
         public void onUnitsTap(int itemId, int maxUnits) {

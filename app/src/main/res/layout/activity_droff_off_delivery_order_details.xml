@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -33,16 +32,16 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/tv_customer_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:fontFamily="@font/noto_sans"
                         android:inputType="number"
                         android:lines="1"
                         android:textColor="@color/doTabTextColor"
-                        android:textSize="18sp"
-                        app:typeface="NotoSans-Regular" />
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -50,43 +49,43 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/noto_sans"
                             android:text="@string/do_number"
                             android:textColor="@color/doTabTextColor"
-                            android:textSize="12sp"
-                            app:typeface="NotoSans-Regular" />
+                            android:textSize="12sp" />
 
-                        <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        <TextView
                             android:id="@+id/tv_do_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/noto_sans"
                             android:lines="1"
                             android:textColor="@color/doTabTextColor"
-                            android:textSize="12sp"
-                            app:typeface="NotoSans-Bold" />
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/tv_store_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:maxLines="2"
                         android:textColor="@color/doTabTextColor"
-                        android:textSize="12sp"
-                        app:typeface="NotoSans-Regular" />
+                        android:textSize="12sp" />
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/tv_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/noto_sans"
                         android:lines="1"
                         android:textColor="@color/doTabTextColor"
-                        android:textSize="12sp"
-                        app:typeface="NotoSans-Regular" />
+                        android:textSize="12sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -94,39 +93,39 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
+                            android:fontFamily="@font/noto_sans"
                             android:text="@string/preferred_time"
                             android:textColor="@color/doTabTextColor"
-                            android:textSize="12sp"
-                            app:typeface="NotoSans-Regular" />
+                            android:textSize="12sp" />
 
-                        <com.goleep.driverapp.helpers.customfont.CustomTextView
+                        <TextView
                             android:id="@+id/tv_schedule"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/noto_sans"
                             android:lines="1"
                             android:textColor="@color/doTabTextColor"
-                            android:textSize="12sp"
-                            app:typeface="NotoSans-Regular" />
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                <TextView
                     android:id="@+id/tv_item_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:gravity="end"
                     android:lines="1"
                     android:padding="16dp"
-                    android:gravity="end"
                     android:textColor="@color/doTabTextColor"
-                    android:textSize="18sp"
-                    app:typeface="NotoSans-Regular" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -134,38 +133,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp">
 
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="12"
+                    android:fontFamily="@font/noto_sans"
                     android:gravity="center_vertical"
                     android:paddingLeft="16dp"
                     android:text="@string/items_label"
                     android:textColor="@color/doTabTextColor"
-                    android:textSize="14sp"
-                    app:typeface="NotoSans-Regular" />
+                    android:textSize="14sp" />
 
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="8dp"
                     android:layout_weight="6"
+                    android:fontFamily="@font/noto_sans"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="@string/units"
                     android:textColor="@color/doTabTextColor"
-                    android:textSize="14sp"
-                    app:typeface="NotoSans-Regular" />
+                    android:textSize="14sp" />
 
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
                     android:layout_weight="9"
+                    android:fontFamily="@font/noto_sans"
                     android:gravity="center_vertical"
                     android:text="@string/value"
                     android:textColor="@color/doTabTextColor"
-                    android:textSize="14sp"
-                    app:typeface="NotoSans-Regular" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <View
@@ -199,27 +198,27 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.goleep.driverapp.helpers.customfont.CustomButton
+            <Button
                 android:id="@+id/bt_skip_payment"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:background="@color/blue"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/skip_payment"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="18sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomButton
+            <Button
                 android:id="@+id/bt_collect_payment"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:background="@color/green"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/collect_payment"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="18sp" />
         </LinearLayout>
 
     </LinearLayout>

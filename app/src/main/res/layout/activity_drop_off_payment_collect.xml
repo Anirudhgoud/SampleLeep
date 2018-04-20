@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -58,15 +57,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/noto_sans"
                 android:paddingLeft="16dp"
                 android:text="@string/payment_collected"
                 android:textColor="@color/light_grey"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,28 +74,28 @@
                 android:orientation="horizontal"
                 android:paddingLeft="16dp">
 
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                <TextView
                     android:id="@+id/tv_collected_amount_currency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
+                    android:fontFamily="@font/noto_sans"
                     android:text="₹"
                     android:textColor="@color/light_grey"
-                    android:textSize="32sp"
-                    android:fontFamily="@font/noto_sans" />
+                    android:textSize="32sp" />
 
-                <com.goleep.driverapp.helpers.customfont.CustomEditText
+                <EditText
                     android:id="@+id/et_payment_collected"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
+                    android:fontFamily="@font/noto_sans"
                     android:hint="25,000"
                     android:inputType="numberDecimal"
                     android:textColor="@color/doTabTextColor"
                     android:textCursorDrawable="@null"
-                    android:textSize="32sp"
-                    android:fontFamily="@font/noto_sans" />
+                    android:textSize="32sp" />
 
             </LinearLayout>
 
@@ -112,15 +111,15 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.goleep.driverapp.helpers.customfont.CustomButton
+    <Button
         android:id="@+id/bt_done"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/green"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/done"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:visibility="gone"
-        app:typeface="NotoSans-Regular" />
+        android:visibility="gone" />
 
 </LinearLayout>

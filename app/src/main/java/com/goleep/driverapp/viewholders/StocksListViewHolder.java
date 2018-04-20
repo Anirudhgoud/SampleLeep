@@ -3,9 +3,9 @@ package com.goleep.driverapp.viewholders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
@@ -17,8 +17,10 @@ import com.goleep.driverapp.utils.AppUtils;
  */
 
 public class StocksListViewHolder extends RecyclerView.ViewHolder{
-    private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv, returnReasonTv;
+
+    private TextView productNameTv, productQuantityTv, amountTv, unitsTv, returnReasonTv;
     private CheckBox checkBox;
+
     public StocksListViewHolder(View itemView) {
         super(itemView);
         productNameTv = itemView.findViewById(R.id.product_name_text_view);

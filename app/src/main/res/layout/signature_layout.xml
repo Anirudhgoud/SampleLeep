@@ -1,85 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/received_from"
         android:textColor="@color/doTabTextColor"
-        android:textSize="14sp"
-        app:typeface="NotoSans-Regular" />
+        android:textSize="14sp" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomEditText
+    <EditText
         android:id="@+id/et_received_from"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/rounded_rect_with_grey_border"
-        android:maxLines="1"
+        android:fontFamily="@font/noto_sans"
         android:inputType="text"
+        android:maxLines="1"
         android:paddingLeft="8dp"
         android:textColor="@color/doTabTextColor"
         android:textCursorDrawable="@null"
-        android:textSize="14sp"
-        app:typeface="NotoSans-Regular" />
+        android:textSize="14sp" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:id="@+id/tv_received_from_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/invalid_name_error"
         android:textColor="@color/red"
         android:textSize="11sp"
-        android:visibility="gone"
-        app:typeface="NotoSans-Regular" />
+        android:visibility="gone" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/contact_number"
         android:textColor="@color/doTabTextColor"
-        android:textSize="14sp"
-        app:typeface="NotoSans-Regular" />
+        android:textSize="14sp" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomEditText
+    <EditText
         android:id="@+id/et_contact_number"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/rounded_rect_with_grey_border"
+        android:fontFamily="@font/noto_sans"
         android:inputType="phone"
         android:maxLines="1"
         android:paddingLeft="8dp"
         android:textColor="@color/doTabTextColor"
         android:textCursorDrawable="@null"
-        android:textSize="14sp"
-        app:typeface="NotoSans-Regular" />
+        android:textSize="14sp" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:id="@+id/tv_contact_number_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/invalid_contact_number"
         android:textColor="@color/red"
         android:textSize="11sp"
-        android:visibility="gone"
-        app:typeface="NotoSans-Regular" />
+        android:visibility="gone" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/signature"
         android:textColor="@color/doTabTextColor"
-        android:textSize="14sp"
-        app:typeface="NotoSans-Regular" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/iv_signature"
@@ -89,14 +88,14 @@
         android:scaleType="fitCenter"
         android:src="@color/tabBackgroundGreyColor" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:id="@+id/tv_signature_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/signature_error"
         android:textColor="@color/red"
         android:textSize="11sp"
-        android:visibility="gone"
-        app:typeface="NotoSans-Regular" />
+        android:visibility="gone" />
 
 </LinearLayout>

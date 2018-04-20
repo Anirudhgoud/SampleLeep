@@ -5,16 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.CountryCodeAdapter;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.CountryCodeHelper;
 import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.helpers.uimodels.Country;
@@ -43,25 +42,22 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private LoginViewModel loginViewModel;
     @BindView(R.id.phone_editText)
-    CustomEditText phoneEditText;
+    EditText phoneEditText;
     @BindView(R.id.password_editText)
-    CustomEditText passwordEditText;
+    EditText passwordEditText;
     @BindView(R.id.login_button)
-    CustomButton loginButton;
+    Button loginButton;
     @BindView(R.id.forgot_password_textView)
-    CustomTextView forgotPasswordTextView;
+    TextView forgotPasswordTextView;
     @BindView(R.id.country_code_spinner)
     Spinner countryCodeSpinner;
 
     private CountryCodeAdapter adapter;
 
-    private UILevelNetworkCallback loginCallBack = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            dismissProgressDialog();
-            handleLoginResponse(uiModels, isDialogToBeShown, errorMessage);
-        }
-    };
+    private UILevelNetworkCallback loginCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        dismissProgressDialog();
+        handleLoginResponse(uiModels, isDialogToBeShown, errorMessage);
+    });
 
     @Override
     public void doInitialSetup() {
