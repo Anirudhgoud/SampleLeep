@@ -368,6 +368,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         startActivity(intent);
     }
 
