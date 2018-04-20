@@ -90,13 +90,19 @@ public class LocationParser {
                 address.setAddressLine1(jsonObject.optString("long_name"));
                 break;
             } else if (jsonArray.optString(index).equals("route")) {
-                address.setAddressLine1(address.getAddressLine1() + " " + jsonObject.optString("long_name"));
+                String streetNumber = "";
+                if(!address.getAddressLine1().isEmpty())
+                    streetNumber = address.getAddressLine1();
+                address.setAddressLine1(streetNumber+ " " + jsonObject.optString("long_name"));
                 break;
             } else if (jsonArray.optString(index).equals("sublocality_level_2")) {
                 address.setAddressLine2(jsonObject.optString("long_name"));
                 break;
             } else if (jsonArray.optString(index).equals("sublocality_level_1")) {
-                address.setAddressLine2(address.getAddressLine2() + " " + jsonObject.optString("long_name"));
+                String level2 = "";
+                if(!address.getAddressLine2().isEmpty())
+                    level2 = address.getAddressLine1();
+                address.setAddressLine2(level2 + " " + jsonObject.optString("long_name"));
                 break;
             } else if (jsonArray.optString(index).equals("administrative_area_level_2")) {
                 address.setCity(jsonObject.optString("long_name"));

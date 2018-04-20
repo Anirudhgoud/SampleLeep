@@ -7,8 +7,8 @@ package com.goleep.driverapp.helpers.uimodels;
 public class Address {
     private String formattedAddress;
     private String postalCode;
-    private String addressLine1;
-    private String addressLine2;
+    private String addressLine1 = "";
+    private String addressLine2 = "";
     private String city;
     private String state;
     private String country;
