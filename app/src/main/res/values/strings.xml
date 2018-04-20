@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Leep</string>
+    <string name="app_name">Traco</string>
     <string name="network_error_message">Network Error</string>
     <string name="error">Error</string>
     <string name="phone_hint">Phone Number</string>
