@@ -14,11 +14,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
 import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.helpers.uimodels.Distance;
@@ -66,7 +66,7 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
     @BindView(R.id.tv_time_to_reach)
     CustomTextView tvTimeToReach;
     @BindView(R.id.bt_navigate)
-    CustomButton btNavigate;
+    ImageView ivNavigate;
     @BindView(R.id.ll_map_address_layout)
     LinearLayout llMapAddressLayout;
     @BindView(R.id.ll_do_number)
@@ -121,7 +121,7 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
 
     private void initialize() {
         warehouseViewModel = ViewModelProviders.of(getActivity()).get(WarehouseViewModel.class);
-        btNavigate.setOnClickListener(new View.OnClickListener() {
+        ivNavigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openDirectionsOnGoogleMaps();
@@ -224,13 +224,17 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onLastKnownLocationReceived(Location location) {
+        if (location != null)
         warehouseViewModel.fetchTimeToReachAndUpdateDeliveryOrders(
                 warehouseViewModel.getWarehouses(), location, timeToReachCallback);
+        else {
+            Toast.makeText(getContext(), getContext().getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onLastKnownLocationError(String errorMessage) {
-
+        Toast.makeText(getContext(), getContext().getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
     }
 
     private void openDirectionsOnGoogleMaps() {

@@ -38,7 +38,7 @@ public interface UrlConstants {
     String PICKUP_CONFIRMATION = DELIVERY_ORDERS_URL + "/in_transit";
 
     //Update profile image
-    String UPDATE_PROFILE_IMAGE = BASE_URL + "/users/";
+    String UPDATE_PROFILE_IMAGE = BASE_URL + "/profile_update/";
 
     //Reports
     String REPORT_URL = BASE_URL + "/reports";
@@ -50,6 +50,9 @@ public interface UrlConstants {
     //Drop off
     String BUSINESS_CATEGORIES_URL = BASE_URL + "/business_categories";
     String BUSINESSES_URL = BASE_URL + "/businesses";
+
+    //Driver location update
+    String DRIVER_CURRENT_LOCATION_URL = BASE_URL + "/current_location";
 
     //Util
     String COUNTRY_URL = BASE_URL + "/countries";

@@ -33,7 +33,7 @@ public class SplashActivity extends ParentAppCompatActivity implements OnComplet
     @Override
     public void doInitialSetup() {
         final Handler handler = new Handler();
-        handler.postDelayed(this::goToNextActivity, 500);
+        handler.postDelayed(this::createLocationSettingsRequest, 500);
     }
 
     private void goToNextActivity() {

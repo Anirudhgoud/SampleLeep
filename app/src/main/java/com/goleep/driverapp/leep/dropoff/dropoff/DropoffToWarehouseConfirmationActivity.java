@@ -209,6 +209,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
     private void goBackToHomeScreen() {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 }
