@@ -17,12 +17,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'boolean', 'PROD_ENV', "true"
-            buildConfigField 'String', 'BASE_URL', '"https://traco.cybrilla.io/v1"'
+            buildConfigField 'String', 'BASE_URL', '"https://dashboard.traco.cybrilla.io/v1"'
         }
         debug {
             minifyEnabled false
             buildConfigField 'boolean', 'PROD_ENV', "false"
-            buildConfigField 'String', 'BASE_URL', '"http://tracouat.cybrilla.io/v1"'
+            buildConfigField 'String', 'BASE_URL', '"http://dashboard.tracouat.cybrilla.io/v1"'
         }
     }
     compileOptions {
