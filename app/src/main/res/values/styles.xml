@@ -89,6 +89,15 @@
         <item name="android:textColorHint">@color/white</item>
     </style>
 
+    <style name="ThemeSpinner">
+        <!-- Color when pressed -->
+        <item name="colorAccent">@color/white</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+
+
     <style name="TracoButton" parent="Widget.AppCompat.Button">
         <item name="android:textAllCaps">false</item>
     </style>

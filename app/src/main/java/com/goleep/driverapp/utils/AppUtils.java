@@ -8,6 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.goleep.driverapp.constants.SharedPreferenceKeys;
+import com.goleep.driverapp.helpers.uimodels.Country;
+import com.goleep.driverapp.services.storage.LocalStorageService;
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -18,9 +23,10 @@ import java.io.OutputStream;
 
 public class AppUtils {
 
-    public static String userCurrencySymbol() {
-        //TODO: Get appropriate currency symbol according to user country or fetch from APIs
-        return "₹";
+    public static String userCurrencySymbol(Context context) {
+        Country selectedCountry = new Gson().fromJson(LocalStorageService.sharedInstance().
+                getLocalFileStore().getString(context, SharedPreferenceKeys.SELECTED_COUNTRY), Country.class);
+        return selectedCountry.getCurrencySymbol();
     }
 
     public static Bitmap bitmapFromView(View v, int width, int height) {

@@ -9,15 +9,19 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.storage.LocalStorageService;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,10 +30,28 @@ import java.util.Map;
 
 public class LoginViewModel extends AndroidViewModel {
     private Context context;
+    private List<Country> countries = new ArrayList<>();
+    private Country selectedCountry;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
         context = application.getApplicationContext();
+    }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
+
+    public Country getSelectedCountry() {
+        return selectedCountry;
+    }
+
+    public void setSelectedCountry(Country selectedCountry) {
+        this.selectedCountry = selectedCountry;
     }
 
     public void login(String phoneNumber, String password, final String code, final UILevelNetworkCallback loginCallBack) {
@@ -44,10 +66,7 @@ public class LoginViewModel extends AndroidViewModel {
                 switch (type){
                     case NetworkConstants.SUCCESS:
                         JSONObject userObj = (JSONObject) response.opt(0);
-                        LocalStorageService.sharedInstance().getLocalFileStore().store(context,
-                                SharedPreferenceKeys.PROFILE_URL, userObj.optString("profile_image_url"));
-                        LocalStorageService.sharedInstance().getLocalFileStore().store(context,
-                                SharedPreferenceKeys.USER_ID, userObj.optString("id"));
+                        storeUserMeta(userObj);
                         if(userObj != null){
                             JSONObject driver = userObj.optJSONObject("driver");
                             if(driver != null){
@@ -70,5 +89,14 @@ public class LoginViewModel extends AndroidViewModel {
                 }
             }
         });
+    }
+
+    private void storeUserMeta(JSONObject userObj) {
+        LocalStorageService.sharedInstance().getLocalFileStore().store(context,
+                SharedPreferenceKeys.PROFILE_URL, userObj.optString("profile_image_url"));
+        LocalStorageService.sharedInstance().getLocalFileStore().store(context,
+                SharedPreferenceKeys.USER_ID, userObj.optString("id"));
+        LocalStorageService.sharedInstance().getLocalFileStore().store(context, SharedPreferenceKeys.SELECTED_COUNTRY,
+                new Gson().toJson(selectedCountry));
     }
 }

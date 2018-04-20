@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
+import com.goleep.driverapp.helpers.uimodels.Report;
 import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
@@ -18,7 +18,6 @@ import com.goleep.driverapp.utils.LogUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -60,10 +59,10 @@ public class ReportsViewModel extends AndroidViewModel {
                         switch (type) {
                             case NetworkConstants.SUCCESS:
                                 JSONObject userObj = (JSONObject) response.opt(0);
-                                ReportAttrribute reportAttrribute = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
-                                List<ReportAttrribute> listReportAttrribute = new ArrayList<>();
-                                listReportAttrribute.add(reportAttrribute);
-                                reportCallBack.onResponseReceived(listReportAttrribute, false, null, false);
+                                Report report = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
+                                List<Report> listReport = new ArrayList<>();
+                                listReport.add(report);
+                                reportCallBack.onResponseReceived(listReport, false, null, false);
                                 break;
                             case NetworkConstants.FAILURE:
                                 reportCallBack.onResponseReceived(null, false, errorMessage, false);

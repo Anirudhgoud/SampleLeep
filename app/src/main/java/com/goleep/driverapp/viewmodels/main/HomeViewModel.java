@@ -61,8 +61,7 @@ public class HomeViewModel extends AndroidViewModel {
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(getApplication(),
                 SharedPreferenceKeys.DRIVER_ID);
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
-                UrlConstants.DRIVERS_URL+"/"+driverId,
-                true, (type, response, errorMessage) -> {
+                UrlConstants.DRIVERS_URL+"/"+driverId, true, (type, response, errorMessage) -> {
                     switch (type){
                         case NetworkConstants.SUCCESS:
                             List<DriverEntity> driverEntities = new ArrayList<>();
@@ -74,7 +73,7 @@ public class HomeViewModel extends AndroidViewModel {
                             }
                             List<WarehouseEntity> warehouseEntities = driverDataParser.warehouseByParsingResponse(response);
                             if(warehouseEntities != null) {
-                                leepDatabase.warehouseDao().insertWarehouseEntities(warehouseEntities);
+                                leepDatabase.warehouseDao().updateWarehouseDetails(warehouseEntities);
                             }
                             driverProfileCallback.onResponseReceived(driverEntities, false, null, false);
                             break;

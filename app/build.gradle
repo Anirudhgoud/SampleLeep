@@ -18,6 +18,8 @@ android {
             buildConfigField 'boolean', 'PROD_ENV', "true"
             buildConfigField 'String', 'BASE_URL', '"http://traco.cybrilla.io/v1"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'boolean', 'PROD_ENV', "true"
+            buildConfigField 'String', 'BASE_URL', '"https://traco.cybrilla.io/v1"'
         }
         debug {
             minifyEnabled false

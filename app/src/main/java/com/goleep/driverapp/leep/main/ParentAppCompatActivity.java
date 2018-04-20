@@ -142,11 +142,6 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
     }
 
-    protected void showSuccessDialog(String message) {
-        alertDialogHelper = new AlertDialogHelper();
-        alertDialogHelper.showSuccessDialog(this, message);
-    }
-
     public void showProgressDialog(){
         if (progressBarDialog == null) {
             progressBarDialog = new Dialog(ParentAppCompatActivity.this, R.style.ProgressBarTheme);

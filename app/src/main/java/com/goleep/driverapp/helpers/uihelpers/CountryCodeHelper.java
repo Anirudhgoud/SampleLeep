@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.services.network.jsonparsers.CountryDataParser;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,15 +21,14 @@ import java.util.List;
  */
 
 public class CountryCodeHelper {
-    private  Context  context;
 
-    public CountryCodeHelper(Context context) {
-        this.context = context;
+    public CountryCodeHelper() {
+
     }
 
-    public List<Country> getCountries() {
+    public List<Country> getCountries(Context context) {
         String json = null;
-        try (InputStream inputStream = context.getAssets().open("country.json");
+        try (InputStream inputStream = context.getAssets().open("country_data.json");
              InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
              BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -40,9 +41,9 @@ public class CountryCodeHelper {
             ex.printStackTrace();
             return null;
         }
-        JSONObject jsonObject = null;
+        JSONArray jsonObject = null;
         try {
-            jsonObject = new JSONObject(json);
+            jsonObject = new JSONArray(json);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
