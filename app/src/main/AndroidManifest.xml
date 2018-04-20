@@ -76,7 +76,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.dropoff.cashsales.CashSalesActivity"
-            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".leep.info.ReportsActivity"
