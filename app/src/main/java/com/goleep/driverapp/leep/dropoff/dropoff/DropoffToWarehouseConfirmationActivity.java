@@ -203,7 +203,6 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
     private void sendSuccessBroadcast(){
         Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
         intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
@@ -211,6 +210,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         startActivity(intent);
     }
 }
