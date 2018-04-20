@@ -164,7 +164,7 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
             etContactName.setError(getResources().getString(R.string.invalid_name_error));
             returnValue = false;
         }
-        if(viewModel.getSelectedCountry() != null && !viewModel.getSelectedCountry().getDialCode().isEmpty()){
+        if(viewModel.getSelectedCountry() != null && viewModel.getSelectedCountry().getDialCode().isEmpty()){
             etContactNumber.setError(getResources().getString(R.string.invalid_country_code));
             returnValue = false;
         }
