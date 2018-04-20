@@ -53,7 +53,7 @@ public class DeliveryOrdersViewHolder extends RecyclerView.ViewHolder {
         tvDate.setText(DateTimeUtils.convertdDate(deliveryOrder.getPreferredDeliveryDate(), ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT_COMMA));
         tvSchedule.setText(DateTimeUtils.timeDurationIn12HrFormat(deliveryOrder.getPreferredDeliveryTime()));
         tvDeliveryEstimatedTime.setText(getEstimatedDeliveryTimeText(deliveryOrder.getDistanceFromCurrentLocation()));
-        tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue()));
+        tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue(), itemView.getContext()));
         tvItemsCount.setText(String.valueOf(deliveryOrder.getDeliveryOrderItemsCount()));
         setDeliverButtonClickEvent(deliveryOrder.getId());
     }

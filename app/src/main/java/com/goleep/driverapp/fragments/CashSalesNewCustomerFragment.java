@@ -112,7 +112,7 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
     }
 
     private void initCountryCodeAdapter() {
-        viewModel.setCountryList(new CountryCodeHelper(getContext()).getCountries());
+        viewModel.setCountryList(new CountryCodeHelper().getCountries(getContext()));
         countryCodeSpinner.setOnItemSelectedListener(countryCodeSelectionListener);
         countryCodeAdapter = new CountryCodeAdapter(getContext(), R.layout.layout_country_code_item,
                 getContext().getResources().getColor(R.color.text_black));

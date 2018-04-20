@@ -90,7 +90,7 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
     }
 
     private void initialiseMapView() {
-        viewModel.setCountryAttributeList(new CountryCodeHelper(this).getCountries());
+        viewModel.setCountryAttributeList(new CountryCodeHelper().getCountries(this));
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(NewCustomerActivity.this);

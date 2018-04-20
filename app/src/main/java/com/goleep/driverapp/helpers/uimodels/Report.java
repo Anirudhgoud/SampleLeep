@@ -4,7 +4,7 @@ package com.goleep.driverapp.helpers.uimodels;
  * Created by shubham on 23/03/2018.
  */
 
-public class ReportAttrribute {
+public class Report {
   private int totalSales;
   private int cashCollected;
   private int units;

@@ -21,13 +21,12 @@ import java.util.List;
  */
 
 public class CountryCodeHelper {
-    private  Context  context;
 
-    public CountryCodeHelper(Context context) {
-        this.context = context;
+    public CountryCodeHelper() {
+
     }
 
-    public List<Country> getCountries() {
+    public List<Country> getCountries(Context context) {
         String json = null;
         try (InputStream inputStream = context.getAssets().open("country_data.json");
              InputStreamReader inputStreamReader = new InputStreamReader(inputStream);

@@ -169,7 +169,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(StringUtils.getAddress(deliveryOrder.getDestinationAddressLine1(),
                     deliveryOrder.getDestinationAddressLine2()));
-            tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue()));
+            tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue(), itemView.getContext()));
             doNumberLayout.setVisibility(View.GONE);
             if (((Activity) context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
                 tvDate.setText(DateTimeUtils.convertdDate(deliveryOrder.getPreferredDeliveryDate(),
@@ -224,7 +224,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 totalProductsTv.setText(String.format(context.getResources().getString(R.string.total_product_label),
                         cashSalesInfo.getTotalProducts()));
                 totalValueTv.setText(String.format(context.getResources().getString(R.string.total_value_label),
-                        StringUtils.amountToDisplay((float) cashSalesInfo.getTotalValue())));
+                        StringUtils.amountToDisplay((float) cashSalesInfo.getTotalValue(), itemView.getContext())));
             }
         }
     }

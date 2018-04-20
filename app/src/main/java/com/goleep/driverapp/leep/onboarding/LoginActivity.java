@@ -78,7 +78,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     }
 
     private void initCountryCodeDropdown() {
-        loginViewModel.setCountries(new CountryCodeHelper(this).getCountries());
+        loginViewModel.setCountries(new CountryCodeHelper().getCountries(this));
         countryCodeSpinner.setOnItemSelectedListener(this);
         adapter = new CountryCodeAdapter(this, R.layout.custom_spinner_layout, getResources().getColor(R.color.white));
         adapter.addAll(loginViewModel.getCountries());

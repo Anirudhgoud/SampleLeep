@@ -123,7 +123,7 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
                     ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
             timeTv.setText(StringUtils.timeToDisplay(deliveryOrderEntity.getPreferredDeliveryTime()));
             itemsTv.setText(String.valueOf(deliveryOrderEntity.getDeliveryOrderItemsCount()));
-            doAmountTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue()));
+            doAmountTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue(), this));
         }
     }
 
@@ -137,7 +137,7 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
                    // "yyyy-MM-dd", "dd MMM yyyy"));
             //timeTv.setText(StringUtils.timeToDisplay(deliveryOrderEntity.getPreferredDeliveryTime()));
             itemsTv.setText(String.valueOf(returnOrderEntity.getReturnOrderItemsCount()));
-            doAmountTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue()));
+            doAmountTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), this));
         }
     }
 

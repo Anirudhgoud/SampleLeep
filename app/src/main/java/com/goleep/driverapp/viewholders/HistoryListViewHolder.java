@@ -39,7 +39,7 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
         doNumberTv.setText(deliveryOrderEntity.getDoNumber());
         customerAddressTv.setText(StringUtils.getAddress(deliveryOrderEntity.getDestinationAddressLine1(),
                 deliveryOrderEntity.getDestinationAddressLine2()));
-        doValueTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue()));
+        doValueTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue(), itemView.getContext()));
         detailsButton.setTag("type_do#"+deliveryOrderEntity.getId());
         detailsButton.setOnClickListener(detailsClickListener);
     }
@@ -49,7 +49,7 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
         doNumberTv.setText(String.valueOf(returnOrderEntity.getRoNumber()));
         customerAddressTv.setText(StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(),
                 returnOrderEntity.getSourceAddressLine2()));
-        doValueTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue()));
+        doValueTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), itemView.getContext()));
         detailsButton.setTag("type_ro#"+returnOrderEntity.getRoNumber());
         detailsButton.setOnClickListener(detailsClickListener);
     }
