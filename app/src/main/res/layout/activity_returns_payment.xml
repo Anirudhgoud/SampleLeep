@@ -123,17 +123,36 @@
         </RelativeLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/bt_continue"
+    <LinearLayout
+        android:id="@+id/ll_bottom_buttons"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/green"
-        android:fontFamily="@font/noto_sans"
-        android:text="@string/continue_text"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:visibility="gone" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_skip_payment"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="@color/blue"
+            android:fontFamily="@font/noto_sans"
+            android:text="@string/skip_payment"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/bt_collect_payment"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:background="@color/green"
+            android:fontFamily="@font/noto_sans"
+            android:text="@string/collect_payment"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
 
 </RelativeLayout>
 
