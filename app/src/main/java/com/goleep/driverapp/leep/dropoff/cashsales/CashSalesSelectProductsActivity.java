@@ -117,7 +117,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         initialiseAutoCompleteTextView();
         setClickListeners();
         initialiseUpdateQuantityView();
-        fetchDriverLocationId();
     }
 
     @Override
@@ -241,10 +240,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         });
     }
 
-    private void fetchDriverLocationId() {
-        viewModel.setDriverLocationId(viewModel.getSourceLocationId());
-    }
-
     private void initialiseAutoCompleteTextView() {
         Drawable rightDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_search_inactive);
         atvSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
@@ -345,11 +340,10 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void updateQuantity(Product product) {
-
         Customer customer = viewModel.getConsumerLocation();
         if (product != null && customer != null) {
             showProgressDialog();
-            viewModel.getProductPricing(viewModel.getDriverLocationId(), customer.getId(),
+            viewModel.getProductPricing(customer.getId(),
                     product.getId(), productPricingCallback);
         }
     }

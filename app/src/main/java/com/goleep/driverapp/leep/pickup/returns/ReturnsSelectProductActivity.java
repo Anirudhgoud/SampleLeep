@@ -135,7 +135,6 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         setClickListeners();
         fetchReturnReasons();
         initialiseUpdateQuantityView();
-        fetchDriverLocationId();
     }
 
     @Override
@@ -262,9 +261,6 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         });
     }
 
-    private void fetchDriverLocationId() {
-        viewModel.setDriverLocationId(viewModel.getSourceLocationId());
-    }
 
     private void fetchReturnReasons(){
         viewModel.fetchReturnReasons(returnReasonsCallback);
@@ -328,10 +324,45 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
 
     private void onUpdateButtonTap() {
         Product product = viewModel.getSelectedProduct();
-        product.setReturnQuantity(Integer.valueOf(etUnits.getText().toString()));
-        product.setQuantity(0);
-        viewModel.setSelectedProduct(product);
-        goToReturnReasons(product);
+        updateQuantity(product);
+    }
+
+    private void updateQuantity(Product product) {
+        Customer customer = viewModel.getConsumerLocation();
+        if (product != null && customer != null) {
+            showProgressDialog();
+            viewModel.getProductPricing(customer.getId(),
+                    product.getId(), productPricingCallback);
+        }
+    }
+
+    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        runOnUiThread(() -> {
+            dismissProgressDialog();
+            if (uiModels == null) {
+                if (toLogout) {
+                    logoutUser();
+                } else if (isDialogToBeShown){
+                    showNetworkRelatedDialogs(errorMessage);
+                    updateProductDetails(0.0);
+                }
+            } else if (uiModels.size() > 0) {
+                Double productPrice = (Double) uiModels.get(0);
+                updateProductDetails(productPrice);
+            }
+        });
+    };
+
+    private void updateProductDetails(Double productPrice) {
+        Product product = viewModel.getSelectedProduct();
+        try {
+            if (productPrice != 0) product.setPrice(productPrice);
+            product.setQuantity(0);
+            product.setReturnQuantity(Integer.valueOf(etUnits.getText().toString()));
+            goToReturnReasons(product);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     private void goToReturnReasons(Product product) {
