@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_item_summary_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,23 +13,23 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
             android:text="@string/item_list"
             android:textColor="@color/doTabTextColor"
-            android:textSize="20sp"
-            app:typeface="NotoSans-Regular" />
+            android:textSize="20sp" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/tv_item_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
             android:lines="1"
             android:text="0 items"
             android:textColor="@color/doTabTextColor"
-            android:textSize="12sp"
-            app:typeface="NotoSans-Regular" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -40,24 +39,23 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center_horizontal"
             android:text="@string/grand_total"
             android:textColor="@color/light_grey"
-            android:textSize="12sp"
-            android:fontFamily="@font/noto_sans" />
+            android:textSize="12sp" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/tv_grand_total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center_horizontal"
-            android:text="adsgadg"
             android:textColor="@color/doTabTextColor"
-            android:textSize="18sp"
-            android:fontFamily="@font/noto_sans" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 

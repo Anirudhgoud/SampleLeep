@@ -5,7 +5,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -18,7 +17,6 @@ import android.widget.RadioGroup;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.HistoryListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
@@ -54,33 +52,23 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
     RadioButton rbReturnedOrders;
     @BindView(R.id.history_recyclerview)
     RecyclerView doRecyclerView;
+
     private HistoryListAdapter adapter;
     private HistoryViewModel deliveryOrderViewModel;
-
-    final String ORDER_TYPE_DO = "delivered";
-    final String ORDER_TYPE_RO = "returned";
 
     private UILevelNetworkCallback ordersHistoryCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            dismissProgressDialog();
-            if(uiModels != null) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.updateList((List<DeliveryOrderEntity>) uiModels);
-                    }
-                });
-            }
+            runOnUiThread(() -> {
+                dismissProgressDialog();
+                if(uiModels != null) adapter.updateList((List<DeliveryOrderEntity>) uiModels);
+            });
         }
     };
 
-    private View.OnClickListener detailsOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String doId = (String) view.getTag();
-            startDetailActivity(doId);
-        }
+    private View.OnClickListener detailsOnClickListener = view -> {
+        String doId = (String) view.getTag();
+        startDetailActivity(doId);
     };
 
     @Override
@@ -99,12 +87,6 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         setTitleIconAndText(getString(R.string.history), R.drawable.ic_history_title_icon);
-        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
-        rbToday.setTypeface(typeface);
-        rbThisWeek.setTypeface(typeface);
-        rbThisMonth.setTypeface(typeface);
-        rbDeliveredOrders.setTypeface(typeface);
-        rbReturnedOrders.setTypeface(typeface);
         initialiseRadioButtons();
         initRecyclerView();
     }

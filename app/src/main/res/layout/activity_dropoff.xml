@@ -7,19 +7,21 @@
     android:orientation="vertical"
     tools:context="com.goleep.driverapp.leep.dropoff.dropoff.DropoffActivity">
 
-    <include layout="@layout/toolbar_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <include layout="@layout/top_information_layout"
+    <include
         android:id="@+id/top_information_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        layout="@layout/top_information_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/inner_dashboard_purple"/>
+        android:background="@color/inner_dashboard_purple" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"

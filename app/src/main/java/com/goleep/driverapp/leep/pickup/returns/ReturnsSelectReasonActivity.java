@@ -27,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
+
     @BindView(R.id.tv_product_name)
     TextView tvProductName;
     @BindView(R.id.tv_product_quantity)
@@ -41,7 +42,6 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
     RecyclerView stocksRecyclerView;
 
     private ReturnReasonsViewModel returnReasonsViewModel;
-
     private ReturnReasonListAdapter adapter;
 
     @Override

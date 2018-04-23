@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
@@ -39,15 +37,15 @@ import butterknife.ButterKnife;
 public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_date)
-    CustomTextView tvCurrentDate;
+    TextView tvCurrentDate;
     @BindView(R.id.tv_time)
-    CustomTextView tvCurrentTime;
+    TextView tvCurrentTime;
     @BindView(R.id.tv_item_count)
-    CustomTextView tvItemCount;
+    TextView tvItemCount;
     @BindView(R.id.tv_returned_item_count)
     TextView tvReturnedItemCount;
     @BindView(R.id.ll_returned_label)

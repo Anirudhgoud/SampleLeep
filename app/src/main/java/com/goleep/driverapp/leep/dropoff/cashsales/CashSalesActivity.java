@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.fragments.CashSalesExistingCustomerFragment;
 import com.goleep.driverapp.fragments.CashSalesNewCustomerFragment;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 
 public class CashSalesActivity extends ParentAppCompatActivity {
@@ -55,7 +55,7 @@ public class CashSalesActivity extends ParentAppCompatActivity {
 
     private void setupTabIcons() {
         View existingCustomerTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
-        CustomTextView textView = existingCustomerTab.findViewById(R.id.title_text);
+        TextView textView = existingCustomerTab.findViewById(R.id.title_text);
         ImageView icon = existingCustomerTab.findViewById(R.id.icon);
         existingCustomerTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.existing_customer));

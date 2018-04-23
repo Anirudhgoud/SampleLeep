@@ -27,7 +27,7 @@ public class CountryCodeHelper {
     }
 
     public List<Country> getCountries(Context context) {
-        String json = null;
+        String json;
         try (InputStream inputStream = context.getAssets().open("country_data.json");
              InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
              BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
@@ -41,13 +41,13 @@ public class CountryCodeHelper {
             ex.printStackTrace();
             return null;
         }
-        JSONArray jsonObject = null;
+        JSONArray jsonArray;
         try {
-            jsonObject = new JSONArray(json);
+            jsonArray = new JSONArray(json);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
-        return new CountryDataParser().reportsDataByParsingJsonResponse(jsonObject);
+        return new CountryDataParser().reportsDataByParsingJsonResponse(jsonArray);
     }
 }

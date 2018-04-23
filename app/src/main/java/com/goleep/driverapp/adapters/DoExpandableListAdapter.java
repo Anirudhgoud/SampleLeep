@@ -8,10 +8,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.helpers.uimodels.CashSalesInfo;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
@@ -140,11 +140,11 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     public class HeaderViewHolder extends ExpandableRecyclerAdapter.HeaderViewHolder{
-        CustomTextView tvCustomerName;
-        CustomTextView tvStoreAddress;
-        CustomTextView tvDate;
-        CustomTextView tvSchedule;
-        CustomTextView tvAmount;
+        TextView tvCustomerName;
+        TextView tvStoreAddress;
+        TextView tvDate;
+        TextView tvSchedule;
+        TextView tvAmount;
         ImageView selectionIcon;
         LinearLayout dateLayout;
         LinearLayout timeLayout;
@@ -196,7 +196,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     public class OrdersHeaderViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
-        CustomTextView ordersHeaderTextView;
+        TextView ordersHeaderTextView;
         public OrdersHeaderViewHolder(View view) {
             super(view);
             ordersHeaderTextView = view.findViewById(R.id.orders_header_text_view);
@@ -209,8 +209,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     private class CashSalesInfoViewHolder extends ExpandableRecyclerAdapter.ViewHolder {
-        private CustomTextView totalProductsTv;
-        private CustomTextView totalValueTv;
+        private TextView totalProductsTv;
+        private TextView totalValueTv;
 
         public CashSalesInfoViewHolder(View view) {
             super(view);
@@ -230,7 +230,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     public class ItemViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
-        private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
+        private TextView productNameTv, productQuantityTv, amountTv, unitsTv;
         private CheckBox productCheckbox;
         private CompoundButton.OnCheckedChangeListener checkListener = new CompoundButton.OnCheckedChangeListener() {
             @Override

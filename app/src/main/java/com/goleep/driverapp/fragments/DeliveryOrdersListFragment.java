@@ -126,11 +126,13 @@ public class DeliveryOrdersListFragment extends Fragment {
         ParentAppCompatActivity activity = ((ParentAppCompatActivity) getActivity());
         if (activity == null) return;
         activity.dismissProgressDialog();
+        activity.runOnUiThread(() -> {
+            if (toLogout) {
+                activity.logoutUser();
+            } else if (isDialogToBeShown) {
+                activity.showNetworkRelatedDialogs(errorMessage);
+            }
+        });
 
-        if (toLogout) {
-            activity.logoutUser();
-        } else if (isDialogToBeShown) {
-            activity.showNetworkRelatedDialogs(errorMessage);
-        }
     };
 }

@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="6dp"
+    android:orientation="horizontal"
+    android:paddingBottom="20dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
-    android:paddingBottom="20dp">
+    android:paddingTop="6dp">
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="7"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:paddingEnd="10dp"
-        android:orientation="vertical">
+        android:layout_weight="7"
+        android:orientation="vertical"
+        android:paddingRight="10dp">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/tv_customer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:fontFamily="@font/noto_sans"
             android:textColor="@color/text_black"
-            app:typeface="NotoSans-Regular" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,65 +29,63 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans_bold"
                 android:text="@string/do_number"
                 android:textColor="@color/doTabTextColor"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Bold" />
+                android:textSize="12sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:id="@+id/tv_do_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
                 android:lines="1"
                 android:textColor="@color/doTabTextColor"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/tv_store_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/doTabTextColor"
-            android:textSize="12sp"
+            android:fontFamily="@font/noto_sans"
             android:maxLines="2"
-            app:typeface="NotoSans-Regular" />
+            android:textColor="@color/doTabTextColor"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="3"
         android:layout_height="wrap_content"
+        android:layout_weight="3"
         android:orientation="vertical">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/noto_sans"
             android:textColor="@color/text_black"
-            app:typeface="NotoSans-Regular"
-            android:layout_marginBottom="38dp" />
+            android:textSize="18sp" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomButton
+        <Button
             android:id="@+id/details_button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:background="@drawable/rounded_green_button"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center_horizontal|center_vertical"
             android:lines="1"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:text="@string/details"
-            style="?android:attr/borderlessButtonStyle"
-            android:textColor="@android:color/white"
-            app:typeface="NotoSans-Regular" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
-
-
 </LinearLayout>

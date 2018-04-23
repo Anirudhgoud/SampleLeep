@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.utils.AppUtils;
@@ -34,7 +33,7 @@ import butterknife.ButterKnife;
 public class CashSalesReturnsListDialogFragment extends DialogFragment {
 
     @BindView(R.id.tv_item_count)
-    CustomTextView tvItemCount;
+    TextView tvItemCount;
     @BindView(R.id.tv_returned_item_count)
     TextView tvReturnedItemCount;
     @BindView(R.id.ll_returned_label)

@@ -53,7 +53,4 @@ public interface UrlConstants {
 
     //Driver location update
     String DRIVER_CURRENT_LOCATION_URL = BASE_URL + "/current_location";
-
-    //Util
-    String COUNTRY_URL = BASE_URL + "/countries";
 }

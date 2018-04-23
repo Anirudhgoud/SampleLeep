@@ -32,10 +32,10 @@
                 android:layout_below="@+id/ll_top_layout"
                 android:layout_margin="16dp"
                 android:background="@drawable/rounded_border_green"
-                android:fontFamily="@font/noto_sans"
-                android:text="@string/view_item_list"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:fontFamily="@font/noto_sans"
+                android:text="@string/view_item_list"
                 android:textColor="@color/doTabTextColor"
                 android:textSize="18sp" />
 
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text=":"
+                    android:text="@string/colon"
                     android:textColor="@color/light_grey"
                     android:textSize="14sp" />
 

@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
@@ -23,8 +25,6 @@ import com.goleep.driverapp.adapters.BusinessesListAdapter;
 import com.goleep.driverapp.adapters.CountryCodeAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.CountryCodeHelper;
 import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.helpers.uimodels.CustomerInfo;
@@ -51,15 +51,15 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
     @BindView(R.id.country_code_spinner)
     Spinner countryCodeSpinner;
     @BindView(R.id.et_contact_name)
-    CustomEditText etContactName;
+    EditText etContactName;
     @BindView(R.id.et_contact_number)
-    CustomEditText etContactNumber;
+    EditText etContactNumber;
     @BindView(R.id.et_email_id)
-    CustomEditText etEmailId;
+    EditText etEmailId;
     @BindView(R.id.et_designation)
-    CustomEditText etDesignation;
+    EditText etDesignation;
     @BindView(R.id.tv_confirm)
-    CustomTextView tvConfirm;
+    TextView tvConfirm;
     @BindView(R.id.sv_add_customer)
     ScrollView scrollView;
     @BindView(R.id.ac_tv_business_name)

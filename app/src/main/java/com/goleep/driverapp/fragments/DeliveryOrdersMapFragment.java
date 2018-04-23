@@ -15,11 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.Permissions;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.helpers.uihelpers.PermissionHelper;
 import com.goleep.driverapp.helpers.uimodels.Distance;
@@ -48,12 +48,12 @@ import static com.goleep.driverapp.constants.AppConstants.LOCATION_PERMISSION_RE
 
 public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationChangeListener {
 
-    private CustomTextView tvCustomerName;
-    private CustomTextView tvDONumber;
-    private CustomTextView tvAddress;
-    private CustomTextView tvDeliveryDate;
-    private CustomTextView tvPreferredTime;
-    private CustomTextView tvTimeToReach;
+    private TextView tvCustomerName;
+    private TextView tvDONumber;
+    private TextView tvAddress;
+    private TextView tvDeliveryDate;
+    private TextView tvPreferredTime;
+    private TextView tvTimeToReach;
     private ImageView ivNavigate;
     private LinearLayout llMapAddressLayout;
 
@@ -150,6 +150,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
 
     private void displayMarkersOnMap(List<DeliveryOrderEntity> deliveryOrders) {
         mGoogleMap.clear();
+        int count = 0;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (int i = 0; i < deliveryOrders.size(); i++) {
             DeliveryOrderEntity deliveryOrder = deliveryOrders.get(i);
@@ -158,11 +159,13 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
                 Marker marker = mGoogleMap.addMarker(markerOptions);
                 marker.setTag(deliveryOrder);
                 builder.include(marker.getPosition());
+                count++;
                 if (i == 0) {
                     onMarkerClick(marker);
                 }
             }
         }
+        if (count == 0) return;
         LatLngBounds bounds = builder.build();
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;

@@ -1,139 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="25dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="25dp">
 
     <RelativeLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
+        android:layout_weight="4"
         android:background="@color/light_green"
-        android:layout_weight="4">
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp">
+
         <RelativeLayout
+            android:id="@+id/edit_profile_pic_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/edit_profile_pic_layout">
+            android:layout_centerHorizontal="true">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/edit_profile_imageview"
                 android:layout_width="92dp"
                 android:layout_height="92dp"
                 android:src="@drawable/profile_image_placeholder" />
-           <ImageView
-               android:layout_width="24dp"
-               android:layout_height="24dp"
-               app:srcCompat="@drawable/ic_edit_icon_profile_pic"
-               android:layout_alignRight="@id/edit_profile_imageview"
-               android:layout_alignBottom="@id/edit_profile_imageview"
-               android:layout_marginBottom="4dp"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignBottom="@id/edit_profile_imageview"
+                android:layout_alignRight="@id/edit_profile_imageview"
+                android:layout_marginBottom="4dp"
+                app:srcCompat="@drawable/ic_edit_icon_profile_pic" />
         </RelativeLayout>
 
         <ImageView
+            android:id="@+id/close_button"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:id="@+id/close_button"
             android:layout_alignParentRight="true"
-            app:srcCompat="@drawable/ic_close"/>
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_close" />
+
+        <TextView
             android:id="@+id/name_textView"
-            android:layout_below="@id/edit_profile_pic_layout"
-            android:text=""
-            android:textSize="22sp"
-            android:layout_centerHorizontal="true"
-            app:typeface="NotoSans-Bold"/>
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/place_text_view"
-            android:layout_below="@id/name_textView"
-            android:text=""
+            android:layout_below="@id/edit_profile_pic_layout"
             android:layout_centerHorizontal="true"
-            app:typeface="NotoSans-Regular"/>
+            android:fontFamily="@font/noto_sans_bold"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/place_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_textView"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/noto_sans" />
 
         <LinearLayout
+            android:id="@+id/details_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:id="@+id/details_layout">
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
                 android:id="@+id/deliveries_layout"
-                android:layout_weight="1">
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    app:typeface="NotoSans-Regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
                     android:id="@+id/deliveries_value_textview"
-                    android:text=""/>
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="10sp"
-                    app:typeface="NotoSans-Bold"
+                    android:fontFamily="@font/noto_sans"
+                    android:text=""
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/deliveries_label_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans_bold"
                     android:text="@string/deliveries"
-                    android:id="@+id/deliveries_label_textview"/>
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:id="@+id/payment_collected_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:layout_weight="1">
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
                     android:id="@+id/payment_collected_values_textview"
-                    android:textSize="22sp"
-                    app:typeface="NotoSans-Regular"
-                    android:text=""/>
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text=""
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/payment_collected_label_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans_bold"
                     android:text="@string/payment_collected"
-                    android:textSize="10sp"
-                    app:typeface="NotoSans-Bold"
-                    android:id="@+id/payment_collected_label_textview"/>
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/locations_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:id="@+id/locations_layout"
-                android:layout_weight="1">
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
                     android:id="@+id/locations_layout_value_textview"
-                    android:textSize="22sp"
-                    app:typeface="NotoSans-Regular"
-                    android:text=""/>
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans"
+                    android:text=""
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/locations_layout_label_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_sans_bold"
                     android:text="@string/locations"
-                    android:textSize="10sp"
-                    app:typeface="NotoSans-Bold"
-                    android:id="@+id/locations_layout_label_textview"/>
+                    android:textSize="10sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -141,148 +149,154 @@
     </RelativeLayout>
 
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="6"
         android:background="@color/white"
-        android:paddingLeft="30dp"
         android:orientation="vertical"
-        android:paddingTop="30dp"
+        android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:layout_weight="6">
+        android:paddingTop="30dp">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/contact_layout"
-            android:layout_marginBottom="15dp">
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <TextView
                 android:id="@+id/contact_label_text_view"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans_bold"
                 android:text="@string/contact_number"
-                android:textColor="@color/text_light_grey"/>
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_grey"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/contact_text_view"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular"
-                android:text=""/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text=""
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
             android:id="@+id/address_layout"
-            android:layout_marginBottom="15dp">
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
                 android:id="@+id/address_label_text_view"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans_bold"
                 android:text="@string/address"
-                android:textColor="@color/text_light_grey"/>
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_grey"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/address_text_view"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular"
-                android:text=""/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text=""
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/driver_licence_layout"
-            android:layout_marginBottom="15dp">
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <TextView
                 android:id="@+id/driver_licence_label_text_view"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans_bold"
                 android:text="@string/driver_licence_number"
-                android:textColor="@color/text_light_grey"/>
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textColor="@color/text_light_grey"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/driver_licence_text_view"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular"
-                android:text=""/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text=""
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/register_number__layout"
-            android:layout_marginBottom="15dp">
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <TextView
                 android:id="@+id/register_number_label_text_view"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Bold"
-                android:text="@string/vehicle_reg_no"
-                android:textColor="@color/text_light_grey"/>
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans_bold"
+                android:text="@string/vehicle_reg_no"
+                android:textColor="@color/text_light_grey"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/register_number_text_view"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular"
-                android:text=""/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/employee_number_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/employee_number_layout"
-            android:layout_marginBottom="15dp">
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <TextView
                 android:id="@+id/employee_number_label_text_view"
-                android:textSize="12sp"
-                app:typeface="NotoSans-Bold"
-                android:text="@string/employee_no"
-                android:visibility="gone"
-                android:textColor="@color/text_light_grey"/>
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans_bold"
+                android:text="@string/employee_no"
+                android:textColor="@color/text_light_grey"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/remployee_number_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:text=""
                 android:textSize="14sp"
-                android:visibility="gone"
-                app:typeface="NotoSans-Regular"
-                android:text=""/>
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
 
-<com.goleep.driverapp.helpers.customfont.CustomButton
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/signout"
-    android:padding="10dp"
-    android:textSize="20sp"
-    android:text="@string/sign_out"
-    android:textColor="@color/white"
-    app:typeface="NotoSans-Regular"
-    android:background="@color/blue"/>
-
+    <Button
+        android:id="@+id/signout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:fontFamily="@font/noto_sans"
+        android:padding="10dp"
+        android:text="@string/sign_out"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
 </LinearLayout>

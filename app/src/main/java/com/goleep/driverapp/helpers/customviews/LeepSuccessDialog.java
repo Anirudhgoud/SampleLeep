@@ -5,10 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 
 /**
@@ -19,7 +19,7 @@ public class LeepSuccessDialog extends Dialog implements View.OnClickListener {
 
     private String message;
     private SuccessDialogEventListener listener;
-    private CustomButton btPrint;
+    private Button btPrint;
 
     public LeepSuccessDialog(@NonNull Context context, String message) {
         super(context);
@@ -35,7 +35,7 @@ public class LeepSuccessDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.success_dialog_layout);
         btPrint = findViewById(R.id.bt_print);
-        ((CustomTextView) findViewById(R.id.message)).setText(message);
+        ((TextView) findViewById(R.id.message)).setText(message);
         setCanceledOnTouchOutside(false);
         findViewById(R.id.ok_button).setOnClickListener(this);
         findViewById(R.id.close_layout).setOnClickListener(this);

@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/sign_here"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:fontFamily="@font/noto_sans_bold"
+            android:text="@string/sign_here"
             android:textColor="@color/doTabTextColor"
-            android:textSize="24sp"
-            app:typeface="NotoSans-Medium" />
+            android:textSize="24sp" />
 
         <ImageView
             android:id="@+id/iv_close"
             android:layout_width="32dp"
             android:layout_height="40dp"
-            android:paddingTop="8dp"
+            android:layout_gravity="center_vertical"
             android:paddingBottom="8dp"
             android:paddingLeft="8dp"
-            android:layout_gravity="center_vertical"
+            android:paddingTop="8dp"
             app:srcCompat="@drawable/ic_close" />
 
     </LinearLayout>
@@ -46,26 +46,25 @@
             android:layout_height="340dp" />
     </LinearLayout>
 
-
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:id="@+id/tv_signature_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/signature_error"
         android:textColor="@color/red"
-        android:visibility="gone"
         android:textSize="11sp"
-        app:typeface="NotoSans-Regular" />
+        android:visibility="gone" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomButton
+    <Button
         android:id="@+id/bt_done"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/blue"
-        android:text="@string/done"
         android:layout_marginTop="16dp"
+        android:background="@color/blue"
+        android:fontFamily="@font/noto_sans"
+        android:text="@string/done"
         android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:typeface="NotoSans-Regular" />
+        android:textSize="18sp" />
 
 </LinearLayout>

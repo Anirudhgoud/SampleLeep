@@ -24,17 +24,17 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.goleep.driverapp.services.system.DriverLocationUpdateService;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
 import com.goleep.driverapp.helpers.uimodels.InnerDashboardUiModel;
 import com.goleep.driverapp.helpers.uimodels.Summary;
@@ -63,7 +63,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HomeActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.left_toolbar_button)
-    CustomButton profileButton;
+    Button profileButton;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @BindView(R.id.close_button)
@@ -71,7 +71,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     @BindView(R.id.dashboard_viewpager)
     NonSwipeableViewPager viewPager;
     @BindView(R.id.signout)
-    CustomButton signOutButton;
+    Button signOutButton;
     @BindView(R.id.edit_profile_imageview)
     CircleImageView profileImage;
 
@@ -133,7 +133,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     startActivity(stocksIntent);
                     break;
                 case InnerDashboardUiModel.TAG_DROP_OFF:
-                    if (summary.getPickUpCount() != 0) {
+                    if (summary.getDropOffToWarehouse() != 0) {
                         Intent dropoffIntent = new Intent(HomeActivity.this, DropoffWarehouseActivity.class);
                         startActivity(dropoffIntent);
                     }else {
@@ -191,24 +191,24 @@ public class HomeActivity extends ParentAppCompatActivity {
 
     private void displayDriverProfile(DriverEntity driverEntity) {
         View view = findViewById(R.id.profile_layout);
-        ((CustomTextView) view.findViewById(R.id.name_textView)).setText(StringUtils.toString(driverEntity.getFirstName(), "")
+        ((TextView) view.findViewById(R.id.name_textView)).setText(StringUtils.toString(driverEntity.getFirstName(), "")
                 + " " + StringUtils.toString(driverEntity.getLastName(), ""));
         String cityCountryName = StringUtils.toString(driverEntity.getCity(), "");
         String countryName = StringUtils.toString(driverEntity.getCountryName(), "");
         if(!countryName.isEmpty())
             cityCountryName += ", " + countryName;
-        ((CustomTextView) view.findViewById(R.id.place_text_view)).setText(cityCountryName);
-        ((CustomTextView) view.findViewById(R.id.deliveries_value_textview)).setText(
+        ((TextView) view.findViewById(R.id.place_text_view)).setText(cityCountryName);
+        ((TextView) view.findViewById(R.id.deliveries_value_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getCompletedDeliveryOrdersCount()), ""));
-        ((CustomTextView) view.findViewById(R.id.payment_collected_values_textview)).setText(
+        ((TextView) view.findViewById(R.id.payment_collected_values_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getPaymentCollected()), ""));
-        ((CustomTextView) view.findViewById(R.id.locations_layout_value_textview)).setText(
+        ((TextView) view.findViewById(R.id.locations_layout_value_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getDeliveryLocationsCount()), ""));
-        ((CustomTextView) view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
-        ((CustomTextView) view.findViewById(R.id.address_text_view)).setText(StringUtils.getAddress(
+        ((TextView) view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
+        ((TextView) view.findViewById(R.id.address_text_view)).setText(StringUtils.getAddress(
                 driverEntity.getAddressLine1(),driverEntity.getAddressLine2()));
-        ((CustomTextView) view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
-        ((CustomTextView) view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
+        ((TextView) view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
+        ((TextView) view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
         setToolbarRightText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
         if (driverEntity.getImageUrl() != null) {
@@ -399,10 +399,10 @@ public class HomeActivity extends ParentAppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
         for (InnerDashboardUiModel uimodel : innerDashboardUiModels) {
             View view = inflater.inflate(R.layout.inner_dashboard_item, null, false);
-            ((CustomTextView) view.findViewById(R.id.top_label_textview)).setText(uimodel.getTopText());
-            ((CustomTextView) view.findViewById(R.id.main_text)).setText(uimodel.getMainText());
-            ((CustomTextView) view.findViewById(R.id.sub_text)).setText(uimodel.getSubText());
-            ((CustomTextView) view.findViewById(R.id.top_value_textview)).setText(String.valueOf(uimodel.getTopNumber()));
+            ((TextView) view.findViewById(R.id.top_label_textview)).setText(uimodel.getTopText());
+            ((TextView) view.findViewById(R.id.main_text)).setText(uimodel.getMainText());
+            ((TextView) view.findViewById(R.id.sub_text)).setText(uimodel.getSubText());
+            ((TextView) view.findViewById(R.id.top_value_textview)).setText(String.valueOf(uimodel.getTopNumber()));
             ((ImageView) view.findViewById(R.id.icon)).setImageResource(uimodel.getIconResId());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -514,14 +514,14 @@ public class HomeActivity extends ParentAppCompatActivity {
     private void findDashboardViewsAndSet(RelativeLayout layout, int mainText, int drawableIconBg,
                                           int drawableDashboard, int belowText) {
 
-        ((CustomTextView) layout.findViewById(R.id.main_text)).setText(getResources().getText(mainText));
+        ((TextView) layout.findViewById(R.id.main_text)).setText(getResources().getText(mainText));
         (layout.findViewById(R.id.icon_layout)).setBackground(ContextCompat.getDrawable(HomeActivity.this, drawableIconBg));
         ((ImageView) layout.findViewById(R.id.icon)).setImageResource(drawableDashboard);
-        ((CustomTextView) layout.findViewById(R.id.sub_text)).setText(getResources().getText(belowText));
+        ((TextView) layout.findViewById(R.id.sub_text)).setText(getResources().getText(belowText));
 
     }
     private  void setCountValues(RelativeLayout layout,String count,int background) {
-        CustomTextView tvCount = layout.findViewById(R.id.count_text);
+        TextView tvCount = layout.findViewById(R.id.count_text);
         tvCount.setText(count);
         tvCount.setBackground(ContextCompat.getDrawable(HomeActivity.this, background));
     }

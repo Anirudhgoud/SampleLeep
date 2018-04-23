@@ -32,7 +32,7 @@
         android:layout_marginTop="32dp"
         app:srcCompat="@drawable/ic_dialog_success" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomTextView
+    <TextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,14 +40,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
         android:layout_marginTop="22dp"
-        android:paddingLeft="16dp"
+        android:fontFamily="@font/noto_sans"
         android:gravity="center_horizontal"
+        android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        app:typeface="NotoSans-Regular"
         android:textColor="@color/text_black"
         android:textSize="24sp" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomButton
+    <Button
         android:id="@+id/bt_print"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -56,11 +56,12 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/rounded_rect_light_blue"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/print_invoice"
         android:textColor="@color/white"
         android:visibility="gone" />
 
-    <com.goleep.driverapp.helpers.customfont.CustomButton
+    <Button
         android:id="@+id/ok_button"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -69,8 +70,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/success_dialog_ok_bg"
+        android:fontFamily="@font/noto_sans"
         android:text="@string/ok"
         android:textColor="@color/white" />
-
-
 </RelativeLayout>

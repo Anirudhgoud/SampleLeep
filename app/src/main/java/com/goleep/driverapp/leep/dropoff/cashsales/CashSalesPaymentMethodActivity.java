@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.PaymentMethod;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
@@ -31,13 +30,13 @@ import butterknife.ButterKnife;
 public class CashSalesPaymentMethodActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_date)
-    CustomTextView tvCurrentDate;
+    TextView tvCurrentDate;
     @BindView(R.id.tv_time)
-    CustomTextView tvCurrentTime;
+    TextView tvCurrentTime;
     @BindView(R.id.bt_continue)
     Button btContinue;
     @BindView(R.id.bt_view_item_list)

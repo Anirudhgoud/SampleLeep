@@ -6,14 +6,15 @@ import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.Permissions;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.CountryCodeHelper;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.helpers.uihelpers.PermissionHelper;
@@ -44,24 +45,25 @@ import butterknife.ButterKnife;
 import static com.goleep.driverapp.constants.AppConstants.LOCATION_PERMISSION_REQUEST_CODE;
 
 public class NewCustomerActivity extends ParentAppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, LocationChangeListener, GoogleMap.OnMarkerDragListener {
+
     @BindView(R.id.tv_complete_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.et_location)
-    CustomEditText etLocation;
+    EditText etLocation;
     @BindView(R.id.et_postalcode)
-    CustomEditText etPostalCode;
+    EditText etPostalCode;
     @BindView(R.id.et_addressline1)
-    CustomEditText etAddressLine1;
+    EditText etAddressLine1;
     @BindView(R.id.et_addressline2)
-    CustomEditText etAddressLine2;
+    EditText etAddressLine2;
     @BindView(R.id.et_city)
-    CustomEditText etCity;
+    EditText etCity;
     @BindView(R.id.et_state)
-    CustomEditText etState;
+    EditText etState;
     @BindView(R.id.et_country)
-    CustomEditText etCountry;
+    EditText etCountry;
     @BindView(R.id.tv_confirm)
-    CustomTextView tvConfirm;
+    Button tvConfirm;
 
     private GoogleMap googleMap;
     private Marker marker;
@@ -330,13 +332,7 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         }
     }
 
-    private UILevelNetworkCallback newCustomerCallBack = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            runOnUiThread(() -> handleResponseForNewCustomer(uiModels, isDialogToBeShown, errorMessage, toLogout));
-        }
-    };
+    private UILevelNetworkCallback newCustomerCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> handleResponseForNewCustomer(uiModels, isDialogToBeShown, errorMessage, toLogout));
 
     private void handleResponseForNewCustomer(List<?> uiModels, boolean isDialogToBeShown,
                                               String errorMessage, boolean toLogout) {
@@ -354,13 +350,7 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
         }
     }
 
-    private UILevelNetworkCallback newLocationCallBack = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            runOnUiThread(() -> handleNewLocation(uiModels, isDialogToBeShown, errorMessage, toLogout));
-        }
-    };
+    private UILevelNetworkCallback newLocationCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> handleNewLocation(uiModels, isDialogToBeShown, errorMessage, toLogout));
 
     private void handleNewLocation(List<?> uiModels, boolean isDialogToBeShown,
                                    String errorMessage, boolean toLogout) {

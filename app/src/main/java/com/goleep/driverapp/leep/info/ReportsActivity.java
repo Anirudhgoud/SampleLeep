@@ -2,25 +2,19 @@ package com.goleep.driverapp.leep.info;
 
 
 import android.arch.lifecycle.ViewModelProviders;
-
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.ReportsType;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
-
 import com.goleep.driverapp.helpers.uimodels.Report;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-
-import com.goleep.driverapp.helpers.uihelpers.FontProvider;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.information.ReportsViewModel;
 
 import java.util.List;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,15 +28,15 @@ public class ReportsActivity extends ParentAppCompatActivity {
     @BindView(R.id.rb_this_month)
     RadioButton rbThisMonth;
     @BindView(R.id.activity_reports_tv_total_sales)
-    CustomTextView tvTotalSales;
+    TextView tvTotalSales;
     @BindView(R.id.activity_reports_tv_cash_collected)
-    CustomTextView tvCashCollected;
+    TextView tvCashCollected;
     @BindView(R.id.activity_reports_tv_returns)
-    CustomTextView tvReturns;
+    TextView tvReturns;
     @BindView(R.id.activity_reports_tv_units)
-    CustomTextView tvUnits;
+    TextView tvUnits;
     @BindView(R.id.activity_reports_tv_location)
-    CustomTextView tvLocation;
+    TextView tvLocation;
     private ReportsViewModel reportsViewModel;
 
     @Override
@@ -58,17 +52,12 @@ public class ReportsActivity extends ParentAppCompatActivity {
     }
 
     private void initView() {
+        setTitleIconAndText(getString(R.string.reports), R.drawable.ic_reports_title);
         setToolBarColor(getResources().getColor(R.color.light_green));
         setToolbarLeftIcon(R.drawable.ic_back_arrow);
         rbToday.setOnClickListener(this);
         rbThisWeek.setOnClickListener(this);
         rbThisMonth.setOnClickListener(this);
-        setTitleIconAndText(getString(R.string.reports), R.drawable.ic_reports_title);
-
-        Typeface typeface = FontProvider.getTypeface(FontProvider.REGULAR, this);
-        rbToday.setTypeface(typeface);
-        rbThisWeek.setTypeface(typeface);
-        rbThisMonth.setTypeface(typeface);
         showProgressDialog();
         reportsViewModel.getReports(ReportsType.TODAY, reportsCallback);
     }

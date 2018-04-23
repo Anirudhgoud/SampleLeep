@@ -7,13 +7,13 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ProductListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
@@ -28,17 +28,17 @@ import butterknife.ButterKnife;
 public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvStoreAddress;
+    TextView tvStoreAddress;
     @BindView(R.id.ll_do_number)
     LinearLayout llDoNumber;
     @BindView(R.id.tv_time)
-    CustomTextView tvTime;
+    TextView tvTime;
     @BindView(R.id.rv_return_items)
     RecyclerView returnList;
     @BindView(R.id.confirm_button)
-    CustomButton btConfirm;
+    Button btConfirm;
     private ReturnsItemsConfirmationViewModel viewModel;
     private ProductListAdapter adapter;
 

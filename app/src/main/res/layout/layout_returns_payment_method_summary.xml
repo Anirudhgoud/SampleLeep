@@ -63,13 +63,13 @@
             android:textSize="24sp" />
 
         <TextView
+            android:id="@+id/tv_payment_method"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/noto_sans"
-            android:id="@+id/tv_payment_method"
             android:textColor="@color/light_grey"
             android:textSize="14sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 

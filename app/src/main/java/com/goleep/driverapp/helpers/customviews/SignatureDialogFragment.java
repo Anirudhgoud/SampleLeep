@@ -9,12 +9,12 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.utils.AppUtils;
 
@@ -25,9 +25,9 @@ import com.goleep.driverapp.utils.AppUtils;
 public class SignatureDialogFragment extends DialogFragment implements View.OnClickListener {
 
     private PaintView pvSignature;
-    private CustomButton btDone;
+    private Button btDone;
     private ImageView ivClose;
-    private CustomTextView tvSignatureError;
+    private TextView tvSignatureError;
 
     private AddSignatureListener addSignatureListener;
 

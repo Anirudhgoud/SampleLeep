@@ -30,6 +30,7 @@
             android:background="@drawable/radio_button_background"
             android:button="@null"
             android:checked="true"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/deliverable"
             android:textColor="@color/doTabTextColor"
@@ -42,6 +43,7 @@
             android:layout_weight="1"
             android:background="@drawable/radio_button_background"
             android:button="@null"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/sellable"
             android:textColor="@color/doTabTextColor"
@@ -54,6 +56,7 @@
             android:layout_weight="1"
             android:background="@drawable/radio_button_background"
             android:button="@null"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/returned"
             android:textColor="@color/doTabTextColor"
@@ -62,7 +65,6 @@
     </RadioGroup>
 
     <include layout="@layout/item_header_layout" />
-
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stocks_recyclerview"
