@@ -22,6 +22,15 @@ public class ReturnOrderEntity {
     private String customerName;
     private String sourceAddressLine1;
     private String sourceAddressLine2;
+    private String actualReturnAt;
+
+    public String getActualReturnAt() {
+        return actualReturnAt;
+    }
+
+    public void setActualReturnAt(String actualReturnAt) {
+        this.actualReturnAt = actualReturnAt;
+    }
 
     public int getSourceLocationId() {
         return sourceLocationId;

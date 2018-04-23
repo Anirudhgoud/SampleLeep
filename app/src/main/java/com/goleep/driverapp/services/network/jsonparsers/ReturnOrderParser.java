@@ -47,6 +47,7 @@ public class ReturnOrderParser {
             returnOrderEntity.setSourceAddressLine1(jsonObject.optString("source_address_line_1"));
             returnOrderEntity.setSourceAddressLine2(jsonObject.optString("source_address_line_2"));
             returnOrderEntity.setCustomerName(jsonObject.optString("customer_name"));
+            returnOrderEntity.setActualReturnAt(jsonObject.optString("actual_returned_at"));
             return returnOrderEntity;
         }
         return null;

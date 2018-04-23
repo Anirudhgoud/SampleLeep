@@ -149,9 +149,10 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
                     returnOrderEntity.getSourceAddressLine2()));
             doNumberTv.setText(String.valueOf(returnOrderEntity.getRoNumber()));
             tvDoLabel.setText(R.string.ro_number);
-            //dateTv.setText(DateTimeUtils.convertdDate(returnOrderEntity.getActualDeliveryDate(),
-                   // "yyyy-MM-dd", "dd MMM yyyy"));
-            //timeTv.setText(StringUtils.timeToDisplay(deliveryOrderEntity.getPreferredDeliveryTime()));
+            dateTv.setText(DateTimeUtils.convertdDate(returnOrderEntity.getActualReturnAt(),
+                    RAILS_TIMESTAMP_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
+            timeTv.setText(DateTimeUtils.convertdDate(returnOrderEntity.getActualReturnAt(),
+                    RAILS_TIMESTAMP_FORMAT, TWELVE_HOUR_TIME_FORMAT));
             itemsTv.setText(String.valueOf(returnOrderEntity.getReturnOrderItemsCount()));
             doAmountTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), this));
         }
