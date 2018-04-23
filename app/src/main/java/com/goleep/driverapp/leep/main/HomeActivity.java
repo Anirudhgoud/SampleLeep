@@ -133,7 +133,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     startActivity(stocksIntent);
                     break;
                 case InnerDashboardUiModel.TAG_DROP_OFF:
-                    if (summary.getPickUpCount() != 0) {
+                    if (summary.getDropOffToWarehouse() != 0) {
                         Intent dropoffIntent = new Intent(HomeActivity.this, DropoffWarehouseActivity.class);
                         startActivity(dropoffIntent);
                     }else {
