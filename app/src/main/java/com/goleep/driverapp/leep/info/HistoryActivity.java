@@ -164,10 +164,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
                 break;
 
             case R.id.rb_this_week:
-                Calendar calender = Calendar.getInstance();
-                calender.add(Calendar.DAY_OF_YEAR, -7);
-                Date weekAgo = calender.getTime();
-                String weekAgoString = DateTimeUtils.convertedDate(weekAgo, REQUEST_DATE_FORMAT);
+                String weekAgoString = getWeeksStartDate();
                 if(ordersTYpe == R.id.rb_delivery_order) {
                     deliveryOrderViewModel.fetchDeliveryOrders(weekAgoString, todayDateString,
                             ordersHistoryCallback);
@@ -178,10 +175,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
                 break;
 
             case R.id.rb_this_month:
-                Calendar month = Calendar.getInstance();
-                month.add(Calendar.DAY_OF_YEAR, -30);
-                Date monthAgo = month.getTime();
-                String monthAgoString = DateTimeUtils.convertedDate(monthAgo, REQUEST_DATE_FORMAT);
+                String monthAgoString = getMonthStartDate();
                 if(ordersTYpe == R.id.rb_delivery_order) {
                     deliveryOrderViewModel.fetchDeliveryOrders(monthAgoString, todayDateString,
                             ordersHistoryCallback);
@@ -205,5 +199,28 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
         Intent intent = new Intent(this, HistoryDetailsActivity.class);
         intent.putExtra(IntentConstants.ORDER_ID, doId);
         startActivity(intent);
+    }
+
+    private String getWeeksStartDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        Date mondayDate = calendar.getTime();
+        calendar = Calendar.getInstance();
+        Date todaysDate = calendar.getTime();
+        if (mondayDate.after(todaysDate)) {
+            int daysToSubtract = calendar.get(Calendar.DAY_OF_WEEK) - calendar.getFirstDayOfWeek();
+            calendar.add(Calendar.DATE, -daysToSubtract - 6);
+            Date start = calendar.getTime();
+            return DateTimeUtils.REQUEST_DATE_FORMAT.format(start);
+        } else {
+            return DateTimeUtils.REQUEST_DATE_FORMAT.format(mondayDate);
+        }
+    }
+
+    private String getMonthStartDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return DateTimeUtils.REQUEST_DATE_FORMAT.format(calendar.getTime());
     }
 }
