@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class ReturnOrderEntity {
     @PrimaryKey
-    private int roNumber;
+    private long roNumber;
     private String status;
     private String assigneeName;
     private String destinationLocationName;
@@ -22,6 +22,15 @@ public class ReturnOrderEntity {
     private String customerName;
     private String sourceAddressLine1;
     private String sourceAddressLine2;
+    private String actualReturnAt;
+
+    public String getActualReturnAt() {
+        return actualReturnAt;
+    }
+
+    public void setActualReturnAt(String actualReturnAt) {
+        this.actualReturnAt = actualReturnAt;
+    }
 
     public int getSourceLocationId() {
         return sourceLocationId;
@@ -63,11 +72,11 @@ public class ReturnOrderEntity {
         this.sourceAddressLine2 = sourceAddressLine2;
     }
 
-    public int getRoNumber() {
+    public long getRoNumber() {
         return roNumber;
     }
 
-    public void setRoNumber(int roNUmber) {
+    public void setRoNumber(long roNUmber) {
         this.roNumber = roNUmber;
     }
 

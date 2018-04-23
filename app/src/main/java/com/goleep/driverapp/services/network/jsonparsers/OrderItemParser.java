@@ -37,7 +37,7 @@ public class OrderItemParser {
     }
 
 
-    public List<ReturnOrderItem> returnOrderItemsByParsingJsonResponse(JSONArray jsonArray, int roNumber){
+    public List<ReturnOrderItem> returnOrderItemsByParsingJsonResponse(JSONArray jsonArray, long roNumber){
         List<ReturnOrderItem> orderItems = new ArrayList<>();
         JSONObject firstObj = jsonArray.optJSONObject(0);
         if(firstObj == null){
@@ -57,17 +57,20 @@ public class OrderItemParser {
         return orderItems;
     }
 
-    private ReturnOrderItem returnOrderItemByParsingJsonResponse(JSONObject jsonObject, int roNumber) {
+    private ReturnOrderItem returnOrderItemByParsingJsonResponse(JSONObject jsonObject, long roNumber) {
         if(jsonObject == null){
             return null;
         }
         ReturnOrderItem returnOrderItem = new ReturnOrderItem();
         returnOrderItem.setId(jsonObject.optInt("id"));
-        returnOrderItem.setOrderId(roNumber);
+        returnOrderItem.setRoId(roNumber);
         returnOrderItem.setPrice(jsonObject.optDouble("price", 0));
         returnOrderItem.setProduct(productByParsingJsonResponse(jsonObject.optJSONObject("product")));
         returnOrderItem.setQuantity(jsonObject.optInt("quantity", 0));
-        returnOrderItem.setReason(jsonObject.optJSONObject("return_reason").optString("reason"));
+        JSONObject returnReasonJSON = jsonObject.optJSONObject("return_reason");
+        if(returnReasonJSON != null) {
+            returnOrderItem.setReason(returnReasonJSON.optString("reason"));
+        }
         return returnOrderItem;
     }
 
