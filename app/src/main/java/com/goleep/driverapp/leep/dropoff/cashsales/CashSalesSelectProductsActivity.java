@@ -360,7 +360,8 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             if (uiModels == null) {
                 if (toLogout) {
                     logoutUser();
-                } else {
+                } else if (isDialogToBeShown){
+                    showNetworkRelatedDialogs(errorMessage);
                     updateProductDetails(0.0);
                 }
             } else if (uiModels.size() > 0) {
