@@ -168,7 +168,7 @@ public class HomeActivity extends ParentAppCompatActivity {
             if (uiModels == null) {
                 if (toLogout) {
                     logoutUser();
-                } else {
+                } else if (isDialogToBeShown){
                     showNetworkRelatedDialogs(errorMessage);
                 }
             } else if (uiModels.size() > 0) {
