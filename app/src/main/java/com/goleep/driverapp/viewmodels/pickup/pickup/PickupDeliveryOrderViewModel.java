@@ -15,7 +15,6 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
@@ -23,6 +22,7 @@ import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrd
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,7 +156,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                         public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                             switch (type) {
                                 case NetworkConstants.SUCCESS:
-                                    pickupConfirmCallBack.onResponseReceived(null,
+                                    pickupConfirmCallBack.onResponseReceived(Collections.emptyList(),
                                             false, null, false);
                                     break;
                                 case NetworkConstants.FAILURE:

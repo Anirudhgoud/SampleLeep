@@ -59,7 +59,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
                     } else if (isDialogToBeShown){
                         showNetworkRelatedDialogs(errorMessage);
                     }
-                } else if (uiModels.size() > 0) {
+                } else{
                     pickupDeliveryOrderViewModel.deleteDeliveryOrders(pickupDeliveryOrderViewModel.
                             getSelectedDeliveryOrders(), pickupDeliveryOrderViewModel.getCashSalesItems());
                     sendSuccessBroadcast();
