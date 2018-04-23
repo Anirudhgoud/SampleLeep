@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.goleep.driverapp.services.system.DriverLocationUpdateService;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
@@ -58,7 +59,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends ParentAppCompatActivity {
 
@@ -73,7 +73,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     @BindView(R.id.signout)
     Button signOutButton;
     @BindView(R.id.edit_profile_imageview)
-    CircleImageView profileImage;
+    ImageView profileImage;
 
     private HomeViewModel viewModel;
 
@@ -212,8 +212,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         setToolbarRightText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
         if (driverEntity.getImageUrl() != null) {
-            Glide.with(this).load(driverEntity.getImageUrl())
-//            Glide.with(this).load(driverEntity.getImageUrl()).placeholder(R.drawable.profile_image_placeholder).centerCrop().into(profileImage);
+            Glide.with(this).load(driverEntity.getImageUrl()).apply(new RequestOptions().circleCrop().placeholder(R.drawable.profile_image_placeholder)).into(profileImage);
         }
     }
 
@@ -491,7 +490,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         if (requestCode == START_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = intent.getData();
             File sourceFile = new File(getRealPathFromURI(uri));
-            profileImage.setImageURI(uri);
+            Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().placeholder(R.drawable.profile_image_placeholder)).into(profileImage);
             viewModel.uploadProfileImage(sourceFile);
         } else if (requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK) {
             viewModel.getStocks();
