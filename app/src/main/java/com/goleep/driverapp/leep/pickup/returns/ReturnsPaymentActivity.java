@@ -228,7 +228,7 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
                 finish();
                 break;
 
-            case R.id.bt_continue:
+            case R.id.bt_collect_payment:
                 gotoNextActivity();
                 break;
 

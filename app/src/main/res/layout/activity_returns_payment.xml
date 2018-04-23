@@ -12,7 +12,7 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bt_continue"
+        android:layout_above="@+id/ll_bottom_buttons"
         android:layout_below="@+id/toolbar_container">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
