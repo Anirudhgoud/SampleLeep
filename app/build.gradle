@@ -22,7 +22,7 @@ android {
         debug {
             minifyEnabled false
             buildConfigField 'boolean', 'PROD_ENV', "false"
-            buildConfigField 'String', 'BASE_URL', '"https://dashboard.traco.cybrilla.io/v1"'
+            buildConfigField 'String', 'BASE_URL', '"http://dashboard.tracouat.cybrilla.io/v1"'
         }
     }
     compileOptions {
