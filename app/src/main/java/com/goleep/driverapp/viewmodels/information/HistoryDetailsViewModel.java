@@ -37,7 +37,7 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
         return leepDatabase.deliveryOrderDao().deliveryOrder(doId);
     }
 
-    public ReturnOrderEntity getReturnOrderEntity(int roNUmber){
+    public ReturnOrderEntity getReturnOrderEntity(long roNUmber){
         return leepDatabase.returnOrderDao().getReturnOrderEntity(roNUmber);
     }
 
@@ -64,7 +64,7 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
                 });
     }
 
-    public void fetchRoItems(int orderId, UILevelNetworkCallback orderItemsCallBack) {
+    public void fetchRoItems(long orderId, UILevelNetworkCallback orderItemsCallBack) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
                 UrlConstants.RETURNED_ORDERS + "/" + orderId, true, new NetworkAPICallback() {
                     @Override

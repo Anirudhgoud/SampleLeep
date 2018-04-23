@@ -21,6 +21,7 @@ public class DateTimeUtils {
     public static final DateFormat REQUEST_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     public static final DateFormat TWENTY_FOUR_HOUR_TIME_FORMAT = new SimpleDateFormat("HH:mm");
     public static final DateFormat TWELVE_HOUR_TIME_FORMAT = new SimpleDateFormat("hh:mma");
+    public static final DateFormat RAILS_TIMESTAMP_FORMAT =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     public static String convertdDate(String dateString, DateFormat fromFormat, DateFormat toFormat) {
         if (dateString == null) return "-";

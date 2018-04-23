@@ -28,6 +28,8 @@ import butterknife.ButterKnife;
 
 import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT;
 import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
+import static com.goleep.driverapp.utils.DateTimeUtils.RAILS_TIMESTAMP_FORMAT;
+import static com.goleep.driverapp.utils.DateTimeUtils.TWELVE_HOUR_TIME_FORMAT;
 
 public class HistoryDetailsActivity extends ParentAppCompatActivity {
 
@@ -37,6 +39,8 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
     TextView storeAddressTv;
     @BindView(R.id.tv_do_number)
     TextView doNumberTv;
+    @BindView(R.id.tv_do_id_label)
+    TextView tvDoLabel;
     @BindView(R.id.tv_date)
     TextView dateTv;
     @BindView(R.id.tv_schedule)
@@ -104,12 +108,18 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
         String orderIdStr = getIntent().getStringExtra(IntentConstants.ORDER_ID);
         if(orderIdStr != null){
             String[] orderIdInfo = orderIdStr.split("#");
-            int orderId = Integer.parseInt(orderIdInfo[1]);
-            String orderType = orderIdInfo[0];
-            if(orderType.equals("type_do")) {
-                populateDoInfo(historyDetailsViewModel.getDeliveryOrderEntity(orderId));
-                historyDetailsViewModel.fetchDoItems(orderId, orderItemsCallBack);
-            } else {
+            try {
+                int orderId = Integer.parseInt(orderIdInfo[1]);
+                String orderType = orderIdInfo[0];
+                if (orderType.equals("type_do")) {
+                    populateDoInfo(historyDetailsViewModel.getDeliveryOrderEntity(orderId));
+                    historyDetailsViewModel.fetchDoItems(orderId, orderItemsCallBack);
+                } else {
+                    populateRoInfo(historyDetailsViewModel.getReturnOrderEntity(orderId));
+                    historyDetailsViewModel.fetchRoItems(orderId, orderItemsCallBack);
+                }
+            }catch (NumberFormatException e){
+                long orderId = Long.parseLong(orderIdInfo[1]);
                 populateRoInfo(historyDetailsViewModel.getReturnOrderEntity(orderId));
                 historyDetailsViewModel.fetchRoItems(orderId, orderItemsCallBack);
             }
@@ -124,8 +134,9 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
                     deliveryOrderEntity.getDestinationAddressLine2()));
             doNumberTv.setText(deliveryOrderEntity.getDoNumber());
             dateTv.setText(DateTimeUtils.convertdDate(deliveryOrderEntity.getActualDeliveryDate(),
-                    ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
-            timeTv.setText(StringUtils.timeToDisplay(deliveryOrderEntity.getPreferredDeliveryTime()));
+                    RAILS_TIMESTAMP_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
+            timeTv.setText(DateTimeUtils.convertdDate(deliveryOrderEntity.getActualDeliveryDate(),
+                    RAILS_TIMESTAMP_FORMAT, TWELVE_HOUR_TIME_FORMAT));
             itemsTv.setText(String.valueOf(deliveryOrderEntity.getDeliveryOrderItemsCount()));
             doAmountTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue(), this));
         }
@@ -137,6 +148,7 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
             storeAddressTv.setText(StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(),
                     returnOrderEntity.getSourceAddressLine2()));
             doNumberTv.setText(String.valueOf(returnOrderEntity.getRoNumber()));
+            tvDoLabel.setText(R.string.ro_number);
             //dateTv.setText(DateTimeUtils.convertdDate(returnOrderEntity.getActualDeliveryDate(),
                    // "yyyy-MM-dd", "dd MMM yyyy"));
             //timeTv.setText(StringUtils.timeToDisplay(deliveryOrderEntity.getPreferredDeliveryTime()));

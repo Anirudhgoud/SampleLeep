@@ -31,7 +31,7 @@ public class ReturnOrderParser {
     }
 
     private ReturnOrderEntity parseReturnOrder(JSONObject jsonObject) {
-        int roNumber = jsonObject.optInt("ro_number", -1);
+        long roNumber = jsonObject.optLong("ro_number", -1);
         if(roNumber != -1) {
             ReturnOrderEntity returnOrderEntity = new ReturnOrderEntity();
             returnOrderEntity.setRoNumber(roNumber);

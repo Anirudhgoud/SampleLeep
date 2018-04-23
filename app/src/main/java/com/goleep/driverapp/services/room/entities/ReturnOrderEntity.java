@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class ReturnOrderEntity {
     @PrimaryKey
-    private int roNumber;
+    private long roNumber;
     private String status;
     private String assigneeName;
     private String destinationLocationName;
@@ -63,11 +63,11 @@ public class ReturnOrderEntity {
         this.sourceAddressLine2 = sourceAddressLine2;
     }
 
-    public int getRoNumber() {
+    public long getRoNumber() {
         return roNumber;
     }
 
-    public void setRoNumber(int roNUmber) {
+    public void setRoNumber(long roNUmber) {
         this.roNumber = roNUmber;
     }
 
