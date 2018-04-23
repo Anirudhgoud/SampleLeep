@@ -113,7 +113,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     break;
 
                 case InnerDashboardUiModel.TAG_PICKUP:
-                    if (summary.getPickUpCount() != 0) {
+                    if (summary.getPickUpFromWarehouse() != 0) {
                         Intent pickupIntent = new Intent(HomeActivity.this, PickupWarehouseActivity.class);
                         startActivityForResult(pickupIntent, START_PICKUP_ACTIVITY_CODE);
                     }else {
