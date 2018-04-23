@@ -31,6 +31,7 @@ import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
+import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
@@ -124,7 +125,6 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
         setClickListeners();
         fetchReturnReasons();
         initialiseUpdateQuantityView();
-        fetchDriverLocationId();
     }
 
     @Override
@@ -222,10 +222,6 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
             }
             return true;
         });
-    }
-
-    private void fetchDriverLocationId() {
-        viewModel.setDriverLocationId(viewModel.getSourceLocationId());
     }
 
     private void fetchReturnReasons(){
@@ -328,15 +324,45 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
 
     private void onUpdateButtonTap() {
         Product product = viewModel.getSelectedProduct();
+        updateQuantity(product);
+    }
+
+    private void updateQuantity(Product product) {
+        Customer customer = viewModel.getConsumerLocation();
+        if (product != null && customer != null) {
+            showProgressDialog();
+            viewModel.getProductPricing(customer.getId(),
+                    product.getId(), productPricingCallback);
+        }
+    }
+
+    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        runOnUiThread(() -> {
+            dismissProgressDialog();
+            if (uiModels == null) {
+                if (toLogout) {
+                    logoutUser();
+                } else if (isDialogToBeShown){
+                    showNetworkRelatedDialogs(errorMessage);
+                    updateProductDetails(0.0);
+                }
+            } else if (uiModels.size() > 0) {
+                Double productPrice = (Double) uiModels.get(0);
+                updateProductDetails(productPrice);
+            }
+        });
+    };
+
+    private void updateProductDetails(Double productPrice) {
+        Product product = viewModel.getSelectedProduct();
         try {
+            if (productPrice != 0) product.setPrice(productPrice);
             product.setQuantity(0);
             product.setReturnQuantity(Integer.valueOf(etUnits.getText().toString()));
-            viewModel.setSelectedProduct(product);
             goToReturnReasons(product);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
     }
 
     private void goToReturnReasons(Product product) {

@@ -45,21 +45,6 @@ public class DriverDataParser {
         driverEntity.setCompletedDeliveryOrdersCount(jsonObject.optInt("completed_delivery_orders_count", 0));
         driverEntity.setPaymentCollected(jsonObject.optInt("payment_collected", 0));
         driverEntity.setDeliveryLocationsCount(jsonObject.optInt("delivery_locations_count", 0));
-        JSONObject workLocationJsonObject = jsonObject.optJSONObject("work_location");
-        if (workLocationJsonObject != null){
-            driverEntity.setLocationId(workLocationJsonObject.optInt("id"));
-            driverEntity.setAddressLine1(workLocationJsonObject.optString("address_line_1"));
-            driverEntity.setAddressLine2(workLocationJsonObject.optString("address_line_2"));
-            driverEntity.setCity(workLocationJsonObject.optString("city"));
-            driverEntity.setState(workLocationJsonObject.optString("state"));
-            driverEntity.setCountryId(workLocationJsonObject.optInt("country_id"));
-            driverEntity.setCountryName(workLocationJsonObject.optString("country_name"));
-            driverEntity.setPinCode(workLocationJsonObject.optString("pin_code"));
-            driverEntity.setWorkLocationLat(workLocationJsonObject.optDouble("latitude", 0.0));
-            driverEntity.setWorkLocationLng(workLocationJsonObject.optDouble("longitude", 0.0));
-            driverEntity.setLocationName(workLocationJsonObject.optString("name"));
-            driverEntity.setBusinessId(workLocationJsonObject.optInt("business_id", 0));
-        }
         return driverEntity;
     }
 

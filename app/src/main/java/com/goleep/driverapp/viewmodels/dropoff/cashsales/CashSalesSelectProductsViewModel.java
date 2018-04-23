@@ -33,7 +33,6 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
     protected AppDatabase leepDatabase;
     private Customer consumerLocation;
     private Product selectedProduct;
-    private int driverLocationId;
     private ArrayList<Product> scannedProducts = new ArrayList<>();
 
     public CashSalesSelectProductsViewModel(@NonNull Application application) {
@@ -49,8 +48,8 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
         return leepDatabase.stockProductDao().sellebleProductsWithName(searchText);
     }
 
-    public void getProductPricing(int sourceLocationId, int destinationLocationId, int productId, UILevelNetworkCallback networkCallback) {
-        String url = UrlConstants.PRODUCT_PRICING_URL + "?source_location_id=" + sourceLocationId + "&destination_location_id=" + destinationLocationId + "&product_id=" + productId;
+    public void getProductPricing(int destinationLocationId, int productId, UILevelNetworkCallback networkCallback) {
+        String url = UrlConstants.PRODUCT_PRICING_URL + "?destination_location_id=" + destinationLocationId + "&product_id=" + productId;
 
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), url, true, new NetworkAPICallback() {
             @Override
@@ -92,11 +91,6 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
         scannedProducts.add(scannedProduct);
     }
 
-    public int getSourceLocationId() {
-        DriverEntity driverEntity = leepDatabase.driverDao().getDriver();
-        return driverEntity != null ? driverEntity.getLocationId() : 0;
-    }
-
     public Product getProductFromScannedProducts(int id) {
         for (Product product : scannedProducts) {
             if (product.getId() == id) return product;
@@ -130,14 +124,6 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
 
     public void setConsumerLocation(Customer consumerLocation) {
         this.consumerLocation = consumerLocation;
-    }
-
-    public int getDriverLocationId() {
-        return driverLocationId;
-    }
-
-    public void setDriverLocationId(int driverLocationId) {
-        this.driverLocationId = driverLocationId;
     }
 
     public List<StockProductEntity> allProductsWithName(String searchText) {

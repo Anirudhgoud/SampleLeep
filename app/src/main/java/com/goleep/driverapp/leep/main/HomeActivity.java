@@ -190,14 +190,10 @@ public class HomeActivity extends ParentAppCompatActivity {
 
 
     private void displayDriverProfile(DriverEntity driverEntity) {
+        String driverName = StringUtils.toString(driverEntity.getFirstName(), "")
+                + " " + StringUtils.toString(driverEntity.getLastName(), "");
         View view = findViewById(R.id.profile_layout);
-        ((TextView) view.findViewById(R.id.name_textView)).setText(StringUtils.toString(driverEntity.getFirstName(), "")
-                + " " + StringUtils.toString(driverEntity.getLastName(), ""));
-        String cityCountryName = StringUtils.toString(driverEntity.getCity(), "");
-        String countryName = StringUtils.toString(driverEntity.getCountryName(), "");
-        if(!countryName.isEmpty())
-            cityCountryName += ", " + countryName;
-        ((TextView) view.findViewById(R.id.place_text_view)).setText(cityCountryName);
+        ((TextView) view.findViewById(R.id.name_textView)).setText(driverName);
         ((TextView) view.findViewById(R.id.deliveries_value_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getCompletedDeliveryOrdersCount()), ""));
         ((TextView) view.findViewById(R.id.payment_collected_values_textview)).setText(
@@ -205,11 +201,9 @@ public class HomeActivity extends ParentAppCompatActivity {
         ((TextView) view.findViewById(R.id.locations_layout_value_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getDeliveryLocationsCount()), ""));
         ((TextView) view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
-        ((TextView) view.findViewById(R.id.address_text_view)).setText(StringUtils.getAddress(
-                driverEntity.getAddressLine1(),driverEntity.getAddressLine2()));
         ((TextView) view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
         ((TextView) view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
-        setToolbarRightText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
+        setToolbarRightText(driverName);
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
         if (driverEntity.getImageUrl() != null) {
             Glide.with(this).load(driverEntity.getImageUrl()).asBitmap().placeholder(R.drawable.profile_image_placeholder).centerCrop().into(profileImage);
