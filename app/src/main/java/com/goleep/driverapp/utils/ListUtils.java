@@ -13,7 +13,7 @@ public class ListUtils {
 
         if (selectedProducts == null && returnedProducts == null) return finalList;
         else if (selectedProducts != null && returnedProducts == null) return selectedProducts;
-        else if (selectedProducts == null && returnedProducts != null) return returnedProducts;
+        else if (selectedProducts == null) return returnedProducts;
         else {
             finalList.addAll(selectedProducts);
             for (Product returnedProduct : returnedProducts) {

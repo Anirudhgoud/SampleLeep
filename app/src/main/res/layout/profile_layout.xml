@@ -22,11 +22,11 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/edit_profile_imageview"
                 android:layout_width="92dp"
                 android:layout_height="92dp"
-                android:src="@drawable/profile_image_placeholder" />
+                app:srcCompat="@drawable/ic_profile_placeholder" />
 
             <ImageView
                 android:layout_width="24dp"
@@ -67,7 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:id="@+id/deliveries_layout"
@@ -185,32 +186,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/address_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/address_label_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans_bold"
-                android:text="@string/address"
-                android:textColor="@color/text_light_grey"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/address_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
-                android:text=""
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/driver_licence_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -257,33 +232,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans"
                 android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/employee_number_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/employee_number_label_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans_bold"
-                android:text="@string/employee_no"
-                android:textColor="@color/text_light_grey"
-                android:textSize="12sp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/remployee_number_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
-                android:text=""
-                android:textSize="14sp"
-                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

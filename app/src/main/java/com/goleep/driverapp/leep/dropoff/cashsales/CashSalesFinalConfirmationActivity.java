@@ -88,7 +88,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     @BindView(R.id.tv_signature_error)
     TextView tvSignatureError;
 
-    NewSalesConfirmationViewModel viewModel;
+    private NewSalesConfirmationViewModel viewModel;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -157,7 +157,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         tvPaymentMethod.setText(viewModel.getPaymentMethod());
     }
 
-    public String amountWithCurrencySymbol(Object amount) {
+    private String amountWithCurrencySymbol(Object amount) {
         return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 
@@ -225,10 +225,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         int contactNumberLength = etContactNumber.getText().length();
         tvContactNumberError.setVisibility(contactNumberLength > 0 ? (contactNumberLength == 10 ? View.GONE : View.VISIBLE) : View.GONE);
         tvSignatureError.setVisibility(viewModel.isSignatureAdded() ? View.GONE : View.VISIBLE);
-        if (etReceivedFrom.getText().length() > 0 && viewModel.isSignatureAdded()) {
-            return contactNumberLength == 0 || contactNumberLength == 10;
-        }
-        return false;
+        return etReceivedFrom.getText().length() > 0 && viewModel.isSignatureAdded() && (contactNumberLength == 0 || contactNumberLength == 10);
     }
 
     private void createCashSalesOrder() {

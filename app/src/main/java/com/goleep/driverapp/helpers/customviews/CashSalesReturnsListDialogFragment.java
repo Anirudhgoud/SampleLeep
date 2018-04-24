@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ import com.goleep.driverapp.viewmodels.pickup.CashSalesReturnsDialogViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,7 +62,7 @@ public class CashSalesReturnsListDialogFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(CashSalesReturnsDialogViewModel.class);
-        viewModel.setSelectedProducts(getArguments().getParcelableArrayList(IntentConstants.SELECTED_PRODUCT_LIST));
+        if (getArguments() != null) viewModel.setSelectedProducts(getArguments().getParcelableArrayList(IntentConstants.SELECTED_PRODUCT_LIST));
     }
 
     @NonNull
@@ -72,7 +74,7 @@ public class CashSalesReturnsListDialogFragment extends DialogFragment {
         setCLickListeners();
         displayProductList();
         updateItemSummaryUI();
-        Dialog dialog = new Dialog(getContext());
+        Dialog dialog = new Dialog(Objects.requireNonNull(getContext()));
         dialog.setContentView(rootView);
         dialog.setCanceledOnTouchOutside(true);
         return dialog;
@@ -85,7 +87,9 @@ public class CashSalesReturnsListDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        Window window = getDialog().getWindow();
+        if (window == null) return;
+        ViewGroup.LayoutParams params = window.getAttributes();
         params.width = LinearLayout.LayoutParams.MATCH_PARENT;
         params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);

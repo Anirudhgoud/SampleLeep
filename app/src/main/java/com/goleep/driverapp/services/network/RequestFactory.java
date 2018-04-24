@@ -30,14 +30,19 @@ public class RequestFactory {
     public Request createRequest(Context context, String url, boolean isAuthRequired, String requestType,
                                  String contentType, Map<String, Object> bodyParams, Map<String, String> localHeaderParams){
         NetworkRequest networkRequest;
-        if(requestType.equals(NetworkConstants.PUT_REQUEST)){
-            networkRequest = new PutRequest();
-        }else if(requestType.equals(NetworkConstants.POST_REQUEST)){
-            networkRequest = new PostRequest();
-        } else if(requestType.equals(NetworkConstants.DELETE_REQUEST)){
-            networkRequest = new DeleteRequest();
-        }else{
-            networkRequest = new GetRequest();
+        switch (requestType) {
+            case NetworkConstants.PUT_REQUEST:
+                networkRequest = new PutRequest();
+                break;
+            case NetworkConstants.POST_REQUEST:
+                networkRequest = new PostRequest();
+                break;
+            case NetworkConstants.DELETE_REQUEST:
+                networkRequest = new DeleteRequest();
+                break;
+            default:
+                networkRequest = new GetRequest();
+                break;
         }
         Map<String, String> headerParams = new HashMap<>();
         headerParams.put(RequestConstants.KEY_USER_AGENT, RequestConstants.USER_AGENT);

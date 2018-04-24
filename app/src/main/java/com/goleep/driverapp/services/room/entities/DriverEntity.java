@@ -1,9 +1,5 @@
 package com.goleep.driverapp.services.room.entities;
 
-/**
- * Created by vishalm on 15/02/18.
- */
-
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -22,24 +18,13 @@ public class DriverEntity {
     private boolean insurance;
     private String dateOfBirth;
     private String contactNumber;
-    private int locationId;
-    private int businessId;
     private String licenceNumber;
     private String vehicleNumber;
     private String licenceExpirationDate;
     private int completedDeliveryOrdersCount;
     private int paymentCollected;
     private int deliveryLocationsCount;
-    private String addressLine1;
-    private String addressLine2;
-    private String city;
-    private String state;
-    private int countryId;
-    private String countryName;
-    private String pinCode;
-    private String locationName;
-    private double workLocationLat;
-    private double workLocationLng;
+
 
     public int getId() {
         return id;
@@ -129,14 +114,6 @@ public class DriverEntity {
         this.contactNumber = contactNumber;
     }
 
-    public int getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
-    }
-
     public String getLicenceNumber() {
         return licenceNumber;
     }
@@ -183,93 +160,5 @@ public class DriverEntity {
 
     public void setDeliveryLocationsCount(int deliveryLocationsCount) {
         this.deliveryLocationsCount = deliveryLocationsCount;
-    }
-
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
-    }
-
-    public String getAddressLine2() {
-        return addressLine2;
-    }
-
-    public void setAddressLine2(String addressLine2) {
-        this.addressLine2 = addressLine2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public int getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
-    }
-
-    public String getCountryName() {
-        return countryName;
-    }
-
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
-
-    public String getPinCode() {
-        return pinCode;
-    }
-
-    public void setPinCode(String pinCode) {
-        this.pinCode = pinCode;
-    }
-
-    public String getLocationName() {
-        return locationName;
-    }
-
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
-
-    public double getWorkLocationLat() {
-        return workLocationLat;
-    }
-
-    public void setWorkLocationLat(double workLocationLat) {
-        this.workLocationLat = workLocationLat;
-    }
-
-    public double getWorkLocationLng() {
-        return workLocationLng;
-    }
-
-    public void setWorkLocationLng(double workLocationLng) {
-        this.workLocationLng = workLocationLng;
-    }
-
-    public int getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(int businessId) {
-        this.businessId = businessId;
     }
 }

@@ -9,7 +9,6 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.viewholders.WarehouseListViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
  */
 
 public class WarehouseListAdapter extends RecyclerView.Adapter<WarehouseListViewHolder> {
-    private List<WarehouseEntity> warehouseList = new ArrayList<>();
+    private List<WarehouseEntity> warehouseList;
     private View.OnClickListener warehouseSelectionListener;
 
     public WarehouseListAdapter(List<WarehouseEntity> warehouseList) {

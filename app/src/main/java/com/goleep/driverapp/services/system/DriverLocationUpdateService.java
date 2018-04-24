@@ -10,11 +10,8 @@ import android.support.annotation.Nullable;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.utils.LogUtils;
-
-import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,14 +44,7 @@ public class DriverLocationUpdateService extends Service implements LocationChan
     }
 
     private void updateCurrentLocation(Location location) {
-
-        NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(this, UrlConstants.DRIVER_CURRENT_LOCATION_URL, true, generateLocationRequestMap(location), new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                LogUtils.error("DriverLocationUpdateService", response == null ? "Error while updating location" : response.toString());
-            }
-        });
-
+        NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(this, UrlConstants.DRIVER_CURRENT_LOCATION_URL, true, generateLocationRequestMap(location), (type, response, errorMessage) -> LogUtils.error("DriverLocationUpdateService", response == null ? "Error while updating location" : response.toString()));
     }
 
     private Map<String, Object> generateLocationRequestMap(Location location) {

@@ -22,8 +22,8 @@ import com.google.android.gms.tasks.Task;
 
 public class SplashActivity extends ParentAppCompatActivity implements OnCompleteListener<LocationSettingsResponse> {
 
-    protected static final String TAG = "SplashActivity";
-    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private final String TAG = "SplashActivity";
+    private final int REQUEST_CHECK_SETTINGS = 0x1;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

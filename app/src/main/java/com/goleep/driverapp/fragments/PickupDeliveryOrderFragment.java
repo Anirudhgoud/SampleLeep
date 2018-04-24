@@ -63,13 +63,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         }
     };
 
-    private UILevelNetworkCallback deliveryOrderCallBack = new UILevelNetworkCallback() {
-
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-
-        }
-    };
+    private UILevelNetworkCallback deliveryOrderCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> { };
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,12 +78,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         doViewModel = ViewModelProviders.of(getActivity()).get(PickupDeliveryOrderViewModel.class);
         doViewModel.setWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1));
         initRecyclerView();
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((PickupActivity)getActivity()).viewPager.setCurrentItem(1);
-            }
-        });
+        confirmButton.setOnClickListener(view -> ((PickupActivity)getActivity()).viewPager.setCurrentItem(1));
     }
 
     private void initRecyclerView() {
@@ -101,21 +90,17 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         expandableListView.setAdapter(adapter);
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_ASSIGNED, doViewModel.getWarehouse().getId()).observe(
-                        PickupDeliveryOrderFragment.this, new Observer<List<DeliveryOrderEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrders) {
-                if(deliveryOrders.size() > 0) {
-                    doViewModel.getDoList().clear();
-                    for(DeliveryOrderEntity deliveryOrderEntity : deliveryOrders) {
-                        deliveryOrderEntity.setItemType(AppConstants.TYPE_HEADER);
-                        doViewModel.getDoList().add(deliveryOrderEntity);
-                    }
-                    List<BaseListItem> baseListItems = new ArrayList<>();
-                    baseListItems.addAll(deliveryOrders);
-                    adapter.upDateList(baseListItems);
-                }
-            }
-        });
+                        PickupDeliveryOrderFragment.this, deliveryOrders -> {
+                            if(deliveryOrders.size() > 0) {
+                                doViewModel.getDoList().clear();
+                                for(DeliveryOrderEntity deliveryOrderEntity : deliveryOrders) {
+                                    deliveryOrderEntity.setItemType(AppConstants.TYPE_HEADER);
+                                    doViewModel.getDoList().add(deliveryOrderEntity);
+                                }
+                                List<BaseListItem> baseListItems = new ArrayList<>(deliveryOrders);
+                                adapter.upDateList(baseListItems);
+                            }
+                        });
         doViewModel.getOrderItemsLiveData().observe(PickupDeliveryOrderFragment.this,
                 PickupDeliveryOrderFragment.this);
     }
@@ -144,24 +129,18 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                 listItems.add(orderItemEntity);
             }
             if(getActivity() != null && !getActivity().isFinishing())
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.addItemsList(listItems, doId);
-                        doViewModel.getDoUpdateMap().put(doId, true);
+                getActivity().runOnUiThread(() -> {
+                    adapter.addItemsList(listItems, doId);
+                    doViewModel.getDoUpdateMap().put(doId, true);
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                RecyclerView.ViewHolder viewHolder = expandableListView.findViewHolderForAdapterPosition(pos);
-                                if(viewHolder != null &&
-                                        viewHolder.itemView != null) {
-                                    viewHolder.itemView.performClick();
-                                    expandableListView.scrollToPosition(pos);
-                                }
-                            }
-                        },1);
-                    }
+                    new Handler().postDelayed(() -> {
+                        RecyclerView.ViewHolder viewHolder = expandableListView.findViewHolderForAdapterPosition(pos);
+                        if(viewHolder != null &&
+                                viewHolder.itemView != null) {
+                            viewHolder.itemView.performClick();
+                            expandableListView.scrollToPosition(pos);
+                        }
+                    },1);
                 });
         }
     }

@@ -62,13 +62,9 @@ public class ReportsActivity extends ParentAppCompatActivity {
         reportsViewModel.getReports(ReportsType.TODAY, reportsCallback);
     }
 
-    private UILevelNetworkCallback reportsCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            dismissProgressDialog();
-            runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
-        }
+    private UILevelNetworkCallback reportsCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        dismissProgressDialog();
+        runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
     };
 
     private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown,

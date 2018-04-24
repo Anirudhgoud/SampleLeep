@@ -10,18 +10,14 @@ import android.util.SparseArray;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,17 +50,14 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     public void fetchDoItems(final int doId, Observer<List<OrderItemEntity>> orderItemsObserver){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true,
-                new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                OrderItemParser orderItemParser = new OrderItemParser();
-                                List<OrderItemEntity> orderItems = orderItemParser.orderItemsByParsingJsonResponse(response, doId);
-                                leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId, orderItems);
-                                orderItemsObserver.onChanged(orderItems);
-                                break;
-                        }
+                (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            OrderItemParser orderItemParser = new OrderItemParser();
+                            List<OrderItemEntity> orderItems = orderItemParser.orderItemsByParsingJsonResponse(response, doId);
+                            leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId, orderItems);
+                            orderItemsObserver.onChanged(orderItems);
+                            break;
                     }
                 });
     }
@@ -153,26 +146,23 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         if (requestBody.containsKey("delivery_order_ids") || requestBody.containsKey("cash_sales")) {
             NetworkService.sharedInstance().getNetworkClient().makeJsonPutRequest(
                     getApplication().getApplicationContext(), UrlConstants.PICKUP_CONFIRMATION, true,
-                    requestBody, new NetworkAPICallback() {
-                        @Override
-                        public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                            switch (type) {
-                                case NetworkConstants.SUCCESS:
-                                    pickupConfirmCallBack.onResponseReceived(Collections.emptyList(),
-                                            false, null, false);
-                                    break;
-                                case NetworkConstants.FAILURE:
-                                    pickupConfirmCallBack.onResponseReceived(null,
-                                            true, errorMessage, false);
-                                    break;
-                                case NetworkConstants.NETWORK_ERROR:
-                                    pickupConfirmCallBack.onResponseReceived(null,
-                                            true, errorMessage, false);
-                                    break;
-                                case NetworkConstants.UNAUTHORIZED:
-                                    pickupConfirmCallBack.onResponseReceived(null,
-                                            false, errorMessage, true);
-                            }
+                    requestBody, (type, response, errorMessage) -> {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                pickupConfirmCallBack.onResponseReceived(Collections.emptyList(),
+                                        false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                pickupConfirmCallBack.onResponseReceived(null,
+                                        true, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                pickupConfirmCallBack.onResponseReceived(null,
+                                        true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                pickupConfirmCallBack.onResponseReceived(null,
+                                        false, errorMessage, true);
                         }
                     });
         }

@@ -57,25 +57,16 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
 
         public HeaderViewHolder(View view) {
             super(view);
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggleExpandedItems(getLayoutPosition(),false);
-                }
-            });
+            view.setOnClickListener(v -> toggleExpandedItems(getLayoutPosition(),false));
         }
 
         public HeaderViewHolder(View view, final ImageView arrow, final View.OnClickListener clickListener) {
             super(view);
             this.arrow = arrow;
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(clickListener != null)
-                        clickListener.onClick(v);
-                    handleClick();
-                }
+            view.setOnClickListener(v -> {
+                if(clickListener != null)
+                    clickListener.onClick(v);
+                handleClick();
             });
         }
 
@@ -208,11 +199,9 @@ public abstract class ExpandableRecyclerAdapter<T extends BaseListItem>
     }
 
     private boolean isHeader(BaseListItem baseListItem) {
-        if (baseListItem.getItemType() == AppConstants.TYPE_HEADER ||
+        return baseListItem.getItemType() == AppConstants.TYPE_HEADER ||
                 baseListItem.getItemType() == AppConstants.TYPE_ORDERS_HEADER ||
                 baseListItem.getItemType() == AppConstants.TYPE_CASH_SALES_ITEM ||
-                baseListItem.getItemType() == AppConstants.TYPE_SALES_INFO)
-            return true;
-        else return false;
+                baseListItem.getItemType() == AppConstants.TYPE_SALES_INFO;
     }
 }

@@ -2,13 +2,11 @@ package com.goleep.driverapp.viewmodels.information;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
@@ -17,8 +15,6 @@ import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
-
-import org.json.JSONArray;
 
 import java.util.List;
 
@@ -44,44 +40,38 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
     public void fetchDoItems(final int doId, UILevelNetworkCallback doDetailsCallback){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true,
-                new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                OrderItemParser orderItemParser = new OrderItemParser();
-                                List<OrderItemEntity> orderItems = orderItemParser.
-                                        orderItemsByParsingJsonResponse(response, doId);
-                                doDetailsCallback.onResponseReceived(orderItems, false,
-                                        null, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                doDetailsCallback.onResponseReceived(null, false,
-                                        null, true);
-                                break;
-                        }
+                (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            OrderItemParser orderItemParser = new OrderItemParser();
+                            List<OrderItemEntity> orderItems = orderItemParser.
+                                    orderItemsByParsingJsonResponse(response, doId);
+                            doDetailsCallback.onResponseReceived(orderItems, false,
+                                    null, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            doDetailsCallback.onResponseReceived(null, false,
+                                    null, true);
+                            break;
                     }
                 });
     }
 
     public void fetchRoItems(long orderId, UILevelNetworkCallback orderItemsCallBack) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
-                UrlConstants.RETURNED_ORDERS + "/" + orderId, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                OrderItemParser orderItemParser = new OrderItemParser();
-                                List<ReturnOrderItem> orderItems = orderItemParser.
-                                        returnOrderItemsByParsingJsonResponse(response, orderId);
-                                orderItemsCallBack.onResponseReceived(orderItems, false,
-                                        null, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                orderItemsCallBack.onResponseReceived(null, false,
-                                        null, true);
-                                break;
-                        }
+                UrlConstants.RETURNED_ORDERS + "/" + orderId, true, (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            OrderItemParser orderItemParser = new OrderItemParser();
+                            List<ReturnOrderItem> orderItems = orderItemParser.
+                                    returnOrderItemsByParsingJsonResponse(response, orderId);
+                            orderItemsCallBack.onResponseReceived(orderItems, false,
+                                    null, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            orderItemsCallBack.onResponseReceived(null, false,
+                                    null, true);
+                            break;
                     }
                 });
     }

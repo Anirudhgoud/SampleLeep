@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.uimodels.Business;
 
-import java.util.List;
-
 /**
  * Created by shubham on 09/04/2018.
  */

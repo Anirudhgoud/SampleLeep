@@ -77,12 +77,6 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
     private WarehouseViewModel warehouseViewModel;
     private GoogleMap mGoogleMap;
     private final int LOCATION_PERMISSION_REQUEST_CODE = 100;
-    private UILevelNetworkCallback deliveryOrdersUILevelCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-
-        }
-    };
 
     private UILevelNetworkCallback timeToReachCallback = new UILevelNetworkCallback() {
         @Override
@@ -123,12 +117,7 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
 
     private void initialize() {
         warehouseViewModel = ViewModelProviders.of(getActivity()).get(WarehouseViewModel.class);
-        ivNavigate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDirectionsOnGoogleMaps();
-            }
-        });
+        ivNavigate.setOnClickListener(view -> openDirectionsOnGoogleMaps());
     }
 
     private void initialiseMapView() {

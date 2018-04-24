@@ -3,14 +3,11 @@ package com.goleep.driverapp.viewmodels.dropoff.cashsales;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DeliveryOrderParser;
@@ -21,8 +18,6 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
-
-import org.json.JSONArray;
 
 import java.util.List;
 
@@ -66,46 +61,40 @@ public class CashSalesViewModel extends AndroidViewModel {
         if(warehouseEntity != null)
             url += "&source_locations="+warehouseEntity.getId();
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), url,
-                true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                DeliveryOrderParser deliveryOrderParser = new DeliveryOrderParser();
-                                List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
-                                        deliveryOrdersByParsingJsonResponse(response);
-                                if(deliveryOrdersList.size() > 0){
-                                    DeliveryOrderEntity driverDO = deliveryOrdersList.get(0);
-                                    leepDatabase.deliveryOrderDao().insertDeliveryOrder(driverDO);
-                                }
-                                break;
+                true, (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            DeliveryOrderParser deliveryOrderParser = new DeliveryOrderParser();
+                            List<DeliveryOrderEntity> deliveryOrdersList = deliveryOrderParser.
+                                    deliveryOrdersByParsingJsonResponse(response);
+                            if(deliveryOrdersList.size() > 0){
+                                DeliveryOrderEntity driverDO = deliveryOrdersList.get(0);
+                                leepDatabase.deliveryOrderDao().insertDeliveryOrder(driverDO);
+                            }
+                            break;
 
-                                case NetworkConstants.UNAUTHORIZED :
-                                    driverDOCallback.onResponseReceived(null,
-                                            false, errorMessage, true);
-                                    break;
-                        }
+                            case NetworkConstants.UNAUTHORIZED :
+                                driverDOCallback.onResponseReceived(null,
+                                        false, errorMessage, true);
+                                break;
                     }
                 });
     }
 
     public void fetchDriverDoDetails(final int doId, final UILevelNetworkCallback doDetailsCallback){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
-                UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                OrderItemParser orderItemParser = new OrderItemParser();
-                                leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
-                                        orderItemParser.orderItemsByParsingJsonResponse(response, doId));
-                                break;
+                UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true, (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            OrderItemParser orderItemParser = new OrderItemParser();
+                            leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
+                                    orderItemParser.orderItemsByParsingJsonResponse(response, doId));
+                            break;
 
-                            case NetworkConstants.UNAUTHORIZED :
-                                doDetailsCallback.onResponseReceived(null,
-                                        false, errorMessage, true);
-                                break;
-                        }
+                        case NetworkConstants.UNAUTHORIZED :
+                            doDetailsCallback.onResponseReceived(null,
+                                    false, errorMessage, true);
+                            break;
                     }
                 });
     }

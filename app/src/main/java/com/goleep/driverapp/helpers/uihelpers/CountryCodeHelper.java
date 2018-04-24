@@ -4,11 +4,9 @@ import android.content.Context;
 
 import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.services.network.jsonparsers.CountryDataParser;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +28,7 @@ public class CountryCodeHelper {
         String json;
         try (InputStream inputStream = context.getAssets().open("country_data.json");
              InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
+             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
             StringBuilder stringBuilder = new StringBuilder();
             String content;
             while ((content = bufferedReader.readLine()) != null) {

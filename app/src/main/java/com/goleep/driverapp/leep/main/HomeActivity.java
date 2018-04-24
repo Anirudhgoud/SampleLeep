@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.goleep.driverapp.services.system.DriverLocationUpdateService;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
@@ -58,7 +59,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends ParentAppCompatActivity {
 
@@ -73,7 +73,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     @BindView(R.id.signout)
     Button signOutButton;
     @BindView(R.id.edit_profile_imageview)
-    CircleImageView profileImage;
+    ImageView profileImage;
 
     private HomeViewModel viewModel;
 
@@ -81,8 +81,8 @@ public class HomeActivity extends ParentAppCompatActivity {
     private RelativeLayout relativeLayout_drop_off_cardview;
     private RelativeLayout relativeLayout_information_cardview;
 
-    final int START_GALLERY_REQUEST_CODE = 101;
-    final int START_PICKUP_ACTIVITY_CODE = 102;
+    private final int START_GALLERY_REQUEST_CODE = 101;
+    private final int START_PICKUP_ACTIVITY_CODE = 102;
 
     private View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
@@ -113,7 +113,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     break;
 
                 case InnerDashboardUiModel.TAG_PICKUP:
-                    if (summary.getPickUpCount() != 0) {
+                    if (summary.getPickUpFromWarehouse() != 0) {
                         Intent pickupIntent = new Intent(HomeActivity.this, PickupWarehouseActivity.class);
                         startActivityForResult(pickupIntent, START_PICKUP_ACTIVITY_CODE);
                     }else {
@@ -190,14 +190,10 @@ public class HomeActivity extends ParentAppCompatActivity {
 
 
     private void displayDriverProfile(DriverEntity driverEntity) {
+        String driverName = StringUtils.toString(driverEntity.getFirstName(), "")
+                + " " + StringUtils.toString(driverEntity.getLastName(), "");
         View view = findViewById(R.id.profile_layout);
-        ((TextView) view.findViewById(R.id.name_textView)).setText(StringUtils.toString(driverEntity.getFirstName(), "")
-                + " " + StringUtils.toString(driverEntity.getLastName(), ""));
-        String cityCountryName = StringUtils.toString(driverEntity.getCity(), "");
-        String countryName = StringUtils.toString(driverEntity.getCountryName(), "");
-        if(!countryName.isEmpty())
-            cityCountryName += ", " + countryName;
-        ((TextView) view.findViewById(R.id.place_text_view)).setText(cityCountryName);
+        ((TextView) view.findViewById(R.id.name_textView)).setText(driverName);
         ((TextView) view.findViewById(R.id.deliveries_value_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getCompletedDeliveryOrdersCount()), ""));
         ((TextView) view.findViewById(R.id.payment_collected_values_textview)).setText(
@@ -205,14 +201,12 @@ public class HomeActivity extends ParentAppCompatActivity {
         ((TextView) view.findViewById(R.id.locations_layout_value_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getDeliveryLocationsCount()), ""));
         ((TextView) view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
-        ((TextView) view.findViewById(R.id.address_text_view)).setText(StringUtils.getAddress(
-                driverEntity.getAddressLine1(),driverEntity.getAddressLine2()));
         ((TextView) view.findViewById(R.id.driver_licence_text_view)).setText(driverEntity.getLicenceNumber());
         ((TextView) view.findViewById(R.id.register_number_text_view)).setText(driverEntity.getVehicleNumber());
-        setToolbarRightText(driverEntity.getFirstName() + " " + driverEntity.getLastName());
+        setToolbarRightText(driverName);
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
         if (driverEntity.getImageUrl() != null) {
-            Glide.with(this).load(driverEntity.getImageUrl()).asBitmap().placeholder(R.drawable.profile_image_placeholder).centerCrop().into(profileImage);
+            Glide.with(this).load(driverEntity.getImageUrl()).apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
         }
     }
 
@@ -490,7 +484,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         if (requestCode == START_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = intent.getData();
             File sourceFile = new File(getRealPathFromURI(uri));
-            profileImage.setImageURI(uri);
+            Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
             viewModel.uploadProfileImage(sourceFile);
         } else if (requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK) {
             viewModel.getStocks();

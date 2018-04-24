@@ -117,7 +117,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         initialiseAutoCompleteTextView();
         setClickListeners();
         initialiseUpdateQuantityView();
-        fetchDriverLocationId();
     }
 
     @Override
@@ -241,10 +240,6 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         });
     }
 
-    private void fetchDriverLocationId() {
-        viewModel.setDriverLocationId(viewModel.getSourceLocationId());
-    }
-
     private void initialiseAutoCompleteTextView() {
         Drawable rightDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_search_inactive);
         atvSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
@@ -345,31 +340,28 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void updateQuantity(Product product) {
-
         Customer customer = viewModel.getConsumerLocation();
         if (product != null && customer != null) {
             showProgressDialog();
-            viewModel.getProductPricing(viewModel.getDriverLocationId(), customer.getId(),
+            viewModel.getProductPricing(customer.getId(),
                     product.getId(), productPricingCallback);
         }
     }
 
-    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
-        runOnUiThread(() -> {
-            dismissProgressDialog();
-            if (uiModels == null) {
-                if (toLogout) {
-                    logoutUser();
-                } else if (isDialogToBeShown){
-                    showNetworkRelatedDialogs(errorMessage);
-                    updateProductDetails(0.0);
-                }
-            } else if (uiModels.size() > 0) {
-                Double productPrice = (Double) uiModels.get(0);
-                updateProductDetails(productPrice);
+    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        dismissProgressDialog();
+        if (uiModels == null) {
+            if (toLogout) {
+                logoutUser();
+            } else if (isDialogToBeShown){
+                showNetworkRelatedDialogs(errorMessage);
+                updateProductDetails(0.0);
             }
-        });
-    };
+        } else if (uiModels.size() > 0) {
+            Double productPrice = (Double) uiModels.get(0);
+            updateProductDetails(productPrice);
+        }
+    });
 
     private void updateProductDetails(Double productPrice) {
         Product product = viewModel.getSelectedProduct();

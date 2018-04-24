@@ -92,18 +92,8 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
     }
 
     private void initialiseRadioButtons(){
-        rgOrdersType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                onOrdersTypeChange(checkedId);
-            }
-        });
-        rgDuration.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                onRadioSelectionChange(checkedId);
-            }
-        });
+        rgOrdersType.setOnCheckedChangeListener((radioGroup, checkedId) -> onOrdersTypeChange(checkedId));
+        rgDuration.setOnCheckedChangeListener((group, checkedId) -> onRadioSelectionChange(checkedId));
     }
 
     private void initRecyclerView() {
@@ -190,7 +180,7 @@ public class HistoryActivity extends ParentAppCompatActivity implements Observer
 
     @Override
     public void onChanged(@Nullable List<DeliveryOrderEntity> deliveryOrderEntities) {
-        if(deliveryOrderEntities.size() > 0) {
+        if(deliveryOrderEntities != null && deliveryOrderEntities.size() > 0) {
             adapter.updateList(deliveryOrderEntities);
         }
     }

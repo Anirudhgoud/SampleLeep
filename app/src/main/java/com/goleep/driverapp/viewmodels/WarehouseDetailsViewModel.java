@@ -2,12 +2,10 @@ package com.goleep.driverapp.viewmodels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.utils.StringUtils;
 

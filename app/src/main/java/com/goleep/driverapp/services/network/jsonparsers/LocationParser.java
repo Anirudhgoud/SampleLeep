@@ -85,37 +85,39 @@ public class LocationParser {
     private void getTypeAndSetAttributes(Address address, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.optJSONArray("types");
         int jsonArryLenght = jsonArray.length();
+        label:
         for (int index = 0; index < jsonArryLenght; index++) {
-            if (jsonArray.optString(index).equals("street_number")) {
-                address.setAddressLine1(jsonObject.optString("long_name"));
-                break;
-            } else if (jsonArray.optString(index).equals("route")) {
-                String streetNumber = "";
-                if(!address.getAddressLine1().isEmpty())
-                    streetNumber = address.getAddressLine1();
-                address.setAddressLine1(streetNumber+ " " + jsonObject.optString("long_name"));
-                break;
-            } else if (jsonArray.optString(index).equals("sublocality_level_2")) {
-                address.setAddressLine2(jsonObject.optString("long_name"));
-                break;
-            } else if (jsonArray.optString(index).equals("sublocality_level_1")) {
-                String level2 = "";
-                if(!address.getAddressLine2().isEmpty())
-                    level2 = address.getAddressLine1();
-                address.setAddressLine2(level2 + " " + jsonObject.optString("long_name"));
-                break;
-            } else if (jsonArray.optString(index).equals("administrative_area_level_2")) {
-                address.setCity(jsonObject.optString("long_name"));
-                break;
-            } else if (jsonArray.optString(index).equals("administrative_area_level_1")) {
-                address.setState(jsonObject.optString("long_name"));
-                break;
-            } else if (jsonArray.optString(index).equals("country")) {
-                address.setCountry(jsonObject.optString("long_name"));
-                break;
-            } else if (jsonArray.optString(index).equals("postal_code")) {
-                address.setPostalCode(jsonObject.optString("long_name"));
-                break;
+            switch (jsonArray.optString(index)) {
+                case "street_number":
+                    address.setAddressLine1(jsonObject.optString("long_name"));
+                    break label;
+                case "route":
+                    String streetNumber = "";
+                    if (!address.getAddressLine1().isEmpty())
+                        streetNumber = address.getAddressLine1();
+                    address.setAddressLine1(streetNumber + " " + jsonObject.optString("long_name"));
+                    break label;
+                case "sublocality_level_2":
+                    address.setAddressLine2(jsonObject.optString("long_name"));
+                    break label;
+                case "sublocality_level_1":
+                    String level2 = "";
+                    if (!address.getAddressLine2().isEmpty())
+                        level2 = address.getAddressLine1();
+                    address.setAddressLine2(level2 + " " + jsonObject.optString("long_name"));
+                    break label;
+                case "administrative_area_level_2":
+                    address.setCity(jsonObject.optString("long_name"));
+                    break label;
+                case "administrative_area_level_1":
+                    address.setState(jsonObject.optString("long_name"));
+                    break label;
+                case "country":
+                    address.setCountry(jsonObject.optString("long_name"));
+                    break label;
+                case "postal_code":
+                    address.setPostalCode(jsonObject.optString("long_name"));
+                    break label;
             }
         }
     }

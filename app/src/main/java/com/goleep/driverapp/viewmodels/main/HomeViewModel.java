@@ -2,7 +2,6 @@ package com.goleep.driverapp.viewmodels.main;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
@@ -10,7 +9,6 @@ import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.Summary;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DriverDataParser;
@@ -22,8 +20,6 @@ import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
-
-import org.json.JSONArray;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,9 +47,7 @@ public class HomeViewModel extends AndroidViewModel {
         headerParams.put(RequestConstants.AUTHORIZATION, LocalStorageService.sharedInstance()
                 .getLocalFileStore().getString(getApplication(), SharedPreferenceKeys.AUTH_TOKEN));
         NetworkService.sharedInstance().getNetworkClient().makeDeleteRequest(getApplication(), UrlConstants.LOGOUT_URL,
-                true, headerParams, (type, response, errorMessage) -> {
-                    logoutCallback.onResponseReceived(null, false, null, true);
-                });
+                true, headerParams, (type, response, errorMessage) -> logoutCallback.onResponseReceived(null, false, null, true));
     }
 
     public void getDriverProfile(final UILevelNetworkCallback driverProfileCallback) {

@@ -27,7 +27,7 @@ import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -104,7 +104,8 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
                 ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.delivery_order));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.delivery_orders_tab));
-        tabLayout.getTabAt(0).setCustomView(doTab);
+        TabLayout.Tab tabDo = tabLayout.getTabAt(0);
+        if (tabDo != null) tabDo.setCustomView(doTab);
         View cashSalesTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         textView = cashSalesTab.findViewById(R.id.title_text);
         icon = cashSalesTab.findViewById(R.id.icon);
@@ -112,7 +113,8 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
                 ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.cash_sales));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.cash_sales_tab));
-        tabLayout.getTabAt(1).setCustomView(cashSalesTab);
+        TabLayout.Tab tabCashSales = tabLayout.getTabAt(1);
+        if (tabCashSales != null) tabCashSales.setCustomView(cashSalesTab);
     }
 
     @Override
@@ -123,13 +125,14 @@ public class PickupActivity extends ParentAppCompatActivity implements ItemCheck
                 cashDoItems.add(((OrderItemEntity) item).getId());
             } else if (!checked && cashDoItems.contains(((OrderItemEntity) item).getId()) && item.getItemType()
                     == AppConstants.TYPE_CASH_SALES_ITEM) {
-                cashDoItems.removeAll(Arrays.asList(((OrderItemEntity) item).getId()));
+                cashDoItems.removeAll(Collections.singletonList(((OrderItemEntity) item).getId()));
             }
         } else if (item instanceof DeliveryOrderEntity) {
             if (checked && !selectedDeliveryOrders.contains(((DeliveryOrderEntity) item).getId())) {
                 selectedDeliveryOrders.add(((DeliveryOrderEntity) item).getId());
-            } else if ( !checked && selectedDeliveryOrders.contains(((DeliveryOrderEntity) item).getId())) {
-                selectedDeliveryOrders.removeAll(Arrays.asList(((DeliveryOrderEntity) item).getId()));
+
+            } else if (!checked && selectedDeliveryOrders.contains(((DeliveryOrderEntity) item).getId())) {
+                selectedDeliveryOrders.removeAll(Collections.singletonList(((DeliveryOrderEntity) item).getId()));
             }
         }
     }

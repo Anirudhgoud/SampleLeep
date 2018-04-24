@@ -105,7 +105,7 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         businessTypeAdapter = new BusinessCategoryAdapter(getContext(), R.layout.custom_spinner_layout);
         businessTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBusinessType.setAdapter(businessTypeAdapter);
-        businessListAdapter = new BusinessesListAdapter(getContext(), R.layout.fragment_cash_sales_new_customer, android.R.id.text1, new ArrayList<Business>());
+        businessListAdapter = new BusinessesListAdapter(getContext(), R.layout.fragment_cash_sales_new_customer, android.R.id.text1, new ArrayList<>());
         acTvBusinessName.setThreshold(1);
         acTvBusinessName.setAdapter(businessListAdapter);
         initCountryCodeAdapter();
@@ -231,14 +231,10 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         return customerInfo;
     }
 
-    private UILevelNetworkCallback busissnesTypeCallBack = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            Activity activity = getActivity();
-            if (activity == null || activity.isFinishing()) return;
-            activity.runOnUiThread(() -> busissnesTypeCallBack(uiModels, isDialogToBeShown, errorMessage, toLogout));
-        }
+    private UILevelNetworkCallback busissnesTypeCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        Activity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        activity.runOnUiThread(() -> busissnesTypeCallBack(uiModels, isDialogToBeShown, errorMessage, toLogout));
     };
 
     private void busissnesTypeCallBack(List<?> uiModels, boolean isDialogToBeShown,
@@ -257,14 +253,10 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         }
     }
 
-    private UILevelNetworkCallback getBusinessesDataCallBack = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            Activity activity = getActivity();
-            if (activity == null || activity.isFinishing()) return;
-            activity.runOnUiThread(() -> handleResponsegetBusinessesDataCallBack(uiModels, isDialogToBeShown, errorMessage, toLogout));
-        }
+    private UILevelNetworkCallback getBusinessesDataCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        Activity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        activity.runOnUiThread(() -> handleResponsegetBusinessesDataCallBack(uiModels, isDialogToBeShown, errorMessage, toLogout));
     };
 
     private void handleResponsegetBusinessesDataCallBack(List<?> uiModels, boolean isDialogToBeShown,

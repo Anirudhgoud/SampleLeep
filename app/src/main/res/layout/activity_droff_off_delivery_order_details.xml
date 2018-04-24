@@ -38,7 +38,6 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/noto_sans"
-                        android:inputType="number"
                         android:lines="1"
                         android:textColor="@color/doTabTextColor"
                         android:textSize="18sp" />
@@ -81,7 +80,6 @@
                         android:id="@+id/tv_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:fontFamily="@font/noto_sans"
                         android:lines="1"
                         android:textColor="@color/doTabTextColor"
