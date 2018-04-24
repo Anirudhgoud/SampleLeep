@@ -4,7 +4,7 @@
     android:id="@+id/ll_map_address_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F2F2F2"
+    android:background="@color/tabBackgroundGreyColor"
     android:elevation="3dp"
     android:visibility="gone"
     android:padding="16dp"
@@ -143,7 +143,7 @@
             android:id="@+id/bt_navigate"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:background="@drawable/ic_navigate"
+            app:srcCompat="@drawable/ic_navigate"
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>

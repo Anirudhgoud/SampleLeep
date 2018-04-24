@@ -27,6 +27,7 @@ import org.json.JSONArray;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,12 +133,9 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void uploadProfileImage(File imageFile) {
-        String authToken = LocalStorageService.sharedInstance().getLocalFileStore().
-                getString(getApplication().getApplicationContext(), SharedPreferenceKeys.AUTH_TOKEN);
         String userId = LocalStorageService.sharedInstance().getLocalFileStore().
                 getString(getApplication().getApplicationContext(), SharedPreferenceKeys.USER_ID);
-        NetworkService.sharedInstance().getNetworkClient().uploadImage(authToken, UrlConstants.UPDATE_PROFILE_IMAGE + userId,
-                imageFile, "profile_image.jpg");
+        NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication(), UrlConstants.UPDATE_PROFILE_IMAGE + userId, true, Collections.emptyMap(), imageFile, "profile_image", NetworkConstants.PUT_REQUEST, (type, response, errorMessage) -> {});
     }
 
     public Summary getSummary() {

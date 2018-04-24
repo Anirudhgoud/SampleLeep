@@ -224,13 +224,17 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
 
     @Override
     public void onLastKnownLocationReceived(Location location) {
+        if (location != null)
         warehouseViewModel.fetchTimeToReachAndUpdateDeliveryOrders(
                 warehouseViewModel.getWarehouses(), location, timeToReachCallback);
+        else {
+            Toast.makeText(getContext(), getContext().getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onLastKnownLocationError(String errorMessage) {
-
+        Toast.makeText(getContext(), getContext().getString(R.string.location_fetch_error), Toast.LENGTH_SHORT).show();
     }
 
     private void openDirectionsOnGoogleMaps() {
