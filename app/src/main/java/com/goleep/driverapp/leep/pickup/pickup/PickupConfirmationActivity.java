@@ -59,7 +59,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
                     } else if (isDialogToBeShown){
                         showNetworkRelatedDialogs(errorMessage);
                     }
-                } else if (uiModels.size() > 0) {
+                } else if (uiModels != null) {
                     pickupDeliveryOrderViewModel.deleteDeliveryOrders(pickupDeliveryOrderViewModel.
                             getSelectedDeliveryOrders(), pickupDeliveryOrderViewModel.getCashSalesItems());
                     sendSuccessBroadcast();
@@ -86,6 +86,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
 
     private void handleIntent() {
         Intent intent = getIntent();
+        ArrayList<Integer> ids = intent.getIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY);
         pickupDeliveryOrderViewModel.setCashDoItems(intent.getIntegerArrayListExtra(AppConstants.CASH_DOITEM_KEY));
         pickupDeliveryOrderViewModel.setSelectedDeliveryOrders(intent.getIntegerArrayListExtra(AppConstants.DO_IDS_KEY));
         int locationId = intent.getIntExtra(IntentConstants.WAREHOUSE_ID, -1);

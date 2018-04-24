@@ -97,10 +97,6 @@ public class DropoffReturnedFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(getActivity() != null && !getActivity().isFinishing()){
-                    ((DropoffActivity)getActivity()).setSelectedReturnableIds(
-                            (ArrayList<Integer>) stocksViewModel.getSelectedIds());
-                }
                 nextClickListener.onClick(view);
             }
         });
@@ -115,6 +111,14 @@ public class DropoffReturnedFragment extends Fragment {
                     ProductListAdapter.TYPE_RETURNED), ProductListAdapter.TYPE_RETURNED);
             adapter.setOrderItemClickEventListener(deliveryOrderItemEventListener);
             stocksRecyclerView.setAdapter(adapter);
+            setInitData();
+        }
+    }
+
+    private void setInitData() {
+        if(getActivity() != null && !getActivity().isFinishing()){
+            ((DropoffActivity)getActivity()).setSelectedReturnableIds(
+                    (ArrayList<Integer>) stocksViewModel.getSelectedIds());
         }
     }
 

@@ -18,11 +18,13 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,7 +158,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                         public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
                             switch (type) {
                                 case NetworkConstants.SUCCESS:
-                                    pickupConfirmCallBack.onResponseReceived(null,
+                                    pickupConfirmCallBack.onResponseReceived(Collections.emptyList(),
                                             false, null, false);
                                     break;
                                 case NetworkConstants.FAILURE:
@@ -189,6 +191,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         }
         if(cashDoItems.size() > 0) {
             Map<String, Object> cashSalesObject = new HashMap();
+            int doId = cashDoItems.get(0).getOrderId();
             cashSalesObject.put("id", cashDoItems.get(0).getOrderId());
             List<Map<String, Object>> orderItemMapList = new ArrayList<>();
             for (OrderItemEntity orderItemEntity : cashDoItems) {
@@ -197,7 +200,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                 orderItemMapList.add(itemObject);
             }
             List<OrderItemEntity> unselectedCashSaleItems = leepDatabase.deliveryOrderItemDao().
-                    getUnselectedOrderItems(getCashDoItems());
+                    getUnselectedOrderItems(doId, getCashDoItems());
             for (OrderItemEntity orderItemEntity : unselectedCashSaleItems) {
                 Map<String, Object> itemObject = new HashMap<>();
                 itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
@@ -207,6 +210,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
             cashSalesObject.put("cash_sales_items", orderItemMapList);
             requestBody.put("cash_sales", cashSalesObject);
         }
+        LogUtils.error("Request", requestBody.toString());
         return requestBody;
     }
 
