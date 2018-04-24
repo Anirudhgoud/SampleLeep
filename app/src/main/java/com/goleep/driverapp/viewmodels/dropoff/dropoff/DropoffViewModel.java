@@ -1,7 +1,6 @@
 package com.goleep.driverapp.viewmodels.dropoff.dropoff;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;

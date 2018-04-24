@@ -53,28 +53,25 @@ public class ReportsViewModel extends AndroidViewModel {
     private void makeNetworkRequest(final UILevelNetworkCallback reportCallBack, String urlQureyGetParameterString) {
         LogUtils.debug("Reportslog", UrlConstants.REPORT_URL + urlQureyGetParameterString);
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.REPORT_URL + urlQureyGetParameterString,
-                null, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                JSONObject userObj = (JSONObject) response.opt(0);
-                                Report report = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
-                                List<Report> listReport = new ArrayList<>();
-                                listReport.add(report);
-                                reportCallBack.onResponseReceived(listReport, false, null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                                reportCallBack.onResponseReceived(null, false, errorMessage, false);
-                                break;
-                            case NetworkConstants.NETWORK_ERROR:
-                                reportCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                reportCallBack.onResponseReceived(null, false, errorMessage, true);
-                        }
-
+                null, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            JSONObject userObj = (JSONObject) response.opt(0);
+                            Report report = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
+                            List<Report> listReport = new ArrayList<>();
+                            listReport.add(report);
+                            reportCallBack.onResponseReceived(listReport, false, null, false);
+                            break;
+                        case NetworkConstants.FAILURE:
+                            reportCallBack.onResponseReceived(null, false, errorMessage, false);
+                            break;
+                        case NetworkConstants.NETWORK_ERROR:
+                            reportCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            reportCallBack.onResponseReceived(null, false, errorMessage, true);
                     }
+
                 });
 
     }

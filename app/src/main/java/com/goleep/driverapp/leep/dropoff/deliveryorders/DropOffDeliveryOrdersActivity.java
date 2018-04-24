@@ -62,12 +62,10 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
         TextView textView = listTab.findViewById(R.id.title_text);
         ImageView icon = listTab.findViewById(R.id.icon);
         listTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
         textView.setText(getString(R.string.list));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_list_tab));
-
-
-        tabLayout.getTabAt(0).setCustomView(listTab);
+        TabLayout.Tab tabList = tabLayout.getTabAt(0);
+        if (tabList != null) tabList.setCustomView(listTab);
 
         View mapTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         textView = mapTab.findViewById(R.id.title_text);
@@ -75,8 +73,8 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
         mapTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.map));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_map_tab));
-
-        tabLayout.getTabAt(1).setCustomView(mapTab);
+        TabLayout.Tab tabMap = tabLayout.getTabAt(1);
+        if (tabMap != null) tabMap.setCustomView(listTab);
     }
 
     @Override

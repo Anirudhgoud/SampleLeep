@@ -89,7 +89,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     private void initialiseRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        adapter = new PickupCashSalesListAdapter(new ArrayList<OrderItemEntity>());
+        adapter = new PickupCashSalesListAdapter(new ArrayList<>());
         adapter.setItemCheckListener(itemCheckListener);
         recyclerView.setAdapter(adapter);
         cashSalesViewModel.getDriverDo().observe(PickupCashSalessFragment.this,

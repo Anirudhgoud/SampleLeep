@@ -47,14 +47,7 @@ public class DriverLocationUpdateService extends Service implements LocationChan
     }
 
     private void updateCurrentLocation(Location location) {
-
-        NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(this, UrlConstants.DRIVER_CURRENT_LOCATION_URL, true, generateLocationRequestMap(location), new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                LogUtils.error("DriverLocationUpdateService", response == null ? "Error while updating location" : response.toString());
-            }
-        });
-
+        NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(this, UrlConstants.DRIVER_CURRENT_LOCATION_URL, true, generateLocationRequestMap(location), (type, response, errorMessage) -> LogUtils.error("DriverLocationUpdateService", response == null ? "Error while updating location" : response.toString()));
     }
 
     private Map<String, Object> generateLocationRequestMap(Location location) {

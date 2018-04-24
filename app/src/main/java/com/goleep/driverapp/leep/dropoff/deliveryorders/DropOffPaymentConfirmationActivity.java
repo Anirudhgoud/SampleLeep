@@ -218,19 +218,16 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         }
     }
 
-    private UILevelNetworkCallback editOrderNetworkCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if (uiModels == null) {
-                runOnUiThread(() -> dismissProgressDialog());
-                if (toLogout) {
-                    logoutUser();
-                } else if (isDialogToBeShown) {
-                    showNetworkRelatedDialogs(errorMessage);
-                }
-            } else {
-                deliverOrder();
+    private UILevelNetworkCallback editOrderNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        if (uiModels == null) {
+            runOnUiThread(() -> dismissProgressDialog());
+            if (toLogout) {
+                logoutUser();
+            } else if (isDialogToBeShown) {
+                showNetworkRelatedDialogs(errorMessage);
             }
+        } else {
+            deliverOrder();
         }
     };
 
@@ -300,10 +297,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         int contactNumberLength = etContactNumber.getText().length();
         tvContactNumberError.setVisibility(contactNumberLength > 0 ? (contactNumberLength == 10 ? View.GONE : View.VISIBLE) : View.GONE);
         tvSignatureError.setVisibility(viewModel.isSignatureAdded() ? View.GONE : View.VISIBLE);
-        if (etReceivedFrom.getText().length() > 0 && viewModel.isSignatureAdded()) {
-            return contactNumberLength == 0 || contactNumberLength == 10;
-        }
-        return false;
+        return etReceivedFrom.getText().length() > 0 && viewModel.isSignatureAdded() && (contactNumberLength == 0 || contactNumberLength == 10);
     }
 
     @Override

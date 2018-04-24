@@ -28,8 +28,7 @@ public class ObjectMapper {
                 e.printStackTrace();
             }
             try {
-                JSONArray jsonArray = new JSONArray(responseBody);
-                return jsonArray;
+                return new JSONArray(responseBody);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -17,15 +17,10 @@ import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
-import com.goleep.driverapp.utils.DateTimeUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA;
-import static com.goleep.driverapp.utils.DateTimeUtils.TWELVE_HOUR_TIME_FORMAT;
-import static com.goleep.driverapp.utils.DateTimeUtils.TWENTY_FOUR_HOUR_TIME_FORMAT;
 
 /**
  * Created by anurag on 27/02/18.
@@ -83,7 +78,7 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
                             leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId,
                                     orderItemParser.orderItemsByParsingJsonResponse(response, doId));
                             int businessId = orderItemParser.getDestinationBusinessIdParsingDoDetailsJson(response);
-                            orderItemNetworkCallBack.onResponseReceived(new ArrayList<>(Arrays.asList(businessId)), false, null, false);
+                            orderItemNetworkCallBack.onResponseReceived(new ArrayList<>(Collections.singletonList(businessId)), false, null, false);
                             break;
 
                         case NetworkConstants.FAILURE:
@@ -106,7 +101,7 @@ public class DropOffDeliveryOrderDetailsViewModel extends AndroidViewModel {
                         case NetworkConstants.SUCCESS:
                             LocationParser locationParser = new LocationParser();
                             Location location = locationParser.getBusinessLocation(response);
-                            locationCallBack.onResponseReceived(new ArrayList<>(Arrays.asList(location)), false, null, false);
+                            locationCallBack.onResponseReceived(new ArrayList<>(Collections.singletonList(location)), false, null, false);
                             break;
 
                         case NetworkConstants.FAILURE:

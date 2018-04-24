@@ -6,7 +6,6 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 import android.database.sqlite.SQLiteDatabaseLockedException;
 
-import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 import com.goleep.driverapp.utils.LogUtils;
 

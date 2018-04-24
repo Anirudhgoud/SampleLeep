@@ -24,16 +24,10 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
     Button submitButton;
     private ForgotPasswordViewModel forgotPasswordViewModel;
 
-    private UILevelNetworkCallback submitEmailCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
-        runOnUiThread(() -> {
-            if (toLogout)
-                logoutUser();
-            else if (errorMessage == null) {
-                finish();
-            }
-        });
-
-    };
+    private UILevelNetworkCallback submitEmailCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        if (toLogout) logoutUser();
+        else if (errorMessage == null) finish();
+    });
 
     @Override
     public void doInitialSetup() {

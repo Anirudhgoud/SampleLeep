@@ -35,28 +35,25 @@ public class ReturnsSelectProductViewModel extends CashSalesSelectProductsViewMo
 
     public void fetchReturnReasons(final UILevelNetworkCallback reasonsCallback){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
-                UrlConstants.RETURN_REASONS, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                ReturnReasonParser returnReasonParser = new ReturnReasonParser();
-                                returnReasons = returnReasonParser.parseJsonForReturnReasons(response);
-                                reasonsCallback.onResponseReceived(returnReasons, false,
-                                        null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                                reasonsCallback.onResponseReceived(null, true,
-                                        errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                reasonsCallback.onResponseReceived(null, false,
-                                        null, true);
-                                break;
-                            case NetworkConstants.NETWORK_ERROR:
-                                reasonsCallback.onResponseReceived(null, true,
-                                        errorMessage, false);
-                        }
+                UrlConstants.RETURN_REASONS, true, (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            ReturnReasonParser returnReasonParser = new ReturnReasonParser();
+                            returnReasons = returnReasonParser.parseJsonForReturnReasons(response);
+                            reasonsCallback.onResponseReceived(returnReasons, false,
+                                    null, false);
+                            break;
+                        case NetworkConstants.FAILURE:
+                            reasonsCallback.onResponseReceived(null, true,
+                                    errorMessage, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            reasonsCallback.onResponseReceived(null, false,
+                                    null, true);
+                            break;
+                        case NetworkConstants.NETWORK_ERROR:
+                            reasonsCallback.onResponseReceived(null, true,
+                                    errorMessage, false);
                     }
                 });
     }

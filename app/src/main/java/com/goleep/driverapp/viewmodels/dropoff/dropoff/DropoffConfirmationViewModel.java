@@ -3,24 +3,17 @@ package com.goleep.driverapp.viewmodels.dropoff.dropoff;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
-import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,26 +55,23 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
         Map<String, Object> requestBody = generateRequestMap();
         NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(
                 getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true,
-                requestBody, null, null, NetworkConstants.POST_REQUEST,new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                dropoffConfirmCallBack.onResponseReceived(new ArrayList<>(),
-                                        false, null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                                dropoffConfirmCallBack.onResponseReceived(null,
-                                        true, errorMessage, false);
-                                break;
-                            case NetworkConstants.NETWORK_ERROR:
-                                dropoffConfirmCallBack.onResponseReceived(null,
-                                        true, errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                dropoffConfirmCallBack.onResponseReceived(null,
-                                        false, errorMessage, true);
-                        }
+                requestBody, null, null, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            dropoffConfirmCallBack.onResponseReceived(new ArrayList<>(),
+                                    false, null, false);
+                            break;
+                        case NetworkConstants.FAILURE:
+                            dropoffConfirmCallBack.onResponseReceived(null,
+                                    true, errorMessage, false);
+                            break;
+                        case NetworkConstants.NETWORK_ERROR:
+                            dropoffConfirmCallBack.onResponseReceived(null,
+                                    true, errorMessage, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            dropoffConfirmCallBack.onResponseReceived(null,
+                                    false, errorMessage, true);
                     }
                 });
 

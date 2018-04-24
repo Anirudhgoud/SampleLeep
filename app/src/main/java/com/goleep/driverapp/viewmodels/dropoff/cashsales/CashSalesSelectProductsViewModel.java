@@ -9,19 +9,15 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
-import com.goleep.driverapp.services.room.entities.DriverEntity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,25 +47,22 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
     public void getProductPricing(int destinationLocationId, int productId, UILevelNetworkCallback networkCallback) {
         String url = UrlConstants.PRODUCT_PRICING_URL + "?destination_location_id=" + destinationLocationId + "&product_id=" + productId;
 
-        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), url, true, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type) {
-                    case NetworkConstants.SUCCESS:
-                        double productPrice = new OrderItemParser().getProductPriceByParsingJsonArray(response);
-                        networkCallback.onResponseReceived(new ArrayList<>(Arrays.asList(productPrice)), false,
-                                null, false);
-                        break;
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), url, true, (type, response, errorMessage) -> {
+            switch (type) {
+                case NetworkConstants.SUCCESS:
+                    double productPrice = new OrderItemParser().getProductPriceByParsingJsonArray(response);
+                    networkCallback.onResponseReceived(new ArrayList<>(Collections.singletonList(productPrice)), false,
+                            null, false);
+                    break;
 
-                    case NetworkConstants.FAILURE:
-                    case NetworkConstants.NETWORK_ERROR:
-                        networkCallback.onResponseReceived(null, true, errorMessage, false);
-                        break;
+                case NetworkConstants.FAILURE:
+                case NetworkConstants.NETWORK_ERROR:
+                    networkCallback.onResponseReceived(null, true, errorMessage, false);
+                    break;
 
-                    default:
-                        networkCallback.onResponseReceived(null, false, null, false);
-                        break;
-                }
+                default:
+                    networkCallback.onResponseReceived(null, false, null, false);
+                    break;
             }
         });
     }

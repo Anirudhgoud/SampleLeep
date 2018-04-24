@@ -348,22 +348,20 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         }
     }
 
-    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
-        runOnUiThread(() -> {
-            dismissProgressDialog();
-            if (uiModels == null) {
-                if (toLogout) {
-                    logoutUser();
-                } else if (isDialogToBeShown){
-                    showNetworkRelatedDialogs(errorMessage);
-                    updateProductDetails(0.0);
-                }
-            } else if (uiModels.size() > 0) {
-                Double productPrice = (Double) uiModels.get(0);
-                updateProductDetails(productPrice);
+    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        dismissProgressDialog();
+        if (uiModels == null) {
+            if (toLogout) {
+                logoutUser();
+            } else if (isDialogToBeShown){
+                showNetworkRelatedDialogs(errorMessage);
+                updateProductDetails(0.0);
             }
-        });
-    };
+        } else if (uiModels.size() > 0) {
+            Double productPrice = (Double) uiModels.get(0);
+            updateProductDetails(productPrice);
+        }
+    });
 
     private void updateProductDetails(Double productPrice) {
         Product product = viewModel.getSelectedProduct();

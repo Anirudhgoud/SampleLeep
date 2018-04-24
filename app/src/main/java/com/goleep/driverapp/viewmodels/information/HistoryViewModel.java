@@ -58,26 +58,23 @@ public class HistoryViewModel extends DeliveryOrderViewModel {
             this.endDate = endDate;
         }
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), url,
-                true, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type){
-                    case NetworkConstants.SUCCESS:
-                        ReturnOrderParser parser = new ReturnOrderParser();
-                        List<ReturnOrderEntity> entities = parser.parserReturnOrderResponse(response);
-                        leepDatabase.returnOrderDao().updateAllDeliveryOrders(entities);
-                        doNetworkCallback.onResponseReceived(entities, false, null, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        doNetworkCallback.onResponseReceived(null, false, null, true);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                    case NetworkConstants.FAILURE:
-                        doNetworkCallback.onResponseReceived(null, true, errorMessage, true);
-                        break;
-                }
-            }
-        });
+                true, (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            ReturnOrderParser parser = new ReturnOrderParser();
+                            List<ReturnOrderEntity> entities = parser.parserReturnOrderResponse(response);
+                            leepDatabase.returnOrderDao().updateAllDeliveryOrders(entities);
+                            doNetworkCallback.onResponseReceived(entities, false, null, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            doNetworkCallback.onResponseReceived(null, false, null, true);
+                            break;
+                        case NetworkConstants.NETWORK_ERROR:
+                        case NetworkConstants.FAILURE:
+                            doNetworkCallback.onResponseReceived(null, true, errorMessage, true);
+                            break;
+                    }
+                });
     }
 
 

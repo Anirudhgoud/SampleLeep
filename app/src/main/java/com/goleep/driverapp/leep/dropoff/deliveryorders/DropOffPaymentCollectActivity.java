@@ -168,8 +168,8 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
         ProductEntity product = orderItem.getProduct();
         if (product != null) {
             tvProductName.setText(product.getName() == null ? "" : product.getName());
+            tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
         }
-        tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
         tvUnits.setText(String.valueOf(orderItem.getQuantity()));
 
         double value = orderItem.getQuantity() * orderItem.getPrice();

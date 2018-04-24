@@ -70,22 +70,19 @@ public class WarehouseViewModel extends AndroidViewModel {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
                 MapUtils.generateDistanceMatrixUrl(getOrigins(currentLocation),
                         getDestinations(warehouseEntities), getApplication()),
-                false, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                List<Distance> timeToReachList = new DistanceMatrixResponseParser().
-                                        parseDistanceMatrixResponse(response.optJSONObject(0));
-                                timeToReachCallback.onResponseReceived(timeToReachList, false,
-                                        null, false);
-                                break;
+                false, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            List<Distance> timeToReachList = new DistanceMatrixResponseParser().
+                                    parseDistanceMatrixResponse(response.optJSONObject(0));
+                            timeToReachCallback.onResponseReceived(timeToReachList, false,
+                                    null, false);
+                            break;
 
-                            default:
-                                timeToReachCallback.onResponseReceived(null,
-                                        false, null, false);
-                                break;
-                        }
+                        default:
+                            timeToReachCallback.onResponseReceived(null,
+                                    false, null, false);
+                            break;
                     }
                 });
     }

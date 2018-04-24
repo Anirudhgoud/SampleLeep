@@ -11,6 +11,7 @@ import com.goleep.driverapp.services.room.entities.StockProductEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,7 +57,7 @@ public class StocksViewModel extends AndroidViewModel {
         if(isChecked && !selectedIds.contains(itemId)){
             selectedIds.add(itemId);
         } else if(!isChecked && selectedIds.contains(itemId)){
-            selectedIds.removeAll(Arrays.asList(itemId));
+            selectedIds.removeAll(Collections.singletonList(itemId));
         }
     }
 

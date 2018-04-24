@@ -126,6 +126,7 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         orderItemsListAdapter = new OrderItemsListAdapter(new ArrayList<>());
         orderItemsListAdapter.setOrderItemClickEventListener(deliveryOrderItemEventListener);
         viewModel.deliveryOrderItems(viewModel.getDeliveryOrderId()).observe(this, orderItemEntities -> {
+            if (orderItemEntities == null) return;
             orderItemsListAdapter.updateList(orderItemEntities);
             viewModel.setSelectedItemCount(0);
             for (OrderItemEntity entity : orderItemEntities) {
@@ -197,30 +198,23 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
             runOnUiThread(() -> {
                 dismissProgressDialog();
-            });
-            if (uiModels == null) {
-                if (toLogout) {
-                    logoutUser();
-                } else if (isDialogToBeShown) {
-                    showNetworkRelatedDialogs(errorMessage);
-                }
-            } else if (uiModels.size() > 0) {
-                runOnUiThread(() -> {
+                if (uiModels == null) {
+                    if (toLogout) {
+                        logoutUser();
+                    } else if (isDialogToBeShown) {
+                        showNetworkRelatedDialogs(errorMessage);
+                    }
+                } else if (uiModels.size() > 0) {
                     Location location = (Location) uiModels.get(0);
                     viewModel.setBusinessAddress(StringUtils.getAddress(location));
                     viewModel.setOutstandingBalance(location.getOutstandingBalance());
-                });
-            }
+                }
+            });
         }
     };
 
     private void initialiseUpdateQuantityView() {
-        etUnits.setKeyImeChangeListener(new CustomEditText.KeyImeChange() {
-            @Override
-            public void onDoneButtonPress() {
-                hideUpdateQuantityView();
-            }
-        });
+        etUnits.setKeyImeChangeListener(this::hideUpdateQuantityView);
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 hideUpdateQuantityView();

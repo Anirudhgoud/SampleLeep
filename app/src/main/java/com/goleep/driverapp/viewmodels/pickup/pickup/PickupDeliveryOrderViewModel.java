@@ -52,17 +52,14 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
     public void fetchDoItems(final int doId, Observer<List<OrderItemEntity>> orderItemsObserver){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true,
-                new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type){
-                            case NetworkConstants.SUCCESS:
-                                OrderItemParser orderItemParser = new OrderItemParser();
-                                List<OrderItemEntity> orderItems = orderItemParser.orderItemsByParsingJsonResponse(response, doId);
-                                leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId, orderItems);
-                                orderItemsObserver.onChanged(orderItems);
-                                break;
-                        }
+                (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            OrderItemParser orderItemParser = new OrderItemParser();
+                            List<OrderItemEntity> orderItems = orderItemParser.orderItemsByParsingJsonResponse(response, doId);
+                            leepDatabase.deliveryOrderItemDao().deleteAndInsertItems(doId, orderItems);
+                            orderItemsObserver.onChanged(orderItems);
+                            break;
                     }
                 });
     }
@@ -151,26 +148,23 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         if (requestBody.containsKey("delivery_order_ids") || requestBody.containsKey("cash_sales")) {
             NetworkService.sharedInstance().getNetworkClient().makeJsonPutRequest(
                     getApplication().getApplicationContext(), UrlConstants.PICKUP_CONFIRMATION, true,
-                    requestBody, new NetworkAPICallback() {
-                        @Override
-                        public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                            switch (type) {
-                                case NetworkConstants.SUCCESS:
-                                    pickupConfirmCallBack.onResponseReceived(Collections.emptyList(),
-                                            false, null, false);
-                                    break;
-                                case NetworkConstants.FAILURE:
-                                    pickupConfirmCallBack.onResponseReceived(null,
-                                            true, errorMessage, false);
-                                    break;
-                                case NetworkConstants.NETWORK_ERROR:
-                                    pickupConfirmCallBack.onResponseReceived(null,
-                                            true, errorMessage, false);
-                                    break;
-                                case NetworkConstants.UNAUTHORIZED:
-                                    pickupConfirmCallBack.onResponseReceived(null,
-                                            false, errorMessage, true);
-                            }
+                    requestBody, (type, response, errorMessage) -> {
+                        switch (type) {
+                            case NetworkConstants.SUCCESS:
+                                pickupConfirmCallBack.onResponseReceived(Collections.emptyList(),
+                                        false, null, false);
+                                break;
+                            case NetworkConstants.FAILURE:
+                                pickupConfirmCallBack.onResponseReceived(null,
+                                        true, errorMessage, false);
+                                break;
+                            case NetworkConstants.NETWORK_ERROR:
+                                pickupConfirmCallBack.onResponseReceived(null,
+                                        true, errorMessage, false);
+                                break;
+                            case NetworkConstants.UNAUTHORIZED:
+                                pickupConfirmCallBack.onResponseReceived(null,
+                                        false, errorMessage, true);
                         }
                     });
         }

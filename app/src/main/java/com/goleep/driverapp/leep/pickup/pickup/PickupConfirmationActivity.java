@@ -107,7 +107,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
         expandableListView.setLayoutManager(new LinearLayoutManager(PickupConfirmationActivity.this));
         expandableListView.addItemDecoration(new DividerItemDecoration(PickupConfirmationActivity.this,
                 DividerItemDecoration.VERTICAL));
-        adapter = new DoExpandableListAdapter(PickupConfirmationActivity.this, new ArrayList<BaseListItem>());
+        adapter = new DoExpandableListAdapter(PickupConfirmationActivity.this, new ArrayList<>());
         expandableListView.setAdapter(adapter);
         adapter.addCombinedListItems(generateAdapterItemList(pickupDeliveryOrderViewModel.getCashDoItems(),
                 pickupDeliveryOrderViewModel.getSelectedDeliveryOrders()));

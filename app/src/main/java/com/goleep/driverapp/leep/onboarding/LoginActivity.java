@@ -131,13 +131,11 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private boolean isValidUsernamePassword() {
         final String PATTERN = ".*[A-Za-z0-9]+.*";
-        if (phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
+        return phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
                 !passwordEditText.getText().toString().isEmpty() &&
                 passwordEditText.getText().toString().length() >= PASSWORD_MIN_LENGTH &&
                 passwordEditText.getText().toString().length() <= PASSWORD_MAX_LENGTH &&
-                passwordEditText.getText().toString().matches(PATTERN))
-            return true;
-        return false;
+                passwordEditText.getText().toString().matches(PATTERN);
     }
 
     private void attachEditTextListeners() {

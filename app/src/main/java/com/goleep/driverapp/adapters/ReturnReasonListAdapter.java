@@ -21,17 +21,14 @@ public class ReturnReasonListAdapter extends RecyclerView.Adapter<ReturnReasonVi
     private List<ReturnReason> returnReasons = new ArrayList<>();
     private int selectedIndex = -1;
 
-    public RecyclerViewRadioButtonListener recyclerViewRadioButtonListener = new RecyclerViewRadioButtonListener() {
-        @Override
-        public void onChecked(int position) {
-            if(selectedIndex !=  -1) {
-                returnReasons.get(selectedIndex).setSelected(false);
-                notifyItemChanged(selectedIndex);
-            }
-            returnReasons.get(position).setSelected(true);
-            notifyItemChanged(position);
-            selectedIndex = position;
+    public RecyclerViewRadioButtonListener recyclerViewRadioButtonListener = position -> {
+        if(selectedIndex !=  -1) {
+            returnReasons.get(selectedIndex).setSelected(false);
+            notifyItemChanged(selectedIndex);
         }
+        returnReasons.get(position).setSelected(true);
+        notifyItemChanged(position);
+        selectedIndex = position;
     };
 
     public ReturnReasonListAdapter(List<ReturnReason> returnReasons){

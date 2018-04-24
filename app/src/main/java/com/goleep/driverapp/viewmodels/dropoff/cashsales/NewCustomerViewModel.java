@@ -84,27 +84,24 @@ public class NewCustomerViewModel extends AndroidViewModel {
 
     public void getAddressFromLatitudeLongitude(final UILevelNetworkCallback newCustomerCallBack, double latitude, double longitude) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.LAT_LONG_TO_ADDRESS_URL + getQueryParameter(latitude, longitude),
-                null, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                Address address = new LocationParser().getAddressByParsingJsonResponse(response);
-                                List<Address> lisMapData = new ArrayList<>();
-                                lisMapData.add(address);
-                                newCustomerCallBack.onResponseReceived(lisMapData, false, null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
-                                break;
-                            case NetworkConstants.NETWORK_ERROR:
-                                newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
-                        }
-
+                null, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            Address address = new LocationParser().getAddressByParsingJsonResponse(response);
+                            List<Address> lisMapData = new ArrayList<>();
+                            lisMapData.add(address);
+                            newCustomerCallBack.onResponseReceived(lisMapData, false, null, false);
+                            break;
+                        case NetworkConstants.FAILURE:
+                            newCustomerCallBack.onResponseReceived(null, false, errorMessage, false);
+                            break;
+                        case NetworkConstants.NETWORK_ERROR:
+                            newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
                     }
+
                 });
     }
 
@@ -114,25 +111,22 @@ public class NewCustomerViewModel extends AndroidViewModel {
 
     public void createNewCustomer(final UILevelNetworkCallback newCustomerCallBack, int countryId, String name, String contactEmail, String contactName, String contactNumber, String designation, String postalCode, int businessCategoryId) {
         Map<String, Object> body = getNewCustomerBody(countryId, name, contactEmail, contactName, contactNumber, designation, postalCode, businessCategoryId);
-        NetworkService.sharedInstance().getNetworkClient().makeFormPostRequest(getApplication(), UrlConstants.BUSINESSES_URL, true, body, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type) {
-                    case NetworkConstants.SUCCESS:
-                        Business business = new BusinessDataParser().customerBusinessDataByParsingJsonResponse(response);
-                        List<Business> listBusinessAttribute = new ArrayList<>();
-                        listBusinessAttribute.add(business);
-                        newCustomerCallBack.onResponseReceived(listBusinessAttribute, false, null, false);
-                        break;
-                    case NetworkConstants.FAILURE:
-                        newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                        newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
-                }
+        NetworkService.sharedInstance().getNetworkClient().makeFormPostRequest(getApplication(), UrlConstants.BUSINESSES_URL, true, body, (type, response, errorMessage) -> {
+            switch (type) {
+                case NetworkConstants.SUCCESS:
+                    Business business = new BusinessDataParser().customerBusinessDataByParsingJsonResponse(response);
+                    List<Business> listBusinessAttribute = new ArrayList<>();
+                    listBusinessAttribute.add(business);
+                    newCustomerCallBack.onResponseReceived(listBusinessAttribute, false, null, false);
+                    break;
+                case NetworkConstants.FAILURE:
+                    newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
+                    break;
+                case NetworkConstants.NETWORK_ERROR:
+                    newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
+                    break;
+                case NetworkConstants.UNAUTHORIZED:
+                    newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
             }
         });
     }
@@ -154,25 +148,22 @@ public class NewCustomerViewModel extends AndroidViewModel {
                                   String contactName1, String designation, String email, String phone, int businessId) {
         Map<String, Object> body = getNewLocationBody(name, addressLine1, addressLine2,city, state, countryId, pincode, area, latitude, longitude, contactName1, designation, email, phone);
         NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(getApplication(),
-                UrlConstants.BUSINESSES_URL + "/" + businessId + "/locations", true, body, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                Location location = new LocationParser().getBusinessLocation(response);
-                                List<Location> listLocation = new ArrayList<>();
-                                listLocation.add(location);
-                                newCustomerCallBack.onResponseReceived(listLocation, false, null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                                newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-                            case NetworkConstants.NETWORK_ERROR:
-                                newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
-                        }
+                UrlConstants.BUSINESSES_URL + "/" + businessId + "/locations", true, body, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            Location location = new LocationParser().getBusinessLocation(response);
+                            List<Location> listLocation = new ArrayList<>();
+                            listLocation.add(location);
+                            newCustomerCallBack.onResponseReceived(listLocation, false, null, false);
+                            break;
+                        case NetworkConstants.FAILURE:
+                            newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+                        case NetworkConstants.NETWORK_ERROR:
+                            newCustomerCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            newCustomerCallBack.onResponseReceived(null, false, errorMessage, true);
                     }
                 });
     }

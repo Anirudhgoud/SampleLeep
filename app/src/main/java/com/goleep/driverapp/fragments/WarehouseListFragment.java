@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,8 @@ import com.goleep.driverapp.leep.pickup.pickup.PickupActivity;
 import com.goleep.driverapp.leep.pickup.pickup.PickupWarehouseActivity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.viewmodels.WarehouseViewModel;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,16 +71,13 @@ public class WarehouseListFragment extends Fragment {
     }
 
     private void startPickupActivity(WarehouseEntity warehouseEntity) {
-        if (getActivity() != null && !getActivity().isFinishing()) {
-            if (getActivity().getClass().getSimpleName().equals(PickupWarehouseActivity.class.getSimpleName())) {
-                Intent intent = new Intent(getActivity(), PickupActivity.class);
-                intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseEntity.getId());
-                startActivityForResult(intent, 101);
-            } else if (getActivity().getClass().getSimpleName().equals(DropoffWarehouseActivity.class.getSimpleName())) {
-                Intent intent = new Intent(getActivity(), DropoffActivity.class);
-                intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseEntity.getId());
-                startActivityForResult(intent, 101);
-            }
-        }
+        FragmentActivity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+        String activityName = getActivity().getClass().getSimpleName();
+        Intent intent = null;
+        if (activityName.equals(PickupWarehouseActivity.class.getSimpleName())) intent = new Intent(activity, PickupActivity.class);
+        else if (activityName.equals(DropoffWarehouseActivity.class.getSimpleName())) intent = new Intent(activity, DropoffActivity.class);
+        Objects.requireNonNull(intent).putExtra(IntentConstants.WAREHOUSE_ID, warehouseEntity.getId());
+        startActivityForResult(intent, 101);
     }
 }
