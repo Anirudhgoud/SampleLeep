@@ -97,8 +97,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                                     deliveryOrderEntity.setItemType(AppConstants.TYPE_HEADER);
                                     doViewModel.getDoList().add(deliveryOrderEntity);
                                 }
-                                List<BaseListItem> baseListItems = new ArrayList<>();
-                                baseListItems.addAll(deliveryOrders);
+                                List<BaseListItem> baseListItems = new ArrayList<>(deliveryOrders);
                                 adapter.upDateList(baseListItems);
                             }
                         });

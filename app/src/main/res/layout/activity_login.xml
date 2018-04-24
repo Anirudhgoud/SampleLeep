@@ -71,7 +71,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:hint=" "
             app:passwordToggleDrawable="@drawable/password_visible_toggle"
             app:passwordToggleEnabled="true">
 

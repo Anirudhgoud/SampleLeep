@@ -6,13 +6,10 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.ReturnReasonParser;
 import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesSelectProductsViewModel;
-
-import org.json.JSONArray;
 
 import java.util.List;
 

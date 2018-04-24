@@ -81,8 +81,8 @@ public class HomeActivity extends ParentAppCompatActivity {
     private RelativeLayout relativeLayout_drop_off_cardview;
     private RelativeLayout relativeLayout_information_cardview;
 
-    final int START_GALLERY_REQUEST_CODE = 101;
-    final int START_PICKUP_ACTIVITY_CODE = 102;
+    private final int START_GALLERY_REQUEST_CODE = 101;
+    private final int START_PICKUP_ACTIVITY_CODE = 102;
 
     private View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override

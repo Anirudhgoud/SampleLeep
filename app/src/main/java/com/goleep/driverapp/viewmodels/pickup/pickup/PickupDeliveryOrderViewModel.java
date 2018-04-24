@@ -10,7 +10,6 @@ import android.util.SparseArray;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
@@ -18,8 +17,6 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.Collections;

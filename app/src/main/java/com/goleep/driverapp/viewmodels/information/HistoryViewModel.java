@@ -6,15 +6,12 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.ReturnOrderParser;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DeliveryOrderViewModel;
-
-import org.json.JSONArray;
 
 import java.util.List;
 

@@ -29,8 +29,8 @@ import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
+import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
@@ -47,7 +47,6 @@ import com.google.android.gms.vision.barcode.Barcode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

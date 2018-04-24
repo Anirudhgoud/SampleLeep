@@ -10,13 +10,11 @@ import com.goleep.driverapp.constants.RequestConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.Country;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

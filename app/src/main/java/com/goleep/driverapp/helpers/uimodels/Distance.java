@@ -5,10 +5,10 @@ package com.goleep.driverapp.helpers.uimodels;
  */
 
 public class Distance {
-    int distanceValue;
-    int durationValue;
-    String distanceText;
-    String durationText;
+    private int distanceValue;
+    private int durationValue;
+    private String distanceText;
+    private String durationText;
 
     public int getDistanceValue() {
         return distanceValue;

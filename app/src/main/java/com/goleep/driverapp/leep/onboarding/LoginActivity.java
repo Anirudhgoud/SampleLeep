@@ -35,9 +35,9 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends ParentAppCompatActivity implements EditTextListener, AdapterView.OnItemSelectedListener {
 
-    public static final int PHONE_NUMBER_LENGTH = 10;
-    public static final int PASSWORD_MAX_LENGTH = 15;
-    public static final int PASSWORD_MIN_LENGTH = 8;
+    private final int PHONE_NUMBER_LENGTH = 10;
+    private final int PASSWORD_MAX_LENGTH = 15;
+    private final int PASSWORD_MIN_LENGTH = 8;
 
 
     private LoginViewModel loginViewModel;

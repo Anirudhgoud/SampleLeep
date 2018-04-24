@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
 
-    DropOffDeliveryOrdersViewModel viewModel;
+    private DropOffDeliveryOrdersViewModel viewModel;
 
     @BindView(R.id.do_view_pager)
     ViewPager doViewPager;

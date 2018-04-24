@@ -108,7 +108,7 @@ public class NetworkClient {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response response) {
                 LogUtils.error("response", response.toString());
                 if (networkAPICallback != null) {
                     if (response.header(RequestConstants.AUTHORIZATION) != null) {
@@ -159,7 +159,7 @@ public class NetworkClient {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response response) {
                 Object[] objects = responseValidator.validateResponse(response);
                 networkAPICallback.onNetworkResponse(getNetworkState(objects), getResponse(objects),
                         getErrorMessage(objects));

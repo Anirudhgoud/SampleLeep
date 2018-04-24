@@ -7,19 +7,16 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
+import com.goleep.driverapp.helpers.uimodels.Address;
 import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.helpers.uimodels.CustomerInfo;
 import com.goleep.driverapp.helpers.uimodels.Location;
-import com.goleep.driverapp.helpers.uimodels.Address;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.BusinessDataParser;
 import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
 import com.google.android.gms.maps.model.LatLng;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -10,11 +10,8 @@ import android.support.annotation.Nullable;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.interfaces.LocationChangeListener;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.utils.LogUtils;
-
-import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.Map;

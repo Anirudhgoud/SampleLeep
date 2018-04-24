@@ -10,7 +10,6 @@ import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class StocksViewModel extends AndroidViewModel {
     }
 
     public List<StockProductEntity> getStockList(int listType){
-        List<StockProductEntity> stockProductEntities = new ArrayList<>();
+        List<StockProductEntity> stockProductEntities;
         switch (listType){
             case ProductListAdapter.TYPE_SELLABLE :
                 stockProductEntities = leepDatabase.stockProductDao().getSellableStocks();

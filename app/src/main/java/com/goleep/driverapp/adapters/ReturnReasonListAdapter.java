@@ -9,7 +9,6 @@ import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.RecyclerViewRadioButtonListener;
 import com.goleep.driverapp.viewholders.ReturnReasonViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class ReturnReasonListAdapter extends RecyclerView.Adapter<ReturnReasonViewHolder> {
 
-    private List<ReturnReason> returnReasons = new ArrayList<>();
+    private List<ReturnReason> returnReasons;
     private int selectedIndex = -1;
 
     public RecyclerViewRadioButtonListener recyclerViewRadioButtonListener = position -> {

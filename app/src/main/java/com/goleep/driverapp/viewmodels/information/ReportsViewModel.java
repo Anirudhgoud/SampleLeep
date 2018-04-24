@@ -8,14 +8,12 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.Report;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.ReportsDataParser;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

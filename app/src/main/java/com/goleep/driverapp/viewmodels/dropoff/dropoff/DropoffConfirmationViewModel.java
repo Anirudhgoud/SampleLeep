@@ -12,8 +12,6 @@ import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,15 +80,11 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
         requestMap.put("type", "driver");
         requestMap.put("assignee_id", leepDatabase.driverDao().getDriver().getId());
         requestMap.put("destination_location_id", getWarehouse().getId());
-        try {
-            requestMap.put("return_order_items_attributes", new Gson().toJson(generateReturnOrdersJson()));
-        }catch (JSONException e){
-            System.out.print("");
-        }
+        requestMap.put("return_order_items_attributes", new Gson().toJson(generateReturnOrdersJson()));
         return requestMap;
     }
 
-    private Object generateReturnOrdersJson() throws JSONException {
+    private Object generateReturnOrdersJson() {
         List<HashMap<String,Object>> returnItemsArray = new ArrayList<>();
         if(selectedReturnableIds != null) {
             int length = selectedReturnableIds.size();

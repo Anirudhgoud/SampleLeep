@@ -200,7 +200,7 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
         tvPaymentMethod.setVisibility(View.VISIBLE);
     }
 
-    public String amountWithCurrencySymbol(Object amount) {
+    private String amountWithCurrencySymbol(Object amount) {
         return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 

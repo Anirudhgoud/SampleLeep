@@ -220,7 +220,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
     private UILevelNetworkCallback editOrderNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
         if (uiModels == null) {
-            runOnUiThread(() -> dismissProgressDialog());
+            runOnUiThread(this::dismissProgressDialog);
             if (toLogout) {
                 logoutUser();
             } else if (isDialogToBeShown) {

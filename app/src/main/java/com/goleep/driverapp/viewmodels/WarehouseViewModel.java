@@ -10,7 +10,6 @@ import android.view.View;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.helpers.customviews.CustomMarkerView;
 import com.goleep.driverapp.helpers.uimodels.Distance;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DistanceMatrixResponseParser;
@@ -23,8 +22,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;

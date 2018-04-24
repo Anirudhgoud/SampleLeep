@@ -2,16 +2,13 @@ package com.goleep.driverapp.viewmodels.onboarding;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.RequestConstants;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

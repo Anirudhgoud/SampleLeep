@@ -27,7 +27,6 @@ import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
