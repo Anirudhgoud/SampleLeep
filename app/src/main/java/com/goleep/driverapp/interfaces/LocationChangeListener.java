@@ -10,4 +10,7 @@ public interface LocationChangeListener {
     void onLastKnownLocationReceived(Location location);
 
     void onLastKnownLocationError(String errorMessage);
+
+    default void onLocationUpdateReceived(Location location) {
+    }
 }
