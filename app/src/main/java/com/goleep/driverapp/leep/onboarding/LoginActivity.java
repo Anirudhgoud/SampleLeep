@@ -161,12 +161,12 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     @Override
     public void onTextChanged(int textLength) {
         if (textLength == PHONE_NUMBER_LENGTH) {
-            phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_correct, 0);
+            phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_valid, 0);
         } else {
             if (textLength == 0)
                 phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             else
-                phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_error, 0);
+                phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_invalid, 0);
         }
     }
 

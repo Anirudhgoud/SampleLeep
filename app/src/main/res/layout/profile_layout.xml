@@ -26,7 +26,7 @@
                 android:id="@+id/edit_profile_imageview"
                 android:layout_width="92dp"
                 android:layout_height="92dp"
-                android:src="@drawable/profile_image_placeholder" />
+                app:srcCompat="@drawable/ic_profile_placeholder" />
 
             <ImageView
                 android:layout_width="24dp"
