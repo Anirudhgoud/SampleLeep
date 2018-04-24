@@ -1,5 +1,7 @@
 package com.goleep.driverapp.utils;
 
+import android.content.Context;
+
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
 
@@ -19,7 +21,7 @@ public class StringUtils {
 
 
     static {
-        currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
+        currencyFormatter = NumberFormat.getInstance();
         numberFormatter = NumberFormat.getNumberInstance();
         currencyFormatter.setMaximumFractionDigits(0);
         numberFormatter.setMaximumFractionDigits(0);
@@ -65,12 +67,12 @@ public class StringUtils {
         return address;
     }
 
-    public static String amountToDisplay(Float amountString) {
-        return (amountString != null ? currencyFormatter.format(amountString) : currencyFormatter.format(0));
+    public static String amountToDisplay(Float amountString, Context context) {
+        return (amountString != null ? AppUtils.userCurrencySymbol(context)+currencyFormatter.format(amountString) :
+                AppUtils.userCurrencySymbol(context)+currencyFormatter.format(0));
     }
 
     public static String numberToDisplay(int number) {
-
         return numberFormatter.format(number);
     }
 

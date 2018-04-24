@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,6 +30,7 @@
             android:background="@drawable/radio_button_background"
             android:button="@null"
             android:checked="true"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/today"
             android:textColor="@color/doTabTextColor"
@@ -43,6 +43,7 @@
             android:layout_weight="1"
             android:background="@drawable/radio_button_background"
             android:button="@null"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/this_week"
             android:textColor="@color/doTabTextColor"
@@ -55,6 +56,7 @@
             android:layout_weight="1"
             android:background="@drawable/radio_button_background"
             android:button="@null"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/this_month"
             android:textColor="@color/doTabTextColor"
@@ -77,21 +79,21 @@
             android:layout_marginBottom="24dp"
             android:orientation="vertical">
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/total_sales"
                 android:textColor="@color/text_light_grey_title"
-                android:textSize="22sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="22sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:id="@+id/activity_reports_tv_total_sales"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
                 android:textColor="@color/doTabTextColor"
-                android:textSize="62sp"
-                app:typeface="NotoSans-Light" />
+                android:textSize="62sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -112,22 +114,22 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/cash_label_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:text="@string/cash_collected"
                         android:textColor="@color/text_light_grey_title"
-                        android:textSize="14sp"
-                        app:typeface="NotoSans-Regular" />
+                        android:textSize="14sp" />
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/activity_reports_tv_cash_collected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:textColor="@color/dark_grey_text"
-                        android:textSize="24sp"
-                        app:typeface="NotoSans-Light" />
+                        android:textSize="24sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -144,22 +146,22 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/activity_reports_tv_lable_returns"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:text="@string/returns"
                         android:textColor="@color/text_light_grey_title"
-                        android:textSize="14sp"
-                        app:typeface="NotoSans-Regular" />
+                        android:textSize="14sp" />
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/activity_reports_tv_returns"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:textColor="@color/dark_grey_text"
-                        android:textSize="24sp"
-                        app:typeface="NotoSans-Light" />
+                        android:textSize="24sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -176,22 +178,22 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/activity_reports_tv_label_sales"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:text="@string/units"
                         android:textColor="@color/text_light_grey_title"
-                        android:textSize="14sp"
-                        app:typeface="NotoSans-Regular" />
+                        android:textSize="14sp" />
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/activity_reports_tv_units"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:textColor="@color/dark_grey_text"
-                        android:textSize="24sp"
-                        app:typeface="NotoSans-Light" />
+                        android:textSize="24sp" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -209,26 +211,25 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/activity_reports_tv_label_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:text="@string/locations"
                         android:textColor="@color/text_light_grey_title"
-                        android:textSize="14sp"
-                        app:typeface="NotoSans-Regular" />
+                        android:textSize="14sp" />
 
-                    <com.goleep.driverapp.helpers.customfont.CustomTextView
+                    <TextView
                         android:id="@+id/activity_reports_tv_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans"
                         android:textColor="@color/dark_grey_text"
-                        app:typeface="NotoSans-Light" />
+                        android:textSize="24sp" />
 
                 </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>

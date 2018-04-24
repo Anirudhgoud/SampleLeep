@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
@@ -28,9 +29,7 @@ import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
@@ -39,11 +38,9 @@ import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesConfirmationActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
-import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesSelectProductsViewModel;
 import com.goleep.driverapp.viewmodels.pickup.returns.ReturnsSelectProductViewModel;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -63,11 +60,11 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     @BindView(R.id.et_units)
     CustomEditText etUnits;
     @BindView(R.id.product_name_text_view)
-    CustomTextView tvProductName;
+    TextView tvProductName;
     @BindView(R.id.invalid_quantity_error)
-    CustomTextView invalidQuantityError;
+    TextView invalidQuantityError;
     @BindView(R.id.bt_update)
-    CustomButton btUpdate;
+    Button btUpdate;
     @BindView(R.id.bt_confirm)
     Button btConfirm;
     @BindView(R.id.atv_search)
@@ -138,7 +135,6 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         setClickListeners();
         fetchReturnReasons();
         initialiseUpdateQuantityView();
-        fetchDriverLocationId();
     }
 
     @Override
@@ -237,7 +233,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
 
     private View getTabView(String title, Drawable iconDrawable) {
         View listTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
-        CustomTextView textView = listTab.findViewById(R.id.title_text);
+        TextView textView = listTab.findViewById(R.id.title_text);
         ImageView icon = listTab.findViewById(R.id.icon);
         listTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(title);
@@ -265,9 +261,6 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         });
     }
 
-    private void fetchDriverLocationId() {
-        viewModel.setDriverLocationId(viewModel.getSourceLocationId());
-    }
 
     private void fetchReturnReasons(){
         viewModel.fetchReturnReasons(returnReasonsCallback);
@@ -331,10 +324,45 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
 
     private void onUpdateButtonTap() {
         Product product = viewModel.getSelectedProduct();
-        product.setReturnQuantity(Integer.valueOf(etUnits.getText().toString()));
-        product.setQuantity(0);
-        viewModel.setSelectedProduct(product);
-        goToReturnReasons(product);
+        updateQuantity(product);
+    }
+
+    private void updateQuantity(Product product) {
+        Customer customer = viewModel.getConsumerLocation();
+        if (product != null && customer != null) {
+            showProgressDialog();
+            viewModel.getProductPricing(customer.getId(),
+                    product.getId(), productPricingCallback);
+        }
+    }
+
+    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
+        runOnUiThread(() -> {
+            dismissProgressDialog();
+            if (uiModels == null) {
+                if (toLogout) {
+                    logoutUser();
+                } else if (isDialogToBeShown){
+                    showNetworkRelatedDialogs(errorMessage);
+                    updateProductDetails(0.0);
+                }
+            } else if (uiModels.size() > 0) {
+                Double productPrice = (Double) uiModels.get(0);
+                updateProductDetails(productPrice);
+            }
+        });
+    };
+
+    private void updateProductDetails(Double productPrice) {
+        Product product = viewModel.getSelectedProduct();
+        try {
+            if (productPrice != 0) product.setPrice(productPrice);
+            product.setQuantity(0);
+            product.setReturnQuantity(Integer.valueOf(etUnits.getText().toString()));
+            goToReturnReasons(product);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     private void goToReturnReasons(Product product) {

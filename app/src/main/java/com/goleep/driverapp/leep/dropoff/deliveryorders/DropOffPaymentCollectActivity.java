@@ -9,15 +9,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
@@ -30,17 +30,17 @@ import java.util.Locale;
 
 public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
 
-    private CustomTextView tvCustomerName;
-    private CustomTextView tvStoreAddress;
-    private CustomTextView tvDoNumber;
-    private CustomTextView tvDate;
-    private CustomTextView tvTime;
-    private CustomTextView tvCurrentSales;
-    private CustomTextView tvOutstandingBalance;
-    private CustomTextView tvGrandTotal;
-    private CustomTextView tvItemCount;
-    private CustomEditText etPaymentCollected;
-    private CustomButton btDone;
+    private TextView tvCustomerName;
+    private TextView tvStoreAddress;
+    private TextView tvDoNumber;
+    private TextView tvDate;
+    private TextView tvTime;
+    private TextView tvCurrentSales;
+    private TextView tvOutstandingBalance;
+    private TextView tvGrandTotal;
+    private TextView tvItemCount;
+    private EditText etPaymentCollected;
+    private Button btDone;
     private LinearLayout llItemListLayout;
     private LinearLayout llItemSummaryLayout;
 
@@ -158,10 +158,10 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
 
     private View orderListItemView(OrderItemEntity orderItem) {
         View orderItemView = LayoutInflater.from(this).inflate(R.layout.do_details_list_item, llItemListLayout, false);
-        CustomTextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
-        CustomTextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
-        CustomTextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
-        CustomTextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
+        TextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
+        TextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
+        TextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
+        TextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
         CheckBox productCheckbox = orderItemView.findViewById(R.id.product_checkbox);
         productCheckbox.setVisibility(View.GONE);
 
@@ -173,17 +173,17 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
         tvUnits.setText(String.valueOf(orderItem.getQuantity()));
 
         double value = orderItem.getQuantity() * orderItem.getPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", value)));
+        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", value)));
         return orderItemView;
     }
 
     private void updateSalesValues() {
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, viewModel.getOrderItems().size(), viewModel.getOrderItems().size())));
-        ((CustomTextView) findViewById(R.id.tv_collected_amount_currency)).setText(AppUtils.userCurrencySymbol());
-        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getCurrentSales())));
-        tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getOutstandingBalance())));
+        ((TextView) findViewById(R.id.tv_collected_amount_currency)).setText(AppUtils.userCurrencySymbol(this));
+        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getCurrentSales())));
+        tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getOutstandingBalance())));
         double total = viewModel.getCurrentSales() + viewModel.getOutstandingBalance();
-        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(total)));
+        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(total)));
     }
 
     @Override

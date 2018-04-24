@@ -12,13 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.fragments.DropoffReturnedFragment;
 import com.goleep.driverapp.fragments.DropoffSellableItemsFragment;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
@@ -37,11 +37,11 @@ public class DropoffActivity extends ParentAppCompatActivity {
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.warehouse_info_text_view)
-    CustomTextView wareHouseInfoTextView;
+    TextView wareHouseInfoTextView;
     @BindView(R.id.map_button)
     LinearLayout mapButton;
     @BindView(R.id.from_text_view)
-    CustomTextView fromTextView;
+    TextView fromTextView;
 
     private View.OnClickListener nextClickListener = new View.OnClickListener() {
         @Override
@@ -87,7 +87,7 @@ public class DropoffActivity extends ParentAppCompatActivity {
 
     private void setupTabIcons() {
         View returnableTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
-        CustomTextView textView = returnableTab.findViewById(R.id.title_text);
+        TextView textView = returnableTab.findViewById(R.id.title_text);
         ImageView icon = returnableTab.findViewById(R.id.icon);
         returnableTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));

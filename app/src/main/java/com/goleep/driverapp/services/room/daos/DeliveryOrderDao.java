@@ -47,8 +47,8 @@ public abstract class DeliveryOrderDao {
     @Query("Delete from DeliveryOrderEntity WHERE id =:id")
     public abstract void deleteDeliveryOrder(int id);
 
-    @Query("Select * from DeliveryOrderEntity where type = 'driver' and status = 'assigned'")
-    public abstract LiveData<DeliveryOrderEntity> getDriverDo();
+    @Query("Select * from DeliveryOrderEntity where type = 'driver' and status = 'assigned' and sourceLocationId = :warehouseId")
+    public abstract LiveData<DeliveryOrderEntity> getDriverDo(int warehouseId);
 
     @Transaction
     public void updateAllDeliveryOrders(List<DeliveryOrderEntity> deliveryOrderEntities) {

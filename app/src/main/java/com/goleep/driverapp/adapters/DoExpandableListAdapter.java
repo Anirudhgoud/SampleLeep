@@ -8,10 +8,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.helpers.uimodels.CashSalesInfo;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
@@ -140,11 +140,11 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     public class HeaderViewHolder extends ExpandableRecyclerAdapter.HeaderViewHolder{
-        CustomTextView tvCustomerName;
-        CustomTextView tvStoreAddress;
-        CustomTextView tvDate;
-        CustomTextView tvSchedule;
-        CustomTextView tvAmount;
+        TextView tvCustomerName;
+        TextView tvStoreAddress;
+        TextView tvDate;
+        TextView tvSchedule;
+        TextView tvAmount;
         ImageView selectionIcon;
         LinearLayout dateLayout;
         LinearLayout timeLayout;
@@ -169,7 +169,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             tvCustomerName.setText(deliveryOrder.getCustomerName() == null ? "" : deliveryOrder.getCustomerName());
             tvStoreAddress.setText(StringUtils.getAddress(deliveryOrder.getDestinationAddressLine1(),
                     deliveryOrder.getDestinationAddressLine2()));
-            tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue()));
+            tvAmount.setText(StringUtils.amountToDisplay(deliveryOrder.getTotalValue(), itemView.getContext()));
             doNumberLayout.setVisibility(View.GONE);
             if (((Activity) context).getClass().getSimpleName().equals(PickupActivity.class.getSimpleName())) {
                 tvDate.setText(DateTimeUtils.convertdDate(deliveryOrder.getPreferredDeliveryDate(),
@@ -196,7 +196,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     public class OrdersHeaderViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
-        CustomTextView ordersHeaderTextView;
+        TextView ordersHeaderTextView;
         public OrdersHeaderViewHolder(View view) {
             super(view);
             ordersHeaderTextView = view.findViewById(R.id.orders_header_text_view);
@@ -209,8 +209,8 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     }
 
     private class CashSalesInfoViewHolder extends ExpandableRecyclerAdapter.ViewHolder {
-        private CustomTextView totalProductsTv;
-        private CustomTextView totalValueTv;
+        private TextView totalProductsTv;
+        private TextView totalValueTv;
 
         public CashSalesInfoViewHolder(View view) {
             super(view);
@@ -224,13 +224,13 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
                 totalProductsTv.setText(String.format(context.getResources().getString(R.string.total_product_label),
                         cashSalesInfo.getTotalProducts()));
                 totalValueTv.setText(String.format(context.getResources().getString(R.string.total_value_label),
-                        StringUtils.amountToDisplay((float) cashSalesInfo.getTotalValue())));
+                        StringUtils.amountToDisplay((float) cashSalesInfo.getTotalValue(), itemView.getContext())));
             }
         }
     }
 
     public class ItemViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
-        private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
+        private TextView productNameTv, productQuantityTv, amountTv, unitsTv;
         private CheckBox productCheckbox;
         private CompoundButton.OnCheckedChangeListener checkListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -260,7 +260,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+
                     doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
-            amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+            amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
             if (context instanceof PickupActivity) {
                 {
                     if(productCheckbox != null) {

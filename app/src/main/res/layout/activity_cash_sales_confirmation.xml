@@ -24,21 +24,21 @@
                 layout="@layout/delivery_order_top_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            
+
             <Button
                 android:id="@+id/bt_take_returns"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:fontFamily="@font/noto_sans"
-                android:textColor="@android:color/white"
-                android:background="@drawable/rounded_rect_red"
-                android:layout_margin="16dp"
                 android:layout_below="@+id/ll_top_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_rect_red"
+                android:fontFamily="@font/noto_sans"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
-                android:layout_centerHorizontal="true"
-                android:textSize="22sp"
-                android:text="@string/take_returns"/>
+                android:text="@string/take_returns"
+                android:textColor="@android:color/white"
+                android:textSize="22sp" />
 
             <include
                 android:id="@+id/divider_view_1"

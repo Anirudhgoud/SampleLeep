@@ -11,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.fragments.DeliveryOrdersListFragment;
 import com.goleep.driverapp.fragments.DeliveryOrdersMapFragment;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 
@@ -59,7 +59,7 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
 
     private void setupTabIcons() {
         View listTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
-        CustomTextView textView = listTab.findViewById(R.id.title_text);
+        TextView textView = listTab.findViewById(R.id.title_text);
         ImageView icon = listTab.findViewById(R.id.icon);
         listTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 

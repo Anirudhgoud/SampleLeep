@@ -11,15 +11,15 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.PaymentMethod;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
@@ -41,26 +41,26 @@ import java.util.List;
 
 public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
 
-    private CustomTextView tvCustomerName;
-    private CustomTextView tvStoreAddress;
-    private CustomTextView tvDoNumber;
-    private CustomTextView tvDate;
-    private CustomTextView tvTime;
-    private CustomTextView tvCurrentSales;
-    private CustomTextView tvOutstandingBalance;
-    private CustomTextView tvGrandTotal;
-    private CustomTextView tvPaymentCollected;
-    private CustomTextView tvPaymentMethod;
-    private CustomTextView tvPreviousBalance;
-    private CustomButton btConfirm;
-    private CustomButton btViewItemList;
+    private TextView tvCustomerName;
+    private TextView tvStoreAddress;
+    private TextView tvDoNumber;
+    private TextView tvDate;
+    private TextView tvTime;
+    private TextView tvCurrentSales;
+    private TextView tvOutstandingBalance;
+    private TextView tvGrandTotal;
+    private TextView tvPaymentCollected;
+    private TextView tvPaymentMethod;
+    private TextView tvPreviousBalance;
+    private Button btConfirm;
+    private Button btViewItemList;
     private EditText etReceivedFrom;
     private EditText etContactNumber;
     private ImageView ivSignature;
     private LinearLayout llCollectPayment;
 
     //Error views
-    private CustomTextView tvReceivedFromError, tvContactNumberError, tvSignatureError;
+    private TextView tvReceivedFromError, tvContactNumberError, tvSignatureError;
 
     private DropOffPaymentConfirmationViewModel viewModel;
 
@@ -153,11 +153,11 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     }
 
     private void updateSalesValues() {
-        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getCurrentSale())));
-        tvPreviousBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getPreviousBalance())));
-        tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getOutstandingBalance())));
-        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getGrandTotal())));
-        tvPaymentCollected.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getPaymentCollected())));
+        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getCurrentSale())));
+        tvPreviousBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getPreviousBalance())));
+        tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getOutstandingBalance())));
+        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getGrandTotal())));
+        tvPaymentCollected.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getPaymentCollected())));
         tvPaymentMethod.setText(viewModel.getPaymentMethod());
         llCollectPayment.setVisibility(viewModel.getPaymentCollected() == 0 ? View.GONE : View.VISIBLE);
     }

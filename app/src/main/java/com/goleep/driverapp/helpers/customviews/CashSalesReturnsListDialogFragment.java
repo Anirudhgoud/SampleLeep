@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.utils.AppUtils;
@@ -34,7 +33,7 @@ import butterknife.ButterKnife;
 public class CashSalesReturnsListDialogFragment extends DialogFragment {
 
     @BindView(R.id.tv_item_count)
-    CustomTextView tvItemCount;
+    TextView tvItemCount;
     @BindView(R.id.tv_returned_item_count)
     TextView tvReturnedItemCount;
     @BindView(R.id.ll_returned_label)
@@ -152,7 +151,7 @@ public class CashSalesReturnsListDialogFragment extends DialogFragment {
 
         if (product.getQuantity() > 0) {
             tvUnits.setText(String.valueOf(product.getQuantity()));
-            tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
+            tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(getContext()), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
             viewModel.incrementSelectedProductCount();
         } else {
             tvUnits.setVisibility(View.GONE);
@@ -161,7 +160,7 @@ public class CashSalesReturnsListDialogFragment extends DialogFragment {
 
         if (product.getReturnQuantity() > 0) {
             tvReturnedUnits.setText(String.valueOf(product.getReturnQuantity()));
-            tvReturnedAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
+            tvReturnedAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(getContext()), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
             llReturnedLabel.setVisibility(View.VISIBLE);
             tvReturnedAmount.setVisibility(View.VISIBLE);
             tvReturnreason.setVisibility(View.VISIBLE);

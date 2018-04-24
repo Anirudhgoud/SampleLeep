@@ -12,18 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.BusinessCategoryAdapter;
 import com.goleep.driverapp.adapters.BusinessesListAdapter;
+import com.goleep.driverapp.adapters.CountryCodeAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.uihelpers.CountryCodeHelper;
+import com.goleep.driverapp.helpers.uimodels.Country;
 import com.goleep.driverapp.helpers.uimodels.CustomerInfo;
 import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -45,16 +48,18 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
     RelativeLayout rlAddCustomer;
     @BindView(R.id.sp_business_type)
     Spinner spBusinessType;
+    @BindView(R.id.country_code_spinner)
+    Spinner countryCodeSpinner;
     @BindView(R.id.et_contact_name)
-    CustomEditText etContactName;
+    EditText etContactName;
     @BindView(R.id.et_contact_number)
-    CustomEditText etContactNumber;
+    EditText etContactNumber;
     @BindView(R.id.et_email_id)
-    CustomEditText etEmailId;
+    EditText etEmailId;
     @BindView(R.id.et_designation)
-    CustomEditText etDesignation;
+    EditText etDesignation;
     @BindView(R.id.tv_confirm)
-    CustomTextView tvConfirm;
+    TextView tvConfirm;
     @BindView(R.id.sv_add_customer)
     ScrollView scrollView;
     @BindView(R.id.ac_tv_business_name)
@@ -62,7 +67,20 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
 
     private BusinessCategoryAdapter businessTypeAdapter;
     private CashSalesNewCustomerViewModel viewModel;
-    BusinessesListAdapter businessListAdapter;
+    private BusinessesListAdapter businessListAdapter;
+    private CountryCodeAdapter countryCodeAdapter;
+
+    private AdapterView.OnItemSelectedListener countryCodeSelectionListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            viewModel.setSelectedCountry((Country) countryCodeSpinner.getSelectedItem());
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
+    };
 
     public CashSalesNewCustomerFragment() {
     }
@@ -90,6 +108,19 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         businessListAdapter = new BusinessesListAdapter(getContext(), R.layout.fragment_cash_sales_new_customer, android.R.id.text1, new ArrayList<Business>());
         acTvBusinessName.setThreshold(1);
         acTvBusinessName.setAdapter(businessListAdapter);
+        initCountryCodeAdapter();
+    }
+
+    private void initCountryCodeAdapter() {
+        viewModel.setCountryList(new CountryCodeHelper().getCountries(getContext()));
+        countryCodeSpinner.setOnItemSelectedListener(countryCodeSelectionListener);
+        countryCodeAdapter = new CountryCodeAdapter(getContext(), R.layout.layout_country_code_item,
+                getContext().getResources().getColor(R.color.text_black));
+        countryCodeAdapter.addAll(viewModel.getCountryList());
+        countryCodeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countryCodeSpinner.setAdapter(countryCodeAdapter);
+        countryCodeSpinner.setSelection(0);
+        viewModel.setSelectedCountry((Country) countryCodeSpinner.getSelectedItem());
     }
 
     private void networkCallsForBusinessData() {
@@ -131,6 +162,10 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         }
         if (strContactName.isEmpty()) {
             etContactName.setError(getResources().getString(R.string.invalid_name_error));
+            returnValue = false;
+        }
+        if(viewModel.getSelectedCountry() != null && viewModel.getSelectedCountry().getDialCode().isEmpty()){
+            etContactNumber.setError(getResources().getString(R.string.invalid_country_code));
             returnValue = false;
         }
         if (strContactNumber.length() != 10) {
@@ -215,8 +250,6 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         if (uiModels == null) {
             if (toLogout) {
                 parentActivity.logoutUser();
-            } else if (isDialogToBeShown) {
-                parentActivity.showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
             @SuppressWarnings("unchecked") final List<Business> data = (List<Business>) uiModels;
@@ -243,8 +276,6 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         if (uiModels == null) {
             if (toLogout) {
                 parentActivity.logoutUser();
-            } else if (isDialogToBeShown) {
-                parentActivity.showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
             @SuppressWarnings("unchecked") final List<Business> data = (List<Business>) uiModels;

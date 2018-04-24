@@ -10,13 +10,13 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
 import com.goleep.driverapp.utils.AppUtils;
@@ -31,9 +31,9 @@ import java.util.Locale;
 public class ItemListDialogFragment extends DialogFragment {
 
     private LinearLayout llItemListLayout;
-    private CustomTextView tvItemCount;
-    private CustomTextView tvGrandTotal;
-    private CustomButton btClose;
+    private TextView tvItemCount;
+    private TextView tvGrandTotal;
+    private Button btClose;
 
     private ItemListDialogFragmentViewModel viewModel;
 
@@ -83,7 +83,7 @@ public class ItemListDialogFragment extends DialogFragment {
 
     private void setData() {
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, viewModel.getOrderItems().size(), viewModel.getOrderItems().size())));
-        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getGrandTotal())));
+        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(getContext()), String.valueOf(viewModel.getGrandTotal())));
     }
 
     @Override
@@ -116,10 +116,10 @@ public class ItemListDialogFragment extends DialogFragment {
 
     private View orderListItemView(OrderItemEntity orderItem) {
         View orderItemView = LayoutInflater.from(getContext()).inflate(R.layout.do_details_list_item, llItemListLayout, false);
-        CustomTextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
-        CustomTextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
-        CustomTextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
-        CustomTextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
+        TextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
+        TextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
+        TextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
+        TextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
         CheckBox productCheckbox = orderItemView.findViewById(R.id.product_checkbox);
         productCheckbox.setVisibility(View.GONE);
 
@@ -131,7 +131,7 @@ public class ItemListDialogFragment extends DialogFragment {
         tvUnits.setText(String.valueOf(orderItem.getQuantity()));
 
         double value = orderItem.getQuantity() * orderItem.getPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", value)));
+        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(getContext()), String.format(Locale.getDefault(), "%.02f", value)));
         return orderItemView;
     }
 }

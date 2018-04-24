@@ -1,7 +1,6 @@
 package com.goleep.driverapp.viewmodels.pickup.returns;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 
 import com.goleep.driverapp.constants.NetworkConstants;
@@ -102,7 +101,7 @@ public class ReturnsFinalConfirmationViewModel extends ReturnsPaymentMethodViewM
         NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true, requestMap, file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
             switch (type) {
                 case NetworkConstants.SUCCESS:
-                    deliverOrderNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
+                    deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
                     break;
 
                 case NetworkConstants.FAILURE:

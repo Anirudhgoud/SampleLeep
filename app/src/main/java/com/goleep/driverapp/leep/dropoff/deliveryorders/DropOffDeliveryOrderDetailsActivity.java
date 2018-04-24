@@ -12,14 +12,14 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomEditText;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
+import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -41,20 +41,20 @@ import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
 
 public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity {
 
-    private CustomTextView tvCustomerName;
-    private CustomTextView tvStoreAddress;
-    private CustomTextView tvDoNumber;
-    private CustomTextView tvDate;
-    private CustomTextView tvSchedule;
-    private CustomTextView tvItemsCount;
-    private CustomButton btSkipPayment;
-    private CustomButton btCollectPayment;
+    private TextView tvCustomerName;
+    private TextView tvStoreAddress;
+    private TextView tvDoNumber;
+    private TextView tvDate;
+    private TextView tvSchedule;
+    private TextView tvItemsCount;
+    private Button btSkipPayment;
+    private Button btCollectPayment;
 
     private LinearLayout updateQuantityLayout;
     private CustomEditText etUnits;
-    private CustomTextView tvProductName;
-    private CustomTextView invalidQuantityError;
-    private CustomButton btUpdate;
+    private TextView tvProductName;
+    private TextView invalidQuantityError;
+    private Button btUpdate;
     private LinearLayout llBottomButtons;
 
     private DropOffDeliveryOrderDetailsViewModel viewModel;

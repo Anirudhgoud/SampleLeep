@@ -2,10 +2,10 @@ package com.goleep.driverapp.viewholders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 import com.goleep.driverapp.utils.StringUtils;
@@ -16,8 +16,8 @@ import com.goleep.driverapp.utils.StringUtils;
 
 public class HistoryListViewHolder extends RecyclerView.ViewHolder {
 
-    private CustomTextView customerNameTv, doNumberTv, customerAddressTv, doValueTv;
-    private CustomButton detailsButton;
+    private TextView customerNameTv, doNumberTv, customerAddressTv, doValueTv;
+    private Button detailsButton;
     private View.OnClickListener detailsClickListener;
 
     public HistoryListViewHolder(View itemView) {
@@ -27,7 +27,6 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
         customerAddressTv = itemView.findViewById(R.id.tv_store_address);
         doValueTv = itemView.findViewById(R.id.tv_amount);
         detailsButton = itemView.findViewById(R.id.details_button);
-
     }
 
     public void setDetailsClickListener(View.OnClickListener detailsClickListener) {
@@ -39,7 +38,7 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
         doNumberTv.setText(deliveryOrderEntity.getDoNumber());
         customerAddressTv.setText(StringUtils.getAddress(deliveryOrderEntity.getDestinationAddressLine1(),
                 deliveryOrderEntity.getDestinationAddressLine2()));
-        doValueTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue()));
+        doValueTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue(), itemView.getContext()));
         detailsButton.setTag("type_do#"+deliveryOrderEntity.getId());
         detailsButton.setOnClickListener(detailsClickListener);
     }
@@ -49,7 +48,7 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
         doNumberTv.setText(String.valueOf(returnOrderEntity.getRoNumber()));
         customerAddressTv.setText(StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(),
                 returnOrderEntity.getSourceAddressLine2()));
-        doValueTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue()));
+        doValueTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), itemView.getContext()));
         detailsButton.setTag("type_ro#"+returnOrderEntity.getRoNumber());
         detailsButton.setOnClickListener(detailsClickListener);
     }

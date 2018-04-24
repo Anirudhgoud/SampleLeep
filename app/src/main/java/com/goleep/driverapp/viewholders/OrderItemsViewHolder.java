@@ -7,7 +7,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
@@ -26,9 +25,8 @@ import java.util.Locale;
 public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
 
     private Context context;
-    private CustomTextView tvProductName, tvProductQuantity, tvAmount, tvUnits;
+    private TextView tvProductName, tvProductQuantity, tvAmount, tvUnits, tvReturnReason;
     private CheckBox productCheckbox;
-    private TextView tvReturnReason;
     private DeliveryOrderItemEventListener deliveryOrderItemEventListener;
     private ProductCheckListener productCheckListener;
 
@@ -52,7 +50,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
                 product.getWeight(), product.getWeightUnit()));
 
         double value = product.getQuantity() * product.getPrice();
-        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
+        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(value)));
         productCheckbox.setVisibility(View.GONE);
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(product.getId(), product.getQuantity()));
         ReturnReason returnReason = product.getReturnReason();
@@ -60,11 +58,11 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
             tvReturnReason.setText(returnReason.getReason());
             tvReturnReason.setVisibility(View.VISIBLE);
             tvUnits.setText(String.valueOf(product.getReturnQuantity()));
-            tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(product.getTotalReturnsPrice())));
+            tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(product.getTotalReturnsPrice())));
         } else {
             tvReturnReason.setVisibility(View.GONE);
             tvUnits.setText(String.valueOf(product.getQuantity()));
-            tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(product.getTotalPrice())));
+            tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(product.getTotalPrice())));
         }
     }
 
@@ -77,7 +75,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvUnits.setText(String.valueOf(orderItem.getQuantity()));
 
         double value = orderItem.getQuantity() * orderItem.getPrice();
-        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
+        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(value)));
 
         productCheckbox.setChecked(orderItem.isSelected());
         productCheckbox.setOnClickListener(v -> deliveryOrderItemEventListener.onCheckboxTap(orderItem.getId(), productCheckbox.isChecked()));
@@ -96,7 +94,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvUnits.setText(String.valueOf(stockProductEntity.getQuantity(productType)));
 
         double value = stockProductEntity.getQuantity(productType) * stockProductEntity.getDefaultPrice();
-        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), itemTotalPriceText(value)));
+        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(value)));
         productCheckbox.setChecked(stockProductEntity.isSelected());
         productCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override

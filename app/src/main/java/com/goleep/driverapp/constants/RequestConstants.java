@@ -16,5 +16,4 @@ public interface RequestConstants {
     String USER_AGENT = "driver_app";
     String CONTENT_TYPE_JSON = "json";
     String CONTENT_TYPE_FORM = "form";
-    String DO_STATUS_ASSIGNED = "assigned";
 }

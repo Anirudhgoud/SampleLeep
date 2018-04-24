@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="130dp"
     android:background="@drawable/dashboard_item_bg"
-    android:elevation="5dp">
+    android:elevation="4dp">
 
 
     <LinearLayout
@@ -14,23 +14,23 @@
         android:layout_alignParentRight="true"
         android:gravity="center_vertical">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/top_label_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/noto_sans"
             android:text=""
-            android:textColor="@color/light_grey"
-            app:typeface="NotoSans-Regular" />
+            android:textColor="@color/light_grey" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/top_value_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="16sp"
-            app:typeface="NotoSans-Regular" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -56,31 +56,27 @@
             android:id="@+id/text_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
+            android:layout_gravity="center_vertical|start"
             android:layout_marginLeft="10dp"
             android:layout_weight="7"
             android:orientation="vertical">
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:id="@+id/main_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:text=""
+                android:fontFamily="@font/noto_sans"
                 android:textColor="@color/text_black"
-                android:textSize="24sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="24sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:id="@+id/sub_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_weight="7"
+                android:fontFamily="@font/noto_sans"
                 android:text=""
                 android:textColor="@color/text_black"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="14sp" />
 
         </LinearLayout>
     </LinearLayout>

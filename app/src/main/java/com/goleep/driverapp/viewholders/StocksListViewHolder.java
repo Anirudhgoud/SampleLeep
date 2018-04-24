@@ -3,9 +3,9 @@ package com.goleep.driverapp.viewholders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
@@ -17,8 +17,10 @@ import com.goleep.driverapp.utils.AppUtils;
  */
 
 public class StocksListViewHolder extends RecyclerView.ViewHolder{
-    private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv, returnReasonTv;
+
+    private TextView productNameTv, productQuantityTv, amountTv, unitsTv, returnReasonTv;
     private CheckBox checkBox;
+
     public StocksListViewHolder(View itemView) {
         super(itemView);
         productNameTv = itemView.findViewById(R.id.product_name_text_view);
@@ -35,7 +37,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         double value = stockProductEntity.getQuantity(listType) * stockProductEntity.getDefaultPrice();
         unitsTv.setText(String.valueOf(stockProductEntity.getQuantity(listType)));
         productQuantityTv.setText(stockProductEntity.getWeight()+" "+ stockProductEntity.getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+        amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
     }
 
     public void bind(OrderItemEntity orderItem){
@@ -43,7 +45,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         double value = orderItem.getQuantity() * orderItem.getPrice();
         unitsTv.setText(String.valueOf(orderItem.getQuantity()));
         productQuantityTv.setText(orderItem.getProduct().getWeight()+" "+ orderItem.getProduct().getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+        amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
     }
 
     public void bind(ReturnOrderItem orderItem){
@@ -51,7 +53,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         double value = orderItem.getQuantity() * orderItem.getPrice();
         unitsTv.setText(String.valueOf(orderItem.getQuantity()));
         productQuantityTv.setText(orderItem.getProduct().getWeight()+" "+ orderItem.getProduct().getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+        amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
         if(returnReasonTv != null){
             returnReasonTv.setVisibility(View.VISIBLE);
             returnReasonTv.setText(orderItem.getReason());
@@ -63,7 +65,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         double value = product.getReturnQuantity() * product.getPrice();
         unitsTv.setText(String.valueOf(product.getReturnQuantity()));
         productQuantityTv.setText(product.getWeight()+" "+ product.getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+        amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
         if(returnReasonTv != null && product.getReturnReason() != null){
             returnReasonTv.setVisibility(View.VISIBLE);
             returnReasonTv.setText(product.getReturnReason().getReason());

@@ -2,49 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:paddingTop="10dp"
-    android:paddingStart="16dp"
+    android:paddingBottom="10dp"
     android:paddingEnd="16dp"
-    android:paddingBottom="10dp">
+    android:paddingStart="16dp"
+    android:paddingTop="10dp">
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="7"
         android:layout_height="wrap_content"
+        android:layout_weight="7"
+        android:orientation="vertical"
         android:paddingEnd="10dp"
-        android:paddingRight="10dp"
-        android:orientation="vertical">
+        android:paddingRight="10dp">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/customer_name_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            app:typeface="NotoSans-Bold"
-            android:textColor="@color/text_black"/>
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+            android:fontFamily="@font/noto_sans_bold"
+            android:textColor="@color/text_black"
+            android:textSize="18sp" />
+
+        <TextView
             android:id="@+id/address_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            app:typeface="NotoSans-Regular"
-            android:textColor="@color/text_black"/>
+            android:fontFamily="@font/noto_sans"
+            android:textColor="@color/text_black"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
-    <com.goleep.driverapp.helpers.customfont.CustomButton
+    <Button
         android:id="@+id/select_bt"
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@drawable/rounded_green_button"
-        android:text="@string/select"
-        android:textSize="14sp"
-        android:enabled="false"
         android:clickable="false"
+        android:enabled="false"
+        android:fontFamily="@font/noto_sans"
+        android:text="@string/select"
         android:textColor="@color/white"
-        app:typeface="NotoSans-Regular"/>
-
+        android:textSize="14sp" />
 </LinearLayout>

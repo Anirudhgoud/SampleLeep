@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
@@ -39,15 +37,15 @@ import butterknife.ButterKnife;
 public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_date)
-    CustomTextView tvCurrentDate;
+    TextView tvCurrentDate;
     @BindView(R.id.tv_time)
-    CustomTextView tvCurrentTime;
+    TextView tvCurrentTime;
     @BindView(R.id.tv_item_count)
-    CustomTextView tvItemCount;
+    TextView tvItemCount;
     @BindView(R.id.tv_returned_item_count)
     TextView tvReturnedItemCount;
     @BindView(R.id.ll_returned_label)
@@ -176,7 +174,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
 
         if (product.getQuantity() > 0){
             tvUnits.setText(String.valueOf(product.getQuantity()));
-            tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
+            tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
             viewModel.incrementSelectedProductCount();
         }else {
             tvUnits.setVisibility(View.GONE);
@@ -185,7 +183,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
 
         if (product.getReturnQuantity() > 0){
             tvReturnedUnits.setText(String.valueOf(product.getReturnQuantity()));
-            tvReturnedAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
+            tvReturnedAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
             llReturnedLabel.setVisibility(View.VISIBLE);
             tvReturnedAmount.setVisibility(View.VISIBLE);
             tvReturnreason.setVisibility(View.VISIBLE);
@@ -249,14 +247,14 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     private void updateAmountDetails(double outstandingBalance){
         double totalReturns = viewModel.totalReturnsValue();
         double totalCurrentSales = viewModel.totalCurrentSales();
-        tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(totalReturns)));
+        tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(totalReturns)));
         tvCurrentSales.setText(amountWithCurrencySymbol(totalCurrentSales));
         tvPreviousBalance.setText(amountWithCurrencySymbol(outstandingBalance));
         tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, totalCurrentSales, outstandingBalance)));
     }
 
     public String amountWithCurrencySymbol(Object amount){
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(amount));
+        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 
     UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
@@ -264,7 +262,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         if (uiModels == null) {
             if (toLogout) {
                 logoutUser();
-            } else {
+            } else if (isDialogToBeShown){
                 showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {

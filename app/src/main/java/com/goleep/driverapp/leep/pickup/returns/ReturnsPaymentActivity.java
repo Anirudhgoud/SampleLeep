@@ -16,17 +16,14 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesPaymentMethodActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesInvoiceViewModel;
 import com.goleep.driverapp.viewmodels.pickup.returns.ReturnsInvoiceViewModel;
 
 import java.util.ArrayList;
@@ -41,15 +38,15 @@ import butterknife.ButterKnife;
  */
 public class ReturnsPaymentActivity extends ParentAppCompatActivity {
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_date)
-    CustomTextView tvCurrentDate;
+    TextView tvCurrentDate;
     @BindView(R.id.tv_time)
-    CustomTextView tvCurrentTime;
+    TextView tvCurrentTime;
     @BindView(R.id.tv_item_count)
-    CustomTextView tvItemCount;
+    TextView tvItemCount;
     @BindView(R.id.ll_item_list_layout)
     LinearLayout llItemListLayout;
     @BindView(R.id.bt_continue)
@@ -76,17 +73,14 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
             if (uiModels == null) {
                 if (toLogout) {
                     logoutUser();
-                } else {
+                } else if (isDialogToBeShown){
                     showNetworkRelatedDialogs(errorMessage);
                 }
             } else if (uiModels.size() > 0) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        btContinue.setVisibility(View.VISIBLE);
-                        Location location = (Location) uiModels.get(0);
-                        onLocationDetailsFetched(location);
-                    }
+                runOnUiThread(() -> {
+                    btContinue.setVisibility(View.VISIBLE);
+                    Location location = (Location) uiModels.get(0);
+                    onLocationDetailsFetched(location);
                 });
             }
         }
@@ -164,13 +158,13 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
 
     private void updateAmountDetails(double outstandingBalance) {
         double totalReturns = viewModel.totalReturnsValue();
-        tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(totalReturns)));
+        tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(totalReturns)));
         tvPreviousBalance.setText(amountWithCurrencySymbol(outstandingBalance));
         tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, outstandingBalance)));
     }
 
     public String amountWithCurrencySymbol(Object amount){
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(amount));
+        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 
 
@@ -200,17 +194,17 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
         View orderItemView = LayoutInflater.from(this).inflate(R.layout.do_details_list_item, llItemListLayout, false);
         if (product == null) return orderItemView;
 
-        CustomTextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
-        CustomTextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
-        CustomTextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
-        CustomTextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
+        TextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
+        TextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
+        TextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
+        TextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
         CheckBox productCheckbox = orderItemView.findViewById(R.id.product_checkbox);
-        CustomTextView returnReasonTextView = orderItemView.findViewById(R.id.return_reason_tv);
+        TextView returnReasonTextView = orderItemView.findViewById(R.id.return_reason_tv);
         productCheckbox.setVisibility(View.GONE);
         tvProductName.setText(StringUtils.toString(product.getProductName(), ""));
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
         tvUnits.setText(String.valueOf(product.getReturnQuantity()));
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
+        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
         returnReasonTextView.setText(product.getReturnReason().getReason());
         returnReasonTextView.setVisibility(View.VISIBLE);
         return orderItemView;

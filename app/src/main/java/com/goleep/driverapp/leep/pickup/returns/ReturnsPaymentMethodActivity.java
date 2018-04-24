@@ -13,16 +13,13 @@ import android.widget.TextView;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.PaymentMethod;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
-import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesFinalConfirmationActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.dropoff.cashsales.CashSalesPaymentMethodViewModel;
 import com.goleep.driverapp.viewmodels.pickup.returns.ReturnsPaymentMethodViewModel;
 
 import java.util.ArrayList;
@@ -36,13 +33,13 @@ import butterknife.ButterKnife;
 public class ReturnsPaymentMethodActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_date)
-    CustomTextView tvCurrentDate;
+    TextView tvCurrentDate;
     @BindView(R.id.tv_time)
-    CustomTextView tvCurrentTime;
+    TextView tvCurrentTime;
     @BindView(R.id.bt_continue)
     Button btContinue;
     @BindView(R.id.bt_view_item_list)
@@ -119,7 +116,7 @@ public class ReturnsPaymentMethodActivity extends ParentAppCompatActivity {
     }
 
     public String amountWithCurrencySymbol(Object amount) {
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(amount));
+        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 
     private void setClickListeners() {

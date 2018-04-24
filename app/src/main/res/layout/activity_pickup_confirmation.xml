@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,10 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <include layout="@layout/top_information_layout"
+    <include
         android:id="@+id/top_information_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        layout="@layout/top_information_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <View
         android:id="@+id/top_separator"
@@ -27,37 +27,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/confirm_pickup_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="25dp"
+            android:fontFamily="@font/noto_sans"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/confirm_pickup"
             android:textColor="@color/dark_grey_text"
-            android:textSize="22sp"
-            app:typeface="NotoSans-Regular" />
+            android:textSize="22sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/expandable_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/confirm_pickup_text_view"
-            android:layout_above="@id/confirm_button"/>
+            android:layout_above="@id/confirm_button"
+            android:layout_below="@id/confirm_pickup_text_view" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomButton
+        <Button
             android:id="@+id/confirm_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:background="@color/green"
+            android:fontFamily="@font/noto_sans"
             android:text="@string/confirm"
             android:textColor="@color/white"
-            android:layout_alignParentBottom="true"
             android:textSize="18sp"
-            android:visibility="visible"
-            app:typeface="NotoSans-Regular" />
+            android:visibility="visible" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -1,6 +1,6 @@
 package com.goleep.driverapp.services.network.jsonparsers;
 
-import com.goleep.driverapp.helpers.uimodels.ReportAttrribute;
+import com.goleep.driverapp.helpers.uimodels.Report;
 
 import org.json.JSONObject;
 
@@ -9,16 +9,16 @@ import org.json.JSONObject;
  */
 
 public class ReportsDataParser {
-    public ReportAttrribute reportsDataByParsingJsonResponse(JSONObject jsonObject){
+    public Report reportsDataByParsingJsonResponse(JSONObject jsonObject){
         if(jsonObject == null){
             return null;
         }
-        ReportAttrribute reportAttrribute =new ReportAttrribute();
-        reportAttrribute.setTotalSales(jsonObject.optInt("total_sales"));
-        reportAttrribute.setCashCollected(jsonObject.optInt("cash_collected"));
-        reportAttrribute.setUnits(jsonObject.optInt("units"));
-        reportAttrribute.setReturns(jsonObject.optInt("returns"));
-        reportAttrribute.setLocations(jsonObject.optInt("locations"));
-        return reportAttrribute;
+        Report report =new Report();
+        report.setTotalSales(jsonObject.optDouble("total_sales"));
+        report.setCashCollected(jsonObject.optDouble("cash_collected"));
+        report.setUnits(jsonObject.optInt("units"));
+        report.setReturns(jsonObject.optInt("returns"));
+        report.setLocations(jsonObject.optInt("locations"));
+        return report;
     }
 }

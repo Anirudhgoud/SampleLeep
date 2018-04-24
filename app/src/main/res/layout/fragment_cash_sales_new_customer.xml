@@ -27,7 +27,7 @@
                 android:layout_centerHorizontal="true"
                 app:srcCompat="@drawable/ic_add_customer_icon" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:id="@+id/tv_add_customer"
                 android:layout_width="234dp"
                 android:layout_height="45dp"
@@ -35,6 +35,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="32dp"
                 android:background="@drawable/pickup_icon_bg"
+                android:fontFamily="@font/noto_sans"
                 android:gravity="center"
                 android:text="@string/add_customer"
                 android:textColor="@color/white"
@@ -48,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="24dp"
-        android:layout_marginRight="22dp"
+        android:layout_marginRight="24dp"
         android:layout_marginTop="4dp"
         android:layout_weight="1"
         android:focusable="true"
@@ -61,22 +62,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/add_customer"
                 android:textColor="@color/dark_grey_text"
-                android:textSize="22sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="22sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/business_name"
                 android:textColor="@color/dark_grey_text"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="14sp" />
 
             <AutoCompleteTextView
                 android:id="@+id/ac_tv_business_name"
@@ -86,20 +87,18 @@
                 android:background="@drawable/rounded_rect_with_grey_border"
                 android:fontFamily="@font/noto_sans"
                 android:hint="@string/business_name"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="11dp"
+                android:padding="10dp"
                 android:textColor="@color/text_black"
                 android:textSize="18sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/business_type"
                 android:textColor="@color/dark_grey_text"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="14sp" />
 
             <Spinner
                 android:id="@+id/sp_business_type"
@@ -108,65 +107,64 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_rect_with_grey_border"
                 android:dropDownVerticalOffset="45dp"
+                android:fontFamily="@font/noto_sans"
                 android:hint="@string/business_type"
                 android:inputType="textPersonName"
                 android:textColor="@color/text_black"
                 android:textSize="18sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/designation"
                 android:textColor="@color/dark_grey_text"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="14sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomEditText
+            <EditText
                 android:id="@+id/et_designation"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_rect_with_grey_border"
+                android:fontFamily="@font/noto_sans"
                 android:hint="@string/designation"
                 android:inputType="textPersonName"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="11dp"
+                android:padding="10dp"
                 android:textColor="@color/text_black"
                 android:textSize="18sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/contact_name"
                 android:textColor="@color/dark_grey_text"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="14sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomEditText
+            <EditText
                 android:id="@+id/et_contact_name"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_rect_with_grey_border"
+                android:fontFamily="@font/noto_sans"
                 android:hint="@string/contact_name"
                 android:inputType="textPersonName"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="11dp"
+                android:padding="10dp"
                 android:textColor="@color/text_black"
                 android:textSize="18sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/contact_number"
                 android:textColor="@color/dark_grey_text"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -175,69 +173,70 @@
                 android:background="@drawable/rounded_rect_with_grey_border"
                 android:orientation="horizontal">
 
-                <com.goleep.driverapp.helpers.customfont.CustomTextView
+                <Spinner
+                    android:id="@+id/country_code_spinner"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="+91"
-                    android:textSize="18sp"
-                    app:typeface="NotoSans-Regular" />
+                    android:background="@null"
+                    android:dropDownWidth="wrap_content"
+                    android:enabled="true"
+                    android:fontFamily="@font/noto_sans"
+                    android:paddingLeft="10dp"
+                    android:theme="@style/ThemeSpinner" />
 
-                <com.goleep.driverapp.helpers.customfont.CustomEditText
+                <EditText
                     android:id="@+id/et_contact_number"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:background="@null"
                     android:backgroundTint="@null"
+                    android:fontFamily="@font/noto_sans"
                     android:inputType="number"
                     android:textColor="@color/text_black"
-                    android:textSize="18sp"
-                    app:typeface="NotoSans-Regular" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:fontFamily="@font/noto_sans"
                 android:text="@string/email_id"
                 android:textColor="@color/dark_grey_text"
-                android:textSize="14sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="14sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomEditText
+            <EditText
                 android:id="@+id/et_email_id"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_rect_with_grey_border"
+                android:fontFamily="@font/noto_sans"
                 android:hint="@string/email_id"
                 android:inputType="textEmailAddress"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="11dp"
+                android:padding="10dp"
                 android:textColor="@color/text_black"
-                android:textSize="18sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="18sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:id="@+id/tv_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/pickup_icon_bg"
+                android:fontFamily="@font/noto_sans"
                 android:gravity="center"
                 android:text="@string/confirm"
                 android:textColor="@color/white"
-                android:textSize="18sp"
-                app:typeface="NotoSans-Regular" />
+                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>

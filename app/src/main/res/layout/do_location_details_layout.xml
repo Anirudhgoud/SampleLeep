@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -10,55 +10,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:background="@color/white"
-        android:padding="20dp"
         android:elevation="3dp"
-        android:layout_alignParentBottom="true">
+        android:padding="20dp">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <TextView
             android:id="@+id/location_name_tv"
-            android:textSize="18sp"
-            android:textColor="@color/dark_grey_text"
-            app:typeface="NotoSans-Regular" />
-
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
+            android:textColor="@color/dark_grey_text"
+            android:textSize="18sp" />
+
+        <TextView
             android:id="@+id/location_address_tv"
-            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="40dp"
             android:layout_toLeftOf="@id/navigate_iv"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/noto_sans"
             android:textColor="@color/text_light_grey_title"
-            app:typeface="NotoSans-Regular" />
+            android:textSize="12sp" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
+            android:id="@+id/time_to_reach_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:id="@+id/time_to_reach_tv"
+            android:fontFamily="@font/noto_sans_bold"
             android:textColor="@color/text_black"
-            android:textSize="18sp"
-            app:typeface="NotoSans-Bold" />
+            android:textSize="18sp" />
 
         <ImageView
+            android:id="@+id/navigate_iv"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_marginTop="28dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            app:srcCompat="@drawable/ic_navigate"
-            android:id="@+id/navigate_iv" />
+            android:layout_marginTop="28dp"
+            app:srcCompat="@drawable/ic_navigate" />
     </RelativeLayout>
 
 </LinearLayout>

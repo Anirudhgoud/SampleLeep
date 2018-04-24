@@ -13,7 +13,7 @@
         android:layout_toLeftOf="@id/bt_select"
         android:orientation="vertical">
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/tv_customer_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:textColor="@color/doTabTextColor"
             android:textSize="18sp" />
 
-        <com.goleep.driverapp.helpers.customfont.CustomTextView
+        <TextView
             android:id="@+id/tv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="4dp"
@@ -48,7 +48,7 @@
                 android:textColor="@color/doTabTextColor"
                 android:textSize="12sp" />
 
-            <com.goleep.driverapp.helpers.customfont.CustomTextView
+            <TextView
                 android:id="@+id/tv_last_delivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,10 +69,10 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@drawable/rounded_green_button"
+        android:clickable="false"
         android:fontFamily="@font/noto_sans"
         android:gravity="center_horizontal|center_vertical"
         android:lines="1"
-        android:clickable="false"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="@string/select"

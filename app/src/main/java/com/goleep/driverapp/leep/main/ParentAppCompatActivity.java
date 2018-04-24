@@ -15,13 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uihelpers.AlertDialogHelper;
 import com.goleep.driverapp.interfaces.NetworkChangeListener;
 import com.goleep.driverapp.interfaces.OnPermissionResult;
@@ -79,7 +79,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     }
 
     protected void setToolbarLeftIcon(int resId){
-        CustomButton leftToolbarButton = findViewById(R.id.left_toolbar_button);
+        Button leftToolbarButton = findViewById(R.id.left_toolbar_button);
         leftToolbarButton.setVisibility(View.VISIBLE);
         leftToolbarButton.setOnClickListener(this);
         Drawable leftButtonDrawable = getResources().getDrawable(resId);
@@ -88,14 +88,14 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
 
     protected void setTitleIconAndText(String title, int resId){
         findViewById(R.id.title_layout).setVisibility(View.VISIBLE);
-        ((CustomTextView)findViewById(R.id.activity_title)).setText(title);
+        ((TextView)findViewById(R.id.activity_title)).setText(title);
         if(resId != -1) {
             findViewById(R.id.title_icon).setBackgroundResource(resId);
         }
     }
 
     protected void setToolbarRightText(String text){
-        CustomTextView leftToolbarButton = findViewById(R.id.right_toolbar_text);
+        TextView leftToolbarButton = findViewById(R.id.right_toolbar_text);
         leftToolbarButton.setText(text);
         leftToolbarButton.setVisibility(View.VISIBLE);
         leftToolbarButton.setOnClickListener(this);
@@ -140,11 +140,6 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     public void showNetworkRelatedDialogs(String message){
         alertDialogHelper = new AlertDialogHelper();
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
-    }
-
-    protected void showSuccessDialog(String message) {
-        alertDialogHelper = new AlertDialogHelper();
-        alertDialogHelper.showSuccessDialog(this, message);
     }
 
     public void showProgressDialog(){

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.goleep.driverapp.leep.info.HistoryActivity">
 
-    <include layout="@layout/toolbar_layout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/inner_dashboard_bahama_blue"/>
+        android:background="@color/inner_dashboard_bahama_blue" />
 
 
     <RadioGroup
@@ -30,6 +31,7 @@
             android:background="@drawable/radio_button_background"
             android:button="@null"
             android:checked="true"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/delivered_orders"
             android:textColor="@color/doTabTextColor"
@@ -42,6 +44,7 @@
             android:layout_weight="1"
             android:background="@drawable/radio_button_background"
             android:button="@null"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/returned_orders"
             android:textColor="@color/doTabTextColor"
@@ -52,7 +55,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/tab_light_grey"/>
+        android:background="@color/tab_light_grey" />
 
 
     <RadioGroup
@@ -69,6 +72,7 @@
             android:background="@drawable/radio_button_background"
             android:button="@null"
             android:checked="true"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/today"
             android:textColor="@color/doTabTextColor"
@@ -81,6 +85,7 @@
             android:layout_weight="1"
             android:background="@drawable/radio_button_background"
             android:button="@null"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/this_week"
             android:textColor="@color/doTabTextColor"
@@ -93,6 +98,7 @@
             android:layout_weight="1"
             android:background="@drawable/radio_button_background"
             android:button="@null"
+            android:fontFamily="@font/noto_sans"
             android:gravity="center"
             android:text="@string/this_month"
             android:textColor="@color/doTabTextColor"
@@ -103,13 +109,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/tab_light_grey"/>
+        android:background="@color/tab_light_grey" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/history_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@android:color/white"/>
+        android:background="@android:color/white" />
 
 </LinearLayout>

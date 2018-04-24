@@ -7,6 +7,8 @@ package com.goleep.driverapp.helpers.uimodels;
 public class Country {
     private  int id;
     private String name;
+    private String dialCode;
+    private String currencySymbol;
 
     public int getId() {
         return id;
@@ -22,5 +24,26 @@ public class Country {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDialCode() {
+        return dialCode;
+    }
+
+    public void setDialCode(String dialCode) {
+        this.dialCode = dialCode;
+    }
+
+    public String getCurrencySymbol() {
+        return currencySymbol;
+    }
+
+    public void setCurrencySymbol(String currencySymbol) {
+        this.currencySymbol = currencySymbol;
+    }
+
+    @Override
+    public String toString() {
+        return dialCode + " " + name;
     }
 }

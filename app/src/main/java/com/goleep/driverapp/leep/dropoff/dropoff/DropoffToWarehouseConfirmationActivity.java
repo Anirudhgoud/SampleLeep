@@ -7,14 +7,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ProductListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -35,13 +35,13 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
 
     private DropoffConfirmationViewModel dropoffConfirmationViewModel;
     @BindView(R.id.warehouse_info_text_view)
-    CustomTextView wareHouseInfoTextView;
+    TextView wareHouseInfoTextView;
     @BindView(R.id.map_button)
     LinearLayout mapButton;
     @BindView(R.id.from_text_view)
-    CustomTextView fromTextView;
+    TextView fromTextView;
     @BindView(R.id.confirm_button)
-    CustomButton confirmButton;
+    Button confirmButton;
     @BindView(R.id.rv_dropoff_list)
     LinearLayout dropoffItemsList;
 
@@ -125,7 +125,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
 
     private View orderHeaderView(String header) {
         View view = LayoutInflater.from(this).inflate(R.layout.orders_header_layout, dropoffItemsList, false);
-        CustomTextView textView = view.findViewById(R.id.orders_header_text_view);
+        TextView textView = view.findViewById(R.id.orders_header_text_view);
         textView.setText(header);
         return view;
     }
@@ -143,10 +143,10 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
     private View stockProductView(StockProductEntity stockProductEntity, int type) {
         View orderItemView = LayoutInflater.from(this).inflate(R.layout.do_details_list_item,
                 dropoffItemsList, false);
-        CustomTextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
-        CustomTextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
-        CustomTextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
-        CustomTextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
+        TextView tvProductName = orderItemView.findViewById(R.id.product_name_text_view);
+        TextView tvProductQuantity = orderItemView.findViewById(R.id.quantity_text_view);
+        TextView tvAmount = orderItemView.findViewById(R.id.amount_text_view);
+        TextView tvUnits = orderItemView.findViewById(R.id.units_text_view);
         CheckBox productCheckbox = orderItemView.findViewById(R.id.product_checkbox);
         productCheckbox.setVisibility(View.GONE);
         tvProductName.setText(stockProductEntity.getProductName() == null ? "" :
@@ -156,7 +156,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
         tvUnits.setText(String.valueOf(stockProductEntity.getQuantity(type)));
 
         double value = stockProductEntity.getQuantity(type) * stockProductEntity.getDefaultPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(),
+        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this),
                 String.format(Locale.getDefault(), "%.02f", value)));
         return orderItemView;
     }
@@ -210,6 +210,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         startActivity(intent);
     }
 }

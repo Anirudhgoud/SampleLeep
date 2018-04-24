@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.PaymentMethod;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
@@ -21,17 +21,17 @@ import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffCollectPaym
 
 public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity {
 
-    private CustomTextView tvCustomerName;
-    private CustomTextView tvStoreAddress;
-    private CustomTextView tvDoNumber;
-    private CustomTextView tvDate;
-    private CustomTextView tvTime;
-    private CustomTextView tvCurrentSales;
-    private CustomTextView tvOutstandingBalance;
-    private CustomTextView tvGrandTotal;
-    private CustomTextView tvPaymentCollected;
-    private CustomButton btContinue;
-    private CustomButton btViewItemList;
+    private TextView tvCustomerName;
+    private TextView tvStoreAddress;
+    private TextView tvDoNumber;
+    private TextView tvDate;
+    private TextView tvTime;
+    private TextView tvCurrentSales;
+    private TextView tvOutstandingBalance;
+    private TextView tvGrandTotal;
+    private TextView tvPaymentCollected;
+    private Button btContinue;
+    private Button btViewItemList;
 
     private DropOffCollectPaymentMethodViewModel viewModel;
 
@@ -111,10 +111,10 @@ public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity
     }
 
     private void updateSalesValues() {
-        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getCurrentSale())));
-        tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getOutstandingBalance())));
-        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getGrandTotal())));
-        tvPaymentCollected.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(viewModel.getPaymentCollected())));
+        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getCurrentSale())));
+        tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getOutstandingBalance())));
+        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getGrandTotal())));
+        tvPaymentCollected.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getPaymentCollected())));
     }
 
     private void showItemListDialog() {

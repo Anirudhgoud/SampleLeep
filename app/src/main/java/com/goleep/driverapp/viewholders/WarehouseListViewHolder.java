@@ -2,10 +2,9 @@ package com.goleep.driverapp.viewholders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.helpers.customfont.CustomButton;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.utils.StringUtils;
 
@@ -14,8 +13,8 @@ import com.goleep.driverapp.utils.StringUtils;
  */
 
 public class WarehouseListViewHolder extends RecyclerView.ViewHolder {
-    private CustomTextView customerNameTextView;
-    private CustomTextView addressTextView;
+    private TextView customerNameTextView;
+    private TextView addressTextView;
     private View.OnClickListener warehouseSelectionListener;
 
     public void setWarehouseSelectionListener(View.OnClickListener warehouseSelectionListener) {

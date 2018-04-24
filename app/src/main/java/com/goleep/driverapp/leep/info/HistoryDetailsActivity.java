@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ProductListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
@@ -32,19 +32,19 @@ import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
 public class HistoryDetailsActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.tv_customer_name)
-    CustomTextView customerNameTv;
+    TextView customerNameTv;
     @BindView(R.id.tv_store_address)
-    CustomTextView storeAddressTv;
+    TextView storeAddressTv;
     @BindView(R.id.tv_do_number)
-    CustomTextView doNumberTv;
+    TextView doNumberTv;
     @BindView(R.id.tv_date)
-    CustomTextView dateTv;
+    TextView dateTv;
     @BindView(R.id.tv_schedule)
-    CustomTextView timeTv;
+    TextView timeTv;
     @BindView(R.id.tv_items_value)
-    CustomTextView itemsTv;
+    TextView itemsTv;
     @BindView(R.id.tv_do_amount)
-    CustomTextView doAmountTv;
+    TextView doAmountTv;
     @BindView(R.id.order_items_recycler_view)
     RecyclerView productsList;
 
@@ -54,17 +54,21 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
     private UILevelNetworkCallback orderItemsCallBack = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            if(uiModels != null && uiModels.size() > 0){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(uiModels.get(0) instanceof OrderItemEntity)
-                            adapter.updateList((List<OrderItemEntity>)uiModels);
-                        else if(uiModels.get(0) instanceof ReturnOrderEntity)
-                            adapter.updateReturnOrdersList((List<ReturnOrderItem>)uiModels);
+            runOnUiThread(() -> {
+                dismissProgressDialog();
+                if (uiModels == null) {
+                    if (toLogout) {
+                        logoutUser();
+                    } else if (isDialogToBeShown){
+                        showNetworkRelatedDialogs(errorMessage);
                     }
-                });
-            }
+                }else if(uiModels.size() > 0){
+                    if(uiModels.get(0) instanceof OrderItemEntity)
+                        adapter.updateList((List<OrderItemEntity>)uiModels);
+                    else if(uiModels.get(0) instanceof ReturnOrderEntity)
+                        adapter.updateReturnOrdersList((List<ReturnOrderItem>)uiModels);
+                }
+            });
         }
     };
 
@@ -123,7 +127,7 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
                     ORDER_SERVER_DATE_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
             timeTv.setText(StringUtils.timeToDisplay(deliveryOrderEntity.getPreferredDeliveryTime()));
             itemsTv.setText(String.valueOf(deliveryOrderEntity.getDeliveryOrderItemsCount()));
-            doAmountTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue()));
+            doAmountTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue(), this));
         }
     }
 
@@ -137,7 +141,7 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
                    // "yyyy-MM-dd", "dd MMM yyyy"));
             //timeTv.setText(StringUtils.timeToDisplay(deliveryOrderEntity.getPreferredDeliveryTime()));
             itemsTv.setText(String.valueOf(returnOrderEntity.getReturnOrderItemsCount()));
-            doAmountTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue()));
+            doAmountTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), this));
         }
     }
 

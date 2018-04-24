@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.AppConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.interfaces.ItemCheckListener;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ProductEntity;
@@ -69,7 +69,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private CustomTextView productNameTv, productQuantityTv, amountTv, unitsTv;
+        private TextView productNameTv, productQuantityTv, amountTv, unitsTv;
         private CheckBox productCheckbox;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -86,7 +86,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             double value = doDetails.getQuantity() * doDetails.getPrice();
             productQuantityTv.setText(productEntity.getWeight()+" "+ productEntity.getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
-            amountTv.setText(AppUtils.userCurrencySymbol()+" "+String.valueOf(value));
+            amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
             productCheckbox.setVisibility(View.VISIBLE);
             productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

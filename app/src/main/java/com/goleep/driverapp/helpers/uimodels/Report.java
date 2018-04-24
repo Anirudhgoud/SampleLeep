@@ -4,18 +4,18 @@ package com.goleep.driverapp.helpers.uimodels;
  * Created by shubham on 23/03/2018.
  */
 
-public class ReportAttrribute {
-  private int totalSales;
-  private int cashCollected;
+public class Report {
+  private double totalSales;
+  private double cashCollected;
   private int units;
   private int returns;
   private int locations;
 
-    public int getTotalSales() {
+    public double getTotalSales() {
         return totalSales;
     }
 
-    public int getCashCollected() {
+    public double getCashCollected() {
         return cashCollected;
     }
 
@@ -31,11 +31,11 @@ public class ReportAttrribute {
         return locations;
     }
 
-    public void setTotalSales(int totalSales) {
+    public void setTotalSales(double totalSales) {
         this.totalSales = totalSales;
     }
 
-    public void setCashCollected(int cashCollected) {
+    public void setCashCollected(double cashCollected) {
         this.cashCollected = cashCollected;
     }
 

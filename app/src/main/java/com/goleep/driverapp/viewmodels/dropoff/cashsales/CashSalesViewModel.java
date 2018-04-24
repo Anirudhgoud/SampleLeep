@@ -42,7 +42,7 @@ public class CashSalesViewModel extends AndroidViewModel {
     }
 
     public LiveData<DeliveryOrderEntity> getDriverDo(){
-        driverDO = leepDatabase.deliveryOrderDao().getDriverDo();
+        driverDO = leepDatabase.deliveryOrderDao().getDriverDo(warehouseEntity.getId());
         return driverDO;
     }
 

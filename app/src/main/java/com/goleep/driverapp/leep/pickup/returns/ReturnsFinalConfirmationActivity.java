@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customfont.CustomTextView;
 import com.goleep.driverapp.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
@@ -32,10 +31,8 @@ import com.goleep.driverapp.leep.main.HomeActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
-import com.goleep.driverapp.utils.ListUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
-import com.goleep.driverapp.viewmodels.dropoff.cashsales.NewSalesConfirmationViewModel;
 import com.goleep.driverapp.viewmodels.pickup.returns.ReturnsFinalConfirmationViewModel;
 
 import java.io.File;
@@ -50,13 +47,13 @@ import butterknife.ButterKnife;
 public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
 
     @BindView(R.id.tv_customer_name)
-    CustomTextView tvCustomerName;
+    TextView tvCustomerName;
     @BindView(R.id.tv_store_address)
-    CustomTextView tvAddress;
+    TextView tvAddress;
     @BindView(R.id.tv_date)
-    CustomTextView tvCurrentDate;
+    TextView tvCurrentDate;
     @BindView(R.id.tv_time)
-    CustomTextView tvCurrentTime;
+    TextView tvCurrentTime;
     @BindView(R.id.bt_continue)
     Button btContinue;
     @BindView(R.id.bt_view_item_list)
@@ -82,11 +79,11 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
     @BindView(R.id.iv_signature)
     ImageView ivSignature;
     @BindView(R.id.tv_received_from_error)
-    CustomTextView tvReceivedFromError;
+    TextView tvReceivedFromError;
     @BindView(R.id.tv_contact_number_error)
-    CustomTextView tvContactNumberError;
+    TextView tvContactNumberError;
     @BindView(R.id.tv_signature_error)
-    CustomTextView tvSignatureError;
+    TextView tvSignatureError;
 
     private ReturnsFinalConfirmationViewModel viewModel;
 
@@ -97,17 +94,14 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
             if (uiModels == null) {
                 if (toLogout) {
                     logoutUser();
-                } else {
+                } else if (isDialogToBeShown){
                     showNetworkRelatedDialogs(errorMessage);
                 }
             } else if (uiModels.size() > 0) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        btContinue.setVisibility(View.VISIBLE);
-                        Location location = (Location) uiModels.get(0);
-                        onLocationDetailsFetched(location);
-                    }
+                runOnUiThread(() -> {
+                    btContinue.setVisibility(View.VISIBLE);
+                    Location location = (Location) uiModels.get(0);
+                    onLocationDetailsFetched(location);
                 });
             }
         }
@@ -207,7 +201,7 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
     }
 
     public String amountWithCurrencySymbol(Object amount) {
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(), String.valueOf(amount));
+        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 
     private void fetchLocationDetails(){
@@ -348,6 +342,7 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         startActivity(intent);
     }
 
