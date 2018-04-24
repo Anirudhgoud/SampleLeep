@@ -206,7 +206,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         setToolbarRightText(driverName);
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
         if (driverEntity.getImageUrl() != null) {
-            Glide.with(this).load("").apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
+            Glide.with(this).load(driverEntity.getImageUrl()).apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
         }
     }
 
