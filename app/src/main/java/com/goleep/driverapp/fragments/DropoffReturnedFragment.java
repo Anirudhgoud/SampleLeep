@@ -94,18 +94,8 @@ public class DropoffReturnedFragment extends Fragment {
     }
 
     private void setClickListeners() {
-<<<<<<< HEAD
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nextClickListener.onClick(view);
-=======
+
         nextButton.setOnClickListener(view -> {
-            if(getActivity() != null && !getActivity().isFinishing()){
-                ((DropoffActivity)getActivity()).setSelectedReturnableIds(
-                        (ArrayList<Integer>) stocksViewModel.getSelectedIds());
->>>>>>> 484de2fb2287440b37ba7961300588b444a2fa1c
-            }
             nextClickListener.onClick(view);
         });
     }
