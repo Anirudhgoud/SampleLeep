@@ -95,7 +95,8 @@ public class DropoffSellableItemsFragment extends Fragment {
 
     private void startConfirmationActivity() {
         DropoffActivity activity = ((DropoffActivity) getActivity());
-        if(activity != null && !activity.isFinishing()) {
+        if(activity != null && !activity.isFinishing() &&
+                (activity.getSelectedReturnableIds().size() > 0 ||stocksViewModel.getSelectedIds().size() > 0)) {
             Intent intent = new Intent(activity, DropoffToWarehouseConfirmationActivity.class);
             int warehouseId = getArguments().getInt(IntentConstants.WAREHOUSE_ID);
             intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseId);
