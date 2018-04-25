@@ -156,17 +156,18 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                View barcodeCaptureView = barcodeCapture.getView();
                 switch (tab.getPosition()) {
                     case 0:
                         barcodeCapture.onResume();
                         atvSearch.setVisibility(View.GONE);
-                        barcodeCapture.getView().setVisibility(View.VISIBLE);
+                        if (barcodeCaptureView != null) barcodeCaptureView.setVisibility(View.VISIBLE);
                         break;
 
                     case 1:
                         AppUtils.hideKeyboard(getCurrentFocus());
                         atvSearch.setVisibility(View.VISIBLE);
-                        barcodeCapture.getView().setVisibility(View.GONE);
+                        if (barcodeCaptureView != null) barcodeCaptureView.setVisibility(View.GONE);
                         break;
                 }
             }
