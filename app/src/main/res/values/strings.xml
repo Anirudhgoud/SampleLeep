@@ -181,6 +181,7 @@
     <!--Select Product screen-->
     <string name="item_already_added">Item already added in list.</string>
     <string name="product_not_available">Product not available in inventory.</string>
+    <string name="invalid_return_product">Product not available to return.</string>
 
     <!--Others-->
     <string name="no_delivery_orders">No orders to deliver.</string>

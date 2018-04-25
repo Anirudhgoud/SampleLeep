@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
@@ -285,7 +286,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
             resumeBarcodeScanning();
             return;
         }
-        addProductToSelectedList(viewModel.getProductFromStockProduct(stockProduct));
+        addProductToSelectedList(viewModel.getProductFromStockProduct(stockProduct, AppConstants.TYPE_SELLABLE));
     }
 
     private void addProductToSelectedList(Product product) {
@@ -380,7 +381,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         StockProductEntity stockProductEntity = (StockProductEntity) parent.getAdapter().getItem(position);
         if (stockProductEntity == null) return;
-        Product product = viewModel.getProductFromStockProduct(stockProductEntity);
+        Product product = viewModel.getProductFromStockProduct(stockProductEntity, AppConstants.TYPE_SELLABLE);
         addProductToSelectedList(product);
     }
 
