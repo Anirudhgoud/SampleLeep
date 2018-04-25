@@ -9,6 +9,7 @@ import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.WarehouseDetailsViewModel;
 import com.google.gson.Gson;
 
@@ -51,6 +52,7 @@ public class DropoffConfirmationViewModel extends WarehouseDetailsViewModel {
 
     public void confirmDropoff(final UILevelNetworkCallback dropoffConfirmCallBack) {
         Map<String, Object> requestBody = generateRequestMap();
+        LogUtils.debug("Request", requestBody.toString());
         NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(
                 getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true,
                 requestBody, null, null, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {

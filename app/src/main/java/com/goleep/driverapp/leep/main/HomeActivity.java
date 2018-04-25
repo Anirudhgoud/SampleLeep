@@ -50,10 +50,12 @@ import com.goleep.driverapp.leep.info.HistoryActivity;
 import com.goleep.driverapp.leep.info.ReportsActivity;
 import com.goleep.driverapp.leep.info.StocksActivity;
 import com.goleep.driverapp.services.room.entities.DriverEntity;
+import com.goleep.driverapp.utils.PathUtil;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.main.HomeViewModel;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -477,33 +479,26 @@ public class HomeActivity extends ParentAppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == START_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = intent.getData();
-            File sourceFile = new File(getRealPathFromURI(uri));
-            Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
-            viewModel.uploadProfileImage(sourceFile);
+            String realPath;
+            try {
+                realPath = PathUtil.getPath(this, uri);
+                if(realPath != null && !realPath.isEmpty()) {
+                    File sourceFile = new File(realPath);
+                    Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
+                    viewModel.uploadProfileImage(sourceFile);
+                }
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
         } else if (requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK) {
             viewModel.getStocks();
         }
-    }
-
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
     }
 
     private void findDashboardViewsAndSet(RelativeLayout layout, int mainText, int drawableIconBg,

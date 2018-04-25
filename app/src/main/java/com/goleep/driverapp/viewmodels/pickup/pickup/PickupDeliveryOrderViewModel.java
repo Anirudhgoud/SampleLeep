@@ -194,7 +194,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
             for (OrderItemEntity orderItemEntity : unselectedCashSaleItems) {
                 Map<String, Object> itemObject = new HashMap<>();
                 itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
-                itemObject.put("destroy", true);
+                itemObject.put("_destroy", true);
                 orderItemMapList.add(itemObject);
             }
             cashSalesObject.put("cash_sales_items", orderItemMapList);
