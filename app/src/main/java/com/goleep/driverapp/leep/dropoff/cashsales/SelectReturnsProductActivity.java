@@ -416,8 +416,10 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
         Product product = viewModel.getSelectedProduct();
         if (product == null) return;
         product.setReturnReason(returnReason);
-        if (!viewModel.isProductInScannedList(product.getId()))
+        if (!viewModel.isProductInScannedList(product.getId())) {
             viewModel.addToScannedProduct(product);
+            btConfirm.setVisibility(View.VISIBLE);
+        }
         returnsListAdapter.notifyDataSetChanged();
         hideUpdateQuantityView();
         getCurrentFocus().clearFocus();

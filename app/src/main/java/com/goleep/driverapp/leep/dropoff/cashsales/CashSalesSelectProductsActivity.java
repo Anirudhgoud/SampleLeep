@@ -369,8 +369,10 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         if (product == null) return;
         product.setQuantity(Integer.valueOf(etUnits.getText().toString()));
         if (productPrice != 0) product.setPrice(productPrice);
-        if (!viewModel.isProductInScannedList(product.getId()))
+        if (!viewModel.isProductInScannedList(product.getId())){
             viewModel.addToScannedProduct(product);
+            btConfirm.setVisibility(View.VISIBLE);
+        }
         cashSalesListAdapter.notifyDataSetChanged();
         hideUpdateQuantityView();
         getCurrentFocus().clearFocus();
