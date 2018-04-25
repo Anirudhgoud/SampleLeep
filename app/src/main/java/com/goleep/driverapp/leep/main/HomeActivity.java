@@ -230,6 +230,7 @@ public class HomeActivity extends ParentAppCompatActivity {
     public void onNewIntent(Intent intent){
         if(intent != null && intent.getBooleanExtra(IntentConstants.TASK_SUCCESSFUL, false)){
             viewPager.setCurrentItem(0);
+            viewModel.getStocks();
         }
     }
 
