@@ -118,7 +118,7 @@ public class ReportsActivity extends ParentAppCompatActivity {
         tvCashCollected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) report
                 .getCashCollected(), this) : "");
         tvLocation.setText(isReportAvailable ? String.valueOf(report.getLocations()) : "");
-        tvReturns.setText(isReportAvailable ? String.valueOf(report.getReturns()) + " " + getResources().getString(R.string.units) : "");
+        tvReturns.setText(isReportAvailable ? String.valueOf(report.getReturns()) : "");
         tvTotalSales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) report.
                 getTotalSales(), this) : "");
         tvUnits.setText(isReportAvailable ? StringUtils.numberToDisplay(report.getUnits()) : "");
