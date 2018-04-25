@@ -88,7 +88,7 @@
             android:layout_height="45dp"
             android:background="@color/green"
             android:fontFamily="@font/noto_sans"
-            android:text="@string/confirm"
+            android:text="@string/continue_text"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>

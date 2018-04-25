@@ -166,7 +166,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
         StockProductEntity stockProductEntity = (StockProductEntity) parent.getAdapter().getItem(position);
         if (stockProductEntity == null) return;
-        Product product = viewModel.getProductFromStockProduct(stockProductEntity);
+        Product product = viewModel.getProductFromStockProduct(stockProductEntity, AppConstants.TYPE_RETURNED);
         addProductToSelectedList(product);
     }
 
@@ -199,7 +199,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
                     case 1:
                         AppUtils.hideKeyboard(getCurrentFocus());
                         atvSearch.setVisibility(View.VISIBLE);
-                        if (barcodeCaptureView != null) barcodeCaptureView.setVisibility(View.VISIBLE);
+                        if (barcodeCaptureView != null) barcodeCaptureView.setVisibility(View.GONE);
                         break;
                 }
             }
@@ -255,15 +255,43 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
             }
             return true;
         });
-    }
+        etUnits.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Product selectedProduct = viewModel.getSelectedProduct();
+                if (selectedProduct == null) return;
+                int maxUnits = selectedProduct.getMaxQuantity();
+                String newUnitsText = etUnits.getText().toString();
+                if (newUnitsText.length() > 0) {
+                    int newUnits = Integer.valueOf(newUnitsText);
+                    boolean isValid = maxUnits == -1 ? newUnits != 0 : (newUnits <= maxUnits && newUnits != 0);
+                    invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
+                    btUpdate.setEnabled(isValid);
+                } else {
+                    btUpdate.setEnabled(false);
+                }
+            }
+        });
+    }
 
     private void fetchReturnReasons(){
         viewModel.fetchReturnReasons(returnReasonsCallback);
     }
+
     private void initialiseAutoCompleteTextView() {
         Drawable rightDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_search_inactive);
         atvSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
+        Customer customer = viewModel.getConsumerLocation();
+        if (customer == null) return;
+        int locationId = customer.getId();
         productSearchArrayAdapter = new ProductSearchArrayAdapter(this, new ArrayList());
         atvSearch.setAdapter(productSearchArrayAdapter);
         atvSearch.setOnItemClickListener(this);
@@ -274,16 +302,17 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 2) {
-                    List<StockProductEntity> list = viewModel.allProductsWithName(s.toString());
-                    productSearchArrayAdapter.updateData(list);
-                }
+                if (s.length() > 2) if (s.length() > 2) onProductSearch(s.toString(), locationId);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    private void onProductSearch(String text, int destinationLocationId){
+        viewModel.returnableProducts(destinationLocationId, text, null, productSearchCallback);
     }
 
     private void setClickListeners() {
@@ -300,13 +329,9 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     }
 
     private void onBarcodeDetected(String barcode) {
-        StockProductEntity stockProduct = viewModel.productsWithBarcode(barcode);
-        if (stockProduct == null) {
-            Toast.makeText(this, R.string.product_not_available, Toast.LENGTH_SHORT).show();
-            resumeBarcodeScanning();
-            return;
-        }
-        addProductToSelectedList(viewModel.getProductFromStockProduct(stockProduct));
+        Customer customer = viewModel.getConsumerLocation();
+        if (customer == null) return;
+        viewModel.returnableProducts(customer.getId(), null, barcode, productHavingBarcodeCallback);
     }
 
     private void addProductToSelectedList(Product product) {
@@ -319,38 +344,50 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
     }
 
     private void onUpdateButtonTap() {
-        Product product = viewModel.getSelectedProduct();
-        updateQuantity(product);
+        updateProductDetails();
     }
 
-    private void updateQuantity(Product product) {
-        Customer customer = viewModel.getConsumerLocation();
-        if (product != null && customer != null) {
-            showProgressDialog();
-            viewModel.getProductPricing(customer.getId(),
-                    product.getId(), productPricingCallback);
-        }
-    }
-
-    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
-        dismissProgressDialog();
+    private UILevelNetworkCallback productHavingBarcodeCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
         if (uiModels == null) {
             if (toLogout) {
                 logoutUser();
             } else if (isDialogToBeShown){
                 showNetworkRelatedDialogs(errorMessage);
-                updateProductDetails(0.0);
+                resumeBarcodeScanning();
             }
-        } else if (uiModels.size() > 0) {
-            Double productPrice = (Double) uiModels.get(0);
-            updateProductDetails(productPrice);
+        } else {
+            onProductReceived(uiModels);
         }
     });
 
-    private void updateProductDetails(Double productPrice) {
+    private void onProductReceived(List<?> uiModels){
+        if (uiModels.size() == 0) {
+            displayProductNotAvailableToast();
+            resumeBarcodeScanning();
+        }
+        else {
+            StockProductEntity product = (StockProductEntity) uiModels.get(0);
+            if (product == null){
+                displayProductNotAvailableToast();
+                resumeBarcodeScanning();
+                return;
+            }
+            addProductToSelectedList(viewModel.getProductFromStockProduct(product, AppConstants.TYPE_RETURNED));
+        }
+    }
+
+    private UILevelNetworkCallback productSearchCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        if (uiModels == null) {
+            if (toLogout) logoutUser();
+        } else {
+            List<StockProductEntity> list = (List<StockProductEntity>) uiModels;
+            productSearchArrayAdapter.updateData(list);
+        }
+    });
+
+    private void updateProductDetails() {
         Product product = viewModel.getSelectedProduct();
         try {
-            if (productPrice != 0) product.setPrice(productPrice);
             product.setQuantity(0);
             product.setReturnQuantity(Integer.valueOf(etUnits.getText().toString()));
             goToReturnReasons(product);
@@ -376,6 +413,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
             etUnits.requestFocus();
             tvProductName.setText(product.getProductName() + " " + product.getWeight() + product.getWeightUnit());
             etUnits.setText("");
+            etUnits.setHint(product.getMaxQuantity() == -1 ? "" :String.valueOf(product.getMaxQuantity()));
             btUpdate.setEnabled(true);
             updateQuantityLayout.setVisibility(View.VISIBLE);
             invalidQuantityError.setVisibility(View.INVISIBLE);
@@ -411,6 +449,10 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         if (productList.size() > 0) {
             gotoNextActivity(viewModel.getConsumerLocation(), productList);
         }
+    }
+
+    private void displayProductNotAvailableToast(){
+        Toast.makeText(this, R.string.invalid_return_product, Toast.LENGTH_SHORT).show();
     }
 
     private void gotoNextActivity(Customer consumerLocation, ArrayList<Product> productList) {
