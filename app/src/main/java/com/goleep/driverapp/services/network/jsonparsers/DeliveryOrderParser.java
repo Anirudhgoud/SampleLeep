@@ -47,7 +47,7 @@ public class DeliveryOrderParser {
         deliveryOrder.setType(jsonObject.optString("type"));
         deliveryOrder.setSourceLocationId(jsonObject.optInt("source_location_id"));
         deliveryOrder.setPreferredDeliveryDate(jsonObject.optString("preferred_delivery_date"));
-        deliveryOrder.setActualDeliveryDate(jsonObject.optString("actual_delivery_date"));
+        deliveryOrder.setActualDeliveryDate(jsonObject.optString("actual_delivery_at"));
         deliveryOrder.setPreferredDeliveryTime(jsonObject.optString("preferred_delivery_time"));
         deliveryOrder.setSourceLocationName(jsonObject.optString("source_location_name"));
         deliveryOrder.setDestinationLocationId(jsonObject.optInt("destination_location_id"));
