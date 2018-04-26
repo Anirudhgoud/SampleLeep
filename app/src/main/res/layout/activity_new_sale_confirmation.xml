@@ -103,7 +103,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/green"
         android:fontFamily="@font/noto_sans"
-        android:text="@string/continue_text"
+        android:text="@string/confirm"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
 

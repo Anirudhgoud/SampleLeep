@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 
-import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.Customer;
@@ -12,6 +11,7 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
+import com.goleep.driverapp.services.network.jsonparsers.StockProductParser;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
@@ -67,13 +67,13 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
         });
     }
 
-    public Product getProductFromStockProduct(StockProductEntity stockProduct) {
+    public Product getProductFromStockProduct(StockProductEntity stockProduct, int returnQuantityType) {
         if (stockProduct == null) return null;
         Product product = new Product();
         product.setId(stockProduct.getId());
         product.setProductName(stockProduct.getProductName());
         product.setPrice(stockProduct.getDefaultPrice());
-        product.setQuantity(stockProduct.getQuantity(AppConstants.TYPE_SELLABLE));
+        product.setQuantity(stockProduct.getQuantity(returnQuantityType));
         product.setMaxQuantity(product.getQuantity());
         product.setWeight(stockProduct.getWeight());
         product.setWeightUnit(stockProduct.getWeightUnit());
@@ -98,6 +98,32 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
         return false;
     }
 
+    public void returnableProducts(int destinationLocationId, String nameQuery, String barcode, UILevelNetworkCallback networkCallback) {
+        String url = UrlConstants.RETURNABLE_PRODUCTS_URL + "?destination_location_id=" + destinationLocationId;
+        if (nameQuery != null) url += "&name=" + nameQuery;
+        if (barcode != null) url += "&barcode=" + barcode;
+
+
+        NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), url, true, (type, response, errorMessage) -> {
+            switch (type) {
+                case NetworkConstants.SUCCESS:
+                    List<StockProductEntity> productList = new StockProductParser().productListByParsingJsonResponse(response);
+                    networkCallback.onResponseReceived(productList, false,
+                            null, false);
+                    break;
+
+                case NetworkConstants.FAILURE:
+                case NetworkConstants.NETWORK_ERROR:
+                    networkCallback.onResponseReceived(null, true, errorMessage, false);
+                    break;
+
+                default:
+                    networkCallback.onResponseReceived(null, false, null, false);
+                    break;
+            }
+        });
+    }
+
     // getters and setters
     public ArrayList<Product> getScannedProducts() {
         return scannedProducts;
@@ -117,13 +143,5 @@ public class CashSalesSelectProductsViewModel extends AndroidViewModel {
 
     public void setConsumerLocation(Customer consumerLocation) {
         this.consumerLocation = consumerLocation;
-    }
-
-    public List<StockProductEntity> allProductsWithName(String searchText) {
-        return leepDatabase.stockProductDao().allProductsWithName(searchText);
-    }
-
-    public StockProductEntity productsWithBarcode(String barcode) {
-        return leepDatabase.stockProductDao().productHavingBarcode(barcode);
     }
 }

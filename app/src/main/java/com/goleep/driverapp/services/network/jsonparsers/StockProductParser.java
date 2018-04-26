@@ -14,7 +14,7 @@ import java.util.List;
 
 public class StockProductParser {
 
-    public List<StockProductEntity> getStockProduct(JSONArray response) {
+    public List<StockProductEntity> getStockProducts(JSONArray response) {
         List<StockProductEntity> stockProductEntities = new ArrayList<>();
         JSONObject firstObject = response.optJSONObject(0);
         if(firstObject == null)
@@ -48,5 +48,36 @@ public class StockProductParser {
             stockProductEntities.add(stockProductEntity);
         }
         return stockProductEntities;
+    }
+
+    public List<StockProductEntity> productListByParsingJsonResponse(JSONArray jsonResponse) {
+        List<StockProductEntity> productList = new ArrayList<>();
+        if (jsonResponse == null) return productList;
+        JSONObject firstObj = (JSONObject) jsonResponse.opt(0);
+        if (firstObj == null) return productList;
+        JSONArray jsonArray = firstObj.optJSONArray("data");
+        if (jsonArray == null) return productList;
+        int listCount = jsonArray.length();
+        for (int i = 0; i < listCount; i++) {
+            JSONObject jsonObject = jsonArray.optJSONObject(i);
+            StockProductEntity product = productByParsingJsonObject(jsonObject);
+            if (product != null) productList.add(product);
+        }
+        return productList;
+    }
+
+
+    private StockProductEntity productByParsingJsonObject(JSONObject jsonObject) {
+        if (jsonObject == null) return null;
+        StockProductEntity product = new StockProductEntity();
+        product.setId(jsonObject.optInt("id"));
+        product.setProductName(jsonObject.optString("name"));
+        product.setWeight(jsonObject.optString("weight"));
+        product.setWeightUnit(jsonObject.optString("weight_unit"));
+        int quantity = jsonObject.optInt("returnable_quantity", -1);
+        product.setReturnableQuantity(quantity);
+        product.setMaxReturnableQuantity(quantity);
+        product.setDefaultPrice(jsonObject.optDouble("price"));
+        return product;
     }
 }

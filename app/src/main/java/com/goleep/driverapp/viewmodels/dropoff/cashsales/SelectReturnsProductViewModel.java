@@ -10,7 +10,6 @@ import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.ReturnReasonParser;
-import com.goleep.driverapp.services.room.entities.StockProductEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,31 +21,6 @@ public class SelectReturnsProductViewModel extends CashSalesSelectProductsViewMo
 
     public SelectReturnsProductViewModel(@NonNull Application application) {
         super(application);
-    }
-
-    public List<StockProductEntity> allProductsContainingName(String searchText) {
-        return leepDatabase.stockProductDao().allProductsWithName(searchText);
-    }
-
-    public StockProductEntity productsWithBarcode(String barcode) {
-        return leepDatabase.stockProductDao().productHavingBarcode(barcode);
-    }
-
-    //Getters and setters
-    public ArrayList<Product> getSelectedProducts() {
-        return selectedProducts;
-    }
-
-    public void setSelectedProducts(ArrayList<Product> selectedProducts) {
-        this.selectedProducts = selectedProducts;
-    }
-
-    public List<ReturnReason> getReturnReasons() {
-        return returnReasons;
-    }
-
-    public void setReturnReasons(List<ReturnReason> returnReasons) {
-        this.returnReasons = returnReasons;
     }
 
     public void fetchReturnReasons(final UILevelNetworkCallback reasonsCallback){
@@ -74,4 +48,20 @@ public class SelectReturnsProductViewModel extends CashSalesSelectProductsViewMo
                 });
     }
 
+    //Getters and setters
+    public ArrayList<Product> getSelectedProducts() {
+        return selectedProducts;
+    }
+
+    public void setSelectedProducts(ArrayList<Product> selectedProducts) {
+        this.selectedProducts = selectedProducts;
+    }
+
+    public List<ReturnReason> getReturnReasons() {
+        return returnReasons;
+    }
+
+    public void setReturnReasons(List<ReturnReason> returnReasons) {
+        this.returnReasons = returnReasons;
+    }
 }

@@ -37,8 +37,12 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
     TextView tvTime;
     @BindView(R.id.rv_return_items)
     RecyclerView returnList;
-    @BindView(R.id.confirm_button)
-    Button btConfirm;
+
+    @BindView(R.id.bt_skip_payment)
+    Button btSkipPayment;
+    @BindView(R.id.bt_collect_payment)
+    Button btCollectPayment;
+
     private ReturnsItemsConfirmationViewModel viewModel;
     private ProductListAdapter adapter;
 
@@ -67,7 +71,8 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
     }
 
     private void initListeners() {
-        btConfirm.setOnClickListener(this);
+        btCollectPayment.setOnClickListener(this);
+        btSkipPayment.setOnClickListener(this);
     }
 
     private void processIntent(){
@@ -102,14 +107,28 @@ public class ReturnItemsConfirmActivity extends ParentAppCompatActivity {
         startActivity(intent);
     }
 
+    private void onSkipPaymentTap(){
+        Double paymentCollected = 0.0;
+        Intent intent = new Intent(this, ReturnsFinalConfirmationActivity.class);
+        intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
+        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getCustomer());
+        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST,
+                (ArrayList<Product>) viewModel.getProducts());
+        startActivity(intent);
+    }
+
     @Override
     public void onClickWithId(int resourceId) {
         switch (resourceId){
             case R.id.left_toolbar_button:
                 finish();
                 break;
-            case R.id.confirm_button:
+            case R.id.bt_collect_payment:
                 goToNextScreen();
+                break;
+
+            case R.id.bt_skip_payment:
+                onSkipPaymentTap();
                 break;
         }
     }
