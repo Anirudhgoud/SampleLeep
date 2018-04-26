@@ -42,7 +42,7 @@ public class DeliveryOrdersListFragment extends Fragment {
     private RecyclerView doListRecyclerView;
     private RadioGroup rgFilterRadioGroup;
 
-    private DeliveryOrderClickEventListener deliveryOrderClickEventListener = orderId -> openDeliveryDetailsActivity(orderId);
+    private DeliveryOrderClickEventListener deliveryOrderClickEventListener = this::openDeliveryDetailsActivity;
 
     @Nullable
     @Override
@@ -72,8 +72,7 @@ public class DeliveryOrdersListFragment extends Fragment {
         doViewModel.getDeliveryOrders(DropOffDeliveryOrdersViewModel.TYPE_CUSTOMER,
                 DropOffDeliveryOrdersViewModel.STATUS_IN_TRANSIT).observe(
                 DeliveryOrdersListFragment.this, deliveryOrders -> {
-                    List<BaseListItem> baseListItems = new ArrayList<>();
-                    baseListItems.addAll(deliveryOrders);
+                    List<BaseListItem> baseListItems = new ArrayList<>(deliveryOrders);
                     doListAdapter.updateList(baseListItems);
                 });
         doListRecyclerView.setAdapter(doListAdapter);

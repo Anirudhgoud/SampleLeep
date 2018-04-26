@@ -64,12 +64,7 @@ public class StocksActivity extends ParentAppCompatActivity {
     }
 
     private void initialiseRadioButtons() {
-        rgListType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                onRadioSelectionChange(checkedId);
-            }
-        });
+        rgListType.setOnCheckedChangeListener((group, checkedId) -> onRadioSelectionChange(checkedId));
     }
 
     private void onRadioSelectionChange(int checkedId) {

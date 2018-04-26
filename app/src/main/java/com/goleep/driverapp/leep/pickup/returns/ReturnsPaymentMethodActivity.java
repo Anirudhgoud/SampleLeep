@@ -115,7 +115,7 @@ public class ReturnsPaymentMethodActivity extends ParentAppCompatActivity {
         tvOutstandingBalance.setText(amountWithCurrencySymbol(outstandingBalance));
     }
 
-    public String amountWithCurrencySymbol(Object amount) {
+    private String amountWithCurrencySymbol(Object amount) {
         return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 

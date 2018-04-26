@@ -23,6 +23,7 @@ import static android.support.v4.app.ActivityCompat.shouldShowRequestPermissionR
  * Created by anurag on 4/4/18.
  */
 
+@SuppressWarnings("JavaDoc")
 public class PermissionHelper {
 
     private final String TAG = "PermissionHelper";
@@ -50,7 +51,7 @@ public class PermissionHelper {
 
     private void checkIfPermissionPresentInAndroidManifest() {
         for (String permission : permissions) {
-            if (hasPermission(permission) == false) {
+            if (!hasPermission(permission)) {
                 throw new RuntimeException("Permission (" + permission + ") Not Declared in manifest");
             }
         }
@@ -58,7 +59,7 @@ public class PermissionHelper {
 
     public void request(PermissionCallback permissionCallback) {
         this.mPermissionCallback = permissionCallback;
-        if (checkSelfPermission(permissions) == false) {
+        if (!checkSelfPermission(permissions)) {
             showRational = shouldShowRational(permissions);
             if (activity != null)
                 ActivityCompat.requestPermissions(activity, filterNotGrantedPermission(permissions), REQUEST_CODE);
@@ -76,7 +77,7 @@ public class PermissionHelper {
         if (requestCode == REQUEST_CODE) {
             boolean denied = false;
             int i = 0;
-            ArrayList<String> grantedPermissions = new ArrayList<String>();
+            ArrayList<String> grantedPermissions = new ArrayList<>();
             for (int grantResult : grantResults) {
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
                     denied = true;

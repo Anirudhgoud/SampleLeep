@@ -3,7 +3,6 @@ package com.goleep.driverapp.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -80,9 +79,7 @@ public class AppUtils {
             return false;
         else {
             final String PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-            if (strEmail.matches(PATTERN))
-                return true;
-            return false;
+            return strEmail.matches(PATTERN);
         }
     }
 }

@@ -128,7 +128,9 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         if(connectivityChangeReceiver != null){
             try{
                 unregisterReceiver(connectivityChangeReceiver);
-            }catch(IllegalArgumentException e){}
+            }catch(IllegalArgumentException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -171,12 +173,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
             Vector<AlertDialog> dialogs = alertDialogHelper.getDialogs();
             for (final AlertDialog dialog : dialogs){
                 if (dialog != null) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            dialog.dismiss();
-                        }
-                    });
+                    runOnUiThread(dialog::dismiss);
                 }
             }
             alertDialogHelper = null;

@@ -96,13 +96,10 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         double value = stockProductEntity.getQuantity(productType) * stockProductEntity.getDefaultPrice();
         tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(value)));
         productCheckbox.setChecked(stockProductEntity.isSelected());
-        productCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deliveryOrderItemEventListener.onCheckboxTap(
-                        stockProductEntity.getId(), productCheckbox.isChecked());
-                productCheckListener.onItemChecked(stockProductEntity, productCheckbox.isChecked(), position);
-            }
+        productCheckbox.setOnClickListener(view -> {
+            deliveryOrderItemEventListener.onCheckboxTap(
+                    stockProductEntity.getId(), productCheckbox.isChecked());
+            productCheckListener.onItemChecked(stockProductEntity, productCheckbox.isChecked(), position);
         });
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(
                 stockProductEntity.getId(), stockProductEntity.getMaxQuantity(productType)));

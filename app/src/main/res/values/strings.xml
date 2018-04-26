@@ -6,13 +6,11 @@
     <string name="log_in_text">Log In</string>
     <string name="forgot_password"><u>Forgot Password?</u></string>
     <string name="password_hint">Password</string>
-    <string name="edit">Edit</string>
     <string name="sign_out">Sign Out</string>
     <string name="email">Email</string>
     <string name="submit">Submit</string>
     <string name="list">List</string>
     <string name="map">Map</string>
-    <string name="forgot_password_success">Email submitted successfully</string>
     <string name="pickup">Pick Up</string>
     <string name="dropoff">Drop Off</string>
     <string name="information">Information</string>
@@ -20,11 +18,8 @@
     <string name="payment_collected">Payment Collected</string>
     <string name="locations">Locations</string>
     <string name="contact_number">Contact Number</string>
-    <string name="address">Address</string>
     <string name="driver_licence_number">Driver Licence No.</string>
     <string name="vehicle_reg_no">Vehicle Registration No.</string>
-    <string name="employee_no">Employee No.</string>
-    <string name="india_code">+91</string>
 
     <string name="delivery_order">Delivery Order</string>
     <string name="cash_sales">Cash Sales</string>
@@ -66,17 +61,12 @@
 
     <!--Dropoff-->
     <string name="dropoff_stock">Drop Off</string>
-    <string name="sellable_stocks">Sellable Stocks</string>
     <string name="to">To:</string>
     <string name="confirm_dropoff">Confirm Drop Off</string>
-    <string name="dropoff_success">Drop Items Updated Successfully</string>
 
     <!--Reports-->
     <string name="reports">Reports</string>
     <string name="total_sales">Total Sales</string>
-    <string name="kms_travelled">Kms Travelled</string>
-    <string name="units_delivered">Units Delivered</string>
-    <string name="sales">Sales</string>
     <string name="returns">Returns</string>
     <string name="today">Today</string>
     <string name="this_week">This Week</string>
@@ -180,7 +170,6 @@
     <string name="postal_code">Postal Code</string>
     <string name="address_line_1">Address Line 1</string>
     <string name="address_line_2">Address Line 2</string>
-    <string name="floor">Floor</string>
     <string name="city">City</string>
     <string name="state">State</string>
     <string name="country">Country</string>
@@ -188,7 +177,6 @@
     <!--Map-->
     <string name="map_key">AIzaSyAq9pi62Es_ElwauRwDV6ZvW912wjghpHo</string>
     <string name="map_drag_drop">Drag &amp; drop the pin to get the address</string>
-    <string name="camera_permission_denied">Camera Permission denied.</string>
 
     <!--Select Product screen-->
     <string name="item_already_added">Item already added in list.</string>

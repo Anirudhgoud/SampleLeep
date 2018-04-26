@@ -1,10 +1,6 @@
 package com.goleep.driverapp.services.printer;
 
 
-import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Message;
-
 import com.ngx.BluetoothPrinter;
 
 /**

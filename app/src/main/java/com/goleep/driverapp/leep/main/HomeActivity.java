@@ -81,8 +81,8 @@ public class HomeActivity extends ParentAppCompatActivity {
     private RelativeLayout relativeLayout_drop_off_cardview;
     private RelativeLayout relativeLayout_information_cardview;
 
-    final int START_GALLERY_REQUEST_CODE = 101;
-    final int START_PICKUP_ACTIVITY_CODE = 102;
+    private final int START_GALLERY_REQUEST_CODE = 101;
+    private final int START_PICKUP_ACTIVITY_CODE = 102;
 
     private View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
@@ -206,7 +206,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         setToolbarRightText(driverName);
         view.findViewById(R.id.edit_profile_pic_layout).setOnClickListener(this);
         if (driverEntity.getImageUrl() != null) {
-            Glide.with(this).load(driverEntity.getImageUrl()).apply(new RequestOptions().circleCrop().placeholder(R.drawable.profile_image_placeholder)).into(profileImage);
+            Glide.with(this).load(driverEntity.getImageUrl()).apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
         }
     }
 
@@ -484,7 +484,7 @@ public class HomeActivity extends ParentAppCompatActivity {
         if (requestCode == START_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = intent.getData();
             File sourceFile = new File(getRealPathFromURI(uri));
-            Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().placeholder(R.drawable.profile_image_placeholder)).into(profileImage);
+            Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
             viewModel.uploadProfileImage(sourceFile);
         } else if (requestCode == START_PICKUP_ACTIVITY_CODE && resultCode == Activity.RESULT_OK) {
             viewModel.getStocks();

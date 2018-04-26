@@ -12,7 +12,6 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.helpers.customviews.CustomMarkerView;
 import com.goleep.driverapp.helpers.uimodels.BaseListItem;
 import com.goleep.driverapp.helpers.uimodels.Distance;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DistanceMatrixResponseParser;
@@ -24,8 +23,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,21 +47,18 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
                 MapUtils.generateDistanceMatrixUrl(getOrigins(currentLocation),
                         getDestinations(deliveryOrders), getApplication()),
-                false, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                List<Distance> timeToReachList = new DistanceMatrixResponseParser().
-                                        parseDistanceMatrixResponse(response.optJSONObject(0));
-                                timeToReachCallback.onResponseReceived(timeToReachList, false,
-                                        null, false);
-                                break;
+                false, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            List<Distance> timeToReachList = new DistanceMatrixResponseParser().
+                                    parseDistanceMatrixResponse(response.optJSONObject(0));
+                            timeToReachCallback.onResponseReceived(timeToReachList, false,
+                                    null, false);
+                            break;
 
-                            default:
-                                timeToReachCallback.onResponseReceived(null, false, null, false);
-                                break;
-                        }
+                        default:
+                            timeToReachCallback.onResponseReceived(null, false, null, false);
+                            break;
                     }
                 });
     }
@@ -155,9 +149,7 @@ public class DropOffDeliveryOrdersViewModel extends DeliveryOrderViewModel {
                 Distance distance = distances.get(i);
                 deliveryOrder.setDistanceFromCurrentLocation(distance);
             }
-            List<BaseListItem> baseListItems = new ArrayList<>();
-            baseListItems.addAll(deliveryOrders);
-            return baseListItems;
+            return new ArrayList<>(deliveryOrders);
         }
         return null;
     }

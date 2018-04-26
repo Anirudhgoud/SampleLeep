@@ -253,11 +253,11 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, totalCurrentSales, outstandingBalance)));
     }
 
-    public String amountWithCurrencySymbol(Object amount){
+    private String amountWithCurrencySymbol(Object amount){
         return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
     }
 
-    UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+    private UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
         dismissProgressDialog();
         if (uiModels == null) {
             if (toLogout) {

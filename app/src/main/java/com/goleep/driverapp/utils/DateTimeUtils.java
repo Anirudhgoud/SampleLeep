@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by anurag on 19/02/18.
@@ -15,12 +16,12 @@ public class DateTimeUtils {
 
     }
 
-    public static final DateFormat ORDER_SERVER_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    public static final DateFormat ORDER_DISPLAY_DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy");
-    public static final DateFormat ORDER_DISPLAY_DATE_FORMAT_COMMA = new SimpleDateFormat("dd MMM, yyyy");
-    public static final DateFormat REQUEST_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-    public static final DateFormat TWENTY_FOUR_HOUR_TIME_FORMAT = new SimpleDateFormat("HH:mm");
-    public static final DateFormat TWELVE_HOUR_TIME_FORMAT = new SimpleDateFormat("hh:mma");
+    public static final DateFormat ORDER_SERVER_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    public static final DateFormat ORDER_DISPLAY_DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    public static final DateFormat ORDER_DISPLAY_DATE_FORMAT_COMMA = new SimpleDateFormat("dd MMM, yyyy", Locale.getDefault());
+    public static final DateFormat REQUEST_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    public static final DateFormat TWENTY_FOUR_HOUR_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    public static final DateFormat TWELVE_HOUR_TIME_FORMAT = new SimpleDateFormat("hh:mma", Locale.getDefault());
 
     public static String convertdDate(String dateString, DateFormat fromFormat, DateFormat toFormat) {
         if (dateString == null) return "-";

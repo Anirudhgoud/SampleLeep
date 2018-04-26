@@ -6,15 +6,12 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.ReturnOrderParser;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DeliveryOrderViewModel;
-
-import org.json.JSONArray;
 
 import java.util.List;
 
@@ -58,26 +55,23 @@ public class HistoryViewModel extends DeliveryOrderViewModel {
             this.endDate = endDate;
         }
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), url,
-                true, new NetworkAPICallback() {
-            @Override
-            public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                switch (type){
-                    case NetworkConstants.SUCCESS:
-                        ReturnOrderParser parser = new ReturnOrderParser();
-                        List<ReturnOrderEntity> entities = parser.parserReturnOrderResponse(response);
-                        leepDatabase.returnOrderDao().updateAllDeliveryOrders(entities);
-                        doNetworkCallback.onResponseReceived(entities, false, null, false);
-                        break;
-                    case NetworkConstants.UNAUTHORIZED:
-                        doNetworkCallback.onResponseReceived(null, false, null, true);
-                        break;
-                    case NetworkConstants.NETWORK_ERROR:
-                    case NetworkConstants.FAILURE:
-                        doNetworkCallback.onResponseReceived(null, true, errorMessage, true);
-                        break;
-                }
-            }
-        });
+                true, (type, response, errorMessage) -> {
+                    switch (type){
+                        case NetworkConstants.SUCCESS:
+                            ReturnOrderParser parser = new ReturnOrderParser();
+                            List<ReturnOrderEntity> entities = parser.parserReturnOrderResponse(response);
+                            leepDatabase.returnOrderDao().updateAllDeliveryOrders(entities);
+                            doNetworkCallback.onResponseReceived(entities, false, null, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            doNetworkCallback.onResponseReceived(null, false, null, true);
+                            break;
+                        case NetworkConstants.NETWORK_ERROR:
+                        case NetworkConstants.FAILURE:
+                            doNetworkCallback.onResponseReceived(null, true, errorMessage, true);
+                            break;
+                    }
+                });
     }
 
 

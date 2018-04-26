@@ -31,7 +31,7 @@ public class LocationHelper implements OnSuccessListener<Location>, OnFailureLis
 
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            if (locationResult == null) return;
+            if (locationResult == null || locationChangeListener == null) return;
             for (Location location : locationResult.getLocations()) {
                 locationChangeListener.onLocationUpdateReceived(location);
             }
@@ -76,15 +76,11 @@ public class LocationHelper implements OnSuccessListener<Location>, OnFailureLis
 
     @Override
     public void onSuccess(Location location) {
-        if (locationChangeListener != null) {
-            locationChangeListener.onLastKnownLocationReceived(location);
-        }
+        if (locationChangeListener != null) locationChangeListener.onLastKnownLocationReceived(location);
     }
 
     @Override
     public void onFailure(@NonNull Exception e) {
-        if (locationChangeListener != null) {
-            locationChangeListener.onLastKnownLocationError(e.getMessage());
-        }
+        if (locationChangeListener != null) locationChangeListener.onLastKnownLocationError(e.getMessage());
     }
 }

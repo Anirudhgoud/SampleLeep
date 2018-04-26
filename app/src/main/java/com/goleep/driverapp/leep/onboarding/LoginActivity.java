@@ -35,9 +35,9 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends ParentAppCompatActivity implements EditTextListener, AdapterView.OnItemSelectedListener {
 
-    public static final int PHONE_NUMBER_LENGTH = 10;
-    public static final int PASSWORD_MAX_LENGTH = 15;
-    public static final int PASSWORD_MIN_LENGTH = 8;
+    private final int PHONE_NUMBER_LENGTH = 10;
+    private final int PASSWORD_MAX_LENGTH = 15;
+    private final int PASSWORD_MIN_LENGTH = 8;
 
 
     private LoginViewModel loginViewModel;
@@ -131,13 +131,11 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private boolean isValidUsernamePassword() {
         final String PATTERN = ".*[A-Za-z0-9]+.*";
-        if (phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
+        return phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
                 !passwordEditText.getText().toString().isEmpty() &&
                 passwordEditText.getText().toString().length() >= PASSWORD_MIN_LENGTH &&
                 passwordEditText.getText().toString().length() <= PASSWORD_MAX_LENGTH &&
-                passwordEditText.getText().toString().matches(PATTERN))
-            return true;
-        return false;
+                passwordEditText.getText().toString().matches(PATTERN);
     }
 
     private void attachEditTextListeners() {
@@ -163,12 +161,12 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     @Override
     public void onTextChanged(int textLength) {
         if (textLength == PHONE_NUMBER_LENGTH) {
-            phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_correct, 0);
+            phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_valid, 0);
         } else {
             if (textLength == 0)
                 phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             else
-                phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_error, 0);
+                phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_invalid, 0);
         }
     }
 

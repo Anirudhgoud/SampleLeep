@@ -1,6 +1,5 @@
 package com.goleep.driverapp.leep.dropoff.cashsales;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -60,7 +59,8 @@ public class CashSalesActivity extends ParentAppCompatActivity {
         existingCustomerTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.existing_customer));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_existing_customer));
-        tabLayout.getTabAt(0).setCustomView(existingCustomerTab);
+        TabLayout.Tab tabExistingCustomer = tabLayout.getTabAt(0);
+        if (tabExistingCustomer != null) tabExistingCustomer.setCustomView(existingCustomerTab);
 
         View newCustomerTab = LayoutInflater.from(this).inflate(R.layout.custom_tab_item_layout, null);
         textView = newCustomerTab.findViewById(R.id.title_text);
@@ -68,7 +68,8 @@ public class CashSalesActivity extends ParentAppCompatActivity {
         newCustomerTab.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         textView.setText(getString(R.string.new_customer));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_new_customer));
-        tabLayout.getTabAt(1).setCustomView(newCustomerTab);
+        TabLayout.Tab tabNewCustomer = tabLayout.getTabAt(1);
+        if (tabNewCustomer != null) tabNewCustomer.setCustomView(newCustomerTab);
     }
 
     @Override
@@ -78,11 +79,6 @@ public class CashSalesActivity extends ParentAppCompatActivity {
                 finish();
                 break;
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     class CashSalesPagerAdapter extends FragmentPagerAdapter {

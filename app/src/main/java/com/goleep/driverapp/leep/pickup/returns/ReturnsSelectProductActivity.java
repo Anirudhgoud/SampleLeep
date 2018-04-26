@@ -29,8 +29,8 @@ import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.adapters.ProductSearchArrayAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
-import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
+import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
@@ -105,12 +105,7 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         }
     };
 
-    private UILevelNetworkCallback returnReasonsCallback = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-
-        }
-    };
+    private UILevelNetworkCallback returnReasonsCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> { };
 
     private void pauseBarcodeScanning() {
         barcodeCapture.pause();
@@ -193,17 +188,18 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                View barcodeCaptureView = barcodeCapture.getView();
                 switch (tab.getPosition()) {
                     case 0:
                         barcodeCapture.onResume();
                         atvSearch.setVisibility(View.GONE);
-                        barcodeCapture.getView().setVisibility(View.VISIBLE);
+                        if (barcodeCaptureView != null) barcodeCaptureView.setVisibility(View.VISIBLE);
                         break;
 
                     case 1:
                         AppUtils.hideKeyboard(getCurrentFocus());
                         atvSearch.setVisibility(View.VISIBLE);
-                        barcodeCapture.getView().setVisibility(View.GONE);
+                        if (barcodeCaptureView != null) barcodeCaptureView.setVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -336,22 +332,20 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
         }
     }
 
-    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
-        runOnUiThread(() -> {
-            dismissProgressDialog();
-            if (uiModels == null) {
-                if (toLogout) {
-                    logoutUser();
-                } else if (isDialogToBeShown){
-                    showNetworkRelatedDialogs(errorMessage);
-                    updateProductDetails(0.0);
-                }
-            } else if (uiModels.size() > 0) {
-                Double productPrice = (Double) uiModels.get(0);
-                updateProductDetails(productPrice);
+    private UILevelNetworkCallback productPricingCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        dismissProgressDialog();
+        if (uiModels == null) {
+            if (toLogout) {
+                logoutUser();
+            } else if (isDialogToBeShown){
+                showNetworkRelatedDialogs(errorMessage);
+                updateProductDetails(0.0);
             }
-        });
-    };
+        } else if (uiModels.size() > 0) {
+            Double productPrice = (Double) uiModels.get(0);
+            updateProductDetails(productPrice);
+        }
+    });
 
     private void updateProductDetails(Double productPrice) {
         Product product = viewModel.getSelectedProduct();
@@ -403,7 +397,8 @@ public class ReturnsSelectProductActivity extends ParentAppCompatActivity implem
             viewModel.addToScannedProduct(product);
         cashSalesListAdapter.notifyDataSetChanged();
         hideUpdateQuantityView();
-        getCurrentFocus().clearFocus();
+        View currentFocus = getCurrentFocus();
+        if (currentFocus != null) currentFocus.clearFocus();
         AppUtils.hideKeyboard(etUnits);
     }
 

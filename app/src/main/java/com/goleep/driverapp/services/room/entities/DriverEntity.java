@@ -1,9 +1,5 @@
 package com.goleep.driverapp.services.room.entities;
 
-/**
- * Created by vishalm on 15/02/18.
- */
-
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

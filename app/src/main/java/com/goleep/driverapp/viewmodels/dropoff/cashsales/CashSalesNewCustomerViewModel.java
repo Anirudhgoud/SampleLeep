@@ -8,13 +8,9 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.Business;
 import com.goleep.driverapp.helpers.uimodels.Country;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.BusinessDataParser;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -84,42 +80,36 @@ public class CashSalesNewCustomerViewModel extends AndroidViewModel {
 
     public void getBusinessTypes(final UILevelNetworkCallback newBusinessCategoryCallBack) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.BUSINESS_CATEGORIES_URL,
-                null, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                List<Business> listBusinessData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(response);
-                                newBusinessCategoryCallBack.onResponseReceived(listBusinessData, false, null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                            case NetworkConstants.NETWORK_ERROR:
-                                newBusinessCategoryCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                newBusinessCategoryCallBack.onResponseReceived(null, false, errorMessage, true);
-                        }
+                null, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            List<Business> listBusinessData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(response);
+                            newBusinessCategoryCallBack.onResponseReceived(listBusinessData, false, null, false);
+                            break;
+                        case NetworkConstants.FAILURE:
+                        case NetworkConstants.NETWORK_ERROR:
+                            newBusinessCategoryCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            newBusinessCategoryCallBack.onResponseReceived(null, false, errorMessage, true);
                     }
                 });
     }
 
     public void getBusinessData(final UILevelNetworkCallback newBusinessCategoryCallBack) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.BUSINESSES_URL,
-                null, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                List<Business> lisGetBusinessesData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(response);
-                                newBusinessCategoryCallBack.onResponseReceived(lisGetBusinessesData, false, null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                            case NetworkConstants.NETWORK_ERROR:
-                                newBusinessCategoryCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                newBusinessCategoryCallBack.onResponseReceived(null, false, errorMessage, true);
-                        }
+                null, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            List<Business> lisGetBusinessesData = new BusinessDataParser().businessCategoryDataByParsingJsonResponse(response);
+                            newBusinessCategoryCallBack.onResponseReceived(lisGetBusinessesData, false, null, false);
+                            break;
+                        case NetworkConstants.FAILURE:
+                        case NetworkConstants.NETWORK_ERROR:
+                            newBusinessCategoryCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            newBusinessCategoryCallBack.onResponseReceived(null, false, errorMessage, true);
                     }
                 });
     }

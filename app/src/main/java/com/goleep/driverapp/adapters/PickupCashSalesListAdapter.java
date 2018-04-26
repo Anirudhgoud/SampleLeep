@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.goleep.driverapp.R;
@@ -88,14 +87,10 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
             productCheckbox.setVisibility(View.VISIBLE);
-            productCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if(isChecked)
-                        selectedCount++;
-                    else selectedCount = selectedCount == 0 ? 0 : --selectedCount;
-                    itemCheckListener.itemChecked(doDetails, isChecked);
-                }
+            productCheckbox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+                if(isChecked) selectedCount++;
+                else selectedCount = selectedCount == 0 ? 0 : --selectedCount;
+                itemCheckListener.itemChecked(doDetails, isChecked);
             });
         }
     }

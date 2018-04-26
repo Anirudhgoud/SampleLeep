@@ -94,15 +94,12 @@ public class DropoffReturnedFragment extends Fragment {
     }
 
     private void setClickListeners() {
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(getActivity() != null && !getActivity().isFinishing()){
-                    ((DropoffActivity)getActivity()).setSelectedReturnableIds(
-                            (ArrayList<Integer>) stocksViewModel.getSelectedIds());
-                }
-                nextClickListener.onClick(view);
+        nextButton.setOnClickListener(view -> {
+            if(getActivity() != null && !getActivity().isFinishing()){
+                ((DropoffActivity)getActivity()).setSelectedReturnableIds(
+                        (ArrayList<Integer>) stocksViewModel.getSelectedIds());
             }
+            nextClickListener.onClick(view);
         });
     }
 
@@ -120,12 +117,7 @@ public class DropoffReturnedFragment extends Fragment {
 
 
     private void initialiseUpdateQuantityView(){
-        etUnits.setKeyImeChangeListener(new CustomEditText.KeyImeChange() {
-            @Override
-            public void onDoneButtonPress() {
-                hideUpdateQuantityView();
-            }
-        });
+        etUnits.setKeyImeChangeListener(this::hideUpdateQuantityView);
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
                 hideUpdateQuantityView();

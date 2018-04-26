@@ -232,17 +232,14 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     public class ItemViewHolder extends ExpandableRecyclerAdapter.ViewHolder{
         private TextView productNameTv, productQuantityTv, amountTv, unitsTv;
         private CheckBox productCheckbox;
-        private CompoundButton.OnCheckedChangeListener checkListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                int doId = (int) compoundButton.getTag();
-                visibleItems.get(getLayoutPosition()).checkItem(isChecked);
-                if (isChecked)
-                    allItems.get(doPositionMapAllItems.get(doId)).addSelection(1);
-                else allItems.get(doPositionMapAllItems.get(doId)).addSelection(-1);
-                LogUtils.debug("Selection", allItems.get(doPositionMapAllItems.get(doId)).getSelectedCount()+"");
-                notifyDataSetChanged();
-            }
+        private CompoundButton.OnCheckedChangeListener checkListener = (compoundButton, isChecked) -> {
+            int doId = (int) compoundButton.getTag();
+            visibleItems.get(getLayoutPosition()).checkItem(isChecked);
+            if (isChecked)
+                allItems.get(doPositionMapAllItems.get(doId)).addSelection(1);
+            else allItems.get(doPositionMapAllItems.get(doId)).addSelection(-1);
+            LogUtils.debug("Selection", allItems.get(doPositionMapAllItems.get(doId)).getSelectedCount()+"");
+            notifyDataSetChanged();
         };
         public ItemViewHolder(View view) {
             super(view);

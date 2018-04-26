@@ -309,13 +309,7 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
 
 
     /*network callbacks*/
-    private UILevelNetworkCallback mapCallBack = new UILevelNetworkCallback() {
-        @Override
-        public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown,
-                                       String errorMessage, boolean toLogout) {
-            runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
-        }
-    };
+    private UILevelNetworkCallback mapCallBack = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> handleReportsResponse(uiModels, isDialogToBeShown, errorMessage, toLogout));
 
     private void handleReportsResponse(List<?> uiModels, boolean isDialogToBeShown,
                                        String errorMessage, boolean toLogout) {

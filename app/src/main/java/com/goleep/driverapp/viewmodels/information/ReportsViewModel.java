@@ -8,14 +8,12 @@ import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.constants.UrlConstants;
 import com.goleep.driverapp.helpers.uimodels.Report;
-import com.goleep.driverapp.interfaces.NetworkAPICallback;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.ReportsDataParser;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -53,28 +51,25 @@ public class ReportsViewModel extends AndroidViewModel {
     private void makeNetworkRequest(final UILevelNetworkCallback reportCallBack, String urlQureyGetParameterString) {
         LogUtils.debug("Reportslog", UrlConstants.REPORT_URL + urlQureyGetParameterString);
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(), UrlConstants.REPORT_URL + urlQureyGetParameterString,
-                null, true, new NetworkAPICallback() {
-                    @Override
-                    public void onNetworkResponse(int type, JSONArray response, String errorMessage) {
-                        switch (type) {
-                            case NetworkConstants.SUCCESS:
-                                JSONObject userObj = (JSONObject) response.opt(0);
-                                Report report = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
-                                List<Report> listReport = new ArrayList<>();
-                                listReport.add(report);
-                                reportCallBack.onResponseReceived(listReport, false, null, false);
-                                break;
-                            case NetworkConstants.FAILURE:
-                                reportCallBack.onResponseReceived(null, false, errorMessage, false);
-                                break;
-                            case NetworkConstants.NETWORK_ERROR:
-                                reportCallBack.onResponseReceived(null, true, errorMessage, false);
-                                break;
-                            case NetworkConstants.UNAUTHORIZED:
-                                reportCallBack.onResponseReceived(null, false, errorMessage, true);
-                        }
-
+                null, true, (type, response, errorMessage) -> {
+                    switch (type) {
+                        case NetworkConstants.SUCCESS:
+                            JSONObject userObj = (JSONObject) response.opt(0);
+                            Report report = new ReportsDataParser().reportsDataByParsingJsonResponse(userObj);
+                            List<Report> listReport = new ArrayList<>();
+                            listReport.add(report);
+                            reportCallBack.onResponseReceived(listReport, false, null, false);
+                            break;
+                        case NetworkConstants.FAILURE:
+                            reportCallBack.onResponseReceived(null, false, errorMessage, false);
+                            break;
+                        case NetworkConstants.NETWORK_ERROR:
+                            reportCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+                        case NetworkConstants.UNAUTHORIZED:
+                            reportCallBack.onResponseReceived(null, false, errorMessage, true);
                     }
+
                 });
 
     }

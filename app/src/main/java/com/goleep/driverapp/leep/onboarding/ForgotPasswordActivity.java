@@ -24,16 +24,10 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
     Button submitButton;
     private ForgotPasswordViewModel forgotPasswordViewModel;
 
-    private UILevelNetworkCallback submitEmailCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
-        runOnUiThread(() -> {
-            if (toLogout)
-                logoutUser();
-            else if (errorMessage == null) {
-                finish();
-            }
-        });
-
-    };
+    private UILevelNetworkCallback submitEmailCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
+        if (toLogout) logoutUser();
+        else if (errorMessage == null) finish();
+    });
 
     @Override
     public void doInitialSetup() {
@@ -74,12 +68,12 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
     @Override
     public void onTextChanged(int textLength) {
         if (AppUtils.isValidEmail(emailEditText.getText().toString())) {
-            emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_correct, 0);
+            emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_valid, 0);
         } else {
             if (textLength == 0)
                 emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             else
-                emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_error, 0);
+                emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_invalid, 0);
         }
     }
 }

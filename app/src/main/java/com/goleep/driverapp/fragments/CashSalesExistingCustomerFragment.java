@@ -103,7 +103,7 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
         atvSearch.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null);
         customerSearchListAdapter = new CustomerSearchArrayAdapter(getContext(), new ArrayList());
         atvSearch.setAdapter(customerSearchListAdapter);
-        atvSearch.setOnItemClickListener(this::onItemClick);
+        atvSearch.setOnItemClickListener(this);
         atvSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -230,25 +230,25 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
         FragmentActivity activity = getActivity();
         if(activity != null && !activity.isFinishing()){
             if(activity instanceof CashSalesActivity) {
-                gotoCashSalesSelectProductActivity(activity, customer, AppConstants.CASH_SALES_FLOW);
+                gotoSelectProductActivity(activity, customer, AppConstants.CASH_SALES_FLOW);
             } else if(activity instanceof ReturnsCustomerSelectActivity) {
-                gotoReturnsSelectProductActivity(activity, customer, AppConstants.RETURNS_FLOW) ;
+                gotoSelectProductActivity(activity, customer, AppConstants.RETURNS_FLOW) ;
             }
         }
     }
 
-    private void gotoReturnsSelectProductActivity(FragmentActivity activity, Customer customer, int flow) {
+    private void gotoSelectProductActivity(FragmentActivity activity, Customer customer, int flow) {
         if (customer == null) return;
-        Intent intent = new Intent(activity, ReturnsSelectProductActivity.class);
-        intent.putExtra(IntentConstants.FLOW, flow);
-        intent.putExtra(IntentConstants.CONSUMER_LOCATION, customer);
-        startActivity(intent);
-    }
-
-
-    private void gotoCashSalesSelectProductActivity(FragmentActivity activity, Customer customer, int flow) {
-        if (customer == null) return;
-        Intent intent = new Intent(activity, CashSalesSelectProductsActivity.class);
+        Intent intent = null;
+        switch (flow){
+            case AppConstants.CASH_SALES_FLOW:
+                intent = new Intent(activity, CashSalesSelectProductsActivity.class);
+                break;
+            case AppConstants.RETURNS_FLOW:
+                intent = new Intent(activity, ReturnsSelectProductActivity.class);
+                break;
+        }
+        if (intent == null) return;
         intent.putExtra(IntentConstants.FLOW, flow);
         intent.putExtra(IntentConstants.CONSUMER_LOCATION, customer);
         startActivity(intent);

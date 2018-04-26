@@ -9,17 +9,15 @@ import android.support.annotation.NonNull;
 import com.goleep.driverapp.constants.NetworkConstants;
 import com.goleep.driverapp.constants.SharedPreferenceKeys;
 import com.goleep.driverapp.constants.UrlConstants;
-import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.DeliveryOrderParser;
 import com.goleep.driverapp.services.room.AppDatabase;
 import com.goleep.driverapp.services.room.RoomDBService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
-import com.goleep.driverapp.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +55,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
     }
 
     public void setWarehouse(int warehouseId) {
-        warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);;
+        warehouseEntity = leepDatabase.warehouseDao().getWarehouse(warehouseId);
     }
 
     public WarehouseEntity getWarehouse() {
