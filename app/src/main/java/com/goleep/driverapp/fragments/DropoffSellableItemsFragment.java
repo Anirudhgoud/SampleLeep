@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
@@ -95,20 +96,23 @@ public class DropoffSellableItemsFragment extends Fragment {
 
     private void startConfirmationActivity() {
         DropoffActivity activity = ((DropoffActivity) getActivity());
-        if(activity != null && !activity.isFinishing() &&
-                (activity.getSelectedReturnableIds().size() > 0 ||stocksViewModel.getSelectedIds().size() > 0)) {
-            Intent intent = new Intent(activity, DropoffToWarehouseConfirmationActivity.class);
-            int warehouseId = getArguments().getInt(IntentConstants.WAREHOUSE_ID);
-            intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseId);
-            if (activity.getSelectedReturnableIds().size() > 0) {
-                intent.putIntegerArrayListExtra(IntentConstants.RETURNABLE,
-                        activity.getSelectedReturnableIds());
+        if(activity != null && !activity.isFinishing()) {
+            if(activity.getSelectedReturnableIds().size() > 0 ||stocksViewModel.getSelectedIds().size() > 0) {
+                Intent intent = new Intent(activity, DropoffToWarehouseConfirmationActivity.class);
+                int warehouseId = getArguments().getInt(IntentConstants.WAREHOUSE_ID);
+                intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseId);
+                if (activity.getSelectedReturnableIds().size() > 0) {
+                    intent.putIntegerArrayListExtra(IntentConstants.RETURNABLE,
+                            activity.getSelectedReturnableIds());
+                }
+                if (stocksViewModel.getSelectedIds().size() > 0) {
+                    intent.putIntegerArrayListExtra(IntentConstants.SELLABLE,
+                            (ArrayList<Integer>) stocksViewModel.getSelectedIds());
+                }
+                startActivityForResult(intent, 101);
+            } else {
+                Toast.makeText(activity, activity.getString(R.string.no_item_selected), Toast.LENGTH_LONG).show();
             }
-            if (stocksViewModel.getSelectedIds().size() > 0) {
-                intent.putIntegerArrayListExtra(IntentConstants.SELLABLE,
-                        (ArrayList<Integer>) stocksViewModel.getSelectedIds());
-            }
-            startActivityForResult(intent, 101);
         }
     }
 

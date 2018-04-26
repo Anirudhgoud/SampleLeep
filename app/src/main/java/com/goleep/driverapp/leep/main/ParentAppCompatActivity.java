@@ -3,6 +3,7 @@ package com.goleep.driverapp.leep.main;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -142,6 +143,13 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     public void showNetworkRelatedDialogs(String message){
         alertDialogHelper = new AlertDialogHelper();
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
+    }
+
+    public void showConfirmationDialog(String title, String message,
+                                       DialogInterface.OnClickListener positive,
+                                       DialogInterface.OnClickListener negative){
+        alertDialogHelper = new AlertDialogHelper();
+        alertDialogHelper.showYesNoAlertDialog(this, title, message, positive, negative);
     }
 
     public void showProgressDialog(){
