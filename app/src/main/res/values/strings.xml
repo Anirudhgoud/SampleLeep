@@ -192,4 +192,7 @@
     <string name="no_delivery_orders">No orders to deliver.</string>
     <string name="no_dropoff_orders">No orders to drop off.</string>
     <string name="no_pickup_orders">No orders to pick up.</string>
+    <string name="no_stocks_available">No stocks in inventory.</string>
+    <string name="no_reports_available">Reports not available.</string>
+    <string name="no_history_available">No orders completed</string>
 </resources>
