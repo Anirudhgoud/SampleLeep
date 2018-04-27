@@ -34,6 +34,7 @@ public interface UrlConstants {
 
     //Returned Orders
     String RETURNED_ORDERS = BASE_URL + "/return_orders";
+    String DRIVER_RETURNED_ORDERS = BASE_URL + "/driver_return_orders";
 
     //PickupConfirmation
     String PICKUP_CONFIRMATION = DELIVERY_ORDERS_URL + "/in_transit";

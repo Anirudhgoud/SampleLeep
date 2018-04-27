@@ -37,6 +37,7 @@ public class ReturnOrderParser {
             returnOrderEntity.setRoNumber(roNumber);
             returnOrderEntity.setAssigneeName(jsonObject.optString("assignee_name"));
             returnOrderEntity.setStatus(jsonObject.optString("status"));
+            returnOrderEntity.setType(jsonObject.optString("type"));
             returnOrderEntity.setCreatedAt(jsonObject.optString("created_at"));
             returnOrderEntity.setSourceLocationName(jsonObject.optString("source_location_name"));
             returnOrderEntity.setDestinationLocationName(jsonObject.optString("destination_location_name"));

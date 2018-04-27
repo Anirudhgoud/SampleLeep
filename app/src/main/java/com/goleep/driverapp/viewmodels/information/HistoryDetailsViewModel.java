@@ -37,7 +37,7 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
         return leepDatabase.returnOrderDao().getReturnOrderEntity(roNUmber);
     }
 
-    public void fetchDoItems(final int doId, UILevelNetworkCallback doDetailsCallback){
+    public void fetchDoItems(final int doId, UILevelNetworkCallback orderItemsCallBack){
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
                 UrlConstants.DELIVERY_ORDERS_URL + "/" + doId, true,
                 (type, response, errorMessage) -> {
@@ -46,11 +46,17 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
                             OrderItemParser orderItemParser = new OrderItemParser();
                             List<OrderItemEntity> orderItems = orderItemParser.
                                     orderItemsByParsingJsonResponse(response, doId);
-                            doDetailsCallback.onResponseReceived(orderItems, false,
+                            orderItemsCallBack.onResponseReceived(orderItems, false,
                                     null, false);
                             break;
+
+                        case NetworkConstants.NETWORK_ERROR:
+                        case NetworkConstants.FAILURE:
+                            orderItemsCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+
                         case NetworkConstants.UNAUTHORIZED:
-                            doDetailsCallback.onResponseReceived(null, false,
+                            orderItemsCallBack.onResponseReceived(null, false,
                                     null, true);
                             break;
                     }
@@ -59,7 +65,7 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
 
     public void fetchRoItems(long orderId, UILevelNetworkCallback orderItemsCallBack) {
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication(),
-                UrlConstants.RETURNED_ORDERS + "/" + orderId, true, (type, response, errorMessage) -> {
+                UrlConstants.DRIVER_RETURNED_ORDERS + "/" + orderId, true, (type, response, errorMessage) -> {
                     switch (type){
                         case NetworkConstants.SUCCESS:
                             OrderItemParser orderItemParser = new OrderItemParser();
@@ -68,6 +74,12 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
                             orderItemsCallBack.onResponseReceived(orderItems, false,
                                     null, false);
                             break;
+
+                        case NetworkConstants.NETWORK_ERROR:
+                        case NetworkConstants.FAILURE:
+                            orderItemsCallBack.onResponseReceived(null, true, errorMessage, false);
+                            break;
+
                         case NetworkConstants.UNAUTHORIZED:
                             orderItemsCallBack.onResponseReceived(null, false,
                                     null, true);
