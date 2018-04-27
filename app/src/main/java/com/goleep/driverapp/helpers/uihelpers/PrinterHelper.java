@@ -25,7 +25,8 @@ public class PrinterHelper {
     private float cashSalesTotal = 0;
     private float returnsTotal = 0;
     public void printInvoice(DeliveryOrderEntity deliveryOrder,
-                             List<OrderItemEntity> products, List<Product> returnedProducts, BluetoothPrinter printer, String currencySymbol){
+                             List<OrderItemEntity> products, List<Product> returnedProducts,
+                             BluetoothPrinter printer, String currencySymbol, double paymentCollected){
         printer.setPrinterWidth(PrinterWidth.PRINT_WIDTH_48MM);
         TextPaint tp = new TextPaint();
         tp.setColor(Color.BLACK);
@@ -38,7 +39,17 @@ public class PrinterHelper {
         tp.setTypeface(Typeface.DEFAULT_BOLD);
         printer.addText("Total"+cashSalesTotal+"\n", Layout.Alignment.ALIGN_OPPOSITE, tp);
         tp.setTypeface(Typeface.DEFAULT);
-        printer.addText(seperator+"\n");
+        printer.addText(seperator+"\n\n");
+        if(returnedProducts != null) {
+            printer.addText(generateReturnProductsString(returnedProducts, currencySymbol));
+            printer.addText(seperator + "\n");
+            tp.setTypeface(Typeface.DEFAULT_BOLD);
+            printer.addText("Total" + returnsTotal + "\n", Layout.Alignment.ALIGN_OPPOSITE, tp);
+            tp.setTypeface(Typeface.DEFAULT);
+            printer.addText(seperator + "\n\n");
+        }
+        printer.addText("Payment Collected "+paymentCollected+"\n");
+        printer.addText(seperator+"\n\n");
         printer.print();
     }
 
@@ -69,33 +80,18 @@ public class PrinterHelper {
         return stringBuilder.toString();
     }
 
-    private String generateReturnProductsString(List<ReturnOrderItem> returnedProducts, String currencySymbol){
+    private String generateReturnProductsString(List<Product> returnedProducts, String currencySymbol){
         StringBuilder stringBuilder = new StringBuilder();
-        if(returnedProducts != null) {
-            for(ReturnOrderItem returnOrderEntity : returnedProducts){
-                returnsTotal += returnOrderEntity.getQuantity() * returnOrderEntity.getPrice();
-                stringBuilder.append(String.format("%-25s", returnOrderEntity.getProduct().getName())+"   "+
-                        String.format("%-15s", returnOrderEntity.getQuantity())+"   "+
-                        String.format("%-10s", currencySymbol+String.valueOf(returnOrderEntity.getQuantity() * returnOrderEntity.getPrice()))+"\n");
-                stringBuilder.append("("+returnOrderEntity.getProduct().getWeight()+returnOrderEntity.getProduct().getWeightUnit()+")"+"\n");
-            }
-
-
-            stringBuilder.append("\n"+"Returns"+"\n");
-            stringBuilder.append(seperator+"\n");
-            stringBuilder.append(String.format("%-30s", "Items") + "   " + String.format("%-5s", "Units") + "   " + String.format("%-10s", "Value")+"\n");
-            stringBuilder.append(seperator+"\n");
-            stringBuilder.append("Total"+"\n");
-            stringBuilder.append(seperator+"\n");
-            stringBuilder.append("Grand Total"+"\n");
-            stringBuilder.append("Returned"+"\n");
-            stringBuilder.append(seperator+"\n");
-        }
-        stringBuilder.append("Payment Collected"+"\n");
+        stringBuilder.append("\n"+"Returns"+"\n");
         stringBuilder.append(seperator+"\n");
-        stringBuilder.append("\n");
+        stringBuilder.append(String.format("%-45s", "Items")+"   "+String.format("%-15s", "Units")+"   "+String.format("%-10s", "Value")+"\n\n");
+        for(Product product : returnedProducts){
+            returnsTotal += product.getQuantity() * product.getPrice();
+            stringBuilder.append(String.format("%-25s", product.getProductName())+"   "+
+                    String.format("%-15s", product.getQuantity())+"   "+
+                    String.format("%-10s", currencySymbol+String.valueOf(product.getQuantity() * product.getPrice()))+"\n");
+            stringBuilder.append("("+product.getWeight()+product.getWeightUnit()+")"+"\n");
+        }
         return stringBuilder.toString();
     }
-
-
 }
