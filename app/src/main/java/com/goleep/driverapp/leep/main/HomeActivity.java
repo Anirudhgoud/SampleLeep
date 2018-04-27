@@ -121,16 +121,30 @@ public class HomeActivity extends ParentAppCompatActivity {
                     }
                     break;
                 case InnerDashboardUiModel.TAG_REPORTS:
-                    Intent reportsIntent = new Intent(HomeActivity.this, ReportsActivity.class);
-                    startActivity(reportsIntent);
+                    if (summary.getInformationOnReports() != 0){
+                        Intent reportsIntent = new Intent(HomeActivity.this, ReportsActivity.class);
+                        startActivity(reportsIntent);
+                    }else {
+                        Toast.makeText(HomeActivity.this, getString(R.string.no_reports_available), Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
                 case InnerDashboardUiModel.TAG_HISTORY:
-                    Intent historyIntent = new Intent(HomeActivity.this, HistoryActivity.class);
-                    startActivity(historyIntent);
+                    if (summary.getInformationOnHistory() != 0) {
+                        Intent historyIntent = new Intent(HomeActivity.this, HistoryActivity.class);
+                        startActivity(historyIntent);
+                    }else {
+                        Toast.makeText(HomeActivity.this, getString(R.string.no_history_available), Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case InnerDashboardUiModel.TAG_STOCKS:
-                    Intent stocksIntent = new Intent(HomeActivity.this, StocksActivity.class);
-                    startActivity(stocksIntent);
+                    if (summary.getInformationStocks() != 0){
+                        Intent stocksIntent = new Intent(HomeActivity.this, StocksActivity.class);
+                        startActivity(stocksIntent);
+                    }else {
+                        Toast.makeText(HomeActivity.this, getString(R.string.no_stocks_available), Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
                 case InnerDashboardUiModel.TAG_DROP_OFF:
                     if (summary.getDropOffToWarehouse() != 0) {
