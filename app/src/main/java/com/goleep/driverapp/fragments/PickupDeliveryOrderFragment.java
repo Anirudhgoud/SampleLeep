@@ -135,7 +135,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         if(doViewModel.getWarehouse() != null)
             warehouseId = doViewModel.getWarehouse().getId();
         doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null,
-                null, warehouseId);
+                null, warehouseId, null);
     }
 
     public void setItemSelectionListener(ItemCheckListener itemSelectionListener) {
