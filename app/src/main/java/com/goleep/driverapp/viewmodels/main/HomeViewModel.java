@@ -63,7 +63,7 @@ public class HomeViewModel extends AndroidViewModel {
                             DriverEntity driver =  driverDataParser.driverResponseByParsingJsonResponse(response);
                             if(driver != null){
                                 driverEntities.add(driver);
-                                leepDatabase.driverDao().insertDriver(driver);
+                                leepDatabase.driverDao().updateDriver(driver);
                             }
                             List<WarehouseEntity> warehouseEntities = driverDataParser.warehouseByParsingResponse(response);
                             if(warehouseEntities != null) {

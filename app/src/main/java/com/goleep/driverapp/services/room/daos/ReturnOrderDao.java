@@ -34,6 +34,6 @@ public abstract class ReturnOrderDao {
     public abstract void insertAllReturnOrders(List<ReturnOrderEntity> returnOrderEntities);
 
     @Query("SELECT * FROM ReturnOrderEntity WHERE roNumber = :roNumber")
-    public abstract ReturnOrderEntity getReturnOrderEntity(int roNumber);
+    public abstract ReturnOrderEntity getReturnOrderEntity(long roNumber);
 
 }

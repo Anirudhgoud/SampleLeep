@@ -22,6 +22,7 @@ public class DateTimeUtils {
     public static final DateFormat REQUEST_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     public static final DateFormat TWENTY_FOUR_HOUR_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
     public static final DateFormat TWELVE_HOUR_TIME_FORMAT = new SimpleDateFormat("hh:mma", Locale.getDefault());
+    public static final DateFormat RAILS_TIMESTAMP_FORMAT =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
 
     public static String convertdDate(String dateString, DateFormat fromFormat, DateFormat toFormat) {
         if (dateString == null) return "-";

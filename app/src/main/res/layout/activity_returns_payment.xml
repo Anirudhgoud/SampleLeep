@@ -12,7 +12,7 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bt_continue"
+        android:layout_above="@+id/confirm_button"
         android:layout_below="@+id/toolbar_container">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -124,16 +124,17 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/bt_continue"
+        android:id="@+id/confirm_button"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/green"
         android:fontFamily="@font/noto_sans"
-        android:text="@string/continue_text"
-        android:textColor="@android:color/white"
+        android:text="@string/confirm"
+        android:textColor="@color/white"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="visible" />
+
 
 </RelativeLayout>
 

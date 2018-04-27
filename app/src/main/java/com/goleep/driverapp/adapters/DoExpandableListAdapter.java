@@ -139,6 +139,19 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         }
     }
 
+    public boolean isPartialDoSelected() {
+        for(BaseListItem baseListItem:visibleItems){
+            if(baseListItem instanceof DeliveryOrderEntity){
+                int a = baseListItem.getSelectedCount();
+                int b = ((DeliveryOrderEntity) baseListItem).getDeliveryOrderItemsCount();
+                if(baseListItem.getSelectedCount() != 0 &&
+                        baseListItem.getSelectedCount() != ((DeliveryOrderEntity) baseListItem).getDeliveryOrderItemsCount())
+                    return true;
+            }
+        }
+        return false;
+    }
+
     public class HeaderViewHolder extends ExpandableRecyclerAdapter.HeaderViewHolder{
         TextView tvCustomerName;
         TextView tvStoreAddress;

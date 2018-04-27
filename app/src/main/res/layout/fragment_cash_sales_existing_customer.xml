@@ -14,6 +14,7 @@
         android:background="@drawable/rounded_rect_with_grey_border"
         android:fontFamily="@font/noto_sans"
         android:hint="@string/search_customer"
+        android:lines="1"
         android:padding="8dp"
         android:textColor="@color/doTabTextColor"
         android:textCursorDrawable="@null" />
