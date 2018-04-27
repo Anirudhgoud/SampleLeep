@@ -86,6 +86,8 @@
     <string name="returned_orders">Returned Orders</string>
     <string name="delivered_orders">Delivered Orders</string>
     <string name="ro_number">RO No:</string>
+    <string name="returned_to_warehouse">Returned to Warehouse</string>
+    <string name="picked_from_customer">Picked from Customer</string>
 
     <!--Collect Payment-->
     <string name="do_payment_title">DO > Payment</string>

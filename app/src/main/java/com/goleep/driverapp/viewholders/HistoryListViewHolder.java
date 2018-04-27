@@ -1,5 +1,6 @@
 package com.goleep.driverapp.viewholders;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +17,7 @@ import com.goleep.driverapp.utils.StringUtils;
 
 public class HistoryListViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView customerNameTv, doNumberTv, customerAddressTv, doValueTv, doLabelTv;
-    private Button detailsButton;
+    private TextView customerNameTv, doNumberTv, customerAddressTv, doValueTv, doLabelTv, tvOrdeTypeDescription;
     private View.OnClickListener detailsClickListener;
 
     public HistoryListViewHolder(View itemView) {
@@ -26,8 +26,8 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
         doNumberTv = itemView.findViewById(R.id.tv_do_number);
         customerAddressTv = itemView.findViewById(R.id.tv_store_address);
         doValueTv = itemView.findViewById(R.id.tv_amount);
-        detailsButton = itemView.findViewById(R.id.details_button);
         doLabelTv = itemView.findViewById(R.id.tv_do_number_label);
+        tvOrdeTypeDescription = itemView.findViewById(R.id.tv_order_type_description);
     }
 
     public void setDetailsClickListener(View.OnClickListener detailsClickListener) {
@@ -42,16 +42,39 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
         doValueTv.setText(StringUtils.amountToDisplay(deliveryOrderEntity.getTotalValue(), itemView.getContext()));
         itemView.setTag("type_do#"+deliveryOrderEntity.getId());
         itemView.setOnClickListener(detailsClickListener);
+        tvOrdeTypeDescription.setVisibility(View.GONE);
     }
 
     public void bind(ReturnOrderEntity returnOrderEntity) {
         customerNameTv.setText(returnOrderEntity.getCustomerName());
         doNumberTv.setText(String.valueOf(returnOrderEntity.getRoNumber()));
         doLabelTv.setText(itemView.getContext().getResources().getString(R.string.ro_number));
-        customerAddressTv.setText(StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(),
-                returnOrderEntity.getSourceAddressLine2()));
         doValueTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), itemView.getContext()));
         itemView.setTag("type_ro#"+returnOrderEntity.getRoNumber());
         itemView.setOnClickListener(detailsClickListener);
+        String type = returnOrderEntity.getType();
+        Context context = itemView.getContext();
+        if (context == null) return;
+        tvOrdeTypeDescription.setVisibility(View.VISIBLE);
+        String address = "";
+        String orderTypeDescription = "";
+        switch (type){
+            case "driver":
+                address = returnOrderEntity.getDestinationLocationName();
+                orderTypeDescription = context.getString(R.string.returned_to_warehouse);
+                break;
+            case "customer":
+                address = StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(),
+                        returnOrderEntity.getSourceAddressLine2());
+                orderTypeDescription = context.getString(R.string.picked_from_customer);
+                break;
+        }
+        if (address == null || address.isEmpty()){
+            customerAddressTv.setVisibility(View.GONE);
+        }else {
+            customerAddressTv.setVisibility(View.VISIBLE);
+            customerAddressTv.setText(address);
+        }
+        tvOrdeTypeDescription.setText(orderTypeDescription);
     }
 }
