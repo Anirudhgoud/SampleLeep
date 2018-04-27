@@ -1,12 +1,19 @@
 package com.goleep.driverapp.helpers.uihelpers;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Layout;
+import android.text.TextPaint;
+
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
+import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.ngx.BluetoothPrinter;
-import com.ngx.BtpCommands;
+import com.ngx.PrinterWidth;
 
 import java.util.List;
 
@@ -14,52 +21,80 @@ import java.util.List;
  * Created by vishalm on 14/04/18.
  */
 public class PrinterHelper {
+    private String seperator = "-------------------------------------------------------------";
+    private float cashSalesTotal = 0;
+    private float returnsTotal = 0;
     public void printInvoice(DeliveryOrderEntity deliveryOrder,
-                             List<OrderItemEntity> products, List<Product> returnedProducts, BluetoothPrinter printer){
-        printer.setPrintFontStyle(BtpCommands.FONT_STYLE_BOLD);
-        printer.setPrintFontSize(BtpCommands.FONT_SIZE_NORMAL);
-        printer.printText(trim(deliveryOrder.getCustomerName(), 40));
-        printer.printText(trim("DO No. "+deliveryOrder.getDoNumber(), 40));
-        printer.setPrintFontStyle(BtpCommands.FONT_SIZE_NORMAL);
-        printer.printText(StringUtils.getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2()));
-        printer.printText(deliveryOrder.getCity()+" ,"+deliveryOrder.getState()+" - "+deliveryOrder.getPincode());
-        printer.setPrintFontStyle(BtpCommands.FONT_STYLE_BOLD);
-        printer.printText(DateTimeUtils.currentTimeToDisplay()+" "+DateTimeUtils.currentDateToDisplay());
-        printer.printText("Current Sale");
-        printer.printText("----------------------------------------");
-        printer.printText(String.format("%-19s", "Items")+"   "+String.format("%-5s", "Units")+"   "+String.format("%-10s", "Value"));
-        printer.setPrintFontStyle(BtpCommands.FONT_SIZE_NORMAL);
-        for(OrderItemEntity orderItemEntity : products){
-            printer.printText(String.format("%-19s", orderItemEntity.getProduct().getName())+"   "+
-                    String.format("%-5s", orderItemEntity.getQuantity())+"   "+
-                    String.format("%-10s", String.valueOf(orderItemEntity.getQuantity() * orderItemEntity.getPrice())));
-            printer.printText("("+orderItemEntity.getProduct().getWeight()+orderItemEntity.getProduct().getWeightUnit()+")");
-        }
-
-        printer.printText("----------------------------------------");
-        printer.printText("Total");
-        printer.printText("----------------------------------------");
-        if(returnedProducts != null) {
-            printer.printText("Returns");
-            printer.printText("----------------------------------------");
-            printer.printText(String.format("%-19s", "Items") + "   " + String.format("%-5s", "Units") + "   " + String.format("%-10s", "Value"));
-            printer.printText("----------------------------------------");
-            printer.printText("Total");
-            printer.printText("----------------------------------------");
-            printer.printText("Grand Total");
-            printer.printText("Returned");
-            printer.printText("----------------------------------------");
-        }
-        printer.setPrintFontStyle(BtpCommands.FONT_STYLE_BOLD);
-        printer.printText("Payment Collected");
-        printer.setPrintFontStyle(BtpCommands.FONT_SIZE_NORMAL);
-        printer.printText("----------------------------------------");
+                             List<OrderItemEntity> products, List<Product> returnedProducts, BluetoothPrinter printer, String currencySymbol){
+        printer.setPrinterWidth(PrinterWidth.PRINT_WIDTH_48MM);
+        TextPaint tp = new TextPaint();
+        tp.setColor(Color.BLACK);
+        tp.setTextSize(18);
+        tp.setTypeface(Typeface.DEFAULT_BOLD);
+        printer.addText(trim(deliveryOrder.getCustomerName(), 40)+"\n", Layout.Alignment.ALIGN_NORMAL, tp);
+        tp.setTypeface(Typeface.DEFAULT);
+        printer.addText(generateString(deliveryOrder, products, currencySymbol), Layout.Alignment.ALIGN_NORMAL, tp);
+        printer.addText(seperator+"\n");
+        tp.setTypeface(Typeface.DEFAULT_BOLD);
+        printer.addText("Total"+cashSalesTotal+"\n", Layout.Alignment.ALIGN_OPPOSITE, tp);
+        tp.setTypeface(Typeface.DEFAULT);
+        printer.addText(seperator+"\n");
+        printer.print();
     }
 
     private String trim(String string, int maxLength) {
         if(string.length() <= maxLength)
             return string;
         return string.substring(0, maxLength);
+    }
+
+    private String generateString(DeliveryOrderEntity deliveryOrder, List<OrderItemEntity> products,
+                                  String currencySymbol){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(trim("DO No. "+deliveryOrder.getDoNumber(), 40)+"\n");
+        stringBuilder.append(StringUtils.getAddress(deliveryOrder.getDestinationAddressLine1(), deliveryOrder.getDestinationAddressLine2())+"\n");
+        if(deliveryOrder.getCity() != null && deliveryOrder.getState() != null && deliveryOrder.getPincode() != null)
+            stringBuilder.append(deliveryOrder.getCity()+" , "+deliveryOrder.getState()+" - "+deliveryOrder.getPincode()+"\n");
+        stringBuilder.append(DateTimeUtils.currentTimeToDisplay()+" "+DateTimeUtils.currentDateToDisplay()+"\n");
+        stringBuilder.append("\n"+"Current Sale"+"\n");
+        stringBuilder.append(seperator+"\n");
+        stringBuilder.append(String.format("%-45s", "Items")+"   "+String.format("%-15s", "Units")+"   "+String.format("%-10s", "Value")+"\n\n");
+        for(OrderItemEntity orderItemEntity : products){
+            cashSalesTotal += orderItemEntity.getQuantity() * orderItemEntity.getPrice();
+            stringBuilder.append(String.format("%-25s", orderItemEntity.getProduct().getName())+"   "+
+                    String.format("%-15s", orderItemEntity.getQuantity())+"   "+
+                    String.format("%-10s", currencySymbol+String.valueOf(orderItemEntity.getQuantity() * orderItemEntity.getPrice()))+"\n");
+            stringBuilder.append("("+orderItemEntity.getProduct().getWeight()+orderItemEntity.getProduct().getWeightUnit()+")"+"\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    private String generateReturnProductsString(List<ReturnOrderItem> returnedProducts, String currencySymbol){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(returnedProducts != null) {
+            for(ReturnOrderItem returnOrderEntity : returnedProducts){
+                returnsTotal += returnOrderEntity.getQuantity() * returnOrderEntity.getPrice();
+                stringBuilder.append(String.format("%-25s", returnOrderEntity.getProduct().getName())+"   "+
+                        String.format("%-15s", returnOrderEntity.getQuantity())+"   "+
+                        String.format("%-10s", currencySymbol+String.valueOf(returnOrderEntity.getQuantity() * returnOrderEntity.getPrice()))+"\n");
+                stringBuilder.append("("+returnOrderEntity.getProduct().getWeight()+returnOrderEntity.getProduct().getWeightUnit()+")"+"\n");
+            }
+
+
+            stringBuilder.append("\n"+"Returns"+"\n");
+            stringBuilder.append(seperator+"\n");
+            stringBuilder.append(String.format("%-30s", "Items") + "   " + String.format("%-5s", "Units") + "   " + String.format("%-10s", "Value")+"\n");
+            stringBuilder.append(seperator+"\n");
+            stringBuilder.append("Total"+"\n");
+            stringBuilder.append(seperator+"\n");
+            stringBuilder.append("Grand Total"+"\n");
+            stringBuilder.append("Returned"+"\n");
+            stringBuilder.append(seperator+"\n");
+        }
+        stringBuilder.append("Payment Collected"+"\n");
+        stringBuilder.append(seperator+"\n");
+        stringBuilder.append("\n");
+        return stringBuilder.toString();
     }
 
 

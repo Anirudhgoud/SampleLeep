@@ -1,9 +1,12 @@
 package com.goleep.driverapp.leep.dropoff.deliveryorders;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -29,6 +32,7 @@ import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.printer.PrinterService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
+import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
@@ -63,11 +67,39 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     private TextView tvReceivedFromError, tvContactNumberError, tvSignatureError;
 
     private DropOffPaymentConfirmationViewModel viewModel;
+    private BluetoothPrinter printer;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_drop_off_payment_confirmation);
     }
+
+    @SuppressLint("HandlerLeak")
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case BluetoothPrinter.MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case BluetoothPrinter.STATE_CONNECTED:
+                            new PrinterHelper().printInvoice(viewModel.getDeliveryOrder(), viewModel.getDoItems(),
+                                    null, printer, AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this));
+                            goBackToDeliveryList();
+                            break;
+
+                    }
+                    break;
+                case BluetoothPrinter.MESSAGE_DEVICE_NAME:
+
+                    break;
+                case BluetoothPrinter.MESSAGE_STATUS:
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
 
     @Override
     public void doInitialSetup() {
@@ -133,11 +165,14 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
     private void fetchDeliveryOrderData() {
         viewModel.setDeliveryOrder(viewModel.deliveryOrder(viewModel.getDeliveryOrderId()));
+        fetchDeliveryOrderItems();
     }
 
     private void fetchDeliveryOrderItems() {
-        if (viewModel.getSelectedOrderItems() == null) {
-            viewModel.setOrderItems(viewModel.getSelectedOrderItems());
+        if (viewModel.getSelectedOrderItems() == null ) {
+            viewModel.setOrderItems(viewModel.getOrderItems());
+        } else if(viewModel.getSelectedOrderItems().size() == 0){
+            viewModel.setOrderItems(viewModel.getOrderItems());
         }
     }
 
@@ -274,10 +309,13 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
             @Override
             public void onPrintButtonTap() {
                 LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
-                BluetoothPrinter printer = PrinterService.sharedInstance().getPrinter();
+                BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
+                bluetoothPrinter.initService(DropOffPaymentConfirmationActivity.this, mHandler);
+                printer = bluetoothPrinter;
                 if(printer.getState() == BluetoothPrinter.STATE_CONNECTED) {
-                    new PrinterHelper().printInvoice(viewModel.getDeliveryOrder(), viewModel.getSelectedOrderItems(),
-                            null, printer);
+                    new PrinterHelper().printInvoice(viewModel.getDeliveryOrder(), viewModel.getDoItems(),
+                            null, bluetoothPrinter, AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this));
+                    goBackToDeliveryList();
                 } else {
                     printer.showDeviceList(DropOffPaymentConfirmationActivity.this);
                 }
