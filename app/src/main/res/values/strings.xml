@@ -20,6 +20,8 @@
     <string name="contact_number">Contact Number</string>
     <string name="driver_licence_number">Driver Licence No.</string>
     <string name="vehicle_reg_no">Vehicle Registration No.</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="partial_do_confirmation">Partially selected delivery orders will not be picked up. Do you wish to continue?</string>
 
     <string name="delivery_order">Delivery Order</string>
     <string name="cash_sales">Cash Sales</string>
@@ -32,6 +34,7 @@
     <string name="total_value_label">Total Value: %1s</string>
     <string name="pickup_success">Pick Up Successful</string>
     <string name="ok">OK</string>
+    <string name="cash_sales_empty">No items assigned for cash sales</string>
 
 
     <!--Delivery Orders-->
@@ -63,6 +66,7 @@
     <string name="dropoff_stock">Drop Off</string>
     <string name="to">To:</string>
     <string name="confirm_dropoff">Confirm Drop Off</string>
+    <string name="no_item_selected">Select atleast 1 item to proceed</string>
 
     <!--Reports-->
     <string name="reports">Reports</string>
@@ -81,6 +85,7 @@
     <string name="print">Print</string>
     <string name="returned_orders">Returned Orders</string>
     <string name="delivered_orders">Delivered Orders</string>
+    <string name="ro_number">RO ID:</string>
 
     <!--Collect Payment-->
     <string name="do_payment_title">DO > Payment</string>

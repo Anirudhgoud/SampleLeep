@@ -16,6 +16,7 @@ import com.goleep.driverapp.services.network.jsonparsers.OrderItemParser;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.WarehouseEntity;
+import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 
 import java.util.ArrayList;
@@ -180,6 +181,7 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
         }
         if(cashDoItems.size() > 0) {
             Map<String, Object> cashSalesObject = new HashMap();
+            int doId = cashDoItems.get(0).getOrderId();
             cashSalesObject.put("id", cashDoItems.get(0).getOrderId());
             List<Map<String, Object>> orderItemMapList = new ArrayList<>();
             for (OrderItemEntity orderItemEntity : cashDoItems) {
@@ -188,16 +190,17 @@ public class PickupDeliveryOrderViewModel extends DropOffDeliveryOrdersViewModel
                 orderItemMapList.add(itemObject);
             }
             List<OrderItemEntity> unselectedCashSaleItems = leepDatabase.deliveryOrderItemDao().
-                    getUnselectedOrderItems(getCashDoItems());
+                    getUnselectedOrderItems(doId, getCashDoItems());
             for (OrderItemEntity orderItemEntity : unselectedCashSaleItems) {
                 Map<String, Object> itemObject = new HashMap<>();
                 itemObject.put("product_id", orderItemEntity.getProduct().getProductId());
-                itemObject.put("destroy", true);
+                itemObject.put("_destroy", true);
                 orderItemMapList.add(itemObject);
             }
             cashSalesObject.put("cash_sales_items", orderItemMapList);
             requestBody.put("cash_sales", cashSalesObject);
         }
+        LogUtils.error("Request", requestBody.toString());
         return requestBody;
     }
 

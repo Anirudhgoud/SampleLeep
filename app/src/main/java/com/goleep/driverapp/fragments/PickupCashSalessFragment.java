@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.PickupCashSalesListAdapter;
@@ -42,7 +44,8 @@ import butterknife.ButterKnife;
 public class PickupCashSalessFragment extends Fragment implements View.OnClickListener, Observer{
     @BindView(R.id.cash_sales_recycler_view)
     RecyclerView recyclerView;
-
+    @BindView(R.id.tv_cash_sales_empty)
+    TextView tvEmptyList;
     @BindView(R.id.confirm_button)
     Button confirmButton;
     private CashSalesViewModel cashSalesViewModel;
@@ -122,6 +125,8 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
                 intent.putIntegerArrayListExtra(AppConstants.DO_IDS_KEY,
                         (ArrayList<Integer>) ((PickupActivity) getActivity()).getSelectedDoIds());
                 getActivity().startActivityForResult(intent, 101);
+            }else {
+                Toast.makeText(activity, activity.getString(R.string.no_item_selected), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -132,9 +137,7 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
             fetchDriverDoDetails(((DeliveryOrderEntity)object).getId());
         } else if(object instanceof List){
             List<OrderItemEntity> orderItemEntities = (List<OrderItemEntity>)object;
-            if(orderItemEntities.size() > 0) {
-                adapter.updateList(orderItemEntities);
-            }
+            displayList(orderItemEntities);
         }
 
     }
@@ -142,4 +145,14 @@ public class PickupCashSalessFragment extends Fragment implements View.OnClickLi
     public void setItemSelectionListener(ItemCheckListener itemCheckListener) {
         this.itemCheckListener = itemCheckListener;
     }
+
+    private void displayList(List<OrderItemEntity> orderItemEntities){
+        if(orderItemEntities.size() > 0){
+            tvEmptyList.setVisibility(View.GONE);
+            adapter.updateList(orderItemEntities);
+        } else {
+            tvEmptyList.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

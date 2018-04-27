@@ -40,7 +40,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if(doDetailsList.size() > 0)
-            holder.bind(doDetailsList.get(position));
+            holder.bind(doDetailsList.get(position), position);
     }
 
     @Override
@@ -58,6 +58,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
         List<OrderItemEntity> orderItemEntityList = new ArrayList<>();
         for (OrderItemEntity orderItemEntity : orderItemEntities) {
             orderItemEntity.setItemType(AppConstants.TYPE_CASH_SALES_ITEM);
+            orderItemEntity.setSelected(false);
             orderItemEntityList.add(orderItemEntity);
         }
         return orderItemEntityList;
@@ -79,7 +80,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             productCheckbox = itemView.findViewById(R.id.product_checkbox);
         }
 
-        public void bind(final OrderItemEntity doDetails) {
+        public void bind(final OrderItemEntity doDetails, int position) {
             ProductEntity productEntity = doDetails.getProduct();
             productNameTv.setText(productEntity.getName());
             double value = doDetails.getQuantity() * doDetails.getPrice();
@@ -87,9 +88,12 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
             amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
             productCheckbox.setVisibility(View.VISIBLE);
+            productCheckbox.setChecked(doDetails.isSelected());
             productCheckbox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
                 if(isChecked) selectedCount++;
                 else selectedCount = selectedCount == 0 ? 0 : --selectedCount;
+                doDetails.setSelected(isChecked);
+                doDetailsList.set(position, doDetails);
                 itemCheckListener.itemChecked(doDetails, isChecked);
             });
         }

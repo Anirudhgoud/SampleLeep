@@ -7,6 +7,17 @@ import com.goleep.driverapp.services.room.entities.OrderItemEntity;
  */
 
 public class ReturnOrderItem extends OrderItemEntity {
+    private String reason;
+    private long roId;
+
+    public long getRoId() {
+        return roId;
+    }
+
+    public void setRoId(long roId) {
+        this.roId = roId;
+    }
+
     public String getReason() {
         return reason;
     }
@@ -14,7 +25,4 @@ public class ReturnOrderItem extends OrderItemEntity {
     public void setReason(String reason) {
         this.reason = reason;
     }
-
-    private String reason;
-
 }

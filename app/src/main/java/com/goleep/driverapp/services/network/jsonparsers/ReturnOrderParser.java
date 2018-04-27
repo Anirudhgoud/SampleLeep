@@ -31,7 +31,7 @@ public class ReturnOrderParser {
     }
 
     private ReturnOrderEntity parseReturnOrder(JSONObject jsonObject) {
-        int roNumber = jsonObject.optInt("ro_number", -1);
+        long roNumber = jsonObject.optLong("ro_number", -1);
         if(roNumber != -1) {
             ReturnOrderEntity returnOrderEntity = new ReturnOrderEntity();
             returnOrderEntity.setRoNumber(roNumber);
@@ -47,6 +47,7 @@ public class ReturnOrderParser {
             returnOrderEntity.setSourceAddressLine1(jsonObject.optString("source_address_line_1"));
             returnOrderEntity.setSourceAddressLine2(jsonObject.optString("source_address_line_2"));
             returnOrderEntity.setCustomerName(jsonObject.optString("customer_name"));
+            returnOrderEntity.setActualReturnAt(jsonObject.optString("actual_returned_at"));
             return returnOrderEntity;
         }
         return null;
