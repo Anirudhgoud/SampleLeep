@@ -2,6 +2,7 @@ package com.goleep.driverapp.leep.onboarding;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.text.Editable;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -66,14 +67,8 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
     }
 
     @Override
-    public void onTextChanged(int textLength) {
-        if (AppUtils.isValidEmail(emailEditText.getText().toString())) {
-            emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_valid, 0);
-        } else {
-            if (textLength == 0)
-                emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            else
-                emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_invalid, 0);
-        }
+    public void afterTextChanged(Editable editable) {
+        int rightDrawableRes = AppUtils.isValidEmail(emailEditText.getText().toString()) ? R.drawable.ic_valid : editable.length() == 0 ? 0 : R.drawable.ic_invalid;
+        emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawableRes, 0);
     }
 }

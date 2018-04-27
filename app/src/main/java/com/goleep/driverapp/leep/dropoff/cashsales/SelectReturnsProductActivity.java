@@ -31,11 +31,13 @@ import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
+import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
+import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.leep.pickup.returns.ReturnsSelectReasonActivity;
@@ -215,40 +217,32 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     }
 
     private void initialiseUpdateQuantityView() {
+        btUpdate.setEnabled(false);
         etUnits.setKeyImeChangeListener(this::hideUpdateQuantityView);
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                hideUpdateQuantityView();
-                AppUtils.hideKeyboard(etUnits);
+                onUpdateButtonTap();
             }
             return true;
         });
-        etUnits.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Product selectedProduct = viewModel.getSelectedProduct();
-                if (selectedProduct == null) return;
-                int maxUnits = selectedProduct.getMaxQuantity();
-                String newUnitsText = etUnits.getText().toString();
-                if (newUnitsText.length() > 0) {
-                    int newUnits = Integer.valueOf(newUnitsText);
-                    boolean isValid = maxUnits == -1 ? newUnits != 0 : (newUnits <= maxUnits && newUnits != 0);
-                    invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
-                    btUpdate.setEnabled(isValid);
-                } else {
-                    btUpdate.setEnabled(false);
-                }
-            }
-        });
+        EditTextHelper editTextHelper = new EditTextHelper(unitsChangeListener);
+        editTextHelper.attachTextChangedListener(etUnits);
     }
+
+    private EditTextListener unitsChangeListener = editable -> {
+        Product selectedProduct = viewModel.getSelectedProduct();
+        if (selectedProduct == null) return;
+        int maxUnits = selectedProduct.getMaxQuantity();
+        String newUnitsText = etUnits.getText().toString();
+        if (newUnitsText.length() > 0) {
+            int newUnits = Integer.valueOf(newUnitsText);
+            boolean isValid = maxUnits == -1 ? newUnits != 0 : (newUnits <= maxUnits && newUnits != 0);
+            invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
+            btUpdate.setEnabled(isValid);
+        } else {
+            btUpdate.setEnabled(false);
+        }
+    };
 
     private void fetchReturnReasons(){
         viewModel.fetchReturnReasons(returnReasonsCallback);
@@ -263,18 +257,14 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
         productSearchArrayAdapter = new ProductSearchArrayAdapter(this, new ArrayList());
         atvSearch.setAdapter(productSearchArrayAdapter);
         atvSearch.setOnItemClickListener(this);
-        atvSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 2) onProductSearch(s.toString(), locationId);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+        EditTextHelper editTextHelper = new EditTextHelper(editable -> {
+            if (editable.length() > 2) onProductSearch(editable.toString(), locationId);
+        });
+        editTextHelper.attachTextChangedListener(atvSearch);
+        atvSearch.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus){
+                hideUpdateQuantityView();
+                AppUtils.hideKeyboard(etUnits);
             }
         });
     }
@@ -349,6 +339,7 @@ public class SelectReturnsProductActivity extends ParentAppCompatActivity implem
     }
 
     private void onUpdateButtonTap() {
+        if (!btUpdate.isEnabled()) return;
         updateProductDetails();
     }
 

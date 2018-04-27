@@ -15,27 +15,23 @@ public class EditTextHelper {
 
     private EditTextListener editTextListener;
 
-    public EditTextHelper(EditTextListener editTextListener){
+    public EditTextHelper(EditTextListener editTextListener) {
         this.editTextListener = editTextListener;
     }
 
-    public void attachTextChangedListener(EditText editText){
+    public void attachTextChangedListener(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(editTextListener != null){
-                    editTextListener.onTextChanged(charSequence.length());
-                }
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                editTextListener.afterTextChanged(editable);
             }
         });
     }

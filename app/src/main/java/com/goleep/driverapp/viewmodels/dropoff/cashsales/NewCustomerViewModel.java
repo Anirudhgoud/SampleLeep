@@ -182,7 +182,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
         body.put("contact_designation_1", designation);
         body.put("contact_email_1", email);
         body.put("contact_phone_1", phone);
-        body.put("redistribution_centre", name);
+        body.put("redistribution_centre", false);
         return body ;
     }
 }
