@@ -20,8 +20,10 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.OrderItemsListAdapter;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customviews.CustomEditText;
+import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
+import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
@@ -214,45 +216,36 @@ public class DropOffDeliveryOrderDetailsActivity extends ParentAppCompatActivity
     };
 
     private void initialiseUpdateQuantityView() {
+        btUpdate.setEnabled(false);
         etUnits.setKeyImeChangeListener(this::hideUpdateQuantityView);
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                hideUpdateQuantityView();
-                AppUtils.hideKeyboard(etUnits);
+                onUpdateButtonTap();
             }
             return true;
         });
-        etUnits.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (viewModel.getSelectedOrderItem() != null) {
-                    int maxUnits = viewModel.getSelectedOrderItem().getMaxQuantity();
-                    String newUnitsText = etUnits.getText().toString();
-                    if (newUnitsText.length() > 0) {
-                        int newUnits = Integer.valueOf(newUnitsText);
-                        boolean isValid = newUnits <= maxUnits && newUnits != 0;
-                        invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
-                        btUpdate.setEnabled(isValid);
-                    } else {
-                        btUpdate.setEnabled(false);
-                    }
-                }
-            }
-        });
-
+        EditTextHelper editTextHelper = new EditTextHelper(unitsChangeListener);
+        editTextHelper.attachTextChangedListener(etUnits);
         btUpdate.setOnClickListener(this);
     }
 
-    private void onUpdateButtonTap(){
+    private EditTextListener unitsChangeListener = editable -> {
         if (viewModel.getSelectedOrderItem() != null) {
+            int maxUnits = viewModel.getSelectedOrderItem().getMaxQuantity();
+            String newUnitsText = etUnits.getText().toString();
+            if (newUnitsText.length() > 0) {
+                int newUnits = Integer.valueOf(newUnitsText);
+                boolean isValid = newUnits <= maxUnits && newUnits != 0;
+                invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
+                btUpdate.setEnabled(isValid);
+            } else {
+                btUpdate.setEnabled(false);
+            }
+        }
+    };
+
+    private void onUpdateButtonTap(){
+        if (viewModel.getSelectedOrderItem() != null && btUpdate.isEnabled()) {
             viewModel.updateOrderItemQuantity(viewModel.getSelectedOrderItem().getId(), Integer.valueOf(etUnits.getText().toString()));
             hideUpdateQuantityView();
             AppUtils.hideKeyboard(etUnits);

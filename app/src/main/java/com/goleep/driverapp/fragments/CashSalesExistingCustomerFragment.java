@@ -28,6 +28,7 @@ import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.constants.Permissions;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
+import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.helpers.uihelpers.LocationHelper;
 import com.goleep.driverapp.helpers.uihelpers.PermissionHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
@@ -104,22 +105,12 @@ public class CashSalesExistingCustomerFragment extends Fragment implements Locat
         customerSearchListAdapter = new CustomerSearchArrayAdapter(getContext(), new ArrayList());
         atvSearch.setAdapter(customerSearchListAdapter);
         atvSearch.setOnItemClickListener(this);
-        atvSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 2)
-                    fetchCustomerList(false, false, null, s.toString(), customerSuggestionsNetworkCallback);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+        editTextHelper.attachTextChangedListener(atvSearch);
     }
+
+    private EditTextHelper editTextHelper = new EditTextHelper(editable -> {
+        if (editable.length() > 2) fetchCustomerList(false, false, null, editable.toString(), CashSalesExistingCustomerFragment.this.customerSuggestionsNetworkCallback);
+    });
 
     private void checkForLocationPermission() {
         permissionHelper = new PermissionHelper(this, new String[]{Permissions.FINE_LOCATION, Permissions.COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);

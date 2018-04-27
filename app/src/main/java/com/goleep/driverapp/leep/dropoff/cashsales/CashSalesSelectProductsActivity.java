@@ -31,10 +31,12 @@ import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customviews.CustomEditText;
 import com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView;
 import com.goleep.driverapp.helpers.uihelpers.BarcodeScanHelper;
+import com.goleep.driverapp.helpers.uihelpers.EditTextHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.BarcodeScanListener;
 import com.goleep.driverapp.interfaces.DeliveryOrderItemEventListener;
+import com.goleep.driverapp.interfaces.EditTextListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.room.entities.StockProductEntity;
@@ -206,40 +208,32 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void initialiseUpdateQuantityView() {
+        btUpdate.setEnabled(false);
         etUnits.setKeyImeChangeListener(this::hideUpdateQuantityView);
         etUnits.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                hideUpdateQuantityView();
-                AppUtils.hideKeyboard(etUnits);
+                onUpdateButtonTap();
             }
             return true;
         });
-        etUnits.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Product selectedProduct = viewModel.getSelectedProduct();
-                if (selectedProduct == null) return;
-                int maxUnits = selectedProduct.getMaxQuantity();
-                String newUnitsText = etUnits.getText().toString();
-                if (newUnitsText.length() > 0) {
-                    int newUnits = Integer.valueOf(newUnitsText);
-                    boolean isValid = newUnits <= maxUnits && newUnits != 0;
-                    invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
-                    btUpdate.setEnabled(isValid);
-                } else {
-                    btUpdate.setEnabled(false);
-                }
-            }
-        });
+        EditTextHelper editTextHelper = new EditTextHelper(unitsChangeListener);
+        editTextHelper.attachTextChangedListener(etUnits);
     }
+
+    private EditTextListener unitsChangeListener = editable -> {
+        Product selectedProduct = viewModel.getSelectedProduct();
+        if (selectedProduct == null) return;
+        int maxUnits = selectedProduct.getMaxQuantity();
+        String newUnitsText = etUnits.getText().toString();
+        if (newUnitsText.length() > 0) {
+            int newUnits = Integer.valueOf(newUnitsText);
+            boolean isValid = newUnits <= maxUnits && newUnits != 0;
+            invalidQuantityError.setVisibility(isValid ? View.INVISIBLE : View.VISIBLE);
+            btUpdate.setEnabled(isValid);
+        } else {
+            btUpdate.setEnabled(false);
+        }
+    };
 
     private void initialiseAutoCompleteTextView() {
         Drawable rightDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_search_inactive);
@@ -247,21 +241,17 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
         productSearchArrayAdapter = new ProductSearchArrayAdapter(this, new ArrayList());
         atvSearch.setAdapter(productSearchArrayAdapter);
         atvSearch.setOnItemClickListener(this);
-        atvSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        EditTextHelper editTextHelper = new EditTextHelper(editable -> {
+            if (editable.length() > 2){
+                List<StockProductEntity> list = viewModel.sellebleProductsWithName(editable.toString());
+                productSearchArrayAdapter.updateData(list);
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 2) {
-                    List<StockProductEntity> list = viewModel.sellebleProductsWithName(s.toString());
-                    productSearchArrayAdapter.updateData(list);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+        });
+        editTextHelper.attachTextChangedListener(atvSearch);
+        atvSearch.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus){
+                hideUpdateQuantityView();
+                AppUtils.hideKeyboard(etUnits);
             }
         });
     }
@@ -336,6 +326,7 @@ public class CashSalesSelectProductsActivity extends ParentAppCompatActivity imp
     }
 
     private void onUpdateButtonTap() {
+        if (!btUpdate.isEnabled()) return;
         Product product = viewModel.getSelectedProduct();
         updateQuantity(product);
     }

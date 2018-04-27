@@ -7,12 +7,5 @@ import android.text.Editable;
  */
 
 public interface EditTextListener {
-    default void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-    }
-
-    default void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-    }
-
-    default void afterTextChanged(Editable editable) {
-    }
+    void afterTextChanged(Editable editable);
 }
