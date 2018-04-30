@@ -108,6 +108,7 @@
     <string name="pickup_stock">Pick Up Stock</string>
     <string name="confirm">Confirm</string>
     <string name="next">Next</string>
+    <string name="total">Total</string>
 
     <string name="print_invoice">Print Invoice</string>
     <string name="delivery_successful">Delivery Successful</string>

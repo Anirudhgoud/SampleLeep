@@ -67,39 +67,11 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     private TextView tvReceivedFromError, tvContactNumberError, tvSignatureError;
 
     private DropOffPaymentConfirmationViewModel viewModel;
-    private BluetoothPrinter printer;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         setResources(R.layout.activity_drop_off_payment_confirmation);
     }
-
-    @SuppressLint("HandlerLeak")
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case BluetoothPrinter.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothPrinter.STATE_CONNECTED:
-                            new PrinterHelper().printInvoice(viewModel.getDeliveryOrder(), viewModel.getDoItems(),
-                                    null, printer, AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this));
-                            goBackToDeliveryList();
-                            break;
-
-                    }
-                    break;
-                case BluetoothPrinter.MESSAGE_DEVICE_NAME:
-
-                    break;
-                case BluetoothPrinter.MESSAGE_STATUS:
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
 
     @Override
     public void doInitialSetup() {
@@ -308,17 +280,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
             @Override
             public void onPrintButtonTap() {
-                LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
-                BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
-                bluetoothPrinter.initService(DropOffPaymentConfirmationActivity.this, mHandler);
-                printer = bluetoothPrinter;
-                if(printer.getState() == BluetoothPrinter.STATE_CONNECTED) {
-                    new PrinterHelper().printInvoice(viewModel.getDeliveryOrder(), viewModel.getDoItems(),
-                            null, bluetoothPrinter, AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this));
-                    goBackToDeliveryList();
-                } else {
-                    printer.showDeviceList(DropOffPaymentConfirmationActivity.this);
-                }
+                printInvoice();
             }
         });
         successDialog.setPrintButtonVisibility(true);
@@ -359,5 +321,17 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
         intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void printInvoice(){
+        BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
+        bluetoothPrinter.initService(DropOffPaymentConfirmationActivity.this);
+        if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
+            new PrinterHelper().printInvoice(DropOffPaymentConfirmationActivity.this, viewModel.getDeliveryOrder(), viewModel.getDoItems(),
+                    null, bluetoothPrinter, AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this), viewModel.getPaymentCollected());
+            goBackToDeliveryList();
+        } else {
+            bluetoothPrinter.showDeviceList(DropOffPaymentConfirmationActivity.this);
+        }
     }
 }
