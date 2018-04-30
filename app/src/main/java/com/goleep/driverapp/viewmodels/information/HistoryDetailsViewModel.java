@@ -16,6 +16,7 @@ import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,17 +25,49 @@ import java.util.List;
 
 public class HistoryDetailsViewModel extends AndroidViewModel {
     private AppDatabase leepDatabase;
+    private int orderType;
+    private DeliveryOrderEntity deliveryOrderEntity;
+    private ReturnOrderEntity returnOrderEntity;
+    private List<ReturnOrderItem> roItems = new ArrayList<>();
+    private List<OrderItemEntity> doItems = new ArrayList<>();
+
     public HistoryDetailsViewModel(@NonNull Application application) {
         super(application);
         leepDatabase = RoomDBService.sharedInstance().getDatabase(application);
     }
 
     public DeliveryOrderEntity getDeliveryOrderEntity(int doId){
-        return leepDatabase.deliveryOrderDao().deliveryOrder(doId);
+        deliveryOrderEntity = leepDatabase.deliveryOrderDao().deliveryOrder(doId);
+        return deliveryOrderEntity;
     }
 
     public ReturnOrderEntity getReturnOrderEntity(long roNUmber){
-        return leepDatabase.returnOrderDao().getReturnOrderEntity(roNUmber);
+        returnOrderEntity = leepDatabase.returnOrderDao().getReturnOrderEntity(roNUmber);
+        return returnOrderEntity;
+    }
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
+    }
+
+    public DeliveryOrderEntity getDeliveryOrderEntity() {
+        return deliveryOrderEntity;
+    }
+
+    public void setDeliveryOrderEntity(DeliveryOrderEntity deliveryOrderEntity) {
+        this.deliveryOrderEntity = deliveryOrderEntity;
+    }
+
+    public ReturnOrderEntity getReturnOrderEntity() {
+        return returnOrderEntity;
+    }
+
+    public void setReturnOrderEntity(ReturnOrderEntity returnOrderEntity) {
+        this.returnOrderEntity = returnOrderEntity;
     }
 
     public void fetchDoItems(final int doId, UILevelNetworkCallback orderItemsCallBack){
@@ -44,9 +77,9 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
                     switch (type){
                         case NetworkConstants.SUCCESS:
                             OrderItemParser orderItemParser = new OrderItemParser();
-                            List<OrderItemEntity> orderItems = orderItemParser.
+                            doItems = orderItemParser.
                                     orderItemsByParsingJsonResponse(response, doId);
-                            orderItemsCallBack.onResponseReceived(orderItems, false,
+                            orderItemsCallBack.onResponseReceived(doItems, false,
                                     null, false);
                             break;
 
@@ -69,9 +102,9 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
                     switch (type){
                         case NetworkConstants.SUCCESS:
                             OrderItemParser orderItemParser = new OrderItemParser();
-                            List<ReturnOrderItem> orderItems = orderItemParser.
+                            roItems = orderItemParser.
                                     returnOrderItemsByParsingJsonResponse(response, orderId);
-                            orderItemsCallBack.onResponseReceived(orderItems, false,
+                            orderItemsCallBack.onResponseReceived(roItems, false,
                                     null, false);
                             break;
 
@@ -86,5 +119,13 @@ public class HistoryDetailsViewModel extends AndroidViewModel {
                             break;
                     }
                 });
+    }
+
+    public List<OrderItemEntity> getDoItems() {
+        return doItems;
+    }
+
+    public List<ReturnOrderItem> getRoItems() {
+        return roItems;
     }
 }

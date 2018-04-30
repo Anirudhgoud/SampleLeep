@@ -12,6 +12,8 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
 import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
+import com.goleep.driverapp.services.network.jsonparsers.ReturnOrderParser;
+import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 import com.google.gson.Gson;
@@ -32,6 +34,7 @@ public class ReturnsFinalConfirmationViewModel extends ReturnsPaymentMethodViewM
     private boolean paymentSkipped = false;
     private String paymentMethod;
     public String RECEIVER_SIGNATURE = "receiver_signature";
+    private long roNumber;
 
     public ReturnsFinalConfirmationViewModel(@NonNull Application application) {
         super(application);
@@ -101,6 +104,8 @@ public class ReturnsFinalConfirmationViewModel extends ReturnsPaymentMethodViewM
         NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true, requestMap, file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
             switch (type) {
                 case NetworkConstants.SUCCESS:
+                    ReturnOrderParser parser = new ReturnOrderParser();
+                    roNumber = parser.parseForRoNumber(response);
                     deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
                     break;
 
@@ -152,4 +157,7 @@ public class ReturnsFinalConfirmationViewModel extends ReturnsPaymentMethodViewM
         return LocalStorageService.sharedInstance().getLocalFileStore().getInt(getApplication().getApplicationContext(), SharedPreferenceKeys.DRIVER_ID);
     }
 
+    public long getRoNumber() {
+        return roNumber;
+    }
 }

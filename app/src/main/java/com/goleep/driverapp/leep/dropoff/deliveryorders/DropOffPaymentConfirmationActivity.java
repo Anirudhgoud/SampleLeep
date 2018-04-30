@@ -327,9 +327,10 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
         bluetoothPrinter.initService(DropOffPaymentConfirmationActivity.this);
         if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
-            new PrinterHelper().printInvoice(DropOffPaymentConfirmationActivity.this, viewModel.getDeliveryOrder(), viewModel.getDoItems(),
-                    null, bluetoothPrinter, AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this), viewModel.getPaymentCollected());
-            goBackToDeliveryList();
+            new PrinterHelper().printInvoice(DropOffPaymentConfirmationActivity.this,
+                    viewModel.getDeliveryOrder(), viewModel.getDoItems(), bluetoothPrinter,
+                    AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this),
+                    viewModel.getPaymentCollected());
         } else {
             bluetoothPrinter.showDeviceList(DropOffPaymentConfirmationActivity.this);
         }

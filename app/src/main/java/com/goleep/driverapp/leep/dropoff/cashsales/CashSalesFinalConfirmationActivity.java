@@ -29,7 +29,6 @@ import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.dropoff.deliveryorders.DropOffPaymentConfirmationActivity;
 import com.goleep.driverapp.leep.main.HomeActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.printer.PrinterService;
@@ -385,10 +384,10 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         bluetoothPrinter.initService(CashSalesFinalConfirmationActivity.this);
         if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
             new PrinterHelper().printInvoice(CashSalesFinalConfirmationActivity.this,
-                    viewModel.getConsumerLocation(), viewModel.getScannedProducts(),bluetoothPrinter,
+                    viewModel.getDoNumber(), viewModel.getRoNumber(), viewModel.getConsumerLocation(),
+                    viewModel.getScannedProducts(), bluetoothPrinter,
                     AppUtils.userCurrencySymbol(CashSalesFinalConfirmationActivity.this),
                     viewModel.getPaymentCollected());
-            goBackToHomeScreen();
         } else {
             bluetoothPrinter.showDeviceList(CashSalesFinalConfirmationActivity.this);
         }

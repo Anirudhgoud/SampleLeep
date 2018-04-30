@@ -21,19 +21,23 @@ import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
+import com.goleep.driverapp.helpers.uihelpers.PrinterHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.dropoff.cashsales.CashSalesFinalConfirmationActivity;
 import com.goleep.driverapp.leep.main.HomeActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
+import com.goleep.driverapp.services.printer.PrinterService;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.pickup.returns.ReturnsFinalConfirmationViewModel;
+import com.ngx.BluetoothPrinter;
 
 import java.io.File;
 import java.util.List;
@@ -237,10 +241,10 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
 
             @Override
             public void onPrintButtonTap() {
-                LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
+                printInvoice();
             }
         });
-        successDialog.setPrintButtonVisibility(false);
+        successDialog.setPrintButtonVisibility(true);
     }
 
 
@@ -348,5 +352,19 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
         Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
         intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void printInvoice(){
+        BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
+        bluetoothPrinter.initService(ReturnsFinalConfirmationActivity.this);
+        if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
+            new PrinterHelper().printInvoice(ReturnsFinalConfirmationActivity.this, null,
+                    String.valueOf(viewModel.getRoNumber()), viewModel.getConsumerLocation(),
+                    viewModel.getScannedProducts(), bluetoothPrinter,
+                    AppUtils.userCurrencySymbol(ReturnsFinalConfirmationActivity.this),
+                    viewModel.getPaymentCollected());
+        } else {
+            bluetoothPrinter.showDeviceList(ReturnsFinalConfirmationActivity.this);
+        }
     }
 }
