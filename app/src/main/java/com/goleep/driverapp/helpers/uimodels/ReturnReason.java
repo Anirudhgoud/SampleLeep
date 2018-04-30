@@ -9,12 +9,12 @@ import com.goleep.driverapp.constants.ReasonCategory;
  * Created by vishalm on 05/04/18.
  */
 
-public class ReturnReason implements Parcelable {
+public class ReturnReason extends Reason implements Parcelable {
 
     private int id;
     private String reason;
     private String reasonCategory;
-    private boolean isSelected = false;
+
 
     public ReturnReason(){}
 
@@ -45,14 +45,6 @@ public class ReturnReason implements Parcelable {
             case "non_resellable": this.reasonCategory = ReasonCategory.NON_RESELLABLE; break;
             default: this.reasonCategory = ReasonCategory.RESELLABLE;
         }
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
     }
 
     //Parcel

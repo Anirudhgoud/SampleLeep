@@ -44,6 +44,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
     private ItemCheckListener itemCheckListener;
     public DoExpandableListAdapter(Context context, List<BaseListItem> doList) {
         super(context);
+        this.context = context;
         if(doList.size() > 0) {
             this.recyclerViewListData = doList;
             setItems(doList);
@@ -52,7 +53,6 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
         switch (viewType) {
             case AppConstants.TYPE_HEADER:
                 View headerView = inflate(R.layout.item_header, parent);

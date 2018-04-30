@@ -14,6 +14,7 @@ import com.goleep.driverapp.adapters.ReturnReasonListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.uimodels.Product;
+import com.goleep.driverapp.helpers.uimodels.ReturnReason;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.pickup.returns.ReturnReasonsViewModel;
@@ -97,7 +98,7 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
         stocksRecyclerView.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
         if(returnReasonsViewModel.getReturnReasons() != null) {
-            adapter = new ReturnReasonListAdapter(returnReasonsViewModel.getReturnReasons());
+            adapter = new ReturnReasonListAdapter(returnReasonsViewModel.generateReturnReasonsList());
             stocksRecyclerView.setAdapter(adapter);
         }
     }
@@ -118,7 +119,7 @@ public class ReturnsSelectReasonActivity extends ParentAppCompatActivity {
         if(adapter.getSelectedIndex() != -1) {
             Intent intent = new Intent();
             if (adapter.getSelectedReason() != null)
-                intent.putExtra(IntentConstants.RETURN_REASON, adapter.getSelectedReason());
+                intent.putExtra(IntentConstants.RETURN_REASON, (ReturnReason)adapter.getSelectedReason());
             setResult(RESULT_OK, intent);
             finish();
         }

@@ -36,6 +36,7 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(DeliveryOrderEntity deliveryOrderEntity) {
         customerNameTv.setText(deliveryOrderEntity.getCustomerName());
+        doLabelTv.setText(itemView.getContext().getResources().getString(R.string.do_number));
         doNumberTv.setText(deliveryOrderEntity.getDoNumber());
         customerAddressTv.setText(StringUtils.getAddress(deliveryOrderEntity.getDestinationAddressLine1(),
                 deliveryOrderEntity.getDestinationAddressLine2()));
@@ -46,7 +47,6 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(ReturnOrderEntity returnOrderEntity) {
-        customerNameTv.setText(returnOrderEntity.getCustomerName());
         doNumberTv.setText(String.valueOf(returnOrderEntity.getRoNumber()));
         doLabelTv.setText(itemView.getContext().getResources().getString(R.string.ro_number));
         doValueTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), itemView.getContext()));
@@ -56,25 +56,27 @@ public class HistoryListViewHolder extends RecyclerView.ViewHolder {
         Context context = itemView.getContext();
         if (context == null) return;
         tvOrdeTypeDescription.setVisibility(View.VISIBLE);
-        String address = "";
         String orderTypeDescription = "";
+        String locationName = "";
+        String address = "";
         switch (type){
             case "driver":
-                address = returnOrderEntity.getDestinationLocationName();
+                locationName = returnOrderEntity.getDestinationLocationName();
                 orderTypeDescription = context.getString(R.string.returned_to_warehouse);
+                address = StringUtils.getAddress(returnOrderEntity.getDestinationAddressLine1(), returnOrderEntity.getDestinationAddressLine2());
                 break;
             case "customer":
-                address = StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(),
-                        returnOrderEntity.getSourceAddressLine2());
+                locationName = returnOrderEntity.getSourceLocationName();
                 orderTypeDescription = context.getString(R.string.picked_from_customer);
+                address = StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(), returnOrderEntity.getSourceAddressLine2());
                 break;
         }
-        if (address == null || address.isEmpty()){
-            customerAddressTv.setVisibility(View.GONE);
-        }else {
+        if (address.isEmpty() || address.trim().equals(",")) customerAddressTv.setVisibility(View.GONE);
+        else {
             customerAddressTv.setVisibility(View.VISIBLE);
             customerAddressTv.setText(address);
         }
         tvOrdeTypeDescription.setText(orderTypeDescription);
+        customerNameTv.setText(locationName);
     }
 }

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import android.widget.Button;
+import android.view.View;
 import android.widget.TextView;
 
 import com.goleep.driverapp.R;
@@ -15,7 +17,6 @@ import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.uihelpers.PrinterHelper;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
-import com.goleep.driverapp.leep.dropoff.deliveryorders.DropOffPaymentConfirmationActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.printer.PrinterService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
@@ -160,19 +161,35 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
     }
 
     private void populateRoInfo(ReturnOrderEntity returnOrderEntity){
-        if(returnOrderEntity != null){
-            customerNameTv.setText(returnOrderEntity.getCustomerName());
-            storeAddressTv.setText(StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(),
-                    returnOrderEntity.getSourceAddressLine2()));
-            doNumberTv.setText(String.valueOf(returnOrderEntity.getRoNumber()));
-            tvDoLabel.setText(R.string.ro_number);
-            dateTv.setText(DateTimeUtils.convertdDate(returnOrderEntity.getActualReturnAt(),
-                    RAILS_TIMESTAMP_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
-            timeTv.setText(DateTimeUtils.convertdDate(returnOrderEntity.getActualReturnAt(),
-                    RAILS_TIMESTAMP_FORMAT, TWELVE_HOUR_TIME_FORMAT));
-            itemsTv.setText(String.valueOf(returnOrderEntity.getReturnOrderItemsCount()));
-            doAmountTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), this));
+        if(returnOrderEntity == null) return;
+
+        String type = returnOrderEntity.getType();
+        String locationName = "";
+        String address = "";
+        String dateTime = null;
+        switch (type){
+            case "driver":
+                locationName = returnOrderEntity.getDestinationLocationName();
+                dateTime = returnOrderEntity.getActualReturnAt();
+                address = StringUtils.getAddress(returnOrderEntity.getDestinationAddressLine1(), returnOrderEntity.getDestinationAddressLine2());
+                break;
+            case "customer":
+                locationName = returnOrderEntity.getSourceLocationName();
+                dateTime = returnOrderEntity.getActualAcceptedAt();
+                address = StringUtils.getAddress(returnOrderEntity.getSourceAddressLine1(), returnOrderEntity.getSourceAddressLine2());
+                break;
         }
+        customerNameTv.setText(locationName);
+        if (address.isEmpty() || address.trim().equals(",")) storeAddressTv.setVisibility(View.GONE);
+        else storeAddressTv.setText(address);
+        doNumberTv.setText(String.valueOf(returnOrderEntity.getRoNumber()));
+        tvDoLabel.setText(R.string.ro_number);
+        dateTv.setText(DateTimeUtils.convertdDate(dateTime,
+                RAILS_TIMESTAMP_FORMAT, ORDER_DISPLAY_DATE_FORMAT));
+        timeTv.setText(DateTimeUtils.convertdDate(dateTime,
+                RAILS_TIMESTAMP_FORMAT, TWELVE_HOUR_TIME_FORMAT));
+        itemsTv.setText(String.valueOf(returnOrderEntity.getReturnOrderItemsCount()));
+        doAmountTv.setText(StringUtils.amountToDisplay((float) returnOrderEntity.getTotalValue(), this));
     }
 
     @Override
