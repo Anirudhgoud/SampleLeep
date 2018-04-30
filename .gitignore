@@ -2,6 +2,7 @@
 *.apk
 *.ap_
 app/release/
+app/uat/
 
 .DS_Store
 .DS_Store?
