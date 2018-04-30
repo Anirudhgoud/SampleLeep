@@ -63,19 +63,14 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
     }
 
     public void fetchAllDeliveryOrders(final UILevelNetworkCallback doNetworkCallBack, String status,
-                                       String startDate, String endDate, int wareHouseId) {
+                                       String startDate, String endDate, int wareHouseId, String dotype) {
         int driverId = LocalStorageService.sharedInstance().getLocalFileStore().getInt(
                 getApplication().getApplicationContext(),SharedPreferenceKeys.DRIVER_ID);
         String url = UrlConstants.DELIVERY_ORDERS_URL + "?assignees=" + driverId;
-        if (status != null) {
-            url += "&statuses=" + status;
-        }
-        if (startDate != null && endDate != null) {
-            url += "&start_date=" + startDate + "&end_date=" + endDate;
-        }
-        if(wareHouseId != -1){
-            url += "&source_locations="+wareHouseId;
-        }
+        if (status != null) url += "&statuses=" + status;
+        if (startDate != null && endDate != null) url += "&start_date=" + startDate + "&end_date=" + endDate;
+        if (wareHouseId != -1) url += "&source_locations="+wareHouseId;
+        if (dotype != null) url += "&type="+dotype;
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
                 url, true, (type, response, errorMessage) -> {
                     switch (type) {

@@ -7,7 +7,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.goleep.driverapp.R;
-import com.goleep.driverapp.constants.ReportsType;
 import com.goleep.driverapp.helpers.uimodels.Report;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
@@ -37,7 +36,11 @@ public class ReportsActivity extends ParentAppCompatActivity {
     TextView tvUnits;
     @BindView(R.id.activity_reports_tv_location)
     TextView tvLocation;
+
     private ReportsViewModel reportsViewModel;
+    private final String TODAY = "today";
+    private final String WEEK = "this_week";
+    private final String MONTH = "this_month";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -59,7 +62,7 @@ public class ReportsActivity extends ParentAppCompatActivity {
         rbThisWeek.setOnClickListener(this);
         rbThisMonth.setOnClickListener(this);
         showProgressDialog();
-        reportsViewModel.getReports(ReportsType.TODAY, reportsCallback);
+        reportsViewModel.getReports(TODAY, reportsCallback);
     }
 
     private UILevelNetworkCallback reportsCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> {
@@ -92,15 +95,15 @@ public class ReportsActivity extends ParentAppCompatActivity {
                 break;
             case R.id.rb_today:
                 initialiseReportCallback();
-                reportsViewModel.getReports(ReportsType.TODAY, reportsCallback);
+                reportsViewModel.getReports(TODAY, reportsCallback);
                 break;
             case R.id.rb_this_week:
                 initialiseReportCallback();
-                reportsViewModel.getReports(ReportsType.THIS_WEEK, reportsCallback);
+                reportsViewModel.getReports(WEEK, reportsCallback);
                 break;
             case R.id.rb_this_month:
                 initialiseReportCallback();
-                reportsViewModel.getReports(ReportsType.THIS_MONTH, reportsCallback);
+                reportsViewModel.getReports(MONTH, reportsCallback);
                 break;
         }
     }
@@ -115,7 +118,7 @@ public class ReportsActivity extends ParentAppCompatActivity {
         tvCashCollected.setText(isReportAvailable ? StringUtils.amountToDisplay((float) report
                 .getCashCollected(), this) : "");
         tvLocation.setText(isReportAvailable ? String.valueOf(report.getLocations()) : "");
-        tvReturns.setText(isReportAvailable ? String.valueOf(report.getReturns()) + " " + getResources().getString(R.string.units) : "");
+        tvReturns.setText(isReportAvailable ? String.valueOf(report.getReturns()) : "");
         tvTotalSales.setText(isReportAvailable ? StringUtils.amountToDisplay((float) report.
                 getTotalSales(), this) : "");
         tvUnits.setText(isReportAvailable ? StringUtils.numberToDisplay(report.getUnits()) : "");

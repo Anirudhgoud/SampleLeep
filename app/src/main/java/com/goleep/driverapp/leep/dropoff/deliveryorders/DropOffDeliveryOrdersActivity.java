@@ -74,7 +74,7 @@ public class DropOffDeliveryOrdersActivity extends ParentAppCompatActivity {
         textView.setText(getString(R.string.map));
         icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_map_tab));
         TabLayout.Tab tabMap = tabLayout.getTabAt(1);
-        if (tabMap != null) tabMap.setCustomView(listTab);
+        if (tabMap != null) tabMap.setCustomView(mapTab);
     }
 
     @Override

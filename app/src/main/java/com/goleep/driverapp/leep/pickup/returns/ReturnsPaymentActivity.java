@@ -49,10 +49,8 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
     TextView tvItemCount;
     @BindView(R.id.ll_item_list_layout)
     LinearLayout llItemListLayout;
-    @BindView(R.id.bt_skip_payment)
-    Button btSkipPayment;
-    @BindView(R.id.bt_collect_payment)
-    Button btCollectPayment;
+    @BindView(R.id.confirm_button)
+    Button btConfirm;
     @BindView(R.id.ll_item_summary_layout)
     LinearLayout llItemSummaryLayout;
 
@@ -119,8 +117,7 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
     }
 
     private void setClickListeners() {
-        btCollectPayment.setOnClickListener(this);
-        btSkipPayment.setOnClickListener(this);
+        btConfirm.setOnClickListener(this);
         llItemSummaryLayout.setOnClickListener(this);
     }
 
@@ -221,14 +218,9 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
                 finish();
                 break;
 
-            case R.id.bt_collect_payment:
+            case R.id.confirm_button:
                 gotoNextActivity();
                 break;
-
-            case R.id.bt_skip_payment:
-                onSkipPaymentTap();
-                break;
-
             case R.id.ll_item_summary_layout:
                 llItemListLayout.setVisibility(llItemListLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 ((ImageView) findViewById(R.id.iv_expandable_indicator)).setImageResource(
@@ -238,28 +230,16 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
     }
 
     private void gotoNextActivity(){
-        Double paymentCollected = 0.0;
-        if(!etPaymentCollected.getText().toString().isEmpty())
+        Double paymentCollected;
+        if(!etPaymentCollected.getText().toString().isEmpty()) {
             paymentCollected = Double.valueOf(etPaymentCollected.getText().toString());
-        if (paymentCollected == null) paymentCollected = 0.0;
-        Intent intent = new Intent(this, ReturnsPaymentMethodActivity.class);
-        intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
-        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST,
-                (ArrayList<Product>) viewModel.getScannedProducts());
-        startActivity(intent);
+            Intent intent = new Intent(this, ReturnsPaymentMethodActivity.class);
+            intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
+            intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
+            intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST,
+                    (ArrayList<Product>) viewModel.getScannedProducts());
+            startActivity(intent);
+        }
     }
 
-    private void onSkipPaymentTap(){
-        Double paymentCollected = 0.0;
-        if(!etPaymentCollected.getText().toString().isEmpty())
-            paymentCollected = Double.valueOf(etPaymentCollected.getText().toString());
-        if (paymentCollected == null) paymentCollected = 0.0;
-        Intent intent = new Intent(this, ReturnsFinalConfirmationActivity.class);
-        intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
-        intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
-        intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST,
-                (ArrayList<Product>) viewModel.getScannedProducts());
-        startActivity(intent);
-    }
 }

@@ -36,6 +36,7 @@ public class ReturnReasonParser {
             ReturnReason returnReason = new ReturnReason();
             returnReason.setId(returnReasonJson.optInt("id"));
             returnReason.setReason(returnReasonJson.optString("reason"));
+            returnReason.setReasonCategory(returnReasonJson.optString("category"));
             returnReasons.add(returnReason);
         }
         return returnReasons;

@@ -3,6 +3,7 @@ package com.goleep.driverapp.leep.onboarding;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -158,18 +159,13 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
         finish();
     }
 
-    @Override
-    public void onTextChanged(int textLength) {
-        if (textLength == PHONE_NUMBER_LENGTH) {
-            phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_valid, 0);
-        } else {
-            if (textLength == 0)
-                phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-            else
-                phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_invalid, 0);
-        }
-    }
 
+    @Override
+    public void afterTextChanged(Editable editable) {
+        int textLength = editable.length();
+        int rightDrawableRes = textLength == PHONE_NUMBER_LENGTH ? R.drawable.ic_valid : textLength == 0 ? 0 : R.drawable.ic_invalid;
+        phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawableRes, 0);
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

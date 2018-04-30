@@ -11,6 +11,7 @@ public class ReturnOrderEntity {
     @PrimaryKey
     private long roNumber;
     private String status;
+    private String type;
     private String assigneeName;
     private String destinationLocationName;
     private String sourceLocationName;
@@ -134,5 +135,13 @@ public class ReturnOrderEntity {
 
     public void setTotalValue(double totalValue) {
         this.totalValue = totalValue;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

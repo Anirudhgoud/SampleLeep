@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="20dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingTop="6dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
     android:baselineAligned="false">
 
     <LinearLayout
@@ -59,6 +59,15 @@
             android:textColor="@color/doTabTextColor"
             android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/tv_order_type_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/noto_sans"
+            android:textColor="@color/red"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -71,7 +80,7 @@
             android:id="@+id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/noto_sans"
             android:textColor="@color/text_black"
             android:textSize="18sp" />

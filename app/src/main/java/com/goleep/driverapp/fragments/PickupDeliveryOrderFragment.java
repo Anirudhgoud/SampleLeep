@@ -2,12 +2,14 @@ package com.goleep.driverapp.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import android.os.Handler;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +52,20 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     private ItemCheckListener itemCheckListener;
     private DoExpandableListAdapter adapter;
+    private DialogInterface.OnClickListener dialogPositiveClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if(getActivity() != null && !getActivity().isFinishing())
+            ((PickupActivity)getActivity()).viewPager.setCurrentItem(1);
+        }
+    };
+
+    private DialogInterface.OnClickListener dialogNegativeClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+    };
 
     private View.OnClickListener headerClickListener = new View.OnClickListener() {
         @Override
@@ -78,7 +94,16 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         doViewModel = ViewModelProviders.of(getActivity()).get(PickupDeliveryOrderViewModel.class);
         doViewModel.setWarehouse(getArguments().getInt(IntentConstants.WAREHOUSE_ID, -1));
         initRecyclerView();
-        confirmButton.setOnClickListener(view -> ((PickupActivity)getActivity()).viewPager.setCurrentItem(1));
+        confirmButton.setOnClickListener(v -> {
+            FragmentActivity activity = getActivity();
+            if(activity != null && !activity.isFinishing())
+                if(adapter.isPartialDoSelected()){
+                    ((PickupActivity)activity).showConfirmationDialog(getString(R.string.confirmation),
+                            getString(R.string.partial_do_confirmation), dialogPositiveClickListener, dialogNegativeClickListener);
+                } else {
+                    ((PickupActivity)activity).viewPager.setCurrentItem(1);
+                }
+        });
     }
 
     private void initRecyclerView() {
@@ -110,7 +135,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
         if(doViewModel.getWarehouse() != null)
             warehouseId = doViewModel.getWarehouse().getId();
         doViewModel.fetchAllDeliveryOrders(deliveryOrderCallBack, null, null,
-                null, warehouseId);
+                null, warehouseId, null);
     }
 
     public void setItemSelectionListener(ItemCheckListener itemSelectionListener) {

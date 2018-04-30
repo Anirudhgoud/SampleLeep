@@ -95,7 +95,7 @@ public class HomeViewModel extends AndroidViewModel {
                     switch (type) {
                         case NetworkConstants.SUCCESS:
                             StockProductParser parser = new StockProductParser();
-                            List<StockProductEntity> stockProductEntities = parser.getStockProduct(response);
+                            List<StockProductEntity> stockProductEntities = parser.getStockProducts(response);
                             RoomDBService.sharedInstance().getDatabase(getApplication().
                                     getApplicationContext()).stockProductDao().updateAllDeliveryOrders(stockProductEntities);
                     }

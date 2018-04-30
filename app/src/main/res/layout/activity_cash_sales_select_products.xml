@@ -49,6 +49,7 @@
             android:background="@drawable/rounded_rect_with_grey_border"
             android:fontFamily="@font/noto_sans"
             android:hint="@string/search_product"
+            android:lines="1"
             android:padding="8dp"
             android:textColor="@color/doTabTextColor"
             android:textCursorDrawable="@null"
@@ -88,9 +89,10 @@
             android:layout_height="45dp"
             android:background="@color/green"
             android:fontFamily="@font/noto_sans"
-            android:text="@string/confirm"
+            android:text="@string/continue_text"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

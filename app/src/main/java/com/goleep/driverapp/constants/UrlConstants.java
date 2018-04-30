@@ -26,6 +26,7 @@ public interface UrlConstants {
     //New Sale
     String CONSUMER_LOCATIONS_URL = BASE_URL + "/consumer_locations";
     String PRODUCT_PRICING_URL = BASE_URL + "/products/product_pricing";
+    String RETURNABLE_PRODUCTS_URL = BASE_URL + "/returnable_products";
     String CREATE_CASH_SALE_DO = BASE_URL + "/cash_sales";
 
     //Return_Reasons
@@ -33,6 +34,7 @@ public interface UrlConstants {
 
     //Returned Orders
     String RETURNED_ORDERS = BASE_URL + "/return_orders";
+    String DRIVER_RETURNED_ORDERS = BASE_URL + "/driver_return_orders";
 
     //PickupConfirmation
     String PICKUP_CONFIRMATION = DELIVERY_ORDERS_URL + "/in_transit";
