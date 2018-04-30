@@ -47,8 +47,11 @@ public class ReturnOrderParser {
             returnOrderEntity.setDestinationLocationId(jsonObject.optInt("destination_location_id"));
             returnOrderEntity.setSourceAddressLine1(jsonObject.optString("source_address_line_1"));
             returnOrderEntity.setSourceAddressLine2(jsonObject.optString("source_address_line_2"));
+            returnOrderEntity.setDestinationAddressLine1(jsonObject.optString("destination_address_line_1"));
+            returnOrderEntity.setDestinationAddressLine2(jsonObject.optString("destination_address_line_2"));
             returnOrderEntity.setCustomerName(jsonObject.optString("customer_name"));
             returnOrderEntity.setActualReturnAt(jsonObject.optString("actual_returned_at"));
+            returnOrderEntity.setActualAcceptedAt(jsonObject.optString("actual_accepted_at"));
             return returnOrderEntity;
         }
         return null;

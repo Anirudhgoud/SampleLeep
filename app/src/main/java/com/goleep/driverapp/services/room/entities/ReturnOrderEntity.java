@@ -23,7 +23,10 @@ public class ReturnOrderEntity {
     private String customerName;
     private String sourceAddressLine1;
     private String sourceAddressLine2;
+    private String destinationAddressLine1;
+    private String destinationAddressLine2;
     private String actualReturnAt;
+    private String actualAcceptedAt;
 
     public String getActualReturnAt() {
         return actualReturnAt;
@@ -143,5 +146,29 @@ public class ReturnOrderEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDestinationAddressLine1() {
+        return destinationAddressLine1;
+    }
+
+    public void setDestinationAddressLine1(String destinationAddressLine1) {
+        this.destinationAddressLine1 = destinationAddressLine1;
+    }
+
+    public String getDestinationAddressLine2() {
+        return destinationAddressLine2;
+    }
+
+    public void setDestinationAddressLine2(String destinationAddressLine2) {
+        this.destinationAddressLine2 = destinationAddressLine2;
+    }
+
+    public String getActualAcceptedAt() {
+        return actualAcceptedAt;
+    }
+
+    public void setActualAcceptedAt(String actualAcceptedAt) {
+        this.actualAcceptedAt = actualAcceptedAt;
     }
 }
