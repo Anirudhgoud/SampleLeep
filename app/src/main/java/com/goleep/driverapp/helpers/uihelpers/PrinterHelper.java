@@ -108,12 +108,14 @@ public class PrinterHelper {
             tp.setTypeface(Typeface.DEFAULT);
             printer.addText(separator +"\n", Layout.Alignment.ALIGN_NORMAL, tp);
         }
-        printer.addText(generateReturnProductsString(products, currencySymbol), Layout.Alignment.ALIGN_NORMAL, tp);
-        printer.addText(separator + "\n", Layout.Alignment.ALIGN_NORMAL, tp);
-        tp.setTypeface(Typeface.DEFAULT_BOLD);
-        printer.addText(resources.getString(R.string.total)+" "+ returnsTotal + "\n", Layout.Alignment.ALIGN_OPPOSITE, tp);
-        tp.setTypeface(Typeface.DEFAULT);
-        printer.addText(separator + "\n", Layout.Alignment.ALIGN_NORMAL, tp);
+        if(roNumber != null && !roNumber.isEmpty()) {
+            printer.addText(generateReturnProductsString(products, currencySymbol), Layout.Alignment.ALIGN_NORMAL, tp);
+            printer.addText(separator + "\n", Layout.Alignment.ALIGN_NORMAL, tp);
+            tp.setTypeface(Typeface.DEFAULT_BOLD);
+            printer.addText(resources.getString(R.string.total) + " " + returnsTotal + "\n", Layout.Alignment.ALIGN_OPPOSITE, tp);
+            tp.setTypeface(Typeface.DEFAULT);
+            printer.addText(separator + "\n", Layout.Alignment.ALIGN_NORMAL, tp);
+        }
         tp.setTypeface(Typeface.DEFAULT);
         printer.addText(resources.getString(R.string.grand_total)+" "+(cashSalesTotal-returnsTotal)+"\n", Layout.Alignment.ALIGN_NORMAL, tp);
         if(returnsTotal > 0){
@@ -132,7 +134,7 @@ public class PrinterHelper {
         printer.setPrinterWidth(PrinterWidth.PRINT_WIDTH_48MM);
         printer.addText("\n");
         resources = context.getResources();
-        itemsHeader =  String.format("%-40s", resources.getString(R.string.items_label)+" ")+"   "+
+        itemsHeader =  String.format("%-35s", resources.getString(R.string.items_label)+" ")+"   "+
                 String.format("%-15s", resources.getString(R.string.units)+" ")+"   "+
                 String.format("%-10s", resources.getString(R.string.value)+" ")+"\n\n";
     }
