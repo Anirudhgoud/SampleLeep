@@ -318,17 +318,15 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     }
 
     private void printInvoice(){
-        BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
-        bluetoothPrinter.initService(DropOffPaymentConfirmationActivity.this);
-        if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
-            PrinterHelper printerHelper = new PrinterHelper();
+        PrinterHelper printerHelper = new PrinterHelper(this);
+        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
             List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(viewModel.getDeliveryOrder(), viewModel.getDoItems(),
                     AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this),
-                    viewModel.getPaymentCollected(), DropOffPaymentConfirmationActivity.this, false);
-            printerHelper.print(printableLines, bluetoothPrinter, DropOffPaymentConfirmationActivity.this);
+                    viewModel.getPaymentCollected(), false);
+            printerHelper.print(printableLines);
 
         } else {
-            bluetoothPrinter.showDeviceList(DropOffPaymentConfirmationActivity.this);
+            printerHelper.getPrinter().showDeviceList(this);
         }
     }
 }

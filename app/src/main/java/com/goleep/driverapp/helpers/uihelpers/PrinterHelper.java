@@ -41,14 +41,12 @@ public class PrinterHelper {
 
     private TextPaint boldTextPaint;
     private TextPaint normalTextPaint;
-    private Context context;
 
     public PrinterHelper(Context context) {
-        this.context = context;
         printer = PrinterService.sharedInstance().getPrinter();
         printer.initService(context);
         initPrinter();
-        initResources();
+        initResources(context);
     }
 
     public BluetoothPrinter getPrinter() {
@@ -58,7 +56,6 @@ public class PrinterHelper {
     private void initPrinter(){
         printer.setPrinterWidth(PrinterWidth.PRINT_WIDTH_48MM);
         printer.addText("\n");
-        resources = context.getResources();
 
     }
 
@@ -294,7 +291,8 @@ public class PrinterHelper {
         return printableLines;
     }
 
-    private void initResources() {
+    private void initResources(Context context) {
+        resources = context.getResources();
         itemsHeader =  String.format("%-35s", resources.getString(R.string.items_label)+" ")+"   "+
                 String.format("%-15s", resources.getString(R.string.units)+" ")+"   "+
                 String.format("%-10s", resources.getString(R.string.value)+" ");
