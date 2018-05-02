@@ -1,22 +1,20 @@
-stages:
-  - build
-
 image: openjdk:8-jdk
 
 variables:
-  ANDROID_COMPILE_SDK: "26"
-  ANDROID_BUILD_TOOLS: "26.0.2"
-  ANDROID_SDK_TOOLS: "26.1.1"
+  ANDROID_COMPILE_SDK: "27"
+  ANDROID_BUILD_TOOLS: "27.0.3"
 
 stages:
-  - build
-
+  - uatBuild
+  - releaseBuild
+  
 cache:
   paths:
     - .gradle/
     - .m2/
     - android-sdk-linux/
     - android-sdk.zip
+
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -33,13 +31,28 @@ before_script:
   - export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
   - chmod +x ./gradlew
 
-build:
-  stage: build
+uatBuild:
+  stage: uatBuild
   script:
-    - ./gradlew assembleDebug
+    - ./gradlew assembleUat
   tags:
     - build
 
   artifacts:
+    name: "${CI_BUILD_NAME}"
     paths:
-    - app/build/outputs/apk/debug/app-debug.apk
+    - app/build/outputs/apk/uat/
+    - app/build/outputs/mapping/uat/
+
+releaseBuild:
+  stage: releaseBuild
+  script:
+    - ./gradlew assembleRelease
+  tags:
+    - build
+
+  artifacts:
+    name: "${CI_BUILD_NAME}"
+    paths:
+    - app/build/outputs/apk/release/
+    - app/build/outputs/mapping/release/

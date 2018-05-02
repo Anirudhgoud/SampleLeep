@@ -13,17 +13,43 @@ android {
         resConfigs "en"
     }
 
+
+    File jksFile = new File("/tmp/traco.jks")
+    String jksBinary = System.getenv("TRACO_JKS_BINARY") as String
+    if (jksBinary != null){
+        byte[] b1 = new Base64().getDecoder().decode(System.getenv("TRACO_JKS_BINARY") as String)
+        FileOutputStream out = new FileOutputStream(jksFile)
+        try {
+            out.write(b1)
+        } finally {
+            out.close()
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile jksFile
+            storePassword System.getenv("STORE_PASSWORD") as String
+            keyAlias System.getenv("KEY_ALIAS") as String
+            keyPassword System.getenv("KEY_PASSWORD") as String
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'BASE_URL', '"https://dashboard.traco.cybrilla.io/v1"'
+            signingConfig signingConfigs.release
         }
 
         uat {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'BASE_URL', '"http://dashboard.tracouat.cybrilla.io/v1"'
+            signingConfig signingConfigs.release
         }
 
         debug {
