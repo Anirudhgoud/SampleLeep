@@ -68,7 +68,7 @@ public class DeliveryOrderViewModel extends AndroidViewModel {
                 getApplication().getApplicationContext(),SharedPreferenceKeys.DRIVER_ID);
         String url = UrlConstants.DELIVERY_ORDERS_URL + "?assignees=" + driverId;
         if (status != null) url += "&statuses=" + status;
-        if (actualDeliveryStartDate != null && actualDeliveryStartDate != null) url += "&act_del_start_date=" + actualDeliveryStartDate + "&act_del_end_date=" + actualDeliveryStartDate;
+        if (actualDeliveryStartDate != null && actualDeliveryEndDate != null) url += "&act_del_start_date=" + actualDeliveryStartDate + "&act_del_end_date=" + actualDeliveryEndDate;
         if (wareHouseId != -1) url += "&source_locations="+wareHouseId;
         if (dotype != null) url += "&type="+dotype;
         NetworkService.sharedInstance().getNetworkClient().makeGetRequest(getApplication().getApplicationContext(),
