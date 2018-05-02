@@ -16,11 +16,9 @@ android {
 
     File jksFile = new File("/tmp/traco.jks")
     String jksBinary = System.getenv("TRACO_JKS_BINARY") as String
-    println(jksBinary)
     if (jksBinary != null){
-        FileOutputStream out = null
         byte[] b1 = new Base64().getDecoder().decode(System.getenv("TRACO_JKS_BINARY") as String)
-        out = new FileOutputStream(jksFile)
+        FileOutputStream out = new FileOutputStream(jksFile)
         try {
             out.write(b1)
         } finally {
@@ -40,6 +38,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'BASE_URL', '"https://dashboard.traco.cybrilla.io/v1"'
             signingConfig signingConfigs.release
@@ -47,6 +46,7 @@ android {
 
         uat {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'BASE_URL', '"http://dashboard.tracouat.cybrilla.io/v1"'
             signingConfig signingConfigs.release
