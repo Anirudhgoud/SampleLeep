@@ -22,6 +22,7 @@ import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
+import com.goleep.driverapp.helpers.uihelpers.PrintableLine;
 import com.goleep.driverapp.helpers.uihelpers.PrinterHelper;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Location;
@@ -383,11 +384,14 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
         bluetoothPrinter.initService(CashSalesFinalConfirmationActivity.this);
         if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
-            new PrinterHelper().printInvoice(CashSalesFinalConfirmationActivity.this,
+            PrinterHelper printerHelper = new PrinterHelper();
+            List<PrintableLine> printableLines = printerHelper.generateCashSalesPrintableLines(
                     viewModel.getDoNumber(), viewModel.getRoNumber(), viewModel.getConsumerLocation(),
-                    viewModel.getScannedProducts(), bluetoothPrinter,
-                    AppUtils.userCurrencySymbol(CashSalesFinalConfirmationActivity.this),
-                    viewModel.getPaymentCollected());
+                    viewModel.getScannedProducts(), AppUtils.userCurrencySymbol(
+                            CashSalesFinalConfirmationActivity.this),
+                    viewModel.getPaymentCollected(), CashSalesFinalConfirmationActivity.this);
+            printerHelper.print(printableLines, bluetoothPrinter, CashSalesFinalConfirmationActivity.this);
+
         } else {
             bluetoothPrinter.showDeviceList(CashSalesFinalConfirmationActivity.this);
         }
