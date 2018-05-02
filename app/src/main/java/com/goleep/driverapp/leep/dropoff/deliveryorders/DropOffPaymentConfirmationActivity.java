@@ -141,11 +141,8 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     }
 
     private void fetchDeliveryOrderItems() {
-        if (viewModel.getSelectedOrderItems() == null ) {
+        if (viewModel.getSelectedOrderItems() == null || viewModel.getSelectedOrderItems().size() == 0)
             viewModel.setOrderItems(viewModel.getOrderItems());
-        } else if(viewModel.getSelectedOrderItems().size() == 0){
-            viewModel.setOrderItems(viewModel.getOrderItems());
-        }
     }
 
     private void updateDeliveryOrderUI() {
