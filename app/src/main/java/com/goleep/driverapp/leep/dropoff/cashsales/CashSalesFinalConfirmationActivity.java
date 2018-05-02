@@ -381,19 +381,17 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
 
 
     private void printInvoice(){
-        BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
-        bluetoothPrinter.initService(CashSalesFinalConfirmationActivity.this);
-        if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
-            PrinterHelper printerHelper = new PrinterHelper();
+        PrinterHelper printerHelper = new PrinterHelper(this);
+        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
             List<PrintableLine> printableLines = printerHelper.generateCashSalesPrintableLines(
                     viewModel.getDoNumber(), viewModel.getRoNumber(), viewModel.getConsumerLocation(),
                     viewModel.getScannedProducts(), AppUtils.userCurrencySymbol(
                             CashSalesFinalConfirmationActivity.this),
-                    viewModel.getPaymentCollected(), CashSalesFinalConfirmationActivity.this);
-            printerHelper.print(printableLines, bluetoothPrinter, CashSalesFinalConfirmationActivity.this);
+                    viewModel.getPaymentCollected());
+            printerHelper.print(printableLines);
 
         } else {
-            bluetoothPrinter.showDeviceList(CashSalesFinalConfirmationActivity.this);
+            printerHelper.getPrinter().showDeviceList(CashSalesFinalConfirmationActivity.this);
         }
     }
 }

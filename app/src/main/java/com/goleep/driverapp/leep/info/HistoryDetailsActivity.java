@@ -205,28 +205,25 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
     }
 
     private void printInvoice() {
-        BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
-        bluetoothPrinter.initService(HistoryDetailsActivity.this);
-        if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
+        PrinterHelper printerHelper = new PrinterHelper(this);
+        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
             if(historyDetailsViewModel.getOrderType() == AppConstants.TYPE_DELIVERY) {
-                PrinterHelper printerHelper = new PrinterHelper();
+
                 List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(
                         historyDetailsViewModel.getDeliveryOrderEntity(),
                         historyDetailsViewModel.getDoItems(),
                         AppUtils.userCurrencySymbol(HistoryDetailsActivity.this),
-                        0, HistoryDetailsActivity.this, true);
-                printerHelper.print(printableLines, bluetoothPrinter, HistoryDetailsActivity.this);
+                        0,  true);
+                printerHelper.print(printableLines);
             }
             else {
-                PrinterHelper printerHelper = new PrinterHelper();
                 List<PrintableLine> printableLines = printerHelper.generateReturnOrderPrintableLines(
                         historyDetailsViewModel.getReturnOrderEntity(),
-                        historyDetailsViewModel.getRoItems(), AppUtils.userCurrencySymbol(
-                                HistoryDetailsActivity.this), HistoryDetailsActivity.this);
-                printerHelper.print(printableLines, bluetoothPrinter, HistoryDetailsActivity.this);
+                        historyDetailsViewModel.getRoItems(), AppUtils.userCurrencySymbol(this));
+                printerHelper.print(printableLines);
             }
         } else {
-            bluetoothPrinter.showDeviceList(HistoryDetailsActivity.this);
+            printerHelper.getPrinter().showDeviceList(this);
         }
     }
 }

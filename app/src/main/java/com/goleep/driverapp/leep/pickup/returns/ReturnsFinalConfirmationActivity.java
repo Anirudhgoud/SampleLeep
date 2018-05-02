@@ -356,18 +356,16 @@ public class ReturnsFinalConfirmationActivity extends ParentAppCompatActivity im
     }
 
     private void printInvoice(){
-        BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
-        bluetoothPrinter.initService(ReturnsFinalConfirmationActivity.this);
-        if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
-            PrinterHelper printerHelper = new PrinterHelper();
+        PrinterHelper printerHelper = new PrinterHelper(this);
+        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
             List<PrintableLine> printableLines = printerHelper.generateCashSalesPrintableLines(null,
                     String.valueOf(viewModel.getRoNumber()), viewModel.getConsumerLocation(),
                     viewModel.getScannedProducts(),
                     AppUtils.userCurrencySymbol(this),
-                    viewModel.getPaymentCollected(), this );
-            printerHelper.print(printableLines, bluetoothPrinter, this);
+                    viewModel.getPaymentCollected() );
+            printerHelper.print(printableLines);
         } else {
-            bluetoothPrinter.showDeviceList(this);
+            printerHelper.getPrinter().showDeviceList(this);
         }
     }
 }

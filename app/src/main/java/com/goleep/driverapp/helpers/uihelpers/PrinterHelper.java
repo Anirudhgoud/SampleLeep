@@ -11,6 +11,8 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.helpers.uimodels.Customer;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
+import com.goleep.driverapp.leep.pickup.returns.ReturnsFinalConfirmationActivity;
+import com.goleep.driverapp.services.printer.PrinterService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
@@ -39,9 +41,21 @@ public class PrinterHelper {
 
     private TextPaint boldTextPaint;
     private TextPaint normalTextPaint;
+    private Context context;
 
-    private void initPrinter(BluetoothPrinter bluetoothPrinter, Context context){
-        this.printer = bluetoothPrinter;
+    public PrinterHelper(Context context) {
+        this.context = context;
+        printer = PrinterService.sharedInstance().getPrinter();
+        printer.initService(context);
+        initPrinter();
+        initResources();
+    }
+
+    public BluetoothPrinter getPrinter() {
+        return printer;
+    }
+
+    private void initPrinter(){
         printer.setPrinterWidth(PrinterWidth.PRINT_WIDTH_48MM);
         printer.addText("\n");
         resources = context.getResources();
@@ -64,10 +78,8 @@ public class PrinterHelper {
 
     public List<PrintableLine> generateCashSalesPrintableLines(String doNumber, String roNumber,
                                                                Customer customer, List<Product> products,
-                                                               String currencySymbol, double paymentCollected,
-                                                               Context context){
+                                                               String currencySymbol, double paymentCollected){
         List<PrintableLine> printableLines = new ArrayList<>();
-        initResources(context);
         printableLines.add(new PrintableLine(customer.getName(), Layout.Alignment.ALIGN_NORMAL, boldTextPaint));
         if(doNumber != null && !doNumber.isEmpty())
             printableLines.add(new PrintableLine(resources.getString(R.string.do_number)+" "+
@@ -156,11 +168,8 @@ public class PrinterHelper {
 
     public List<PrintableLine> generateReturnOrderPrintableLines(ReturnOrderEntity returnOrderEntity,
                                                                  List<ReturnOrderItem> products,
-                                                                 String currencySymbol, Context context){
+                                                                 String currencySymbol){
         List<PrintableLine> printableLines = new ArrayList<>();
-        initResources(context);
-
-
         String type = returnOrderEntity.getType();
         String locationName = "";
         String address = "";
@@ -221,9 +230,8 @@ public class PrinterHelper {
 
     public List<PrintableLine> generateDeliveryOrderPrintableLines(DeliveryOrderEntity deliveryOrder,
                                                                    List<OrderItemEntity> doItems, String currencySymbol,
-                                                                   double paymentCollected, Context context, boolean fromHistory) {
+                                                                   double paymentCollected, boolean fromHistory) {
         List<PrintableLine> printableLines = new ArrayList<>();
-        initResources(context);
         printableLines.add(new PrintableLine(deliveryOrder.getCustomerName(),Layout.Alignment.ALIGN_NORMAL, boldTextPaint));
         printableLines.add(new PrintableLine(resources.getString(R.string.do_number)+" "+
                 deliveryOrder.getDoNumber(), Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
@@ -286,8 +294,7 @@ public class PrinterHelper {
         return printableLines;
     }
 
-    private void initResources(Context context) {
-        resources = context.getResources();
+    private void initResources() {
         itemsHeader =  String.format("%-35s", resources.getString(R.string.items_label)+" ")+"   "+
                 String.format("%-15s", resources.getString(R.string.units)+" ")+"   "+
                 String.format("%-10s", resources.getString(R.string.value)+" ");
@@ -302,8 +309,7 @@ public class PrinterHelper {
         normalTextPaint.setTypeface(Typeface.DEFAULT);
     }
 
-    public void print(List<PrintableLine> printableLines, BluetoothPrinter bluetoothPrinter, Context context) {
-        initPrinter(bluetoothPrinter, context);
+    public void print(List<PrintableLine> printableLines) {
         printer.addText("\n");
         for(PrintableLine printableLine : printableLines)
             printer.addText(printableLine.getText(), printableLine.getAlignment(), printableLine.getTextPaint());
