@@ -195,7 +195,8 @@ public class PrinterHelper {
         stringBuilder.append(itemsHeader);
         for(OrderItemEntity orderItemEntity : products){
             cashSalesTotal += orderItemEntity.getQuantity() * orderItemEntity.getPrice();
-            stringBuilder.append(String.format("%-25s", orderItemEntity.getProduct().getName())+"   "+
+            String productName = getProductName(orderItemEntity.getProduct().getName());
+            stringBuilder.append(productName +
                     String.format("%-15s", orderItemEntity.getQuantity())+"   "+
                     String.format("%-10s", currencySymbol+String.valueOf(
                             orderItemEntity.getQuantity() * orderItemEntity.getPrice()))+"\n");
@@ -210,9 +211,9 @@ public class PrinterHelper {
         stringBuilder.append("\n"+resources.getString(R.string.returns)+"\n");
         stringBuilder.append(separator +"\n");
         stringBuilder.append(itemsHeader);
-        for(OrderItemEntity orderItemEntity : products){
+        for(ReturnOrderItem orderItemEntity : products){
             returnsTotal += orderItemEntity.getQuantity() * orderItemEntity.getPrice();
-            stringBuilder.append(String.format("%-25s", orderItemEntity.getProduct().getName())+"   "+
+            stringBuilder.append(getProductName(orderItemEntity.getProduct().getName()) +
                     String.format("%-15s", orderItemEntity.getQuantity())+"   "+
                     String.format("%-10s", currencySymbol+String.valueOf(
                             orderItemEntity.getQuantity() * orderItemEntity.getPrice()))+"\n");
@@ -230,7 +231,7 @@ public class PrinterHelper {
         for(Product product : returnedProducts){
             if(product.getReturnQuantity() > 0) {
                 returnsTotal += product.getReturnQuantity() * product.getPrice();
-                stringBuilder.append(String.format("%-25s", product.getProductName()) + "   " +
+                stringBuilder.append(getProductName(product.getProductName())+
                         String.format("%-15s", product.getReturnQuantity()) + "   " +
                         String.format("%-10s", currencySymbol + String.valueOf(
                                 product.getReturnQuantity() * product.getPrice())) + "\n");
@@ -249,7 +250,7 @@ public class PrinterHelper {
         for(Product product : products){
             if(product.getQuantity() > 0) {
                 cashSalesTotal += product.getQuantity() * product.getPrice();
-                stringBuilder.append(String.format("%-25s", product.getProductName()) + "   " +
+                stringBuilder.append(getProductName(product.getProductName())+
                         String.format("%-15s", product.getQuantity()) + "   " +
                         String.format("%-10s", currencySymbol + String.valueOf(
                                 product.getQuantity() * product.getPrice())) + "\n");
@@ -259,5 +260,13 @@ public class PrinterHelper {
         if(cashSalesTotal >0 )
             return stringBuilder.toString();
         else return "";
+    }
+
+    private String getProductName(String productName){
+        if(productName.length() < 10)
+        return  String.format("%-45s", productName);
+        else if(productName.length() < 15)
+            return  String.format("%-30s", productName);
+        else return  String.format("%-25s", productName);
     }
 }

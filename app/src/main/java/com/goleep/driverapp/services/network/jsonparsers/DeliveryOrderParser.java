@@ -67,4 +67,13 @@ public class DeliveryOrderParser {
         deliveryOrder.setSourceLongitude(jsonObject.optDouble("source_longitude", 0.0));
         return  deliveryOrder;
     }
+
+    public String parseForDoNumber(JSONArray response) {
+        JSONObject firstObj = response.optJSONObject(0);
+        if(firstObj == null){
+            return null;
+        } else {
+            return firstObj.optString("do_number");
+        }
+    }
 }

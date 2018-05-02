@@ -55,9 +55,7 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
                     case NetworkConstants.SUCCESS:
                         paymentMadeInCashSales = true;
                         DeliveryOrderParser parser = new DeliveryOrderParser();
-                        List<DeliveryOrderEntity> deliveryOrderEntities = parser.deliveryOrdersByParsingJsonResponse(response);
-                        if(deliveryOrderEntities.size() > 0)
-                            doNumber = deliveryOrderEntities.get(0).getDoNumber();
+                        doNumber = parser.parseForDoNumber(response);
                         deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
                         break;
 
