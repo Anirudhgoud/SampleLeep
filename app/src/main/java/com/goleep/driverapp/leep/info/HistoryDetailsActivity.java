@@ -14,9 +14,11 @@ import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ProductListAdapter;
 import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
+import com.goleep.driverapp.helpers.uihelpers.PrintableLine;
 import com.goleep.driverapp.helpers.uihelpers.PrinterHelper;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.dropoff.deliveryorders.DropOffPaymentConfirmationActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.printer.PrinterService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
@@ -35,7 +37,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT;
-import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
 import static com.goleep.driverapp.utils.DateTimeUtils.RAILS_TIMESTAMP_FORMAT;
 import static com.goleep.driverapp.utils.DateTimeUtils.TWELVE_HOUR_TIME_FORMAT;
 
@@ -207,17 +208,23 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
         BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
         bluetoothPrinter.initService(HistoryDetailsActivity.this);
         if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
-            if(historyDetailsViewModel.getOrderType() == AppConstants.TYPE_DELIVERY)
-                new PrinterHelper().printInvoice(HistoryDetailsActivity.this,
+            if(historyDetailsViewModel.getOrderType() == AppConstants.TYPE_DELIVERY) {
+                PrinterHelper printerHelper = new PrinterHelper();
+                List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(
                         historyDetailsViewModel.getDeliveryOrderEntity(),
-                        historyDetailsViewModel.getDoItems(), bluetoothPrinter,
+                        historyDetailsViewModel.getDoItems(),
                         AppUtils.userCurrencySymbol(HistoryDetailsActivity.this),
-                        0);
-            else
-                new PrinterHelper().printInvoice(HistoryDetailsActivity.this,
+                        0, HistoryDetailsActivity.this, true);
+                printerHelper.print(printableLines, bluetoothPrinter, HistoryDetailsActivity.this);
+            }
+            else {
+                PrinterHelper printerHelper = new PrinterHelper();
+                List<PrintableLine> printableLines = printerHelper.generateReturnOrderPrintableLines(
                         historyDetailsViewModel.getReturnOrderEntity(),
-                        historyDetailsViewModel.getRoItems(), bluetoothPrinter,
-                        AppUtils.userCurrencySymbol(HistoryDetailsActivity.this));
+                        historyDetailsViewModel.getRoItems(), AppUtils.userCurrencySymbol(
+                                HistoryDetailsActivity.this), HistoryDetailsActivity.this);
+                printerHelper.print(printableLines, bluetoothPrinter, HistoryDetailsActivity.this);
+            }
         } else {
             bluetoothPrinter.showDeviceList(HistoryDetailsActivity.this);
         }

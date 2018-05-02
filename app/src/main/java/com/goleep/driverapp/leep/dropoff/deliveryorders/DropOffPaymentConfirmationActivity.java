@@ -1,12 +1,9 @@
 package com.goleep.driverapp.leep.dropoff.deliveryorders;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -26,13 +23,13 @@ import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
+import com.goleep.driverapp.helpers.uihelpers.PrintableLine;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
 import com.goleep.driverapp.services.printer.PrinterService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
-import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.LogUtils;
@@ -324,10 +321,12 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         BluetoothPrinter bluetoothPrinter = PrinterService.sharedInstance().getPrinter();
         bluetoothPrinter.initService(DropOffPaymentConfirmationActivity.this);
         if(bluetoothPrinter.getState() == BluetoothPrinter.STATE_CONNECTED) {
-            new PrinterHelper().printInvoice(DropOffPaymentConfirmationActivity.this,
-                    viewModel.getDeliveryOrder(), viewModel.getDoItems(), bluetoothPrinter,
+            PrinterHelper printerHelper = new PrinterHelper();
+            List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(viewModel.getDeliveryOrder(), viewModel.getDoItems(),
                     AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this),
-                    viewModel.getPaymentCollected());
+                    viewModel.getPaymentCollected(), DropOffPaymentConfirmationActivity.this, false);
+            printerHelper.print(printableLines, bluetoothPrinter, DropOffPaymentConfirmationActivity.this);
+
         } else {
             bluetoothPrinter.showDeviceList(DropOffPaymentConfirmationActivity.this);
         }
