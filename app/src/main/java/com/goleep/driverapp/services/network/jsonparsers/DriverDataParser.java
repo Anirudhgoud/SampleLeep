@@ -71,6 +71,7 @@ public class DriverDataParser {
                 warehouseEntity.setLatitude(jsonObject.optDouble("latitude", 0.0));
                 warehouseEntity.setLongitude(jsonObject.optDouble("longitude", 0.0));
                 warehouseEntity.setWareHouseName(jsonObject.optString("name"));
+                warehouseEntity.setDoAssignedCount(jsonObject.optInt("assigned_do_count"));
                 warehouseEntities.add(warehouseEntity);
             }
             return warehouseEntities;

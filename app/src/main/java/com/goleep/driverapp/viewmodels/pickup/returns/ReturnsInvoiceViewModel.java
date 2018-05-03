@@ -87,4 +87,7 @@ public class ReturnsInvoiceViewModel extends AndroidViewModel {
         return  outstandingBalance - returns;
     }
 
+    public double getOutstandingBalance() {
+        return outstandingBalance;
+    }
 }

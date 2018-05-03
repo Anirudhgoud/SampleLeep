@@ -46,7 +46,7 @@ public class PickupWarehouseActivity extends ParentAppCompatActivity {
 
     private void initialiseTabBar() {
         WarehousePagerAdapter warehousePagerAdapter = new WarehousePagerAdapter(getSupportFragmentManager(),
-                new String[]{getString(R.string.list), getString(R.string.map), getString(R.string.app_name)});
+                new String[]{getString(R.string.list), getString(R.string.map), getString(R.string.app_name)}, true);
         viewPager.setAdapter(warehousePagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();

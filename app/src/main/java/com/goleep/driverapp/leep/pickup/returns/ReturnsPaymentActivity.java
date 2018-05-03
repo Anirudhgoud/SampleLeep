@@ -235,6 +235,7 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
             paymentCollected = Double.valueOf(etPaymentCollected.getText().toString());
             Intent intent = new Intent(this, ReturnsPaymentMethodActivity.class);
             intent.putExtra(IntentConstants.PAYMENT_COLLECTED, paymentCollected);
+            intent.putExtra(IntentConstants.PREVIOUS_BALANCE, viewModel.getOutstandingBalance());
             intent.putExtra(IntentConstants.CONSUMER_LOCATION, viewModel.getConsumerLocation());
             intent.putParcelableArrayListExtra(IntentConstants.SELECTED_PRODUCT_LIST,
                     (ArrayList<Product>) viewModel.getScannedProducts());

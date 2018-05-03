@@ -18,9 +18,14 @@ import java.util.List;
 public class WarehouseListAdapter extends RecyclerView.Adapter<WarehouseListViewHolder> {
     private List<WarehouseEntity> warehouseList;
     private View.OnClickListener warehouseSelectionListener;
+    private boolean showDoCount = false;
 
     public WarehouseListAdapter(List<WarehouseEntity> warehouseList) {
         this.warehouseList = warehouseList;
+    }
+
+    public void setShowDoCount(boolean showDoCount) {
+        this.showDoCount = showDoCount;
     }
 
     public void setWarehouseSelectionListener(View.OnClickListener warehouseSelectionListener) {
@@ -38,17 +43,12 @@ public class WarehouseListAdapter extends RecyclerView.Adapter<WarehouseListView
 
     @Override
     public void onBindViewHolder(WarehouseListViewHolder holder, int position) {
-        holder.bind(warehouseList.get(position), position);
+        holder.bind(warehouseList.get(position), position, showDoCount);
     }
 
     @Override
     public int getItemCount() {
         return warehouseList.size();
-    }
-
-    public void updateList(List<WarehouseEntity> warehouseEntities) {
-        this.warehouseList = warehouseEntities;
-        notifyDataSetChanged();
     }
 
     public WarehouseEntity getItem(int position) {
