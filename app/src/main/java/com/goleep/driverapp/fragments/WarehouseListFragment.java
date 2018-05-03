@@ -75,7 +75,8 @@ public class WarehouseListFragment extends Fragment {
         Bundle args = getArguments();
         if(args != null)
             isPickup = args.getBoolean(IntentConstants.IS_PICKUP);
-        adapter = new WarehouseListAdapter(groupWarehouses(viewModel.getWarehouses()), isPickup);
+        adapter = new WarehouseListAdapter(groupWarehouses(viewModel.getWarehouses()));
+        adapter.setShowDoCount(isPickup);
         adapter.setWarehouseSelectionListener(warehouseSelectionListener);
         recyclerView.setAdapter(adapter);
     }
