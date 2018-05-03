@@ -52,6 +52,10 @@
 
     </RadioGroup>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_grey" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/delivery_order_recyclerview"

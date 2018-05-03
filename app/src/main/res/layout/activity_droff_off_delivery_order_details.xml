@@ -9,6 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <View
+        android:id="@+id/color_divider"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/inner_dashboard_green" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"

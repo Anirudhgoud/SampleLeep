@@ -32,20 +32,23 @@ public class WarehouseListViewHolder extends RecyclerView.ViewHolder {
         doAssignedCountTextView = itemView.findViewById(R.id.tv_do_count);
     }
 
-    public void bind(WarehouseEntity warehouseEntity, int position, boolean isPickup) {
+    public void bind(WarehouseEntity warehouseEntity, int position, boolean showDoCount) {
         customerNameTextView.setText(warehouseEntity.getWareHouseName());
         addressTextView.setText(StringUtils.getFullAddress(warehouseEntity.getAddressLine1(),
                 warehouseEntity.getAddressLine2(), warehouseEntity.getCity(),
                 warehouseEntity.getState(), warehouseEntity.getPincode()));
         itemView.setTag(position);
-        if(isPickup && warehouseEntity.getDoAssignedCount() < 1) {
+        if(showDoCount && warehouseEntity.getDoAssignedCount() < 1) {
             selectButton.setBackgroundResource(R.drawable.rounded_grey_button);
             doAssignedCountTextView.setVisibility(View.GONE);
         }
-        else {
+        else if(warehouseEntity.getDoAssignedCount() > 0){
             selectButton.setBackgroundResource(R.drawable.rounded_green_button);
             doAssignedCountTextView.setVisibility(View.VISIBLE);
             doAssignedCountTextView.setText(String.valueOf(warehouseEntity.getDoAssignedCount()));
+        } else if(!showDoCount){
+            selectButton.setBackgroundResource(R.drawable.rounded_green_button);
+            doAssignedCountTextView.setVisibility(View.GONE);
         }
         if(warehouseSelectionListener != null){
             itemView.setOnClickListener(warehouseSelectionListener);

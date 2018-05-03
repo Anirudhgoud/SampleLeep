@@ -13,11 +13,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
+    <View
+        android:id="@+id/color_divider"
+        android:layout_below="@id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/inner_dashboard_light_blue" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/toolbar_container"
+        android:layout_below="@id/color_divider"
         app:tabBackground="@drawable/tab_background_color"
         app:tabGravity="fill"
         app:tabIndicatorHeight="0dp"
