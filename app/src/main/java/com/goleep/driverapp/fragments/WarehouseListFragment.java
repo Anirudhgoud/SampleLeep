@@ -61,8 +61,9 @@ public class WarehouseListFragment extends Fragment {
     }
 
     private void initialize() {
-        if(getActivity() != null && !getActivity().isFinishing()) {
-            viewModel = ViewModelProviders.of(getActivity()).get(WarehouseViewModel.class);
+        FragmentActivity activity = getActivity();
+        if(activity != null && !activity.isFinishing()) {
+            viewModel = ViewModelProviders.of(activity).get(WarehouseViewModel.class);
             initRecyclerView();
         }
     }
