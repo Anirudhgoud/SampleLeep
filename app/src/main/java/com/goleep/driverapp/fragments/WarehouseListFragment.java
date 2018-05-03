@@ -81,16 +81,18 @@ public class WarehouseListFragment extends Fragment {
     }
 
     private List<WarehouseEntity> groupWarehouses(List<WarehouseEntity> warehouses) {
-        List<WarehouseEntity> warehouseEntities = new ArrayList<>();
-        List<WarehouseEntity> withDo = new ArrayList<>();
-        List<WarehouseEntity> withOutDo = new ArrayList<>();
-        for(WarehouseEntity warehouseEntity : warehouses)
-            if(warehouseEntity.getDoAssignedCount() > 0)
-                withDo.add(warehouseEntity);
-            else withOutDo.add(warehouseEntity);
-        warehouseEntities.addAll(withDo);
-        warehouseEntities.addAll(withOutDo);
-        return warehouseEntities;
+        int length = warehouses.size();
+        for (int i = length - 1; i >= 0; i--) {
+            int pos = i;
+            for (int j = length - 1; j >= 0; j--) {
+                if (warehouses.get(j).getDoAssignedCount() > warehouses.get(pos).getDoAssignedCount())
+                    pos = j;
+            }
+            WarehouseEntity max = warehouses.get(pos);
+            warehouses.set(pos, warehouses.get(i));
+            warehouses.set(i, max);
+        }
+        return warehouses;
     }
 
     private void startPickupActivity(WarehouseEntity warehouseEntity) {
@@ -106,7 +108,8 @@ public class WarehouseListFragment extends Fragment {
             startActivityForResult(intent, 101);
         } else {
             if(getActivity() != null && !getActivity().isFinishing())
-            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.no_do_assigned), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getActivity().getResources().
+                    getString(R.string.no_do_assigned), Toast.LENGTH_LONG).show();
         }
     }
 }
