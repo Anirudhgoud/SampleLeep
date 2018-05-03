@@ -48,11 +48,6 @@ public class WarehouseListAdapter extends RecyclerView.Adapter<WarehouseListView
         return warehouseList.size();
     }
 
-//    public void updateList(List<WarehouseEntity> warehouseEntities) {
-//        this.warehouseList = warehouseEntities;
-//        notifyDataSetChanged();
-//    }
-
     public WarehouseEntity getItem(int position) {
         return warehouseList.get(position);
     }
