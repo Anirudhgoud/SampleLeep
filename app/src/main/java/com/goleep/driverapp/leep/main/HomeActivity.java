@@ -247,6 +247,8 @@ public class HomeActivity extends ParentAppCompatActivity {
         if(intent != null && intent.getBooleanExtra(IntentConstants.TASK_SUCCESSFUL, false)){
             viewPager.setCurrentItem(0);
             viewModel.getStocks();
+            if(intent.getBooleanExtra(IntentConstants.PICKUP_SUCCESS, false))
+                viewModel.getDriverProfile(driverProfileCallback);
         }
     }
 
@@ -537,13 +539,6 @@ public class HomeActivity extends ParentAppCompatActivity {
         setCountValues(relativeLayout_pickup_cardview,StringUtils.formatToOneDecimal(pickupCount == -1 ? 0 : pickupCount),R.drawable.pickup_icon_bg);
         setCountValues(relativeLayout_drop_off_cardview,StringUtils.formatToOneDecimal(dropoffCount == -1 ? 0 : dropoffCount),R.drawable.drop_off_icon_bg);
         setCountValues(relativeLayout_information_cardview,StringUtils.formatToOneDecimal(informationCount == -1 ? 0 : informationCount),R.drawable.info_icon_bg);
-    }
-
-
-    private String addZeroToSingleCharacter(String str) {
-        if (str.length() == 1)
-            return "0" + str;
-        else return str;
     }
 
     private void startDriverLocationUpdateService(){

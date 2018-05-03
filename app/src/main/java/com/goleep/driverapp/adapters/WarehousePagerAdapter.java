@@ -1,9 +1,11 @@
 package com.goleep.driverapp.adapters;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.goleep.driverapp.constants.IntentConstants;
 import com.goleep.driverapp.fragments.WarehouseListFragment;
 import com.goleep.driverapp.fragments.WarehouseMapFragment;
 
@@ -15,17 +17,23 @@ public class WarehousePagerAdapter extends FragmentPagerAdapter {
 
     private int NUMBER_OF_ITEMS = 2;
     private String[] titles;
+    private boolean isPickup = false;
 
-    public WarehousePagerAdapter(FragmentManager fragmentManager, String[] titles) {
+    public WarehousePagerAdapter(FragmentManager fragmentManager, String[] titles, boolean isPickup) {
         super(fragmentManager);
         this.titles = titles;
+        this.isPickup = isPickup;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new WarehouseListFragment();
+                Fragment fragment = new WarehouseListFragment();
+                Bundle args = new Bundle();
+                args.putBoolean(IntentConstants.IS_PICKUP, isPickup);
+                fragment.setArguments(args);
+                return fragment;
             case 1:
                 return new WarehouseMapFragment();
             default:
@@ -46,7 +54,7 @@ public class WarehousePagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return titles[1];
             default:
-                return titles[2];
+                return titles[1];
         }
     }
 }

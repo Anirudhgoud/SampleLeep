@@ -198,4 +198,5 @@
     <string name="no_stocks_available">No stocks in inventory.</string>
     <string name="no_reports_available">Reports not available.</string>
     <string name="no_history_available">No orders completed</string>
+    <string name="no_do_assigned">No orders assigned at this warehouse</string>
 </resources>

@@ -27,4 +27,6 @@ public interface IntentConstants {
     String PRODUCT = "product";
     String RETURN_REASON = "return_reason";
     String RETURN_REASONS = "return_reasons";
+    String IS_PICKUP = "is_pickup";
+    String PICKUP_SUCCESS = "pickup_success";
 }

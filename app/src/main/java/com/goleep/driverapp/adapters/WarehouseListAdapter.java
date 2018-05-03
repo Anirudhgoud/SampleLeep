@@ -18,9 +18,11 @@ import java.util.List;
 public class WarehouseListAdapter extends RecyclerView.Adapter<WarehouseListViewHolder> {
     private List<WarehouseEntity> warehouseList;
     private View.OnClickListener warehouseSelectionListener;
+    private boolean isPickup;
 
-    public WarehouseListAdapter(List<WarehouseEntity> warehouseList) {
+    public WarehouseListAdapter(List<WarehouseEntity> warehouseList, boolean isPickup) {
         this.warehouseList = warehouseList;
+        this.isPickup = isPickup;
     }
 
     public void setWarehouseSelectionListener(View.OnClickListener warehouseSelectionListener) {
@@ -38,7 +40,7 @@ public class WarehouseListAdapter extends RecyclerView.Adapter<WarehouseListView
 
     @Override
     public void onBindViewHolder(WarehouseListViewHolder holder, int position) {
-        holder.bind(warehouseList.get(position), position);
+        holder.bind(warehouseList.get(position), position, isPickup);
     }
 
     @Override
@@ -46,10 +48,10 @@ public class WarehouseListAdapter extends RecyclerView.Adapter<WarehouseListView
         return warehouseList.size();
     }
 
-    public void updateList(List<WarehouseEntity> warehouseEntities) {
-        this.warehouseList = warehouseEntities;
-        notifyDataSetChanged();
-    }
+//    public void updateList(List<WarehouseEntity> warehouseEntities) {
+//        this.warehouseList = warehouseEntities;
+//        notifyDataSetChanged();
+//    }
 
     public WarehouseEntity getItem(int position) {
         return warehouseList.get(position);

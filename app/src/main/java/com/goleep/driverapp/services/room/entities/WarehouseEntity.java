@@ -22,6 +22,7 @@ public class WarehouseEntity {
     private double latitude;
     private double longitude;
     private String city;
+    private int doAssignedCount;
 
     @Ignore
     private Distance distanceFromCurrentLocation;
@@ -112,5 +113,13 @@ public class WarehouseEntity {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public int getDoAssignedCount() {
+        return doAssignedCount;
+    }
+
+    public void setDoAssignedCount(int doAssignedCount) {
+        this.doAssignedCount = doAssignedCount;
     }
 }
