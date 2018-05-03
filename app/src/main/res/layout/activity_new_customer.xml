@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.goleep.driverapp.leep.dropoff.cashsales.NewCustomerActivity">
+    tools:context="com.tracotech.tracoman.leep.dropoff.cashsales.NewCustomerActivity">
 
     <include
         layout="@layout/toolbar_layout"

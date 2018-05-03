@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.goleep.driverapp.leep.pickup.returns.ReturnItemsConfirmActivity">
+    tools:context="com.tracotech.tracoman.leep.pickup.returns.ReturnItemsConfirmActivity">
 
     <include
         layout="@layout/toolbar_layout"

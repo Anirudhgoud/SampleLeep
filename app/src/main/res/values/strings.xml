@@ -183,7 +183,6 @@
     <string name="country">Country</string>
 
     <!--Map-->
-    <string name="map_key">AIzaSyAq9pi62Es_ElwauRwDV6ZvW912wjghpHo</string>
     <string name="map_drag_drop">Drag &amp; drop the pin to get the address</string>
 
     <!--Select Product screen-->
