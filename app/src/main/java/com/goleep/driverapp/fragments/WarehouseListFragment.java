@@ -25,6 +25,9 @@ import com.goleep.driverapp.services.room.entities.WarehouseEntity;
 import com.goleep.driverapp.viewmodels.WarehouseViewModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,17 +85,7 @@ public class WarehouseListFragment extends Fragment {
     }
 
     private List<WarehouseEntity> groupWarehouses(List<WarehouseEntity> warehouses) {
-        int length = warehouses.size();
-        for (int i = length - 1; i >= 0; i--) {
-            int pos = i;
-            for (int j = length - 1; j >= 0; j--) {
-                if (warehouses.get(j).getDoAssignedCount() > warehouses.get(pos).getDoAssignedCount())
-                    pos = j;
-            }
-            WarehouseEntity max = warehouses.get(pos);
-            warehouses.set(pos, warehouses.get(i));
-            warehouses.set(i, max);
-        }
+        Collections.sort(warehouses, (w1, w2) -> w2.getDoAssignedCount() - w1.getDoAssignedCount());
         return warehouses;
     }
 
