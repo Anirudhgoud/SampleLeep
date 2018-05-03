@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
-        <com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager
+        <com.tracotech.tracoman.helpers.uihelpers.NonSwipeableViewPager
             android:id="@+id/dashboard_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

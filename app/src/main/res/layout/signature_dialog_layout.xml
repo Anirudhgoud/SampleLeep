@@ -40,7 +40,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_rect_with_grey_border">
 
-        <com.goleep.driverapp.helpers.customviews.PaintView
+        <com.tracotech.tracoman.helpers.customviews.PaintView
             android:id="@+id/pv_signature"
             android:layout_width="match_parent"
             android:layout_height="340dp" />

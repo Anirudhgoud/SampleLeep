@@ -6,7 +6,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView
+    <com.tracotech.tracoman.helpers.customviews.CustomAppCompatAutoCompleteTextView
         android:id="@+id/atv_search"
         android:layout_width="match_parent"
         android:layout_height="42dp"

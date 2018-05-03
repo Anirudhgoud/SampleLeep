@@ -40,7 +40,7 @@
         android:textColor="@color/doTabTextColor"
         android:textSize="18sp" />
 
-    <com.goleep.driverapp.helpers.customviews.CustomEditText
+    <com.tracotech.tracoman.helpers.customviews.CustomEditText
         android:id="@+id/et_units"
         android:layout_width="160dp"
         android:layout_height="50dp"

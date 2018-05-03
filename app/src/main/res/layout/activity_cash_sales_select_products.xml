@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.goleep.driverapp.leep.dropoff.cashsales.CashSalesSelectProductsActivity">
+    tools:context="com.tracotech.tracoman.leep.dropoff.cashsales.CashSalesSelectProductsActivity">
 
     <include
         layout="@layout/toolbar_layout"
@@ -48,7 +48,7 @@
             app:gvb_flash="false"
             app:gvb_rect_colors="@array/rect_color" />
 
-        <com.goleep.driverapp.helpers.customviews.CustomAppCompatAutoCompleteTextView
+        <com.tracotech.tracoman.helpers.customviews.CustomAppCompatAutoCompleteTextView
             android:id="@+id/atv_search"
             android:layout_width="match_parent"
             android:layout_height="42dp"
