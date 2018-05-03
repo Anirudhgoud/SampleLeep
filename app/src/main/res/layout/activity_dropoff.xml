@@ -33,6 +33,11 @@
         app:tabSelectedTextColor="@color/doTabTextColor"
         app:tabTextColor="@color/doTabTextColor" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_grey" />
+
     <com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager
         android:id="@+id/pickup_view_pager"
         android:layout_width="match_parent"

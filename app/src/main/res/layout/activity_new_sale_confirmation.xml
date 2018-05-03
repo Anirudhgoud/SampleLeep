@@ -9,11 +9,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
+    <View
+        android:id="@+id/color_divider"
+        android:layout_below="@id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/inner_dashboard_light_blue" />
+
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bt_continue"
-        android:layout_below="@+id/toolbar_container">
+        android:layout_below="@+id/color_divider">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
