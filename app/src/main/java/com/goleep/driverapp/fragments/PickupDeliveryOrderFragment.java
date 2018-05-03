@@ -101,6 +101,7 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                     ((PickupActivity)activity).showConfirmationDialog(getString(R.string.confirmation),
                             getString(R.string.partial_do_confirmation), dialogPositiveClickListener, dialogNegativeClickListener);
                 } else {
+                    adapter.collapseAllExcept(-1);
                     ((PickupActivity)activity).viewPager.setCurrentItem(1);
                 }
         });
