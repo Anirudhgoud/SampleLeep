@@ -5,21 +5,30 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import android.widget.Button;
 import android.view.View;
 import android.widget.TextView;
 
 import com.goleep.driverapp.R;
 import com.goleep.driverapp.adapters.ProductListAdapter;
+import com.goleep.driverapp.constants.AppConstants;
 import com.goleep.driverapp.constants.IntentConstants;
+import com.goleep.driverapp.helpers.uihelpers.PrintableLine;
+import com.goleep.driverapp.helpers.uihelpers.PrinterHelper;
 import com.goleep.driverapp.helpers.uimodels.ReturnOrderItem;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
+import com.goleep.driverapp.leep.dropoff.deliveryorders.DropOffPaymentConfirmationActivity;
 import com.goleep.driverapp.leep.main.ParentAppCompatActivity;
+import com.goleep.driverapp.services.printer.PrinterService;
 import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.room.entities.OrderItemEntity;
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
+import com.goleep.driverapp.utils.AppUtils;
 import com.goleep.driverapp.utils.DateTimeUtils;
 import com.goleep.driverapp.utils.StringUtils;
 import com.goleep.driverapp.viewmodels.information.HistoryDetailsViewModel;
+import com.ngx.BluetoothPrinter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +37,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT;
-import static com.goleep.driverapp.utils.DateTimeUtils.ORDER_SERVER_DATE_FORMAT;
 import static com.goleep.driverapp.utils.DateTimeUtils.RAILS_TIMESTAMP_FORMAT;
 import static com.goleep.driverapp.utils.DateTimeUtils.TWELVE_HOUR_TIME_FORMAT;
 
@@ -50,6 +58,8 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
     TextView itemsTv;
     @BindView(R.id.tv_do_amount)
     TextView doAmountTv;
+    @BindView(R.id.bt_print)
+    Button btPrint;
     @BindView(R.id.order_items_recycler_view)
     RecyclerView productsList;
 
@@ -95,6 +105,11 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
         setTitleIconAndText(getString(R.string.history), R.drawable.ic_history_title_icon);
         initRecyclerView();
         processIntent();
+        initListeners();
+    }
+
+    private void initListeners() {
+        btPrint.setOnClickListener(this);
     }
 
     private void initRecyclerView() {
@@ -113,14 +128,17 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
                 int orderId = Integer.parseInt(orderIdInfo[1]);
                 String orderType = orderIdInfo[0];
                 if (orderType.equals("type_do")) {
+                    historyDetailsViewModel.setOrderType(AppConstants.TYPE_DELIVERY);
                     populateDoInfo(historyDetailsViewModel.getDeliveryOrderEntity(orderId));
                     historyDetailsViewModel.fetchDoItems(orderId, orderItemsCallBack);
                 } else {
+                    historyDetailsViewModel.setOrderType(AppConstants.TYPE_RETURN);
                     populateRoInfo(historyDetailsViewModel.getReturnOrderEntity(orderId));
                     historyDetailsViewModel.fetchRoItems(orderId, orderItemsCallBack);
                 }
             }catch (NumberFormatException e){
                 long orderId = Long.parseLong(orderIdInfo[1]);
+                historyDetailsViewModel.setOrderType(AppConstants.TYPE_RETURN);
                 populateRoInfo(historyDetailsViewModel.getReturnOrderEntity(orderId));
                 historyDetailsViewModel.fetchRoItems(orderId, orderItemsCallBack);
             }
@@ -180,6 +198,32 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
         switch (resourceId){
             case R.id.left_toolbar_button : finish();
                 break;
+            case R.id.bt_print:
+                printInvoice();
+                break;
+        }
+    }
+
+    private void printInvoice() {
+        PrinterHelper printerHelper = new PrinterHelper(this);
+        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
+            if(historyDetailsViewModel.getOrderType() == AppConstants.TYPE_DELIVERY) {
+
+                List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(
+                        historyDetailsViewModel.getDeliveryOrderEntity(),
+                        historyDetailsViewModel.getDoItems(),
+                        AppUtils.userCurrencySymbol(HistoryDetailsActivity.this),
+                        0,  true);
+                printerHelper.print(printableLines);
+            }
+            else {
+                List<PrintableLine> printableLines = printerHelper.generateReturnOrderPrintableLines(
+                        historyDetailsViewModel.getReturnOrderEntity(),
+                        historyDetailsViewModel.getRoItems(), AppUtils.userCurrencySymbol(this));
+                printerHelper.print(printableLines);
+            }
+        } else {
+            printerHelper.getPrinter().showDeviceList(this);
         }
     }
 }

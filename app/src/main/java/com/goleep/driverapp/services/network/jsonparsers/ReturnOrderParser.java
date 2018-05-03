@@ -1,6 +1,7 @@
 package com.goleep.driverapp.services.network.jsonparsers;
 
 import com.goleep.driverapp.services.room.entities.ReturnOrderEntity;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,4 +58,11 @@ public class ReturnOrderParser {
         return null;
     }
 
+    public long parseForRoNumber(JSONArray jsonArray){
+        if(jsonArray != null){
+            JSONObject jsonObject = jsonArray.optJSONObject(0);
+            return (jsonObject != null) ? jsonObject.optLong("ro_number", -1) : -1;
+        }
+        return -1;
+    }
 }

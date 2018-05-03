@@ -28,4 +28,7 @@ public interface AppConstants {
 
     //Permission codes
     int LOCATION_PERMISSION_REQUEST_CODE = 100;
+
+    int TYPE_DELIVERY = 1;
+    int TYPE_RETURN = 2;
 }

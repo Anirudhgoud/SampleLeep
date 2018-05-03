@@ -24,6 +24,8 @@ public class LeepSuccessDialog extends Dialog implements View.OnClickListener {
     public LeepSuccessDialog(@NonNull Context context, String message) {
         super(context);
         this.message = message;
+        this.setCancelable(false);
+        this.setCanceledOnTouchOutside(false);
     }
 
     public void setSuccessDialogEventListener(SuccessDialogEventListener listener) {
@@ -51,16 +53,18 @@ public class LeepSuccessDialog extends Dialog implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.ok_button:
                 if (listener != null) listener.onOkButtonTap();
+                dismiss();
                 break;
 
             case R.id.close_layout:
                 if (listener != null) listener.onCloseButtonTap();
+                dismiss();
                 break;
 
             case R.id.bt_print:
                 if (listener != null) listener.onPrintButtonTap();
                 break;
         }
-        dismiss();
+
     }
 }

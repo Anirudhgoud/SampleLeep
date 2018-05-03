@@ -11,7 +11,10 @@ import com.goleep.driverapp.helpers.uimodels.Location;
 import com.goleep.driverapp.helpers.uimodels.Product;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
 import com.goleep.driverapp.services.network.NetworkService;
+import com.goleep.driverapp.services.network.jsonparsers.DeliveryOrderParser;
 import com.goleep.driverapp.services.network.jsonparsers.LocationParser;
+import com.goleep.driverapp.services.network.jsonparsers.ReturnOrderParser;
+import com.goleep.driverapp.services.room.entities.DeliveryOrderEntity;
 import com.goleep.driverapp.services.storage.LocalStorageService;
 import com.goleep.driverapp.utils.LogUtils;
 import com.goleep.driverapp.utils.StringUtils;
@@ -33,6 +36,8 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
     private boolean returnsAvailable = false;
     private String paymentMethod;
     public String RECEIVER_SIGNATURE = "receiver_signature";
+    private String doNumber;
+    private String roNumber;
 
     public NewSalesConfirmationViewModel(@NonNull Application application) {
         super(application);
@@ -49,6 +54,8 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
                 switch (type) {
                     case NetworkConstants.SUCCESS:
                         paymentMadeInCashSales = true;
+                        DeliveryOrderParser parser = new DeliveryOrderParser();
+                        doNumber = parser.parseForDoNumber(response);
                         deliverOrderNetworkCallBack.onResponseReceived(Collections.emptyList(), false, null, false);
                         break;
 
@@ -76,6 +83,8 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
             NetworkService.sharedInstance().getNetworkClient().uploadImageWithMultipartFormData(getApplication().getApplicationContext(), UrlConstants.RETURNED_ORDERS, true, requestMap, file, RECEIVER_SIGNATURE, NetworkConstants.POST_REQUEST, (type, response, errorMessage) -> {
                 switch (type) {
                     case NetworkConstants.SUCCESS:
+                        ReturnOrderParser parser = new ReturnOrderParser();
+                        roNumber = String.valueOf(parser.parseForRoNumber(response));
                         deliverOrderNetworkCallBack.onResponseReceived(new ArrayList<>(), false, null, false);
                         break;
 
@@ -216,5 +225,17 @@ public class NewSalesConfirmationViewModel extends CashSalesPaymentMethodViewMod
 
     public void setPaymentSkipped(boolean paymentSkipped) {
         this.paymentSkipped = paymentSkipped;
+    }
+
+    public String getDoNumber() {
+        return doNumber;
+    }
+
+    public void setDoNumber(String doNumber) {
+        this.doNumber = doNumber;
+    }
+
+    public String getRoNumber() {
+        return roNumber;
     }
 }

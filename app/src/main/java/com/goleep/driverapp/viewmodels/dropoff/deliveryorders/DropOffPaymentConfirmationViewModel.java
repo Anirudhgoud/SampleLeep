@@ -34,6 +34,7 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
     private String paymentMethod;
     private boolean signatureAdded = false;
     public String RECEIVER_SIGNATURE = "receiver_signature";
+    private List<OrderItemEntity> doItems = new ArrayList<>();
 
     public DropOffPaymentConfirmationViewModel(@NonNull Application application) {
         super(application);
@@ -119,7 +120,9 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
     }
 
     public List<OrderItemEntity> getOrderItems(){
-        return leepDatabase.deliveryOrderItemDao().getDOrderItemssList(deliveryOrderId);
+        List<OrderItemEntity> doItems = leepDatabase.deliveryOrderItemDao().getDOrderItemssList(deliveryOrderId);
+        setDoItems(doItems);
+        return doItems;
     }
 
     private Map<String, Object> generateDeliverOrderRequestMap(String receivedBy, String contactNo) {
@@ -199,5 +202,14 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
 
     public void setSignatureAdded(boolean signatureAdded) {
         this.signatureAdded = signatureAdded;
+    }
+
+    public List<OrderItemEntity> getDoItems() {
+        return doItems;
+    }
+
+    public void setDoItems(List<OrderItemEntity> doItems) {
+        if(doItems != null && doItems.size() >0)
+        this.doItems = doItems;
     }
 }

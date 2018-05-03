@@ -23,6 +23,7 @@ import com.goleep.driverapp.constants.PaymentMethod;
 import com.goleep.driverapp.helpers.customviews.ItemListDialogFragment;
 import com.goleep.driverapp.helpers.customviews.LeepSuccessDialog;
 import com.goleep.driverapp.helpers.customviews.SignatureDialogFragment;
+import com.goleep.driverapp.helpers.uihelpers.PrintableLine;
 import com.goleep.driverapp.interfaces.AddSignatureListener;
 import com.goleep.driverapp.interfaces.SuccessDialogEventListener;
 import com.goleep.driverapp.interfaces.UILevelNetworkCallback;
@@ -133,12 +134,12 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
     private void fetchDeliveryOrderData() {
         viewModel.setDeliveryOrder(viewModel.deliveryOrder(viewModel.getDeliveryOrderId()));
+        fetchDeliveryOrderItems();
     }
 
     private void fetchDeliveryOrderItems() {
-        if (viewModel.getSelectedOrderItems() == null) {
-            viewModel.setOrderItems(viewModel.getSelectedOrderItems());
-        }
+        if (viewModel.getSelectedOrderItems() == null || viewModel.getSelectedOrderItems().size() == 0)
+            viewModel.setOrderItems(viewModel.getOrderItems());
     }
 
     private void updateDeliveryOrderUI() {
@@ -273,14 +274,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
             @Override
             public void onPrintButtonTap() {
-                LogUtils.debug(this.getClass().getSimpleName(), "Print tapped");
-                BluetoothPrinter printer = PrinterService.sharedInstance().getPrinter();
-                if(printer.getState() == BluetoothPrinter.STATE_CONNECTED) {
-                    new PrinterHelper().printInvoice(viewModel.getDeliveryOrder(), viewModel.getSelectedOrderItems(),
-                            null, printer);
-                } else {
-                    printer.showDeviceList(DropOffPaymentConfirmationActivity.this);
-                }
+                printInvoice();
             }
         });
         successDialog.setPrintButtonVisibility(true);
@@ -321,5 +315,18 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
         intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void printInvoice(){
+        PrinterHelper printerHelper = new PrinterHelper(this);
+        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
+            List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(viewModel.getDeliveryOrder(), viewModel.getDoItems(),
+                    AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this),
+                    viewModel.getPaymentCollected(), false);
+            printerHelper.print(printableLines);
+
+        } else {
+            printerHelper.getPrinter().showDeviceList(this);
+        }
     }
 }
