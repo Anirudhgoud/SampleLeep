@@ -70,10 +70,6 @@ public class DeliveryOrderParser {
 
     public String parseForDoNumber(JSONArray response) {
         JSONObject firstObj = response.optJSONObject(0);
-        if(firstObj == null){
-            return null;
-        } else {
-            return firstObj.optString("do_number");
-        }
+        return (firstObj == null) ? null :  firstObj.optString("do_number");
     }
 }

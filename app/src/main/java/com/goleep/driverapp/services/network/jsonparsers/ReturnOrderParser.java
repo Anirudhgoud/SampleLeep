@@ -59,13 +59,10 @@ public class ReturnOrderParser {
     }
 
     public long parseForRoNumber(JSONArray jsonArray){
-        long roNumber = -1;
         if(jsonArray != null){
             JSONObject jsonObject = jsonArray.optJSONObject(0);
-            if(jsonObject != null)
-                roNumber = jsonObject.optLong("ro_number", -1);
+            return (jsonObject != null) ? jsonObject.optLong("ro_number", -1) : -1;
         }
-        return roNumber;
+        return -1;
     }
-
 }
