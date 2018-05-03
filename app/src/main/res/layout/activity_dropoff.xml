@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.goleep.driverapp.leep.dropoff.dropoff.DropoffActivity">
+    tools:context="com.tracotech.tracoman.leep.dropoff.dropoff.DropoffActivity">
 
     <include
         layout="@layout/toolbar_layout"
@@ -33,7 +33,7 @@
         app:tabSelectedTextColor="@color/doTabTextColor"
         app:tabTextColor="@color/doTabTextColor" />
 
-    <com.goleep.driverapp.helpers.uihelpers.NonSwipeableViewPager
+    <com.tracotech.tracoman.helpers.uihelpers.NonSwipeableViewPager
         android:id="@+id/pickup_view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
