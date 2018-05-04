@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tracotech.tracoman.R;
+import com.tracotech.tracoman.constants.IntentConstants;
 import com.tracotech.tracoman.helpers.uihelpers.LocationHelper;
 import com.tracotech.tracoman.helpers.uimodels.Distance;
 import com.tracotech.tracoman.interfaces.LocationChangeListener;
@@ -271,12 +272,14 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
 
         if (activity instanceof PickupWarehouseActivity && warehouseEntity.getDoAssignedCount() > 0) {
             Intent intent = new Intent(activity, PickupActivity.class);
+            intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseEntity.getId());
             startActivityForResult(intent, 101);
-        } else if(warehouseEntity.getDoAssignedCount() < 0){
+        } else if(activity instanceof PickupWarehouseActivity && warehouseEntity.getDoAssignedCount() <= 0){
             Toast.makeText(getActivity(), getActivity().getResources().
                     getString(R.string.no_do_assigned), Toast.LENGTH_LONG).show();
         } else if (activity instanceof DropoffWarehouseActivity){
             Intent intent = new Intent(activity, DropoffActivity.class);
+            intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseEntity.getId());
             startActivityForResult(intent, 101);
         }
     }
