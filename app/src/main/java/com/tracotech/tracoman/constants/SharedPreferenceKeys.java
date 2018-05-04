@@ -11,4 +11,5 @@ public interface SharedPreferenceKeys {
     String PROFILE_URL = "profile_image_url";
     String USER_ID = "user_id";
     String SELECTED_COUNTRY = "selected_country";
+    String CURRENCY_SYMBOL = "currency_symbol";
 }

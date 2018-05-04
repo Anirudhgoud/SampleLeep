@@ -42,7 +42,7 @@ public class WarehouseListViewHolder extends RecyclerView.ViewHolder {
             selectButton.setBackgroundResource(R.drawable.rounded_grey_button);
             doAssignedCountTextView.setVisibility(View.GONE);
         }
-        else if(warehouseEntity.getDoAssignedCount() > 0){
+        else if(showDoCount && warehouseEntity.getDoAssignedCount() > 0){
             selectButton.setBackgroundResource(R.drawable.rounded_green_button);
             doAssignedCountTextView.setVisibility(View.VISIBLE);
             doAssignedCountTextView.setText(String.valueOf(warehouseEntity.getDoAssignedCount()));

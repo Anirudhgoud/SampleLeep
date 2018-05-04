@@ -17,6 +17,7 @@ public class CustomerInfo implements Parcelable {
     private String email;
     private int businessId;
     private String designation;
+    private String countryDialCode;
 
     public CustomerInfo(){
 
@@ -31,6 +32,7 @@ public class CustomerInfo implements Parcelable {
         email = in.readString();
         businessId = in.readInt();
         designation = in.readString();
+        countryDialCode = in.readString();
     }
 
     @Override
@@ -48,6 +50,7 @@ public class CustomerInfo implements Parcelable {
         dest.writeString(email);
         dest.writeInt(businessId);
         dest.writeString(designation);
+        dest.writeString(countryDialCode);
     }
 
     public String getBusinessName() {
@@ -112,6 +115,14 @@ public class CustomerInfo implements Parcelable {
 
     public void setDesignation(String designation) {
         this.designation = designation;
+    }
+
+    public String getCountryDialCode() {
+        return countryDialCode;
+    }
+
+    public void setCountryDialCode(String countryDialCode) {
+        this.countryDialCode = countryDialCode;
     }
 
     @SuppressWarnings("unused")

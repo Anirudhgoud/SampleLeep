@@ -30,12 +30,18 @@
         app:tabIndicatorHeight="0dp"
         app:tabSelectedTextColor="@color/doTabTextColor"
         app:tabTextColor="@color/doTabTextColor" />
+    <View
+        android:id="@+id/divider"
+        android:layout_below="@id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_grey" />
 
     <LinearLayout
         android:id="@+id/barcode_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tab_layout"
+        android:layout_below="@id/divider"
         android:orientation="horizontal">
 
         <fragment
