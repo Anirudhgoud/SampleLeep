@@ -23,9 +23,8 @@ import java.io.OutputStream;
 public class AppUtils {
 
     public static String userCurrencySymbol(Context context) {
-        String symbol = LocalStorageService.sharedInstance().
+        return LocalStorageService.sharedInstance().
                 getLocalFileStore().getString(context, SharedPreferenceKeys.CURRENCY_SYMBOL);
-        return symbol;
     }
 
     public static Bitmap bitmapFromView(View v, int width, int height) {
