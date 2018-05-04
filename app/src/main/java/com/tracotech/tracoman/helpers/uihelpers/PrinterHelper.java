@@ -1,5 +1,6 @@
 package com.tracotech.tracoman.helpers.uihelpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import com.tracotech.tracoman.services.room.entities.DeliveryOrderEntity;
 import com.tracotech.tracoman.services.room.entities.OrderItemEntity;
 import com.tracotech.tracoman.services.room.entities.ReturnOrderEntity;
 import com.tracotech.tracoman.utils.DateTimeUtils;
+import com.tracotech.tracoman.utils.LogUtils;
 import com.tracotech.tracoman.utils.StringUtils;
 import com.ngx.BluetoothPrinter;
 import com.ngx.PrinterWidth;
@@ -45,25 +47,34 @@ public class PrinterHelper {
     private TextPaint boldTextPaint;
     private TextPaint normalTextPaint;
 
+    private List<PrintableLine> printableLines;
 
-    Handler mHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case BluetoothPrinter.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothPrinter.STATE_CONNECTED:
-                            //printInvoice();
-                            break;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            return true;
+
+    Handler mHandler = new Handler(msg -> {
+        switch (msg.what) {
+            case BluetoothPrinter.MESSAGE_STATE_CHANGE:
+                switch (msg.arg1) {
+                    case BluetoothPrinter.STATE_CONNECTED:
+                        print();
+                        break;
+                }
+                break;
+            default:
+                break;
         }
+        return true;
     });
 
+    private void print() {
+        LogUtils.debug("Printing", "Printer connected");
+        if(printableLines != null && printableLines.size() > 0) {
+            LogUtils.debug("Printing", "Printing after connecting");
+            printer.addText("\n");
+            for (PrintableLine printableLine : printableLines)
+                printer.addText(printableLine.getText(), printableLine.getAlignment(), printableLine.getTextPaint());
+            printer.print();
+        }
+    }
 
 
     public PrinterHelper(Context context) {
@@ -79,8 +90,6 @@ public class PrinterHelper {
 
     private void initPrinter(){
         printer.setPrinterWidth(PrinterWidth.PRINT_WIDTH_48MM);
-        printer.addText("\n");
-
     }
 
     private String trim(String string, int maxLength) {
@@ -145,7 +154,6 @@ public class PrinterHelper {
         printableLines.add(new PrintableLine(resources.getString(R.string.payment_collected) + " "
                 + paymentCollected, Layout.Alignment.ALIGN_NORMAL, boldTextPaint));
         printableLines.add(new PrintableLine(separator + "\n\n", Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-
         return printableLines;
     }
 
@@ -294,7 +302,6 @@ public class PrinterHelper {
         } else {
             printableLines.add(new PrintableLine("\n\n", Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         }
-
         return printableLines;
     }
 
@@ -331,10 +338,22 @@ public class PrinterHelper {
         normalTextPaint.setTypeface(Typeface.DEFAULT);
     }
 
-    public void print(List<PrintableLine> printableLines) {
-        printer.addText("\n");
-        for(PrintableLine printableLine : printableLines)
-            printer.addText(printableLine.getText(), printableLine.getAlignment(), printableLine.getTextPaint());
-        printer.print();
+    public void print(List<PrintableLine> printableLines, Activity activity) {
+        if(printer.getState() == BluetoothPrinter.STATE_CONNECTED) {
+            LogUtils.debug("Printing", "Printer already connected");
+            LogUtils.debug("Printing", "Printing");
+            printer.addText("\n");
+            for (PrintableLine printableLine : printableLines)
+                printer.addText(printableLine.getText(), printableLine.getAlignment(), printableLine.getTextPaint());
+            printer.print();
+        } else if(activity != null || !activity.isFinishing()) {
+            LogUtils.debug("Printing", "Printer not connected");
+            this.printableLines = printableLines;
+            printer.showDeviceList(activity);
+        }
+    }
+
+    public void closeService() {
+        printer.onActivityDestroy();
     }
 }

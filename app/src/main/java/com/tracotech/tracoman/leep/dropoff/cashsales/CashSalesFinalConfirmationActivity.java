@@ -93,6 +93,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     TextView tvSignatureError;
 
     private NewSalesConfirmationViewModel viewModel;
+    private PrinterHelper printerHelper;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -381,17 +382,20 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
 
 
     private void printInvoice(){
-        PrinterHelper printerHelper = new PrinterHelper(this);
-        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
-            List<PrintableLine> printableLines = printerHelper.generateCashSalesPrintableLines(
-                    viewModel.getDoNumber(), viewModel.getRoNumber(), viewModel.getConsumerLocation(),
-                    viewModel.getScannedProducts(), AppUtils.userCurrencySymbol(
-                            CashSalesFinalConfirmationActivity.this),
-                    viewModel.getPaymentCollected());
-            printerHelper.print(printableLines);
-
-        } else {
-            printerHelper.getPrinter().showDeviceList(CashSalesFinalConfirmationActivity.this);
-        }
+        printerHelper = new PrinterHelper(this);
+        List<PrintableLine> printableLines = printerHelper.generateCashSalesPrintableLines(
+                viewModel.getDoNumber(), viewModel.getRoNumber(), viewModel.getConsumerLocation(),
+                viewModel.getScannedProducts(), AppUtils.userCurrencySymbol(
+                        CashSalesFinalConfirmationActivity.this),
+                viewModel.getPaymentCollected());
+        printerHelper.print(printableLines, this);
     }
+
+    @Override
+    public void onDestroy() {
+        if(printerHelper != null)
+            printerHelper.closeService();
+        super.onDestroy();
+    }
+
 }

@@ -60,6 +60,8 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     private ImageView ivSignature;
     private LinearLayout llCollectPayment;
 
+    private PrinterHelper printerHelper;
+
     //Error views
     private TextView tvReceivedFromError, tvContactNumberError, tvSignatureError;
 
@@ -318,15 +320,18 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     }
 
     private void printInvoice(){
-        PrinterHelper printerHelper = new PrinterHelper(this);
-        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
-            List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(viewModel.getDeliveryOrder(), viewModel.getDoItems(),
-                    AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this),
-                    viewModel.getPaymentCollected(), false);
-            printerHelper.print(printableLines);
+        printerHelper = new PrinterHelper(this);
+        List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(
+                viewModel.getDeliveryOrder(), viewModel.getDoItems(),
+                AppUtils.userCurrencySymbol(DropOffPaymentConfirmationActivity.this),
+                viewModel.getPaymentCollected(), false);
+        printerHelper.print(printableLines, this);
+    }
 
-        } else {
-            printerHelper.getPrinter().showDeviceList(this);
-        }
+    @Override
+    public void onDestroy() {
+        if(printerHelper != null)
+            printerHelper.closeService();
+        super.onDestroy();
     }
 }
