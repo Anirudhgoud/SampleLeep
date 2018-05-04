@@ -24,6 +24,7 @@ import com.tracotech.tracoman.services.room.entities.OrderItemEntity;
 import com.tracotech.tracoman.services.room.entities.ProductEntity;
 import com.tracotech.tracoman.utils.AppUtils;
 import com.tracotech.tracoman.utils.DateTimeUtils;
+import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.dropoff.deliveryorders.DropOffPaymentCollectViewModel;
 
 import java.util.Locale;
@@ -173,17 +174,17 @@ public class DropOffPaymentCollectActivity extends ParentAppCompatActivity {
         tvUnits.setText(String.valueOf(orderItem.getQuantity()));
 
         double value = orderItem.getQuantity() * orderItem.getPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", value)));
+        tvAmount.setText(StringUtils.amountToDisplay((float) value, this));
         return orderItemView;
     }
 
     private void updateSalesValues() {
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, viewModel.getOrderItems().size(), viewModel.getOrderItems().size())));
         ((TextView) findViewById(R.id.tv_collected_amount_currency)).setText(AppUtils.userCurrencySymbol(this));
-        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getCurrentSales())));
-        tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getOutstandingBalance())));
+        tvCurrentSales.setText(StringUtils.amountToDisplay((float) viewModel.getCurrentSales(), this));
+        tvOutstandingBalance.setText(StringUtils.amountToDisplay((float) viewModel.getOutstandingBalance(), this));
         double total = viewModel.getCurrentSales() + viewModel.getOutstandingBalance();
-        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(total)));
+        tvGrandTotal.setText(StringUtils.amountToDisplay((float) total, this));
     }
 
     @Override

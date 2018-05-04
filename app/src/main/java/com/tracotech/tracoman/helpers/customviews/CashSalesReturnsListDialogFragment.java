@@ -155,7 +155,7 @@ public class CashSalesReturnsListDialogFragment extends DialogFragment {
 
         if (product.getQuantity() > 0) {
             tvUnits.setText(String.valueOf(product.getQuantity()));
-            tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(getContext()), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
+            tvAmount.setText(StringUtils.amountToDisplay((float) product.getTotalPrice(), getContext()));
             viewModel.incrementSelectedProductCount();
         } else {
             tvUnits.setVisibility(View.GONE);
@@ -164,7 +164,7 @@ public class CashSalesReturnsListDialogFragment extends DialogFragment {
 
         if (product.getReturnQuantity() > 0) {
             tvReturnedUnits.setText(String.valueOf(product.getReturnQuantity()));
-            tvReturnedAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(getContext()), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
+            tvReturnedAmount.setText(StringUtils.amountToDisplay((float) product.getTotalReturnsPrice(), getContext()));
             llReturnedLabel.setVisibility(View.VISIBLE);
             tvReturnedAmount.setVisibility(View.VISIBLE);
             tvReturnreason.setVisibility(View.VISIBLE);

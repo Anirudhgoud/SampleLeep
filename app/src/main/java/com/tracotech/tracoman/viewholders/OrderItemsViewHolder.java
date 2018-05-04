@@ -15,6 +15,7 @@ import com.tracotech.tracoman.services.room.entities.OrderItemEntity;
 import com.tracotech.tracoman.services.room.entities.ProductEntity;
 import com.tracotech.tracoman.services.room.entities.StockProductEntity;
 import com.tracotech.tracoman.utils.AppUtils;
+import com.tracotech.tracoman.utils.StringUtils;
 
 import java.util.Locale;
 
@@ -50,7 +51,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
                 product.getWeight(), product.getWeightUnit()));
 
         double value = product.getQuantity() * product.getPrice();
-        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(value)));
+        tvAmount.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
         productCheckbox.setVisibility(View.GONE);
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(product.getId(), product.getQuantity()));
         ReturnReason returnReason = product.getReturnReason();
@@ -58,11 +59,11 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
             tvReturnReason.setText(returnReason.getReason());
             tvReturnReason.setVisibility(View.VISIBLE);
             tvUnits.setText(String.valueOf(product.getReturnQuantity()));
-            tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(product.getTotalReturnsPrice())));
+            tvAmount.setText(StringUtils.amountToDisplay((float) product.getTotalReturnsPrice(), itemView.getContext()));
         } else {
             tvReturnReason.setVisibility(View.GONE);
             tvUnits.setText(String.valueOf(product.getQuantity()));
-            tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(product.getTotalPrice())));
+            tvAmount.setText(StringUtils.amountToDisplay((float) product.getTotalPrice(), itemView.getContext()));
         }
     }
 
@@ -75,15 +76,11 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvUnits.setText(String.valueOf(orderItem.getQuantity()));
 
         double value = orderItem.getQuantity() * orderItem.getPrice();
-        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(value)));
+        tvAmount.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
 
         productCheckbox.setChecked(orderItem.isSelected());
         productCheckbox.setOnClickListener(v -> deliveryOrderItemEventListener.onCheckboxTap(orderItem.getId(), productCheckbox.isChecked()));
         tvUnits.setOnClickListener(v -> deliveryOrderItemEventListener.onUnitsTap(orderItem.getId(), orderItem.getMaxQuantity()));
-    }
-
-    private String itemTotalPriceText(double value) {
-        return String.format(Locale.getDefault(), "%.02f", value);
     }
 
     public void bindData(StockProductEntity stockProductEntity, int productType, int position) {
@@ -94,7 +91,7 @@ public class OrderItemsViewHolder extends RecyclerView.ViewHolder {
         tvUnits.setText(String.valueOf(stockProductEntity.getQuantity(productType)));
 
         double value = stockProductEntity.getQuantity(productType) * stockProductEntity.getDefaultPrice();
-        tvAmount.setText(context.getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(itemView.getContext()), itemTotalPriceText(value)));
+        tvAmount.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
         productCheckbox.setChecked(stockProductEntity.isSelected());
         productCheckbox.setOnClickListener(view -> {
             deliveryOrderItemEventListener.onCheckboxTap(

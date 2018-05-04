@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -98,9 +99,7 @@ public class WarehouseViewModel extends AndroidViewModel {
     }
 
     private List<LatLng> getOrigins(Location location) {
-        List<LatLng> origins = new ArrayList<>();
-        origins.add(new LatLng(location.getLatitude(), location.getLongitude()));
-        return origins;
+        return Collections.singletonList(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
     public MarkerOptions getMarkerOption(WarehouseEntity warehouseEntity) {

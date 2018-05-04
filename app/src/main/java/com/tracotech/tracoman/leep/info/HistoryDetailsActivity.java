@@ -2,6 +2,8 @@ package com.tracotech.tracoman.leep.info;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,6 +64,8 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
     Button btPrint;
     @BindView(R.id.order_items_recycler_view)
     RecyclerView productsList;
+
+    private PrinterHelper printerHelper;
 
     private HistoryDetailsViewModel historyDetailsViewModel;
     private ProductListAdapter adapter;
@@ -205,25 +209,29 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
     }
 
     private void printInvoice() {
-        PrinterHelper printerHelper = new PrinterHelper(this);
-        if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
-            if(historyDetailsViewModel.getOrderType() == AppConstants.TYPE_DELIVERY) {
+         printerHelper = new PrinterHelper(this);
 
-                List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(
-                        historyDetailsViewModel.getDeliveryOrderEntity(),
-                        historyDetailsViewModel.getDoItems(),
-                        AppUtils.userCurrencySymbol(HistoryDetailsActivity.this),
-                        0,  true);
-                printerHelper.print(printableLines);
-            }
-            else {
-                List<PrintableLine> printableLines = printerHelper.generateReturnOrderPrintableLines(
-                        historyDetailsViewModel.getReturnOrderEntity(),
-                        historyDetailsViewModel.getRoItems(), AppUtils.userCurrencySymbol(this));
-                printerHelper.print(printableLines);
-            }
-        } else {
-            printerHelper.getPrinter().showDeviceList(this);
+        if(historyDetailsViewModel.getOrderType() == AppConstants.TYPE_DELIVERY) {
+            List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(
+                    historyDetailsViewModel.getDeliveryOrderEntity(),
+                    historyDetailsViewModel.getDoItems(),
+                    AppUtils.userCurrencySymbol(HistoryDetailsActivity.this),
+                    0,  true);
+            printerHelper.print(printableLines, this);
         }
+        else {
+            List<PrintableLine> printableLines = printerHelper.generateReturnOrderPrintableLines(
+                    historyDetailsViewModel.getReturnOrderEntity(),
+                    historyDetailsViewModel.getRoItems(), AppUtils.userCurrencySymbol(this));
+            printerHelper.print(printableLines, this);
+        }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        if(printerHelper != null)
+            printerHelper.closeService();
+        super.onDestroy();
     }
 }
