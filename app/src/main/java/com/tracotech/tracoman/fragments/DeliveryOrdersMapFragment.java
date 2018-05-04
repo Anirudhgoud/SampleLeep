@@ -256,8 +256,9 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
     private void onMarkerDetailsTap(){
         Marker selectedMarker = viewModel.getSelectedMarker();
         if (selectedMarker == null) return;
-        DeliveryOrderEntity selectedDO = (DeliveryOrderEntity) selectedMarker.getTag();
-        if (selectedDO == null) return;
+        Object markerTag = selectedMarker.getTag();
+        if (markerTag == null || !(markerTag instanceof DeliveryOrderEntity)) return;
+        DeliveryOrderEntity selectedDO = (DeliveryOrderEntity) markerTag;
         openDeliveryDetailsActivity(selectedDO.getId());
     }
 

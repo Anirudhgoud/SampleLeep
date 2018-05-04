@@ -261,8 +261,9 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
     private void onMarkerDetailsTap(){
         Marker selectedMarker = warehouseViewModel.getSelectedMarker();
         if (selectedMarker == null) return;
-        WarehouseEntity selectedWarehouse = (WarehouseEntity) selectedMarker.getTag();
-        if (selectedWarehouse == null) return;
+        Object markerTag = selectedMarker.getTag();
+        if (markerTag == null || !(markerTag instanceof WarehouseEntity)) return;
+        WarehouseEntity selectedWarehouse = (WarehouseEntity) markerTag;
         startPickupActivity(selectedWarehouse);
     }
 
