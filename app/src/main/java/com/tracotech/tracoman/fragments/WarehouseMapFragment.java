@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,10 @@ import com.tracotech.tracoman.R;
 import com.tracotech.tracoman.helpers.uihelpers.LocationHelper;
 import com.tracotech.tracoman.helpers.uimodels.Distance;
 import com.tracotech.tracoman.interfaces.LocationChangeListener;
+import com.tracotech.tracoman.leep.dropoff.dropoff.DropoffActivity;
+import com.tracotech.tracoman.leep.dropoff.dropoff.DropoffWarehouseActivity;
+import com.tracotech.tracoman.leep.pickup.pickup.PickupActivity;
+import com.tracotech.tracoman.leep.pickup.pickup.PickupWarehouseActivity;
 import com.tracotech.tracoman.services.room.entities.WarehouseEntity;
 import com.tracotech.tracoman.interfaces.UILevelNetworkCallback;
 
@@ -104,6 +109,7 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         ButterKnife.bind(this, view);
         initialize();
+        setViewListeners();
         hideUnwantedViews();
         initialiseMapView();
         return view;
@@ -117,7 +123,11 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
 
     private void initialize() {
         warehouseViewModel = ViewModelProviders.of(getActivity()).get(WarehouseViewModel.class);
+    }
+
+    private void setViewListeners(){
         ivNavigate.setOnClickListener(view -> openDirectionsOnGoogleMaps());
+        llMapAddressLayout.setOnClickListener(v -> onMarkerDetailsTap());
     }
 
     private void initialiseMapView() {
@@ -240,6 +250,30 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
+        }
+    }
+
+    private void onMarkerDetailsTap(){
+        Marker selectedMarker = warehouseViewModel.getSelectedMarker();
+        if (selectedMarker == null) return;
+        WarehouseEntity selectedWarehouse = (WarehouseEntity) selectedMarker.getTag();
+        if (selectedWarehouse == null) return;
+        startPickupActivity(selectedWarehouse);
+    }
+
+    private void startPickupActivity(WarehouseEntity warehouseEntity) {
+        FragmentActivity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+
+        if (activity instanceof PickupWarehouseActivity && warehouseEntity.getDoAssignedCount() > 0) {
+            Intent intent = new Intent(activity, PickupActivity.class);
+            startActivityForResult(intent, 101);
+        } else if(warehouseEntity.getDoAssignedCount() < 0){
+            Toast.makeText(getActivity(), getActivity().getResources().
+                    getString(R.string.no_do_assigned), Toast.LENGTH_LONG).show();
+        } else if (activity instanceof DropoffWarehouseActivity){
+            Intent intent = new Intent(activity, DropoffActivity.class);
+            startActivityForResult(intent, 101);
         }
     }
 }
