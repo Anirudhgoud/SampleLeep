@@ -40,7 +40,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'BASE_URL', '"https://dashboard.traco.cybrilla.io/v1"'
+            buildConfigField 'String', 'BASE_URL', '"https://trial.tracotech.com/v1"'
             signingConfig signingConfigs.release
         }
 
