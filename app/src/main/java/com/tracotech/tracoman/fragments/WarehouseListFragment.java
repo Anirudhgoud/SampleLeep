@@ -90,20 +90,20 @@ public class WarehouseListFragment extends Fragment {
     }
 
     private void startPickupActivity(WarehouseEntity warehouseEntity) {
-        if(warehouseEntity.getDoAssignedCount() > 0) {
-            FragmentActivity activity = getActivity();
-            if (activity == null || activity.isFinishing()) return;
-            Intent intent = null;
-            if (activity instanceof PickupWarehouseActivity)
-                intent = new Intent(activity, PickupActivity.class);
-            else if (activity instanceof DropoffWarehouseActivity)
-                intent = new Intent(activity, DropoffActivity.class);
-            Objects.requireNonNull(intent).putExtra(IntentConstants.WAREHOUSE_ID, warehouseEntity.getId());
+        FragmentActivity activity = getActivity();
+        if (activity == null || activity.isFinishing()) return;
+
+        if (activity instanceof PickupWarehouseActivity && warehouseEntity.getDoAssignedCount() > 0) {
+            Intent intent = new Intent(activity, PickupActivity.class);
+            intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseEntity.getId());
             startActivityForResult(intent, 101);
-        } else {
-            if(getActivity() != null && !getActivity().isFinishing())
+        } else if(activity instanceof PickupWarehouseActivity && warehouseEntity.getDoAssignedCount() <= 0){
             Toast.makeText(getActivity(), getActivity().getResources().
                     getString(R.string.no_do_assigned), Toast.LENGTH_LONG).show();
+        } else if (activity instanceof DropoffWarehouseActivity){
+            Intent intent = new Intent(activity, DropoffActivity.class);
+            intent.putExtra(IntentConstants.WAREHOUSE_ID, warehouseEntity.getId());
+            startActivityForResult(intent, 101);
         }
     }
 }

@@ -19,12 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tracotech.tracoman.R;
+import com.tracotech.tracoman.constants.IntentConstants;
 import com.tracotech.tracoman.constants.Permissions;
 import com.tracotech.tracoman.helpers.uihelpers.LocationHelper;
 import com.tracotech.tracoman.helpers.uihelpers.PermissionHelper;
 import com.tracotech.tracoman.helpers.uimodels.Distance;
 import com.tracotech.tracoman.interfaces.LocationChangeListener;
 import com.tracotech.tracoman.interfaces.UILevelNetworkCallback;
+import com.tracotech.tracoman.leep.dropoff.deliveryorders.DropOffDeliveryOrderDetailsActivity;
 import com.tracotech.tracoman.services.room.entities.DeliveryOrderEntity;
 import com.tracotech.tracoman.viewmodels.dropoff.deliveryorders.DropOffDeliveryOrdersViewModel;
 import com.google.android.gms.maps.CameraUpdate;
@@ -96,6 +98,7 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
 
     private void addListeners() {
         ivNavigate.setOnClickListener(v -> openDirectionsOnGoogleMaps());
+        llMapAddressLayout.setOnClickListener(v -> onMarkerDetailsTap());
     }
 
     @Override
@@ -248,6 +251,21 @@ public class DeliveryOrdersMapFragment extends Fragment implements OnMapReadyCal
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         }
+    }
+
+    private void onMarkerDetailsTap(){
+        Marker selectedMarker = viewModel.getSelectedMarker();
+        if (selectedMarker == null) return;
+        Object markerTag = selectedMarker.getTag();
+        if (markerTag == null || !(markerTag instanceof DeliveryOrderEntity)) return;
+        DeliveryOrderEntity selectedDO = (DeliveryOrderEntity) markerTag;
+        openDeliveryDetailsActivity(selectedDO.getId());
+    }
+
+    private void openDeliveryDetailsActivity(int deliveryOrderId) {
+        Intent doDetailsIntent = new Intent(getActivity(), DropOffDeliveryOrderDetailsActivity.class);
+        doDetailsIntent.putExtra(IntentConstants.DELIVERY_ORDER_ID, deliveryOrderId);
+        startActivity(doDetailsIntent);
     }
 
     @Override
