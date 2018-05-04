@@ -174,7 +174,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
 
         if (product.getQuantity() > 0){
             tvUnits.setText(String.valueOf(product.getQuantity()));
-            tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", product.getTotalPrice())));
+            tvAmount.setText(StringUtils.amountToDisplay((float) product.getTotalPrice(), this));
             viewModel.incrementSelectedProductCount();
         }else {
             tvUnits.setVisibility(View.GONE);
@@ -183,7 +183,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
 
         if (product.getReturnQuantity() > 0){
             tvReturnedUnits.setText(String.valueOf(product.getReturnQuantity()));
-            tvReturnedAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
+            tvReturnedAmount.setText(StringUtils.amountToDisplay((float) product.getTotalReturnsPrice(), this));
             llReturnedLabel.setVisibility(View.VISIBLE);
             tvReturnedAmount.setVisibility(View.VISIBLE);
             tvReturnreason.setVisibility(View.VISIBLE);
@@ -247,14 +247,14 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
     private void updateAmountDetails(double outstandingBalance){
         double totalReturns = viewModel.totalReturnsValue();
         double totalCurrentSales = viewModel.totalCurrentSales();
-        tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(totalReturns)));
+        tvReturned.setText(StringUtils.amountToDisplay((float) totalReturns, this));
         tvCurrentSales.setText(amountWithCurrencySymbol(totalCurrentSales));
         tvPreviousBalance.setText(amountWithCurrencySymbol(outstandingBalance));
         tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, totalCurrentSales, outstandingBalance)));
     }
 
-    private String amountWithCurrencySymbol(Object amount){
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
+    private String amountWithCurrencySymbol(double amount){
+        return StringUtils.amountToDisplay((float) amount, this);
     }
 
     private UILevelNetworkCallback locationNetworkCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {

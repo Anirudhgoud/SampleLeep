@@ -22,7 +22,7 @@ public class StringUtils {
     static {
         currencyFormatter = NumberFormat.getInstance();
         numberFormatter = NumberFormat.getNumberInstance();
-        currencyFormatter.setMaximumFractionDigits(2);
+        currencyFormatter.setMinimumFractionDigits(2);
         numberFormatter.setMaximumFractionDigits(0);
     }
 

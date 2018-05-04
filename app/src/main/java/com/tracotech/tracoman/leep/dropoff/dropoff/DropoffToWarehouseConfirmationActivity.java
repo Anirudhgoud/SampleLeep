@@ -23,6 +23,7 @@ import com.tracotech.tracoman.leep.main.ParentAppCompatActivity;
 import com.tracotech.tracoman.services.room.entities.StockProductEntity;
 import com.tracotech.tracoman.utils.AppUtils;
 import com.tracotech.tracoman.utils.LogUtils;
+import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.dropoff.dropoff.DropoffConfirmationViewModel;
 
 import java.util.List;
@@ -156,8 +157,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
         tvUnits.setText(String.valueOf(stockProductEntity.getQuantity(type)));
 
         double value = stockProductEntity.getQuantity(type) * stockProductEntity.getDefaultPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this),
-                String.format(Locale.getDefault(), "%.02f", value)));
+        tvAmount.setText(StringUtils.amountToDisplay((float) value, this));
         return orderItemView;
     }
 

@@ -20,6 +20,7 @@ import com.tracotech.tracoman.constants.IntentConstants;
 import com.tracotech.tracoman.services.room.entities.OrderItemEntity;
 import com.tracotech.tracoman.services.room.entities.ProductEntity;
 import com.tracotech.tracoman.utils.AppUtils;
+import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.ItemListDialogFragmentViewModel;
 
 import java.util.Locale;
@@ -83,7 +84,7 @@ public class ItemListDialogFragment extends DialogFragment {
 
     private void setData() {
         tvItemCount.setText(Html.fromHtml(getResources().getQuantityString(R.plurals.item_count_text, viewModel.getOrderItems().size(), viewModel.getOrderItems().size())));
-        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(getContext()), String.valueOf(viewModel.getGrandTotal())));
+        tvGrandTotal.setText(StringUtils.amountToDisplay((float) viewModel.getGrandTotal(), getContext()));
     }
 
     @Override
@@ -131,7 +132,7 @@ public class ItemListDialogFragment extends DialogFragment {
         tvUnits.setText(String.valueOf(orderItem.getQuantity()));
 
         double value = orderItem.getQuantity() * orderItem.getPrice();
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(getContext()), String.format(Locale.getDefault(), "%.02f", value)));
+        tvAmount.setText(StringUtils.amountToDisplay((float) value, getContext()));
         return orderItemView;
     }
 }

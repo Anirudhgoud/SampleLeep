@@ -43,6 +43,7 @@ import com.ngx.BluetoothPrinter;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -162,8 +163,8 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         tvPaymentMethod.setText(viewModel.getPaymentMethod());
     }
 
-    private String amountWithCurrencySymbol(Object amount) {
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
+    private String amountWithCurrencySymbol(double amount) {
+        return StringUtils.amountToDisplay((float) amount, this);
     }
 
     private void setListeners() {

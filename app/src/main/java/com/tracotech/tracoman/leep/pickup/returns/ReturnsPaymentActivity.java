@@ -157,13 +157,13 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
 
     private void updateAmountDetails(double outstandingBalance) {
         double totalReturns = viewModel.totalReturnsValue();
-        tvReturned.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(totalReturns)));
+        tvReturned.setText(StringUtils.amountToDisplay((float) totalReturns, this));
         tvPreviousBalance.setText(amountWithCurrencySymbol(outstandingBalance));
         tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, outstandingBalance)));
     }
 
-    private String amountWithCurrencySymbol(Object amount){
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
+    private String amountWithCurrencySymbol(double amount){
+        return StringUtils.amountToDisplay((float) amount, this);
     }
 
 
@@ -203,7 +203,7 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
         tvProductName.setText(StringUtils.toString(product.getProductName(), ""));
         tvProductQuantity.setText(getString(R.string.weight_with_units, product.getWeight(), product.getWeightUnit()));
         tvUnits.setText(String.valueOf(product.getReturnQuantity()));
-        tvAmount.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.format(Locale.getDefault(), "%.02f", product.getTotalReturnsPrice())));
+        tvAmount.setText(StringUtils.amountToDisplay((float) product.getTotalReturnsPrice(), this));
         returnReasonTextView.setText(product.getReturnReason().getReason());
         returnReasonTextView.setVisibility(View.VISIBLE);
         return orderItemView;

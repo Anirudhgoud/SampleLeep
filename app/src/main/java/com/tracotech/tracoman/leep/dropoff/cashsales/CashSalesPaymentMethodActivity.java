@@ -23,6 +23,7 @@ import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.dropoff.cashsales.CashSalesPaymentMethodViewModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,8 +117,8 @@ public class CashSalesPaymentMethodActivity extends ParentAppCompatActivity {
         tvOutstandingBalance.setText(amountWithCurrencySymbol(outstandingBalance));
     }
 
-    private String amountWithCurrencySymbol(Object amount) {
-        return getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(amount));
+    private String amountWithCurrencySymbol(double amount) {
+        return StringUtils.amountToDisplay((float) amount, this);
     }
 
     private void setClickListeners() {

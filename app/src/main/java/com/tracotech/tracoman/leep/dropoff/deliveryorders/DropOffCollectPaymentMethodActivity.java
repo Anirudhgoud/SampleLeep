@@ -17,7 +17,10 @@ import com.tracotech.tracoman.leep.main.ParentAppCompatActivity;
 import com.tracotech.tracoman.services.room.entities.DeliveryOrderEntity;
 import com.tracotech.tracoman.utils.AppUtils;
 import com.tracotech.tracoman.utils.DateTimeUtils;
+import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.dropoff.deliveryorders.DropOffCollectPaymentMethodViewModel;
+
+import java.util.Locale;
 
 public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity {
 
@@ -111,10 +114,10 @@ public class DropOffCollectPaymentMethodActivity extends ParentAppCompatActivity
     }
 
     private void updateSalesValues() {
-        tvCurrentSales.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getCurrentSale())));
-        tvOutstandingBalance.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getOutstandingBalance())));
-        tvGrandTotal.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getGrandTotal())));
-        tvPaymentCollected.setText(getString(R.string.value_with_currency_symbol, AppUtils.userCurrencySymbol(this), String.valueOf(viewModel.getPaymentCollected())));
+        tvCurrentSales.setText(StringUtils.amountToDisplay((float) viewModel.getCurrentSale(), this));
+        tvOutstandingBalance.setText(StringUtils.amountToDisplay((float) viewModel.getOutstandingBalance(), this));
+        tvGrandTotal.setText(StringUtils.amountToDisplay((float) viewModel.getGrandTotal(), this));
+        tvPaymentCollected.setText(StringUtils.amountToDisplay((float) viewModel.getPaymentCollected(), this));
     }
 
     private void showItemListDialog() {

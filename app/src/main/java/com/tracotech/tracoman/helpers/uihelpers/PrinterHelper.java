@@ -37,7 +37,7 @@ import static com.tracotech.tracoman.utils.DateTimeUtils.TWELVE_HOUR_TIME_FORMAT
  * Created by vishalm on 14/04/18.
  */
 public class PrinterHelper {
-    private String separator = "----------------------------------------------------------------";
+    private String separator = "----------------------------------";
     private double cashSalesTotal = 0;
     private double returnsTotal = 0;
     private Resources resources;
@@ -49,8 +49,7 @@ public class PrinterHelper {
 
     private List<PrintableLine> printableLines;
 
-
-    Handler mHandler = new Handler(msg -> {
+    private Handler mHandler = new Handler(msg -> {
         switch (msg.what) {
             case BluetoothPrinter.MESSAGE_STATE_CHANGE:
                 switch (msg.arg1) {
@@ -76,16 +75,11 @@ public class PrinterHelper {
         }
     }
 
-
     public PrinterHelper(Context context) {
         printer = PrinterService.sharedInstance().getPrinter();
         printer.initService(context, mHandler);
         initPrinter();
         initResources(context);
-    }
-
-    public BluetoothPrinter getPrinter() {
-        return printer;
     }
 
     private void initPrinter(){
@@ -99,11 +93,7 @@ public class PrinterHelper {
     }
 
     private String getProductName(String productName){
-        if(productName.length() < 10)
-        return  String.format("%-40s", productName);
-        else if(productName.length() < 15)
-            return  String.format("%-30s", productName);
-        else return  String.format("%-22s", trim(productName, 18));
+        return  String.format("%-16s", trim(productName, 15));
     }
 
     public List<PrintableLine> generateCashSalesPrintableLines(String doNumber, String roNumber,
@@ -130,7 +120,7 @@ public class PrinterHelper {
             printableLines.add(new PrintableLine(itemsHeader, Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
             printableLines.addAll(cashSalesPrintableLines);
             printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-            printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+cashSalesTotal+"       ",
+            printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+cashSalesTotal,
                     Layout.Alignment.ALIGN_OPPOSITE, boldTextPaint));
             printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         }
@@ -143,7 +133,7 @@ public class PrinterHelper {
             printableLines.add(new PrintableLine(itemsHeader, Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
             printableLines.addAll(returnsPrintableLines);
             printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-            printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+returnsTotal+"       ",
+            printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+returnsTotal,
                     Layout.Alignment.ALIGN_OPPOSITE, boldTextPaint));
             printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         }
@@ -165,7 +155,7 @@ public class PrinterHelper {
                 cashSalesTotal += product.getQuantity() * product.getPrice();
                 String productName = getProductName(product.getProductName());
                 printableLines.add(new PrintableLine("\n" + productName +
-                        String.format("%-15s", product.getQuantity()) +
+                        String.format("%-8s", product.getQuantity()) +
                         String.format("%-10s", currencySymbol + String.valueOf(
                                 product.getQuantity() * product.getPrice())),
                         Layout.Alignment.ALIGN_NORMAL, textPaint));
@@ -184,7 +174,7 @@ public class PrinterHelper {
                 returnsTotal += product.getReturnQuantity() * product.getPrice();
                 String productName = getProductName(product.getProductName());
                 printableLines.add(new PrintableLine("\n" + productName +
-                        String.format("%-15s", product.getReturnQuantity()) +
+                        String.format("%-8s", product.getReturnQuantity()) +
                         String.format("%-10s", currencySymbol + String.valueOf(
                                 product.getReturnQuantity() * product.getPrice())),
                         Layout.Alignment.ALIGN_NORMAL, textPaint));
@@ -237,7 +227,7 @@ public class PrinterHelper {
         printableLines.add(new PrintableLine(itemsHeader, Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
         printableLines.addAll(generateReturnsPrintableLines(products, currencySymbol, normalTextPaint));
         printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-        printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+returnsTotal+"       ",
+        printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+returnsTotal,
                 Layout.Alignment.ALIGN_OPPOSITE, boldTextPaint));
         printableLines.add(new PrintableLine("\n\n", Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
         return printableLines;
@@ -248,7 +238,7 @@ public class PrinterHelper {
         for(ReturnOrderItem orderItemEntity : products){
             returnsTotal += orderItemEntity.getQuantity() * orderItemEntity.getPrice();
             printableLines.add(new PrintableLine(getProductName(orderItemEntity.getProduct().getName()) +
-                    String.format("%-15s", orderItemEntity.getQuantity())+"   "+
+                    String.format("%-8s", orderItemEntity.getQuantity())+"   "+
                     String.format("%-10s", currencySymbol+String.valueOf(
                             orderItemEntity.getQuantity() * orderItemEntity.getPrice())), Layout.Alignment.ALIGN_NORMAL, textPaint));
             printableLines.add(new PrintableLine("("+orderItemEntity.getProduct().getWeight() +
@@ -289,7 +279,7 @@ public class PrinterHelper {
         printableLines.add(new PrintableLine(itemsHeader, Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
         printableLines.addAll(generateCashSalesPrintableItems(doItems, currencySymbol, normalTextPaint));
         printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-        printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+cashSalesTotal+"       ",
+        printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+cashSalesTotal,
                 Layout.Alignment.ALIGN_OPPOSITE, boldTextPaint));
         printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         printableLines.add(new PrintableLine(resources.getString(R.string.grand_total)+" "+(cashSalesTotal-returnsTotal),
@@ -312,7 +302,7 @@ public class PrinterHelper {
             cashSalesTotal += orderItemEntity.getQuantity() * orderItemEntity.getPrice();
             String productName = getProductName(orderItemEntity.getProduct().getName());
             printableLines.add(new PrintableLine("\n"+productName +
-                    String.format("%-15s", orderItemEntity.getQuantity())+"   "+
+                    String.format("%-8s", orderItemEntity.getQuantity())+
                     String.format("%-10s", currencySymbol+String.valueOf(
                             orderItemEntity.getQuantity() * orderItemEntity.getPrice())),
                     Layout.Alignment.ALIGN_NORMAL, textPaint));
@@ -324,18 +314,21 @@ public class PrinterHelper {
 
     private void initResources(Context context) {
         resources = context.getResources();
-        itemsHeader =  String.format("%-35s", resources.getString(R.string.items_label)+" ")+"   "+
-                String.format("%-15s", resources.getString(R.string.units)+" ")+"   "+
-                String.format("%-10s", resources.getString(R.string.value)+" ");
+        itemsHeader =  String.format("%-16s", resources.getString(R.string.items_label))+
+                String.format("%-8s", resources.getString(R.string.units))+
+                String.format("%-10s", resources.getString(R.string.value));
+
+        Typeface tf = Typeface.createFromAsset(context.getAssets(), "DroidSansMono.ttf");
+
         boldTextPaint = new TextPaint();
         boldTextPaint.setColor(Color.BLACK);
         boldTextPaint.setTextSize(18);
-        boldTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        boldTextPaint.setTypeface(Typeface.create(tf, Typeface.BOLD));
 
         normalTextPaint = new TextPaint();
         normalTextPaint.setColor(Color.BLACK);
         normalTextPaint.setTextSize(18);
-        normalTextPaint.setTypeface(Typeface.DEFAULT);
+        normalTextPaint.setTypeface(tf);
     }
 
     public void print(List<PrintableLine> printableLines, Activity activity) {
