@@ -225,6 +225,7 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
         customerInfo.setBusinessTypeId(viewModel.getBusinessTypeId());
         customerInfo.setContactName(etContactName.getText().toString());
         customerInfo.setContactNumber(etContactNumber.getText().toString());
+        customerInfo.setCountryDialCode(viewModel.getSelectedCountry().getDialCode());
         customerInfo.setEmail(etEmailId.getText().toString());
         customerInfo.setBusinessId(viewModel.getSelectedBusinessId());
         customerInfo.setDesignation(etDesignation.getText().toString());

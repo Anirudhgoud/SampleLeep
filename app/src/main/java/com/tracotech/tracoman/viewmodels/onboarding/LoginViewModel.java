@@ -63,15 +63,6 @@ public class LoginViewModel extends AndroidViewModel {
                         case NetworkConstants.SUCCESS:
                             JSONObject userObj = (JSONObject) response.opt(0);
                             storeUserMeta(userObj);
-                            if(userObj != null){
-                                JSONObject driver = userObj.optJSONObject("driver");
-                                if(driver != null){
-                                    int driverId = driver.optInt("id");
-                                    LocalStorageService.sharedInstance().getLocalFileStore().store(context,
-                                        SharedPreferenceKeys.DRIVER_ID, driverId);
-                                }
-                            }
-
                             loginCallBack.onResponseReceived(null, false, null, false);
                             break;
                         case NetworkConstants.FAILURE:
@@ -94,5 +85,16 @@ public class LoginViewModel extends AndroidViewModel {
                 SharedPreferenceKeys.USER_ID, userObj.optString("id"));
         LocalStorageService.sharedInstance().getLocalFileStore().store(context, SharedPreferenceKeys.SELECTED_COUNTRY,
                 new Gson().toJson(selectedCountry));
+        JSONObject driver = userObj.optJSONObject("driver");
+        if(driver != null){
+            int driverId = driver.optInt("id");
+            LocalStorageService.sharedInstance().getLocalFileStore().store(context,
+                    SharedPreferenceKeys.DRIVER_ID, driverId);
+        }
+        JSONObject currency = userObj.optJSONObject("currency");
+        if(currency != null) {
+            String symbol = currency.optString("symbol");
+            LocalStorageService.sharedInstance().getLocalFileStore().store(context, SharedPreferenceKeys.CURRENCY_SYMBOL, symbol);
+        }
     }
 }

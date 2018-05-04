@@ -106,8 +106,11 @@ public class NewCustomerViewModel extends AndroidViewModel {
         return "latlng=" + latitude + "," + longitude + "&key=" + getApplication().getResources().getString(R.string.google_maps_key);
     }
 
-    public void createNewCustomer(final UILevelNetworkCallback newCustomerCallBack, int countryId, String name, String contactEmail, String contactName, String contactNumber, String designation, String postalCode, int businessCategoryId) {
-        Map<String, Object> body = getNewCustomerBody(countryId, name, contactEmail, contactName, contactNumber, designation, postalCode, businessCategoryId);
+    public void createNewCustomer(final UILevelNetworkCallback newCustomerCallBack, int countryId,
+                                  String name, String contactEmail, String contactName, String contactNumber,
+                                  String designation, String postalCode, int businessCategoryId, String dialCode) {
+        Map<String, Object> body = getNewCustomerBody(countryId, name, contactEmail, contactName,
+                contactNumber, designation, postalCode, businessCategoryId, dialCode);
         NetworkService.sharedInstance().getNetworkClient().makeFormPostRequest(getApplication(), UrlConstants.BUSINESSES_URL, true, body, (type, response, errorMessage) -> {
             switch (type) {
                 case NetworkConstants.SUCCESS:
@@ -127,7 +130,10 @@ public class NewCustomerViewModel extends AndroidViewModel {
             }
         });
     }
-    private  Map<String, Object> getNewCustomerBody( int countryId, String name, String contactEmail, String contactName, String contactNumber, String designation, String postalCode, int businessCategoryId){
+    private  Map<String, Object> getNewCustomerBody( int countryId, String name, String contactEmail,
+                                                     String contactName, String contactNumber,
+                                                     String designation, String postalCode,
+                                                     int businessCategoryId, String dialcode){
         Map<String, Object> body = new HashMap<>();
         body.put("country_id", countryId);
         body.put("name", name);
@@ -137,6 +143,7 @@ public class NewCustomerViewModel extends AndroidViewModel {
         body.put("designation_1", designation);
         body.put("postal_code", postalCode);
         body.put("business_category_id", businessCategoryId);
+        body.put("country_code", dialcode);
         return  body;
     }
 
