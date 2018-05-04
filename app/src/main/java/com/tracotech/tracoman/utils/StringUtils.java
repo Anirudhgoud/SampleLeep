@@ -19,7 +19,6 @@ public class StringUtils {
     private final static NumberFormat currencyFormatter;
     private final static NumberFormat numberFormatter;
 
-
     static {
         currencyFormatter = NumberFormat.getInstance();
         numberFormatter = NumberFormat.getNumberInstance();
@@ -98,14 +97,7 @@ public class StringUtils {
         return formattedString;
     }
 
-    public static String dateToDisplay(String dateString) {
-        return (dateString == null) ? "-" : DateTimeUtils.convertdDate(dateString,
-                DateTimeUtils.ORDER_SERVER_DATE_FORMAT, DateTimeUtils.ORDER_DISPLAY_DATE_FORMAT_COMMA);
-
-    }
-
     public static String toString(String string, String nullDefault){
         return (string == null || string.equals("null")) ? nullDefault : string;
     }
-
 }

@@ -23,9 +23,9 @@ import java.io.OutputStream;
 public class AppUtils {
 
     public static String userCurrencySymbol(Context context) {
-        Country selectedCountry = new Gson().fromJson(LocalStorageService.sharedInstance().
-                getLocalFileStore().getString(context, SharedPreferenceKeys.SELECTED_COUNTRY), Country.class);
-        return selectedCountry.getCurrencySymbol();
+        String symbol = LocalStorageService.sharedInstance().
+                getLocalFileStore().getString(context, SharedPreferenceKeys.CURRENCY_SYMBOL);
+        return symbol;
     }
 
     public static Bitmap bitmapFromView(View v, int width, int height) {

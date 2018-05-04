@@ -1,6 +1,7 @@
 package com.tracotech.tracoman.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -86,21 +87,24 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
     private UILevelNetworkCallback timeToReachCallback = new UILevelNetworkCallback() {
         @Override
         public void onResponseReceived(List<?> uiModels, boolean isDialogToBeShown, String errorMessage, boolean toLogout) {
-            getActivity().runOnUiThread(() -> {
-                List<Distance> timeToReachList = (List<Distance>) uiModels;
-                List<WarehouseEntity> warehouseEntities = warehouseViewModel.getWarehouses();
-                if (warehouseEntities != null && warehouseEntities.size() == timeToReachList.size()) {
-                    for (int i = 0; i < warehouseEntities.size() && i < timeToReachList.size(); i++) {
-                        WarehouseEntity warehouseEntity = warehouseEntities.get(i);
-                        Distance distance = timeToReachList.get(i);
-                        warehouseEntity.setDistanceFromCurrentLocation(distance);
+            Activity activity = getActivity();
+            if(activity !=null && !activity.isFinishing()) {
+                activity.runOnUiThread(() -> {
+                    List<Distance> timeToReachList = (List<Distance>) uiModels;
+                    List<WarehouseEntity> warehouseEntities = warehouseViewModel.getWarehouses();
+                    if (warehouseEntities != null && warehouseEntities.size() == timeToReachList.size()) {
+                        for (int i = 0; i < warehouseEntities.size() && i < timeToReachList.size(); i++) {
+                            WarehouseEntity warehouseEntity = warehouseEntities.get(i);
+                            Distance distance = timeToReachList.get(i);
+                            warehouseEntity.setDistanceFromCurrentLocation(distance);
+                        }
+                        displayMarkersOnMap((warehouseEntities));
+                        llMapAddressLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        llMapAddressLayout.setVisibility(View.GONE);
                     }
-                    displayMarkersOnMap((warehouseEntities));
-                    llMapAddressLayout.setVisibility(View.VISIBLE);
-                } else {
-                    llMapAddressLayout.setVisibility(View.GONE);
-                }
-            });
+                });
+            }
         }
     };
 
