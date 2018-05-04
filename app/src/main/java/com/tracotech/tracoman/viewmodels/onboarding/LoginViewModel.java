@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.tracotech.tracoman.constants.NetworkConstants;
 import com.tracotech.tracoman.constants.RequestConstants;
 import com.tracotech.tracoman.constants.SharedPreferenceKeys;
@@ -14,10 +15,12 @@ import com.tracotech.tracoman.interfaces.UILevelNetworkCallback;
 import com.tracotech.tracoman.services.network.NetworkService;
 import com.tracotech.tracoman.services.storage.LocalStorageService;
 import com.google.gson.Gson;
+import com.tracotech.tracoman.utils.LogUtils;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,5 +99,18 @@ public class LoginViewModel extends AndroidViewModel {
             String symbol = currency.optString("symbol");
             LocalStorageService.sharedInstance().getLocalFileStore().store(context, SharedPreferenceKeys.CURRENCY_SYMBOL, symbol);
         }
+    }
+
+    public void sendFCMTokenToServer() {
+        String token = getFCMToken();
+        if (token == null) return;
+        NetworkService.sharedInstance().getNetworkClient().makeJsonPutRequest(getApplication(), UrlConstants.UPDATE_FCM_TOKEN, true, Collections.singletonMap("fcm_token", token), (type, response, errorMessage) -> {
+        });
+    }
+
+    private String getFCMToken(){
+        String fcmToken = FirebaseInstanceId.getInstance().getToken();
+        LogUtils.error("", "Refreshed token: " + fcmToken);
+        return fcmToken;
     }
 }

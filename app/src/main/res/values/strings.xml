@@ -198,4 +198,8 @@
     <string name="no_reports_available">Reports not available.</string>
     <string name="no_history_available">No orders completed</string>
     <string name="no_do_assigned">No orders assigned at this warehouse</string>
+
+    <!--Firebase-->
+    <string name="default_notification_channel_id" translatable="false">traco_default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">Traco</string>
 </resources>
