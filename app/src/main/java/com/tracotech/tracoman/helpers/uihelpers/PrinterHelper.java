@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Layout;
 import android.text.TextPaint;
 
@@ -11,6 +13,7 @@ import com.tracotech.tracoman.R;
 import com.tracotech.tracoman.helpers.uimodels.Customer;
 import com.tracotech.tracoman.helpers.uimodels.Product;
 import com.tracotech.tracoman.helpers.uimodels.ReturnOrderItem;
+import com.tracotech.tracoman.leep.info.HistoryDetailsActivity;
 import com.tracotech.tracoman.leep.pickup.returns.ReturnsFinalConfirmationActivity;
 import com.tracotech.tracoman.services.printer.PrinterService;
 import com.tracotech.tracoman.services.room.entities.DeliveryOrderEntity;
@@ -42,9 +45,30 @@ public class PrinterHelper {
     private TextPaint boldTextPaint;
     private TextPaint normalTextPaint;
 
+
+    Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case BluetoothPrinter.MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case BluetoothPrinter.STATE_CONNECTED:
+                            //printInvoice();
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+    });
+
+
+
     public PrinterHelper(Context context) {
         printer = PrinterService.sharedInstance().getPrinter();
-        printer.initService(context);
+        printer.initService(context, mHandler);
         initPrinter();
         initResources(context);
     }

@@ -2,6 +2,8 @@ package com.tracotech.tracoman.leep.info;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -208,7 +210,6 @@ public class HistoryDetailsActivity extends ParentAppCompatActivity {
         PrinterHelper printerHelper = new PrinterHelper(this);
         if(printerHelper.getPrinter().getState() == BluetoothPrinter.STATE_CONNECTED) {
             if(historyDetailsViewModel.getOrderType() == AppConstants.TYPE_DELIVERY) {
-
                 List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(
                         historyDetailsViewModel.getDeliveryOrderEntity(),
                         historyDetailsViewModel.getDoItems(),
