@@ -11,6 +11,7 @@ import com.tracotech.tracoman.helpers.uimodels.ReturnOrderItem;
 import com.tracotech.tracoman.services.room.entities.OrderItemEntity;
 import com.tracotech.tracoman.services.room.entities.StockProductEntity;
 import com.tracotech.tracoman.utils.AppUtils;
+import com.tracotech.tracoman.utils.StringUtils;
 
 /**
  * Created by vishalm on 20/03/18.
@@ -37,7 +38,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         double value = stockProductEntity.getQuantity(listType) * stockProductEntity.getDefaultPrice();
         unitsTv.setText(String.valueOf(stockProductEntity.getQuantity(listType)));
         productQuantityTv.setText(stockProductEntity.getWeight()+" "+ stockProductEntity.getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
+        amountTv.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
     }
 
     public void bind(OrderItemEntity orderItem){
@@ -45,7 +46,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         double value = orderItem.getQuantity() * orderItem.getPrice();
         unitsTv.setText(String.valueOf(orderItem.getQuantity()));
         productQuantityTv.setText(orderItem.getProduct().getWeight()+" "+ orderItem.getProduct().getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
+        amountTv.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
     }
 
     public void bind(ReturnOrderItem orderItem){
@@ -53,7 +54,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         double value = orderItem.getQuantity() * orderItem.getPrice();
         unitsTv.setText(String.valueOf(orderItem.getQuantity()));
         productQuantityTv.setText(orderItem.getProduct().getWeight()+" "+ orderItem.getProduct().getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
+        amountTv.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
         if(returnReasonTv != null){
             returnReasonTv.setVisibility(View.VISIBLE);
             returnReasonTv.setText(orderItem.getReason());
@@ -65,7 +66,7 @@ public class StocksListViewHolder extends RecyclerView.ViewHolder{
         double value = product.getReturnQuantity() * product.getPrice();
         unitsTv.setText(String.valueOf(product.getReturnQuantity()));
         productQuantityTv.setText(product.getWeight()+" "+ product.getWeightUnit());
-        amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
+        amountTv.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
         if(returnReasonTv != null && product.getReturnReason() != null){
             returnReasonTv.setVisibility(View.VISIBLE);
             returnReasonTv.setText(product.getReturnReason().getReason());
