@@ -18,12 +18,15 @@ import static com.tracotech.tracoman.utils.DateTimeUtils.TWENTY_FOUR_HOUR_TIME_F
 public class StringUtils {
     private final static NumberFormat currencyFormatter;
     private final static NumberFormat numberFormatter;
+    private final static NumberFormat currencyFormatterWithoutDecimal;
 
     static {
         currencyFormatter = NumberFormat.getInstance();
         numberFormatter = NumberFormat.getNumberInstance();
+        currencyFormatterWithoutDecimal = NumberFormat.getInstance();
         currencyFormatter.setMinimumFractionDigits(2);
         numberFormatter.setMaximumFractionDigits(0);
+        currencyFormatterWithoutDecimal.setMinimumFractionDigits(0);
     }
 
     private StringUtils() {
@@ -69,6 +72,19 @@ public class StringUtils {
     public static String amountToDisplay(Float amountString, Context context) {
         return (amountString != null ? AppUtils.userCurrencySymbol(context)+currencyFormatter.format(amountString) :
                 AppUtils.userCurrencySymbol(context)+currencyFormatter.format(0));
+    }
+
+    public static String amountToDisplay(double amountString) {
+        try{
+            return currencyFormatter.format(amountString);
+        } catch (ArithmeticException e){
+            return "";
+        }
+    }
+
+    public static String amountToDisplayWithoutDecimal(Float amountString, Context context) {
+        return (amountString != null ? AppUtils.userCurrencySymbol(context)+currencyFormatterWithoutDecimal.format(amountString) :
+                AppUtils.userCurrencySymbol(context)+currencyFormatterWithoutDecimal.format(0));
     }
 
     public static String numberToDisplay(int number) {

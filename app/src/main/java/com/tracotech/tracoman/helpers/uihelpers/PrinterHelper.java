@@ -156,7 +156,7 @@ public class PrinterHelper {
                 String productName = getProductName(product.getProductName());
                 printableLines.add(new PrintableLine("\n" + productName +
                         String.format("%-8s", product.getQuantity()) +
-                        String.format("%-10s", currencySymbol + String.valueOf(
+                        String.format("%-10s", currencySymbol + StringUtils.amountToDisplay(
                                 product.getQuantity() * product.getPrice())),
                         Layout.Alignment.ALIGN_NORMAL, textPaint));
                 printableLines.add(new PrintableLine("(" + product.getWeight() +
@@ -175,7 +175,7 @@ public class PrinterHelper {
                 String productName = getProductName(product.getProductName());
                 printableLines.add(new PrintableLine("\n" + productName +
                         String.format("%-8s", product.getReturnQuantity()) +
-                        String.format("%-10s", currencySymbol + String.valueOf(
+                        String.format("%-10s", currencySymbol + StringUtils.amountToDisplay(
                                 product.getReturnQuantity() * product.getPrice())),
                         Layout.Alignment.ALIGN_NORMAL, textPaint));
                 printableLines.add(new PrintableLine("(" + product.getWeight() +
@@ -239,8 +239,7 @@ public class PrinterHelper {
             returnsTotal += orderItemEntity.getQuantity() * orderItemEntity.getPrice();
             printableLines.add(new PrintableLine(getProductName(orderItemEntity.getProduct().getName()) +
                     String.format("%-8s", orderItemEntity.getQuantity())+"   "+
-                    String.format("%-10s", currencySymbol+String.valueOf(
-                            orderItemEntity.getQuantity() * orderItemEntity.getPrice())), Layout.Alignment.ALIGN_NORMAL, textPaint));
+                    String.format("%-10s", currencySymbol+StringUtils.amountToDisplay(orderItemEntity.getQuantity() * orderItemEntity.getPrice())), Layout.Alignment.ALIGN_NORMAL, textPaint));
             printableLines.add(new PrintableLine("("+orderItemEntity.getProduct().getWeight() +
                     orderItemEntity.getProduct().getWeightUnit()+")", Layout.Alignment.ALIGN_NORMAL, textPaint));
         }
@@ -303,8 +302,7 @@ public class PrinterHelper {
             String productName = getProductName(orderItemEntity.getProduct().getName());
             printableLines.add(new PrintableLine("\n"+productName +
                     String.format("%-8s", orderItemEntity.getQuantity())+
-                    String.format("%-10s", currencySymbol+String.valueOf(
-                            orderItemEntity.getQuantity() * orderItemEntity.getPrice())),
+                    String.format("%-10s", StringUtils.amountToDisplay(orderItemEntity.getQuantity() * orderItemEntity.getPrice())),
                     Layout.Alignment.ALIGN_NORMAL, textPaint));
             printableLines.add(new PrintableLine("("+orderItemEntity.getProduct().getWeight() +
                     orderItemEntity.getProduct().getWeightUnit()+")", Layout.Alignment.ALIGN_NORMAL, textPaint));
