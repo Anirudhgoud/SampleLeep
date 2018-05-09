@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "783917422929",
+    "firebase_url": "https://tracoandroid.firebaseio.com",
+    "project_id": "tracoandroid",
+    "storage_bucket": "tracoandroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783917422929:android:af6fa0817f86a4e5",
+        "android_client_info": {
+          "package_name": "com.tracotech.tracoman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783917422929-c3e27pfn4putpgm8tn4urjdsupashq7l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tracotech.tracoman",
+            "certificate_hash": "4068359144f8a8f1339b3de5cd35b72b1f1acc34"
+          }
+        },
+        {
+          "client_id": "783917422929-uc8ghbinkb7qp9gsdi9tg359tcdijr6p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7W0yTtCySpm6FuaN9BI9tLnd9MK67UVM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783917422929-uc8ghbinkb7qp9gsdi9tg359tcdijr6p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
