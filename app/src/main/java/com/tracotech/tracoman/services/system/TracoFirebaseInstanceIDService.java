@@ -15,7 +15,7 @@ public class TracoFirebaseInstanceIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        LogUtils.debug(TAG, "Refreshed token: " + refreshedToken);
+        LogUtils.error(TAG, "Refreshed token: " + refreshedToken);
         if (refreshedToken == null) return;
         sendFCMTokenToServer(refreshedToken);
     }

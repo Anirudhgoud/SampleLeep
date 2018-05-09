@@ -202,4 +202,6 @@
     <!--Firebase-->
     <string name="default_notification_channel_id" translatable="false">traco_default_channel</string>
     <string name="default_notification_channel_name" translatable="true">Traco</string>
+    <string name="default_notification_title">Traco</string>
+    <string name="default_notification_message">"New Order Assigned"</string>
 </resources>

@@ -104,6 +104,7 @@ public class LoginViewModel extends AndroidViewModel {
     public void sendFCMTokenToServer() {
         String token = getFCMToken();
         if (token == null) return;
+        LogUtils.error("", "fcm token: " + token);
         NetworkService.sharedInstance().getNetworkClient().makeJsonPutRequest(getApplication(), UrlConstants.UPDATE_FCM_TOKEN, true, Collections.singletonMap("fcm_token", token), (type, response, errorMessage) -> {
         });
     }
