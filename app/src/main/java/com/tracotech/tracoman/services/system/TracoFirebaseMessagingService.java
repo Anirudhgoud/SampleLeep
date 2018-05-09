@@ -40,7 +40,7 @@ public class TracoFirebaseMessagingService extends FirebaseMessagingService {
 
             switch (type) {
                 case NotificationType.DO_ASSIGNED:
-                    new NotificationHelper().sendNotification(this, title, body, getPendingIntent(type));
+                    new NotificationHelper(this).sendNotification(title, body, getPendingIntent(type));
                     break;
             }
         }
