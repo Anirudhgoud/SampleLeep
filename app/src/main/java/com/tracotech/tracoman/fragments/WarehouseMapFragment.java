@@ -93,7 +93,7 @@ public class WarehouseMapFragment extends Fragment implements OnMapReadyCallback
                 activity.runOnUiThread(() -> {
                     List<Distance> timeToReachList = (List<Distance>) uiModels;
                     List<WarehouseEntity> warehouseEntities = warehouseViewModel.getWarehouses();
-                    if (warehouseEntities != null && warehouseEntities.size() == timeToReachList.size()) {
+                    if (timeToReachList !=null && warehouseEntities != null && warehouseEntities.size() == timeToReachList.size()) {
                         for (int i = 0; i < warehouseEntities.size(); i++) {
                             WarehouseEntity warehouseEntity = warehouseEntities.get(i);
                             Distance distance = timeToReachList.get(i);
