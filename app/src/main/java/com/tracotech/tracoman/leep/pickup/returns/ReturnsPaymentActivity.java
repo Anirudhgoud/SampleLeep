@@ -160,6 +160,7 @@ public class ReturnsPaymentActivity extends ParentAppCompatActivity {
         tvReturned.setText(StringUtils.amountToDisplay((float) totalReturns, this));
         tvPreviousBalance.setText(amountWithCurrencySymbol(outstandingBalance));
         tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, outstandingBalance)));
+        ((TextView) findViewById(R.id.tv_collected_amount_currency)).setText(AppUtils.userCurrencySymbol(this));
     }
 
     private String amountWithCurrencySymbol(double amount){

@@ -251,6 +251,7 @@ public class CashSalesInvoiceActivity extends ParentAppCompatActivity {
         tvCurrentSales.setText(amountWithCurrencySymbol(totalCurrentSales));
         tvPreviousBalance.setText(amountWithCurrencySymbol(outstandingBalance));
         tvGrandTotal.setText(amountWithCurrencySymbol(viewModel.grandTotal(totalReturns, totalCurrentSales, outstandingBalance)));
+        ((TextView) findViewById(R.id.tv_collected_amount_currency)).setText(AppUtils.userCurrencySymbol(this));
     }
 
     private String amountWithCurrencySymbol(double amount){

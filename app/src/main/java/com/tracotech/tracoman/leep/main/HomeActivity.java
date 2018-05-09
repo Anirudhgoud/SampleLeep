@@ -212,8 +212,8 @@ public class HomeActivity extends ParentAppCompatActivity {
         ((TextView) view.findViewById(R.id.name_textView)).setText(driverName);
         ((TextView) view.findViewById(R.id.deliveries_value_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getCompletedDeliveryOrdersCount()), ""));
-        ((TextView) view.findViewById(R.id.payment_collected_values_textview)).setText(
-                StringUtils.toString(String.valueOf(driverEntity.getPaymentCollected()), ""));
+        ((TextView) view.findViewById(R.id.payment_collected_values_textview)).setText(StringUtils.
+                amountToDisplayWithoutDecimal((float) driverEntity.getPaymentCollected(), this));
         ((TextView) view.findViewById(R.id.locations_layout_value_textview)).setText(
                 StringUtils.toString(String.valueOf(driverEntity.getDeliveryLocationsCount()), ""));
         ((TextView) view.findViewById(R.id.contact_text_view)).setText(driverEntity.getContactNumber());
