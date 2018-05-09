@@ -270,7 +270,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
             productQuantityTv.setText(doDetails.getProduct().getWeight()+" "+
                     doDetails.getProduct().getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
-            amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
+            amountTv.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
             if (context instanceof PickupActivity) {
                 {
                     if(productCheckbox != null) {

@@ -14,6 +14,7 @@ import com.tracotech.tracoman.interfaces.ItemCheckListener;
 import com.tracotech.tracoman.services.room.entities.OrderItemEntity;
 import com.tracotech.tracoman.services.room.entities.ProductEntity;
 import com.tracotech.tracoman.utils.AppUtils;
+import com.tracotech.tracoman.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,7 @@ public class PickupCashSalesListAdapter extends RecyclerView.Adapter<
             double value = doDetails.getQuantity() * doDetails.getPrice();
             productQuantityTv.setText(productEntity.getWeight()+" "+ productEntity.getWeightUnit());
             unitsTv.setText(String.valueOf(doDetails.getQuantity()));
-            amountTv.setText(AppUtils.userCurrencySymbol(itemView.getContext())+" "+String.valueOf(value));
+            amountTv.setText(StringUtils.amountToDisplay((float) value, itemView.getContext()));
             productCheckbox.setVisibility(View.VISIBLE);
             productCheckbox.setChecked(doDetails.isSelected());
             productCheckbox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
