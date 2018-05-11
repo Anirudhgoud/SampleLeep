@@ -8,8 +8,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tracotech.tracoman.R;
+import com.tracotech.tracoman.constants.AppConstants;
 import com.tracotech.tracoman.constants.IntentConstants;
 import com.tracotech.tracoman.helpers.customviews.CashSalesReturnsListDialogFragment;
 import com.tracotech.tracoman.helpers.customviews.LeepSuccessDialog;
 import com.tracotech.tracoman.helpers.customviews.SignatureDialogFragment;
+import com.tracotech.tracoman.helpers.uihelpers.EditTextHelper;
 import com.tracotech.tracoman.helpers.uihelpers.PrintableLine;
 import com.tracotech.tracoman.helpers.uihelpers.PrinterHelper;
 import com.tracotech.tracoman.helpers.uimodels.Customer;
@@ -32,23 +32,20 @@ import com.tracotech.tracoman.interfaces.SuccessDialogEventListener;
 import com.tracotech.tracoman.interfaces.UILevelNetworkCallback;
 import com.tracotech.tracoman.leep.main.HomeActivity;
 import com.tracotech.tracoman.leep.main.ParentAppCompatActivity;
-import com.tracotech.tracoman.services.printer.PrinterService;
 import com.tracotech.tracoman.utils.AppUtils;
 import com.tracotech.tracoman.utils.DateTimeUtils;
 import com.tracotech.tracoman.utils.ListUtils;
 import com.tracotech.tracoman.utils.LogUtils;
 import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.dropoff.cashsales.NewSalesConfirmationViewModel;
-import com.ngx.BluetoothPrinter;
 
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
+public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener {
 
     @BindView(R.id.tv_customer_name)
     TextView tvCustomerName;
@@ -171,9 +168,18 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         btContinue.setOnClickListener(this);
         ivSignature.setOnClickListener(this);
         btViewItemList.setOnClickListener(this);
-        etReceivedFrom.addTextChangedListener(this);
-        etContactNumber.addTextChangedListener(this);
+        editTextHelper.attachTextChangedListener(etReceivedFrom);
+        editTextHelper.attachTextChangedListener(etContactNumber);
     }
+
+    private EditTextHelper editTextHelper = new EditTextHelper(editable -> {
+        if (editable == etReceivedFrom.getEditableText()) {
+            tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
+        } else if (editable == etContactNumber.getEditableText()) {
+            int contactNumberLength = etContactNumber.getText().length();
+            tvContactNumberError.setVisibility(contactNumberLength == 0 || (contactNumberLength >= AppConstants.PHONE_MIN_LENGTH) ? View.GONE : View.VISIBLE);
+        }
+    });
 
     @Override
     public void onClickWithId(int resourceId) {
@@ -227,11 +233,14 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     }
 
     private boolean checkValidations() {
-        tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
         int contactNumberLength = etContactNumber.getText().length();
-        tvContactNumberError.setVisibility(contactNumberLength > 0 ? (contactNumberLength == 10 ? View.GONE : View.VISIBLE) : View.GONE);
+        boolean isContactNumberValid = contactNumberLength == 0 || (contactNumberLength >= AppConstants.PHONE_MIN_LENGTH);
+        boolean isReceiverValid = etReceivedFrom.getText().length() > 0;
+
+        tvReceivedFromError.setVisibility(isReceiverValid ? View.GONE : View.VISIBLE);
+        tvContactNumberError.setVisibility(isContactNumberValid ? View.GONE : View.VISIBLE);
         tvSignatureError.setVisibility(viewModel.isSignatureAdded() ? View.GONE : View.VISIBLE);
-        return etReceivedFrom.getText().length() > 0 && viewModel.isSignatureAdded() && (contactNumberLength == 0 || contactNumberLength == 10);
+        return isContactNumberValid && viewModel.isSignatureAdded() && isReceiverValid;
     }
 
     private void createCashSalesOrder() {
@@ -292,7 +301,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         if (uiModels == null) {
             if (toLogout) {
                 logoutUser();
-            } else if (isDialogToBeShown){
+            } else if (isDialogToBeShown) {
                 showNetworkRelatedDialogs(errorMessage);
             }
         } else if (uiModels.size() > 0) {
@@ -302,7 +311,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         }
     });
 
-    private void fetchLocationDetails(){
+    private void fetchLocationDetails() {
         if (!viewModel.isPaymentSkipped()) return;
         Customer consumer = viewModel.getConsumerLocation();
         if (consumer == null) return;
@@ -310,7 +319,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         viewModel.fetchBusinessLocation(consumer.getBusinessId(), consumer.getId(), locationNetworkCallback);
     }
 
-    private void onLocationDetailsFetched(Location location){
+    private void onLocationDetailsFetched(Location location) {
         if (location == null) return;
         String address = StringUtils.getAddress(location, viewModel.getConsumerLocation());
         tvAddress.setText(address);
@@ -342,25 +351,6 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        if (editable == etReceivedFrom.getEditableText()) {
-            tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
-        } else if (editable == etContactNumber.getEditableText()) {
-            tvContactNumberError.setVisibility(etContactNumber.getText().length() == 10 ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    @Override
     public void onSignatureAdded(Bitmap signatureBitmap) {
         ivSignature.setImageBitmap(signatureBitmap);
         viewModel.setSignatureAdded(true);
@@ -375,14 +365,14 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
         startActivity(intent);
     }
 
-    private void sendSuccessBroadcast(){
+    private void sendSuccessBroadcast() {
         Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
         intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
 
-    private void printInvoice(){
+    private void printInvoice() {
         printerHelper = new PrinterHelper(this);
         List<PrintableLine> printableLines = printerHelper.generateCashSalesPrintableLines(
                 viewModel.getDoNumber(), viewModel.getRoNumber(), viewModel.getConsumerLocation(),
@@ -394,7 +384,7 @@ public class CashSalesFinalConfirmationActivity extends ParentAppCompatActivity 
 
     @Override
     public void onDestroy() {
-        if(printerHelper != null)
+        if (printerHelper != null)
             printerHelper.closeService();
         super.onDestroy();
     }
