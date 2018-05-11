@@ -8,8 +8,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,31 +16,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tracotech.tracoman.R;
+import com.tracotech.tracoman.constants.AppConstants;
 import com.tracotech.tracoman.constants.IntentConstants;
 import com.tracotech.tracoman.constants.PaymentMethod;
 import com.tracotech.tracoman.helpers.customviews.ItemListDialogFragment;
 import com.tracotech.tracoman.helpers.customviews.LeepSuccessDialog;
 import com.tracotech.tracoman.helpers.customviews.SignatureDialogFragment;
+import com.tracotech.tracoman.helpers.uihelpers.EditTextHelper;
 import com.tracotech.tracoman.helpers.uihelpers.PrintableLine;
+import com.tracotech.tracoman.helpers.uihelpers.PrinterHelper;
 import com.tracotech.tracoman.interfaces.AddSignatureListener;
 import com.tracotech.tracoman.interfaces.SuccessDialogEventListener;
 import com.tracotech.tracoman.interfaces.UILevelNetworkCallback;
 import com.tracotech.tracoman.leep.main.ParentAppCompatActivity;
-import com.tracotech.tracoman.services.printer.PrinterService;
 import com.tracotech.tracoman.services.room.entities.DeliveryOrderEntity;
 import com.tracotech.tracoman.utils.AppUtils;
 import com.tracotech.tracoman.utils.DateTimeUtils;
 import com.tracotech.tracoman.utils.LogUtils;
-import com.tracotech.tracoman.helpers.uihelpers.PrinterHelper;
 import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.dropoff.deliveryorders.DropOffPaymentConfirmationViewModel;
-import com.ngx.BluetoothPrinter;
 
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
 
-public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener, TextWatcher {
+public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity implements AddSignatureListener {
 
     private TextView tvCustomerName;
     private TextView tvStoreAddress;
@@ -113,9 +110,18 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
         btViewItemList.setOnClickListener(this);
         btConfirm.setOnClickListener(this);
         ivSignature.setOnClickListener(this);
-        etReceivedFrom.addTextChangedListener(this);
-        etContactNumber.addTextChangedListener(this);
+        editTextHelper.attachTextChangedListener(etReceivedFrom);
+        editTextHelper.attachTextChangedListener(etContactNumber);
     }
+
+    private EditTextHelper editTextHelper = new EditTextHelper(editable -> {
+        if (editable == etReceivedFrom.getEditableText()) {
+            tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
+        } else if (editable == etContactNumber.getEditableText()) {
+            int contactNumberLength = etContactNumber.getText().length();
+            tvContactNumberError.setVisibility(contactNumberLength == 0 || (contactNumberLength >= AppConstants.PHONE_MIN_LENGTH) ? View.GONE : View.VISIBLE);
+        }
+    });
 
 
     private void initialiseToolbar() {
@@ -291,37 +297,23 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
     }
 
     private boolean checkValidations() {
-        tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
         int contactNumberLength = etContactNumber.getText().length();
-        tvContactNumberError.setVisibility(contactNumberLength > 0 ? (contactNumberLength == 10 ? View.GONE : View.VISIBLE) : View.GONE);
+        boolean isContactNumberValid = contactNumberLength == 0 || (contactNumberLength >= AppConstants.PHONE_MIN_LENGTH);
+        boolean isReceiverValid = etReceivedFrom.getText().length() > 0;
+
+        tvReceivedFromError.setVisibility(isReceiverValid ? View.GONE : View.VISIBLE);
+        tvContactNumberError.setVisibility(isContactNumberValid ? View.GONE : View.VISIBLE);
         tvSignatureError.setVisibility(viewModel.isSignatureAdded() ? View.GONE : View.VISIBLE);
-        return etReceivedFrom.getText().length() > 0 && viewModel.isSignatureAdded() && (contactNumberLength == 0 || contactNumberLength == 10);
+        return isContactNumberValid && viewModel.isSignatureAdded() && isReceiverValid;
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        if (editable == etReceivedFrom.getEditableText()) {
-            tvReceivedFromError.setVisibility(etReceivedFrom.getText().length() > 0 ? View.GONE : View.VISIBLE);
-        } else if (editable == etContactNumber.getEditableText()) {
-            tvContactNumberError.setVisibility(etContactNumber.getText().length() == 10 ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    private void sendSuccessBroadcast(){
+    private void sendSuccessBroadcast() {
         Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
         intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void printInvoice(){
+    private void printInvoice() {
         printerHelper = new PrinterHelper(this);
         List<PrintableLine> printableLines = printerHelper.generateDeliveryOrderPrintableLines(
                 viewModel.getDeliveryOrder(), viewModel.getDoItems(),
@@ -332,7 +324,7 @@ public class DropOffPaymentConfirmationActivity extends ParentAppCompatActivity 
 
     @Override
     public void onDestroy() {
-        if(printerHelper != null)
+        if (printerHelper != null)
             printerHelper.closeService();
         super.onDestroy();
     }

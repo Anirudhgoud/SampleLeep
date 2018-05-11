@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.tracotech.tracoman.R;
 import com.tracotech.tracoman.adapters.CountryCodeAdapter;
+import com.tracotech.tracoman.constants.AppConstants;
 import com.tracotech.tracoman.constants.SharedPreferenceKeys;
 import com.tracotech.tracoman.helpers.uihelpers.CountryCodeHelper;
 import com.tracotech.tracoman.helpers.uihelpers.EditTextHelper;
@@ -35,11 +36,6 @@ import butterknife.ButterKnife;
 
 
 public class LoginActivity extends ParentAppCompatActivity implements EditTextListener, AdapterView.OnItemSelectedListener {
-
-    private final int PHONE_NUMBER_LENGTH = 10;
-    private final int PASSWORD_MAX_LENGTH = 15;
-    private final int PASSWORD_MIN_LENGTH = 8;
-
 
     private LoginViewModel loginViewModel;
     @BindView(R.id.phone_editText)
@@ -124,19 +120,14 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
 
     private void performLoginOperation() {
         if (isValidUsernamePassword() && loginViewModel.getSelectedCountry() != null) {
+            showProgressDialog();
             loginViewModel.login(phoneEditText.getText().toString(), passwordEditText.getText().toString(),
                     loginViewModel.getSelectedCountry().getDialCode(), loginCallBack);
-            showProgressDialog();
         }
     }
 
     private boolean isValidUsernamePassword() {
-        final String PATTERN = ".*[A-Za-z0-9]+.*";
-        return phoneEditText.getText().toString().length() == PHONE_NUMBER_LENGTH &&
-                !passwordEditText.getText().toString().isEmpty() &&
-                passwordEditText.getText().toString().length() >= PASSWORD_MIN_LENGTH &&
-                passwordEditText.getText().toString().length() <= PASSWORD_MAX_LENGTH &&
-                passwordEditText.getText().toString().matches(PATTERN);
+        return phoneEditText.getText().length() >= AppConstants.PHONE_MIN_LENGTH && passwordEditText.getText().length() > 0;
     }
 
     private void attachEditTextListeners() {
@@ -164,7 +155,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     @Override
     public void afterTextChanged(Editable editable) {
         int textLength = editable.length();
-        int rightDrawableRes = textLength == PHONE_NUMBER_LENGTH ? R.drawable.ic_valid : textLength == 0 ? 0 : R.drawable.ic_invalid;
+        int rightDrawableRes = textLength >= AppConstants.PHONE_MIN_LENGTH ? R.drawable.ic_valid : textLength == 0 ? 0 : R.drawable.ic_invalid;
         phoneEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawableRes, 0);
     }
 
