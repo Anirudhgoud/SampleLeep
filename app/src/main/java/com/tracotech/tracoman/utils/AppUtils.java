@@ -8,9 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.tracotech.tracoman.constants.SharedPreferenceKeys;
-import com.tracotech.tracoman.helpers.uimodels.Country;
 import com.tracotech.tracoman.services.storage.LocalStorageService;
-import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +19,9 @@ import java.io.OutputStream;
  */
 
 public class AppUtils {
+
+    public final static String EMAIL_PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    public final static String PHONE_PATTERN = "[0-9]{4,}";
 
     public static String userCurrencySymbol(Context context) {
         return LocalStorageService.sharedInstance().
@@ -74,11 +75,13 @@ public class AppUtils {
     }
 
     public static boolean isValidEmail(String strEmail) {
-        if (strEmail.length() == 0)
-            return false;
-        else {
-            final String PATTERN = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-            return strEmail.matches(PATTERN);
-        }
+        return strEmail.matches(EMAIL_PATTERN);
     }
+
+    public static boolean isValidEmailOrContactNumber(String text) {
+        boolean isEmail = text.matches(EMAIL_PATTERN);
+        boolean isPhone = text.matches(PHONE_PATTERN);
+        return isEmail || isPhone;
+    }
+
 }

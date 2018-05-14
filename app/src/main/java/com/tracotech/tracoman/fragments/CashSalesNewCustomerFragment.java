@@ -168,7 +168,7 @@ public class CashSalesNewCustomerFragment extends Fragment implements View.OnCli
             etContactNumber.setError(getResources().getString(R.string.invalid_country_code));
             returnValue = false;
         }
-        if (strContactNumber.length() != 10) {
+        if (strContactNumber.length() < AppConstants.PHONE_MIN_LENGTH) {
             etContactNumber.setError(getResources().getString(R.string.invalid_contact_number));
             returnValue = false;
         }

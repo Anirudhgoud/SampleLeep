@@ -55,4 +55,7 @@ public interface UrlConstants {
 
     //Driver location update
     String DRIVER_CURRENT_LOCATION_URL = BASE_URL + "/current_location";
+
+    //FCM
+    String UPDATE_FCM_TOKEN = BASE_URL + "/fcm_token";
 }

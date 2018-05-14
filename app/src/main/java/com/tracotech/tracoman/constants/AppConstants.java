@@ -31,4 +31,7 @@ public interface AppConstants {
 
     int TYPE_DELIVERY = 1;
     int TYPE_RETURN = 2;
+
+    //Validations
+    int PHONE_MIN_LENGTH = 4;
 }
