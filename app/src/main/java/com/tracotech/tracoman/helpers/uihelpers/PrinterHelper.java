@@ -120,7 +120,7 @@ public class PrinterHelper {
             printableLines.add(new PrintableLine(itemsHeader, Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
             printableLines.addAll(cashSalesPrintableLines);
             printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-            printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+cashSalesTotal,
+            printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+StringUtils.amountToDisplay(cashSalesTotal),
                     Layout.Alignment.ALIGN_OPPOSITE, boldTextPaint));
             printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         }
@@ -133,16 +133,16 @@ public class PrinterHelper {
             printableLines.add(new PrintableLine(itemsHeader, Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
             printableLines.addAll(returnsPrintableLines);
             printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-            printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+returnsTotal,
+            printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+StringUtils.amountToDisplay(returnsTotal),
                     Layout.Alignment.ALIGN_OPPOSITE, boldTextPaint));
             printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         }
 
-        printableLines.add(new PrintableLine(resources.getString(R.string.grand_total)+" "+(cashSalesTotal-returnsTotal),
+        printableLines.add(new PrintableLine(resources.getString(R.string.grand_total)+" "+StringUtils.amountToDisplay((cashSalesTotal-returnsTotal)),
                 Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
         printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         printableLines.add(new PrintableLine(resources.getString(R.string.payment_collected) + " "
-                + paymentCollected, Layout.Alignment.ALIGN_NORMAL, boldTextPaint));
+                + StringUtils.amountToDisplay(paymentCollected), Layout.Alignment.ALIGN_NORMAL, boldTextPaint));
         printableLines.add(new PrintableLine(separator + "\n\n", Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         return printableLines;
     }
@@ -281,12 +281,12 @@ public class PrinterHelper {
         printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+cashSalesTotal,
                 Layout.Alignment.ALIGN_OPPOSITE, boldTextPaint));
         printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-        printableLines.add(new PrintableLine(resources.getString(R.string.grand_total)+" "+(cashSalesTotal-returnsTotal),
+        printableLines.add(new PrintableLine(resources.getString(R.string.grand_total)+" "+StringUtils.amountToDisplay(cashSalesTotal-returnsTotal),
                 Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
         printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         if(!fromHistory) {
             printableLines.add(new PrintableLine(resources.getString(R.string.payment_collected) + " "
-                    + paymentCollected, Layout.Alignment.ALIGN_NORMAL, boldTextPaint));
+                    + StringUtils.amountToDisplay(paymentCollected), Layout.Alignment.ALIGN_NORMAL, boldTextPaint));
             printableLines.add(new PrintableLine(separator + "\n\n", Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         } else {
             printableLines.add(new PrintableLine("\n\n", Layout.Alignment.ALIGN_CENTER, normalTextPaint));
