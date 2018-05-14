@@ -292,7 +292,8 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
                 viewModel.getCustomerInfo().getEmail(), viewModel.getCustomerInfo().getContactName(),
                 viewModel.getCustomerInfo().getContactNumber(), viewModel.getCustomerInfo().getDesignation(),
                 viewModel.getPostalCode(),
-                viewModel.getCustomerInfo().getBusinessTypeId(), viewModel.getCustomerInfo().getCountryDialCode());
+                viewModel.getCustomerInfo().getBusinessTypeId(), viewModel.getCustomerInfo().getCountryDialCode(),
+                etAddressLine1.getText().toString(), etAddressLine2.getText().toString(), etCity.getText().toString(), etState.getText().toString());
     }
 
     private void createNewLocationCall(int businessId) {
