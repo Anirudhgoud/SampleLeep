@@ -86,6 +86,7 @@ public class DropOffPaymentConfirmationViewModel extends DropOffDoBaseViewModel 
     }
 
     private void deleteOrderWithItems() {
+        doItems = getSelectedOrderItems();
         leepDatabase.deliveryOrderDao().deleteDeliveryOrder(deliveryOrderId);
         leepDatabase.deliveryOrderItemDao().deleteDeliveryItems(deliveryOrderId);
     }
