@@ -286,25 +286,30 @@ public class NewCustomerActivity extends ParentAppCompatActivity implements OnMa
     }
 
     private void createNewCustomerCall() {
+        CustomerInfo customerInfo = viewModel.getCustomerInfo();
+        if (customerInfo == null) return;
         showProgressDialog();
         viewModel.createNewCustomer(newCustomerCallBack, viewModel.getCountryId(),
-                viewModel.getCustomerInfo().getBusinessName(),
-                viewModel.getCustomerInfo().getEmail(), viewModel.getCustomerInfo().getContactName(),
-                viewModel.getCustomerInfo().getContactNumber(), viewModel.getCustomerInfo().getDesignation(),
+                customerInfo.getBusinessName(),
+                customerInfo.getEmail(), customerInfo.getContactName(),
+                customerInfo.getContactNumber(), customerInfo.getDesignation(),
                 viewModel.getPostalCode(),
-                viewModel.getCustomerInfo().getBusinessTypeId(), viewModel.getCustomerInfo().getCountryDialCode());
+                customerInfo.getBusinessTypeId(), customerInfo.getCountryDialCode(),
+                etAddressLine1.getText().toString(), etAddressLine2.getText().toString(), etCity.getText().toString(), etState.getText().toString());
     }
 
     private void createNewLocationCall(int businessId) {
+        CustomerInfo customerInfo = viewModel.getCustomerInfo();
+        if (customerInfo == null) return;
         showProgressDialog();
         viewModel.createNewLocation(newLocationCallBack, etLocation.getText().toString()
                 , etAddressLine1.getText().toString(), etAddressLine2.getText().toString(),
                 etCity.getText().toString(), etState.getText().toString(),
                 viewModel.getCountryId(), viewModel.getPostalCode(),
                 etAddressLine1.getText().toString(), viewModel.getLastLatLng().latitude,
-                viewModel.getLastLatLng().longitude, viewModel.getCustomerInfo().getContactName(),
-                viewModel.getCustomerInfo().getDesignation(), viewModel.getCustomerInfo().getEmail(),
-                viewModel.getCustomerInfo().getContactNumber(), businessId);
+                viewModel.getLastLatLng().longitude, customerInfo.getContactName(),
+                customerInfo.getDesignation(), customerInfo.getEmail(),
+                customerInfo.getContactNumber(), businessId);
     }
 
 

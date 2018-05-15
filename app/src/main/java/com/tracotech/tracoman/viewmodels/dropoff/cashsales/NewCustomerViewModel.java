@@ -108,9 +108,10 @@ public class NewCustomerViewModel extends AndroidViewModel {
 
     public void createNewCustomer(final UILevelNetworkCallback newCustomerCallBack, int countryId,
                                   String name, String contactEmail, String contactName, String contactNumber,
-                                  String designation, String postalCode, int businessCategoryId, String dialCode) {
+                                  String designation, String postalCode, int businessCategoryId, String dialCode,
+                                  String addressLine1, String addressLine2, String city, String state) {
         Map<String, Object> body = getNewCustomerBody(countryId, name, contactEmail, contactName,
-                contactNumber, designation, postalCode, businessCategoryId, dialCode);
+                contactNumber, designation, postalCode, businessCategoryId, dialCode, addressLine1, addressLine2, city, state);
         NetworkService.sharedInstance().getNetworkClient().makeFormPostRequest(getApplication(), UrlConstants.BUSINESSES_URL, true, body, (type, response, errorMessage) -> {
             switch (type) {
                 case NetworkConstants.SUCCESS:
@@ -133,16 +134,21 @@ public class NewCustomerViewModel extends AndroidViewModel {
     private  Map<String, Object> getNewCustomerBody( int countryId, String name, String contactEmail,
                                                      String contactName, String contactNumber,
                                                      String designation, String postalCode,
-                                                     int businessCategoryId, String dialcode){
+                                                     int businessCategoryId, String dialcode,
+                                                     String addressLine1, String addressLine2, String city, String state){
         Map<String, Object> body = new HashMap<>();
-        body.put("country_id", countryId);
         body.put("name", name);
-        body.put("contact_email_1", contactEmail);
-        body.put("contact_name_1", contactName);
-        body.put("contact_number_1", contactNumber);
-        body.put("designation_1", designation);
-        body.put("postal_code", postalCode);
         body.put("business_category_id", businessCategoryId);
+        body.put("address_line_1", addressLine1);
+        body.put("address_line_2", addressLine2);
+        body.put("city", city);
+        body.put("state", state);
+        body.put("postal_code", postalCode);
+        body.put("contact_name_1", contactName);
+        body.put("designation_1", designation);
+        body.put("contact_email_1", contactEmail);
+        body.put("contact_number_1", contactNumber);
+        body.put("country_id", countryId);
         body.put("country_code", dialcode);
         return  body;
     }
