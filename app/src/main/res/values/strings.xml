@@ -91,6 +91,7 @@
     <string name="picked_from_customer">Picked from Customer</string>
 
     <!--Collect Payment-->
+    <string name="payment_hint">0.00</string>
     <string name="do_payment_title">DO > Payment</string>
     <string name="item_list">Item List</string>
     <string name="view_item_list">View Item List</string>

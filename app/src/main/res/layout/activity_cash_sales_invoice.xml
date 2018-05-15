@@ -107,7 +107,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/noto_sans"
-                    android:hint="25,000"
+                    android:hint="@string/payment_hint"
                     android:inputType="numberDecimal"
                     android:textColor="@color/doTabTextColor"
                     android:textCursorDrawable="@null"
