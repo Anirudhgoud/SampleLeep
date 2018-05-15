@@ -3,7 +3,7 @@
     <shortcut
         android:shortcutId="pick_up"
         android:enabled="true"
-        android:icon="@drawable/ic_pickup_toolbar"
+        android:icon="@drawable/ic_shortcut_pick_up"
         android:shortcutLongLabel="@string/pickup"
         android:shortcutShortLabel="@string/pickup" >
         <intent
@@ -15,7 +15,7 @@
     <shortcut
         android:shortcutId="deliver_order"
         android:enabled="true"
-        android:icon="@drawable/ic_drop_off_toolbar"
+        android:icon="@drawable/ic_shortcut_delivery_orders"
         android:shortcutLongLabel="@string/delivery_orders"
         android:shortcutShortLabel="@string/delivery_orders" >
         <intent
@@ -27,7 +27,7 @@
     <shortcut
         android:shortcutId="returns"
         android:enabled="true"
-        android:icon="@drawable/ic_returns_title_icon"
+        android:icon="@drawable/ic_shortcut_returns"
         android:shortcutLongLabel="@string/returns"
         android:shortcutShortLabel="@string/returns" >
         <intent
@@ -39,7 +39,7 @@
     <shortcut
         android:shortcutId="cash_sales"
         android:enabled="true"
-        android:icon="@drawable/ic_cash_sales"
+        android:icon="@drawable/ic_shortcut_cash_sales"
         android:shortcutLongLabel="@string/cash_sales"
         android:shortcutShortLabel="@string/cash_sales">
         <intent
@@ -51,7 +51,7 @@
     <shortcut
         android:shortcutId="drop_off"
         android:enabled="true"
-        android:icon="@drawable/ic_drop_off_title"
+        android:icon="@drawable/ic_shortcut_drop_off"
         android:shortcutLongLabel="@string/dropoff"
         android:shortcutShortLabel="@string/dropoff" >
         <intent
