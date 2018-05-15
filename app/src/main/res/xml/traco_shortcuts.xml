@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="pick_up"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_pick_up"
+        android:shortcutLongLabel="@string/pickup"
+        android:shortcutShortLabel="@string/pickup" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.tracotech.tracoman.leep.pickup.pickup.PickupWarehouseActivity"
+            android:targetPackage="com.tracotech.tracoman" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="deliver_order"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_delivery_orders"
+        android:shortcutLongLabel="@string/delivery_orders"
+        android:shortcutShortLabel="@string/delivery_orders" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.tracotech.tracoman.leep.dropoff.deliveryorders.DropOffDeliveryOrdersActivity"
+            android:targetPackage="com.tracotech.tracoman" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="returns"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_returns"
+        android:shortcutLongLabel="@string/returns"
+        android:shortcutShortLabel="@string/returns" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.tracotech.tracoman.leep.pickup.returns.ReturnsCustomerSelectActivity"
+            android:targetPackage="com.tracotech.tracoman" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="cash_sales"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_cash_sales"
+        android:shortcutLongLabel="@string/cash_sales"
+        android:shortcutShortLabel="@string/cash_sales">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.tracotech.tracoman.leep.dropoff.cashsales.CashSalesActivity"
+            android:targetPackage="com.tracotech.tracoman" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="drop_off"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_drop_off"
+        android:shortcutLongLabel="@string/dropoff"
+        android:shortcutShortLabel="@string/dropoff" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.tracotech.tracoman.leep.dropoff.dropoff.DropoffWarehouseActivity"
+            android:targetPackage="com.tracotech.tracoman" />
+    </shortcut>
+</shortcuts>
