@@ -139,7 +139,6 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
         if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().
                 indexOfKey(doDetails.get(0).getOrderId()) >= 0) {
-            final int pos = (int) doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
             final int doId = doDetails.get(0).getOrderId();
             List<BaseListItem> listItems = new ArrayList<>();
             for(OrderItemEntity orderItemEntity : doDetails){
@@ -151,12 +150,13 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                     adapter.addItemsList(listItems, doId);
                     doViewModel.getDoUpdateMap().put(doId, true);
                     new Handler().postDelayed(() -> {
-                        RecyclerView.ViewHolder viewHolder = expandableListView.findViewHolderForAdapterPosition(doViewModel.getPositionMap().
-                                indexOfKey(doDetails.get(0).getOrderId()));
+                        int position = doViewModel.getPositionMap().
+                                indexOfKey(doDetails.get(0).getOrderId());
+                        RecyclerView.ViewHolder viewHolder = expandableListView.
+                                findViewHolderForAdapterPosition(position);
                         if(viewHolder != null && viewHolder.itemView != null) {
                             viewHolder.itemView.performClick();
-                            expandableListView.scrollToPosition(doViewModel.getPositionMap().
-                                    indexOfKey(doDetails.get(0).getOrderId()));
+                            expandableListView.scrollToPosition(position);
                         }
                     },10);
                 });
