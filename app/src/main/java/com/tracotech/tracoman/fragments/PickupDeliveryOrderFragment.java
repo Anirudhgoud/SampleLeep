@@ -52,20 +52,12 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     private ItemCheckListener itemCheckListener;
     private DoExpandableListAdapter adapter;
-    private DialogInterface.OnClickListener dialogPositiveClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            if(getActivity() != null && !getActivity().isFinishing())
-            ((PickupActivity)getActivity()).viewPager.setCurrentItem(1);
-        }
+    private DialogInterface.OnClickListener dialogPositiveClickListener = (dialog, which) -> {
+        if(getActivity() != null && !getActivity().isFinishing())
+        ((PickupActivity)getActivity()).viewPager.setCurrentItem(1);
     };
 
-    private DialogInterface.OnClickListener dialogNegativeClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-        }
-    };
+    private DialogInterface.OnClickListener dialogNegativeClickListener = (dialog, which) -> dialog.dismiss();
 
     private View.OnClickListener headerClickListener = new View.OnClickListener() {
         @Override
@@ -158,15 +150,15 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                 getActivity().runOnUiThread(() -> {
                     adapter.addItemsList(listItems, doId);
                     doViewModel.getDoUpdateMap().put(doId, true);
-
                     new Handler().postDelayed(() -> {
-                        RecyclerView.ViewHolder viewHolder = expandableListView.findViewHolderForAdapterPosition(pos);
-                        if(viewHolder != null &&
-                                viewHolder.itemView != null) {
+                        RecyclerView.ViewHolder viewHolder = expandableListView.findViewHolderForAdapterPosition(doViewModel.getPositionMap().
+                                indexOfKey(doDetails.get(0).getOrderId()));
+                        if(viewHolder != null && viewHolder.itemView != null) {
                             viewHolder.itemView.performClick();
-                            expandableListView.scrollToPosition(pos);
+                            expandableListView.scrollToPosition(doViewModel.getPositionMap().
+                                    indexOfKey(doDetails.get(0).getOrderId()));
                         }
-                    },1);
+                    },10);
                 });
         }
     }

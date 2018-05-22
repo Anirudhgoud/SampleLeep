@@ -256,6 +256,7 @@ public class DoExpandableListAdapter extends ExpandableRecyclerAdapter<BaseListI
         };
         public ItemViewHolder(View view) {
             super(view);
+            view.setBackgroundColor(view.getContext().getResources().getColor(R.color.white));
             productNameTv = view.findViewById(R.id.product_name_text_view);
             productQuantityTv = view.findViewById(R.id.quantity_text_view);
             amountTv = view.findViewById(R.id.amount_text_view);
