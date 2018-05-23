@@ -52,20 +52,13 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
 
     private ItemCheckListener itemCheckListener;
     private DoExpandableListAdapter adapter;
-    private DialogInterface.OnClickListener dialogPositiveClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            if(getActivity() != null && !getActivity().isFinishing())
-            ((PickupActivity)getActivity()).viewPager.setCurrentItem(1);
-        }
+    private DialogInterface.OnClickListener dialogPositiveClickListener = (dialog, which) -> {
+        PickupActivity activity = (PickupActivity) getActivity();
+        if(activity != null && !activity.isFinishing())
+        (activity).viewPager.setCurrentItem(1);
     };
 
-    private DialogInterface.OnClickListener dialogNegativeClickListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-        }
-    };
+    private DialogInterface.OnClickListener dialogNegativeClickListener = (dialog, which) -> dialog.dismiss();
 
     private View.OnClickListener headerClickListener = new View.OnClickListener() {
         @Override
@@ -147,7 +140,6 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     public void onChanged(@Nullable List<OrderItemEntity> doDetails) {
         if (doDetails != null && doDetails.size() > 0 && doViewModel.getPositionMap().
                 indexOfKey(doDetails.get(0).getOrderId()) >= 0) {
-            final int pos = (int) doViewModel.getPositionMap().get(doDetails.get(0).getOrderId());
             final int doId = doDetails.get(0).getOrderId();
             List<BaseListItem> listItems = new ArrayList<>();
             for(OrderItemEntity orderItemEntity : doDetails){
@@ -158,15 +150,16 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
                 getActivity().runOnUiThread(() -> {
                     adapter.addItemsList(listItems, doId);
                     doViewModel.getDoUpdateMap().put(doId, true);
-
                     new Handler().postDelayed(() -> {
-                        RecyclerView.ViewHolder viewHolder = expandableListView.findViewHolderForAdapterPosition(pos);
-                        if(viewHolder != null &&
-                                viewHolder.itemView != null) {
+                        int position = doViewModel.getPositionMap().
+                                indexOfKey(doDetails.get(0).getOrderId());
+                        RecyclerView.ViewHolder viewHolder = expandableListView.
+                                findViewHolderForAdapterPosition(position);
+                        if(viewHolder != null && viewHolder.itemView != null) {
                             viewHolder.itemView.performClick();
-                            expandableListView.scrollToPosition(pos);
+                            expandableListView.scrollToPosition(position);
                         }
-                    },1);
+                    },10);
                 });
         }
     }

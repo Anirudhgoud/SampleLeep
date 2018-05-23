@@ -278,7 +278,7 @@ public class PrinterHelper {
         printableLines.add(new PrintableLine(itemsHeader, Layout.Alignment.ALIGN_NORMAL, normalTextPaint));
         printableLines.addAll(generateCashSalesPrintableItems(doItems, currencySymbol, normalTextPaint));
         printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
-        printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+cashSalesTotal,
+        printableLines.add(new PrintableLine(resources.getString(R.string.total)+" "+StringUtils.amountToDisplay(cashSalesTotal),
                 Layout.Alignment.ALIGN_OPPOSITE, boldTextPaint));
         printableLines.add(new PrintableLine(separator, Layout.Alignment.ALIGN_CENTER, normalTextPaint));
         printableLines.add(new PrintableLine(resources.getString(R.string.grand_total)+" "+StringUtils.amountToDisplay(cashSalesTotal-returnsTotal),
