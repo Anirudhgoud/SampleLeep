@@ -53,8 +53,9 @@ public class PickupDeliveryOrderFragment extends Fragment implements Observer<Li
     private ItemCheckListener itemCheckListener;
     private DoExpandableListAdapter adapter;
     private DialogInterface.OnClickListener dialogPositiveClickListener = (dialog, which) -> {
-        if(getActivity() != null && !getActivity().isFinishing())
-        ((PickupActivity)getActivity()).viewPager.setCurrentItem(1);
+        PickupActivity activity = (PickupActivity) getActivity();
+        if(activity != null && !activity.isFinishing())
+        (activity).viewPager.setCurrentItem(1);
     };
 
     private DialogInterface.OnClickListener dialogNegativeClickListener = (dialog, which) -> dialog.dismiss();
