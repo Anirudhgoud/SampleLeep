@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.tracotech.tracoman.R;
 import com.tracotech.tracoman.adapters.ProductListAdapter;
-import com.tracotech.tracoman.constants.AppConstants;
 import com.tracotech.tracoman.constants.IntentConstants;
 import com.tracotech.tracoman.helpers.customviews.LeepSuccessDialog;
 import com.tracotech.tracoman.interfaces.SuccessDialogEventListener;
@@ -22,13 +21,11 @@ import com.tracotech.tracoman.interfaces.UILevelNetworkCallback;
 import com.tracotech.tracoman.leep.main.HomeActivity;
 import com.tracotech.tracoman.leep.main.ParentAppCompatActivity;
 import com.tracotech.tracoman.services.room.entities.StockProductEntity;
-import com.tracotech.tracoman.utils.AppUtils;
 import com.tracotech.tracoman.utils.LogUtils;
 import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.dropoff.dropoff.DropoffConfirmationViewModel;
 
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

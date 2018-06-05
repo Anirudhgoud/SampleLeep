@@ -199,7 +199,6 @@ public class HomeActivity extends ParentAppCompatActivity {
                     Summary summary = (Summary) uiModels.get(0);
                     viewModel.setSummary(summary);
                     populateUiCount(summary);
-
                 });
             }
         }
@@ -289,9 +288,12 @@ public class HomeActivity extends ParentAppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageScrollStateChanged(int state) {}
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrollStateChanged(int state) {
 
+            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                
+            }
             public void onPageSelected(int position) {
                 if(position == 0)
                     viewModel.setDisplayedDashboard("");
