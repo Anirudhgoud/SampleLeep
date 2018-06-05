@@ -21,13 +21,11 @@ import com.tracotech.tracoman.interfaces.UILevelNetworkCallback;
 import com.tracotech.tracoman.leep.main.HomeActivity;
 import com.tracotech.tracoman.leep.main.ParentAppCompatActivity;
 import com.tracotech.tracoman.services.room.entities.StockProductEntity;
-import com.tracotech.tracoman.utils.AppUtils;
 import com.tracotech.tracoman.utils.LogUtils;
 import com.tracotech.tracoman.utils.StringUtils;
 import com.tracotech.tracoman.viewmodels.dropoff.dropoff.DropoffConfirmationViewModel;
 
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

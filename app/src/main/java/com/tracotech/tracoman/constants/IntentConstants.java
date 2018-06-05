@@ -29,4 +29,5 @@ public interface IntentConstants {
     String RETURN_REASONS = "return_reasons";
     String IS_PICKUP = "is_pickup";
     String PICKUP_SUCCESS = "pickup_success";
+    String SUCCESS_TAG = "success_tag";
 }
