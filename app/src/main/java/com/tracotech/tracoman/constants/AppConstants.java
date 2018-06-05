@@ -34,4 +34,8 @@ public interface AppConstants {
 
     //Validations
     int PHONE_MIN_LENGTH = 4;
+
+    String TAG_PICKUP = "0";
+    String TAG_DROPOFF = "1";
+    String TAG_INFO = "2";
 }

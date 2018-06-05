@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -62,6 +63,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.tracotech.tracoman.constants.AppConstants.TAG_DROPOFF;
+import static com.tracotech.tracoman.constants.AppConstants.TAG_INFO;
+import static com.tracotech.tracoman.constants.AppConstants.TAG_PICKUP;
+
 public class HomeActivity extends ParentAppCompatActivity {
 
     @BindView(R.id.left_toolbar_button)
@@ -89,7 +94,9 @@ public class HomeActivity extends ParentAppCompatActivity {
     private View.OnClickListener dashboardItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            setupInnerDashboard((String) view.getTag());
+            String tag = (String) view.getTag();
+            viewModel.setDisplayedDashboard(tag);
+            setupInnerDashboard(tag);
             viewPager.setCurrentItem(1);
             setToolbarLeftIcon(R.drawable.ic_home);
         }
@@ -192,6 +199,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     Summary summary = (Summary) uiModels.get(0);
                     viewModel.setSummary(summary);
                     populateUiCount(summary);
+
                 });
             }
         }
@@ -280,6 +288,15 @@ public class HomeActivity extends ParentAppCompatActivity {
         DashboardPagerAdapter adapter = new DashboardPagerAdapter();
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            public void onPageSelected(int position) {
+                if(position == 0)
+                    viewModel.setDisplayedDashboard("");
+            }
+        });
     }
 
     @Override
@@ -337,10 +354,6 @@ public class HomeActivity extends ParentAppCompatActivity {
     }
 
     private void setupInnerDashboard(String tag) {
-        final String TAG_PICKUP = "0";
-        final String TAG_DROPOFF = "1";
-        final String TAG_INFO = "2";
-
         Summary summary = viewModel.getSummary();
         switch (tag) {
             case TAG_PICKUP:
@@ -505,7 +518,8 @@ public class HomeActivity extends ParentAppCompatActivity {
                 realPath = PathUtil.getPath(this, uri);
                 if(realPath != null && !realPath.isEmpty()) {
                     File sourceFile = new File(realPath);
-                    Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
+                    Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().
+                            placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
                     viewModel.uploadProfileImage(sourceFile);
                 }
             } catch (URISyntaxException e) {
@@ -536,9 +550,14 @@ public class HomeActivity extends ParentAppCompatActivity {
         int pickupCount = summary.getPickUpCount();
         int dropoffCount = summary.getDropoffCount();
         int informationCount = summary.getInformationCount();
-        setCountValues(relativeLayout_pickup_cardview,StringUtils.formatToOneDecimal(pickupCount == -1 ? 0 : pickupCount),R.drawable.pickup_icon_bg);
-        setCountValues(relativeLayout_drop_off_cardview,StringUtils.formatToOneDecimal(dropoffCount == -1 ? 0 : dropoffCount),R.drawable.drop_off_icon_bg);
-        setCountValues(relativeLayout_information_cardview,StringUtils.formatToOneDecimal(informationCount == -1 ? 0 : informationCount),R.drawable.info_icon_bg);
+        setCountValues(relativeLayout_pickup_cardview, StringUtils.formatToOneDecimal(
+                pickupCount == -1 ? 0 : pickupCount),R.drawable.pickup_icon_bg);
+        setCountValues(relativeLayout_drop_off_cardview, StringUtils.formatToOneDecimal(
+                dropoffCount == -1 ? 0 : dropoffCount),R.drawable.drop_off_icon_bg);
+        setCountValues(relativeLayout_information_cardview, StringUtils.formatToOneDecimal(
+                informationCount == -1 ? 0 : informationCount),R.drawable.info_icon_bg);
+        if(!viewModel.getDisplayedInnerDashboard().equals(""))
+            setupInnerDashboard(viewModel.getDisplayedInnerDashboard());
     }
 
     private void startDriverLocationUpdateService(){

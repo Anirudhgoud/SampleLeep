@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.tracotech.tracoman.R;
 import com.tracotech.tracoman.adapters.ProductListAdapter;
+import com.tracotech.tracoman.constants.AppConstants;
 import com.tracotech.tracoman.constants.IntentConstants;
 import com.tracotech.tracoman.helpers.customviews.LeepSuccessDialog;
 import com.tracotech.tracoman.interfaces.SuccessDialogEventListener;
@@ -203,6 +204,7 @@ public class DropoffToWarehouseConfirmationActivity extends ParentAppCompatActiv
     private void sendSuccessBroadcast(){
         Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
         intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
+        intent.putExtra(IntentConstants.SUCCESS_TAG, AppConstants.TAG_DROPOFF);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 

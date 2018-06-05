@@ -219,6 +219,7 @@ public class PickupConfirmationActivity extends ParentAppCompatActivity {
     private void sendSuccessBroadcast(){
         Intent intent = new Intent(IntentConstants.TASK_SUCCESSFUL);
         intent.putExtra(IntentConstants.TASK_SUCCESSFUL, true);
+        intent.putExtra(IntentConstants.SUCCESS_TAG, AppConstants.TAG_PICKUP);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

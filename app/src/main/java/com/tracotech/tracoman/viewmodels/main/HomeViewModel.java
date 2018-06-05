@@ -36,6 +36,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     private AppDatabase leepDatabase;
     private Summary summary = new Summary();
+    private String displayedInnerDashboard = "";
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -138,5 +139,13 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void setSummary(Summary summary) {
         this.summary = summary;
+    }
+
+    public void setDisplayedDashboard(String tag) {
+        displayedInnerDashboard = tag;
+    }
+
+    public String getDisplayedInnerDashboard() {
+        return displayedInnerDashboard;
     }
 }
