@@ -62,7 +62,7 @@ public class LoginViewModel extends AndroidViewModel {
         Context context = getApplication().getApplicationContext();
         NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(context, UrlConstants.LOGIN_URL,
                 false, bodyParams, (type, response, errorMessage) -> {
-                    switch (type){
+                    switch (type) {
                         case NetworkConstants.SUCCESS:
                             JSONObject userObj = (JSONObject) response.opt(0);
                             storeUserMeta(userObj);
@@ -89,13 +89,13 @@ public class LoginViewModel extends AndroidViewModel {
         LocalStorageService.sharedInstance().getLocalFileStore().store(context, SharedPreferenceKeys.SELECTED_COUNTRY,
                 new Gson().toJson(selectedCountry));
         JSONObject driver = userObj.optJSONObject("driver");
-        if(driver != null){
+        if (driver != null) {
             int driverId = driver.optInt("id");
             LocalStorageService.sharedInstance().getLocalFileStore().store(context,
                     SharedPreferenceKeys.DRIVER_ID, driverId);
         }
         JSONObject currency = userObj.optJSONObject("currency");
-        if(currency != null) {
+        if (currency != null) {
             String symbol = currency.optString("symbol");
             LocalStorageService.sharedInstance().getLocalFileStore().store(context, SharedPreferenceKeys.CURRENCY_SYMBOL, symbol);
         }
@@ -109,7 +109,7 @@ public class LoginViewModel extends AndroidViewModel {
         });
     }
 
-    private String getFCMToken(){
+    private String getFCMToken() {
         String fcmToken = FirebaseInstanceId.getInstance().getToken();
         LogUtils.error("", "Refreshed token: " + fcmToken);
         return fcmToken;

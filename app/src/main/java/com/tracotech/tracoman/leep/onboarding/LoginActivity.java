@@ -139,7 +139,7 @@ public class LoginActivity extends ParentAppCompatActivity implements EditTextLi
     private void handleLoginResponse(List<?> uiModels, boolean isDialogToBeShown, String errorMessage) {
         if (errorMessage != null)
             showNetworkRelatedDialogs(errorMessage);
-        else{
+        else {
             loginViewModel.sendFCMTokenToServer();
             startHomeActivity();
         }

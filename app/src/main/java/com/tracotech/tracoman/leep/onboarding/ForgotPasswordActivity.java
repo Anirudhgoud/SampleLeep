@@ -28,7 +28,7 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
     private UILevelNetworkCallback submitEmailCallback = (uiModels, isDialogToBeShown, errorMessage, toLogout) -> runOnUiThread(() -> {
         dismissProgressDialog();
         if (uiModels != null) finish();
-        else if (isDialogToBeShown){
+        else if (isDialogToBeShown) {
             showNetworkRelatedDialogs(errorMessage);
         }
     });
@@ -75,4 +75,5 @@ public class ForgotPasswordActivity extends ParentAppCompatActivity implements E
         int rightDrawableRes = AppUtils.isValidEmailOrContactNumber(emailEditText.getText().toString()) ? R.drawable.ic_valid : editable.length() == 0 ? 0 : R.drawable.ic_invalid;
         emailEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, rightDrawableRes, 0);
     }
+
 }

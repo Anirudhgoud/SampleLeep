@@ -69,9 +69,9 @@ public class AppUtils {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private static InputMethodManager inputMethodManager(View view){
+    private static InputMethodManager inputMethodManager(View view) {
         if (view == null) return null;
-        return  (InputMethodManager)view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        return (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     public static boolean isValidEmail(String strEmail) {

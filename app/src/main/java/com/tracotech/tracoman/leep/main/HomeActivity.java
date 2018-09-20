@@ -111,7 +111,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     if (summary.getDropOffDeliveryOrdersCount() != 0) {
                         Intent doIntent = new Intent(HomeActivity.this, DropOffDeliveryOrdersActivity.class);
                         startActivity(doIntent);
-                    }else {
+                    } else {
                         Toast.makeText(HomeActivity.this, getString(R.string.no_delivery_orders), Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -125,15 +125,15 @@ public class HomeActivity extends ParentAppCompatActivity {
                     if (summary.getPickUpFromWarehouse() != 0) {
                         Intent pickupIntent = new Intent(HomeActivity.this, PickupWarehouseActivity.class);
                         startActivityForResult(pickupIntent, START_PICKUP_ACTIVITY_CODE);
-                    }else {
+                    } else {
                         Toast.makeText(HomeActivity.this, getString(R.string.no_pickup_orders), Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case InnerDashboardUiModel.TAG_REPORTS:
-                    if (summary.getInformationOnReports() != 0){
+                    if (summary.getInformationOnReports() != 0) {
                         Intent reportsIntent = new Intent(HomeActivity.this, ReportsActivity.class);
                         startActivity(reportsIntent);
-                    }else {
+                    } else {
                         Toast.makeText(HomeActivity.this, getString(R.string.no_reports_available), Toast.LENGTH_SHORT).show();
                     }
 
@@ -142,15 +142,15 @@ public class HomeActivity extends ParentAppCompatActivity {
                     if (summary.getInformationOnHistory() != 0) {
                         Intent historyIntent = new Intent(HomeActivity.this, HistoryActivity.class);
                         startActivity(historyIntent);
-                    }else {
+                    } else {
                         Toast.makeText(HomeActivity.this, getString(R.string.no_history_available), Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case InnerDashboardUiModel.TAG_STOCKS:
-                    if (summary.getInformationStocks() != 0){
+                    if (summary.getInformationStocks() != 0) {
                         Intent stocksIntent = new Intent(HomeActivity.this, StocksActivity.class);
                         startActivity(stocksIntent);
-                    }else {
+                    } else {
                         Toast.makeText(HomeActivity.this, getString(R.string.no_stocks_available), Toast.LENGTH_SHORT).show();
                     }
 
@@ -159,7 +159,7 @@ public class HomeActivity extends ParentAppCompatActivity {
                     if (summary.getDropOffToWarehouse() != 0) {
                         Intent dropoffIntent = new Intent(HomeActivity.this, DropoffWarehouseActivity.class);
                         startActivity(dropoffIntent);
-                    }else {
+                    } else {
                         Toast.makeText(HomeActivity.this, getString(R.string.no_dropoff_orders), Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -191,7 +191,7 @@ public class HomeActivity extends ParentAppCompatActivity {
             if (uiModels == null) {
                 if (toLogout) {
                     logoutUser();
-                } else if (isDialogToBeShown){
+                } else if (isDialogToBeShown) {
                     showNetworkRelatedDialogs(errorMessage);
                 }
             } else if (uiModels.size() > 0) {
@@ -250,11 +250,11 @@ public class HomeActivity extends ParentAppCompatActivity {
     }
 
     @Override
-    public void onNewIntent(Intent intent){
-        if(intent != null && intent.getBooleanExtra(IntentConstants.TASK_SUCCESSFUL, false)){
+    public void onNewIntent(Intent intent) {
+        if (intent != null && intent.getBooleanExtra(IntentConstants.TASK_SUCCESSFUL, false)) {
             viewPager.setCurrentItem(0);
             viewModel.getStocks();
-            if(intent.getBooleanExtra(IntentConstants.PICKUP_SUCCESS, false))
+            if (intent.getBooleanExtra(IntentConstants.PICKUP_SUCCESS, false))
                 viewModel.getDriverProfile(driverProfileCallback);
         }
     }
@@ -291,11 +291,13 @@ public class HomeActivity extends ParentAppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
             }
+
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                
+
             }
+
             public void onPageSelected(int position) {
-                if(position == 0)
+                if (position == 0)
                     viewModel.setDisplayedDashboard("");
             }
         });
@@ -518,7 +520,7 @@ public class HomeActivity extends ParentAppCompatActivity {
             String realPath;
             try {
                 realPath = PathUtil.getPath(this, uri);
-                if(realPath != null && !realPath.isEmpty()) {
+                if (realPath != null && !realPath.isEmpty()) {
                     File sourceFile = new File(realPath);
                     Glide.with(this).load(uri).apply(new RequestOptions().circleCrop().
                             placeholder(R.drawable.ic_profile_placeholder)).into(profileImage);
@@ -542,7 +544,8 @@ public class HomeActivity extends ParentAppCompatActivity {
         ((TextView) layout.findViewById(R.id.sub_text)).setText(getResources().getText(belowText));
 
     }
-    private  void setCountValues(RelativeLayout layout,String count,int background) {
+
+    private void setCountValues(RelativeLayout layout, String count, int background) {
         TextView tvCount = layout.findViewById(R.id.count_text);
         tvCount.setText(count);
         tvCount.setBackground(ContextCompat.getDrawable(HomeActivity.this, background));
@@ -553,16 +556,16 @@ public class HomeActivity extends ParentAppCompatActivity {
         int dropoffCount = summary.getDropoffCount();
         int informationCount = summary.getInformationCount();
         setCountValues(relativeLayout_pickup_cardview, StringUtils.formatToOneDecimal(
-                pickupCount == -1 ? 0 : pickupCount),R.drawable.pickup_icon_bg);
+                pickupCount == -1 ? 0 : pickupCount), R.drawable.pickup_icon_bg);
         setCountValues(relativeLayout_drop_off_cardview, StringUtils.formatToOneDecimal(
-                dropoffCount == -1 ? 0 : dropoffCount),R.drawable.drop_off_icon_bg);
+                dropoffCount == -1 ? 0 : dropoffCount), R.drawable.drop_off_icon_bg);
         setCountValues(relativeLayout_information_cardview, StringUtils.formatToOneDecimal(
-                informationCount == -1 ? 0 : informationCount),R.drawable.info_icon_bg);
-        if(!viewModel.getDisplayedInnerDashboard().equals(""))
+                informationCount == -1 ? 0 : informationCount), R.drawable.info_icon_bg);
+        if (!viewModel.getDisplayedInnerDashboard().equals(""))
             setupInnerDashboard(viewModel.getDisplayedInnerDashboard());
     }
 
-    private void startDriverLocationUpdateService(){
+    private void startDriverLocationUpdateService() {
         Intent intent = new Intent(this, DriverLocationUpdateService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }

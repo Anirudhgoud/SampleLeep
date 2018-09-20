@@ -36,7 +36,7 @@ import java.util.Vector;
  * Created by vishalm on 07/02/18.
  */
 
-public abstract class ParentAppCompatActivity extends AppCompatActivity implements View.OnClickListener{
+public abstract class ParentAppCompatActivity extends AppCompatActivity implements View.OnClickListener {
 
     public abstract void onActivityCreated(Bundle savedInstanceState);
 
@@ -53,8 +53,8 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     private BroadcastReceiver connectivityChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(networkChangeListener != null
-                    && new NetworkChecker().isNetworkAvailable(ParentAppCompatActivity.this)){
+            if (networkChangeListener != null
+                    && new NetworkChecker().isNetworkAvailable(ParentAppCompatActivity.this)) {
                 closeAllNetworkDialogs();
                 networkChangeListener.onNetworkConnected();
             }
@@ -62,7 +62,7 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onActivityCreated(savedInstanceState);
     }
@@ -73,13 +73,13 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
         dismissProgressDialog();
         unregisterReceiverForNetworkChange();
     }
 
-    protected void setToolbarLeftIcon(int resId){
+    protected void setToolbarLeftIcon(int resId) {
         Button leftToolbarButton = findViewById(R.id.left_toolbar_button);
         leftToolbarButton.setVisibility(View.VISIBLE);
         leftToolbarButton.setOnClickListener(this);
@@ -87,27 +87,27 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         leftToolbarButton.setCompoundDrawablesWithIntrinsicBounds(leftButtonDrawable, null, null, null);
     }
 
-    protected void setTitleIconAndText(String title, int resId){
+    protected void setTitleIconAndText(String title, int resId) {
         findViewById(R.id.title_layout).setVisibility(View.VISIBLE);
-        ((TextView)findViewById(R.id.activity_title)).setText(title);
-        if(resId != -1) {
+        ((TextView) findViewById(R.id.activity_title)).setText(title);
+        if (resId != -1) {
             findViewById(R.id.title_icon).setBackgroundResource(resId);
         }
     }
 
-    protected void setToolbarRightText(String text){
+    protected void setToolbarRightText(String text) {
         TextView leftToolbarButton = findViewById(R.id.right_toolbar_text);
         leftToolbarButton.setText(text);
         leftToolbarButton.setVisibility(View.VISIBLE);
         leftToolbarButton.setOnClickListener(this);
     }
 
-    protected void setToolBarColor(int colorId){
+    protected void setToolBarColor(int colorId) {
         RelativeLayout toolbarContainer = findViewById(R.id.toolbar_container);
         toolbarContainer.setBackgroundColor(colorId);
     }
 
-    public void logoutUser(){
+    public void logoutUser() {
         LocalStorageService.sharedInstance().getLocalFileStore().clearAllPreferences(this);
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -121,38 +121,38 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         onClickWithId(view.getId());
     }
 
-    private void registerReceiverForNetworkChange(){
+    private void registerReceiverForNetworkChange() {
         registerReceiver(connectivityChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
-    private void unregisterReceiverForNetworkChange(){
-        if(connectivityChangeReceiver != null){
-            try{
+    private void unregisterReceiverForNetworkChange() {
+        if (connectivityChangeReceiver != null) {
+            try {
                 unregisterReceiver(connectivityChangeReceiver);
-            }catch(IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    protected void startNetworkMonitoring(NetworkChangeListener networkChangeListener){
+    protected void startNetworkMonitoring(NetworkChangeListener networkChangeListener) {
         this.networkChangeListener = networkChangeListener;
         registerReceiverForNetworkChange();
     }
 
-    public void showNetworkRelatedDialogs(String message){
+    public void showNetworkRelatedDialogs(String message) {
         alertDialogHelper = new AlertDialogHelper();
         alertDialogHelper.showOkAlertDialog(this, getResources().getString(R.string.error), message);
     }
 
     public void showConfirmationDialog(String title, String message,
                                        DialogInterface.OnClickListener positive,
-                                       DialogInterface.OnClickListener negative){
+                                       DialogInterface.OnClickListener negative) {
         alertDialogHelper = new AlertDialogHelper();
         alertDialogHelper.showYesNoAlertDialog(this, title, message, positive, negative);
     }
 
-    public void showProgressDialog(){
+    public void showProgressDialog() {
         if (progressBarDialog == null) {
             progressBarDialog = new Dialog(ParentAppCompatActivity.this, R.style.ProgressBarTheme);
             progressBarDialog.setContentView(LayoutInflater.from(this).inflate(
@@ -177,9 +177,9 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
     }
 
     private void closeAllNetworkDialogs() {
-        if(alertDialogHelper != null){
+        if (alertDialogHelper != null) {
             Vector<AlertDialog> dialogs = alertDialogHelper.getDialogs();
-            for (final AlertDialog dialog : dialogs){
+            for (final AlertDialog dialog : dialogs) {
                 if (dialog != null) {
                     runOnUiThread(dialog::dismiss);
                 }
@@ -188,19 +188,19 @@ public abstract class ParentAppCompatActivity extends AppCompatActivity implemen
         }
     }
 
-    protected boolean isPermissionGranted(String[] permissions){
-        for(String permission : permissions){
-            if(ActivityCompat.checkSelfPermission(this,
-                    permission) != PackageManager.PERMISSION_GRANTED){
+    protected boolean isPermissionGranted(String[] permissions) {
+        for (String permission : permissions) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
         return true;
     }
 
-    protected void requestPermission(String[] permissions, OnPermissionResult permissionResult){
+    protected void requestPermission(String[] permissions, OnPermissionResult permissionResult) {
         this.permissionResult = permissionResult;
-        if(!isPermissionGranted(permissions)){
+        if (!isPermissionGranted(permissions)) {
             ActivityCompat.requestPermissions(this,
                     permissions, 100);
         }

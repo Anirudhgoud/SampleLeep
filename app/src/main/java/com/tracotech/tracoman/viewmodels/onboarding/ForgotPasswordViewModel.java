@@ -29,7 +29,7 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
     public void submitEmail(String text, final UILevelNetworkCallback submitEmailCallback) {
         NetworkService.sharedInstance().getNetworkClient().makeJsonPostRequest(getApplication(), FORGOT_PASSWORD_URL,
                 false, generateBodyParams(text), (type, response, errorMessage) -> {
-                    switch (type){
+                    switch (type) {
                         case NetworkConstants.SUCCESS:
                             submitEmailCallback.onResponseReceived(Collections.emptyList(), false, null, false);
                             break;
@@ -42,7 +42,7 @@ public class ForgotPasswordViewModel extends AndroidViewModel {
                 });
     }
 
-    private Map<String, Object> generateBodyParams(String text){
+    private Map<String, Object> generateBodyParams(String text) {
         Map<String, Object> bodyParams = new HashMap<>();
         Map<String, Object> innerParams = new HashMap<>();
         if (text.matches(AppUtils.EMAIL_PATTERN))

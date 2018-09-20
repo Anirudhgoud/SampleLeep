@@ -41,7 +41,7 @@ public class NetworkClient {
 
     public void makeFormPutRequest(Context context, String requestUrl, boolean isAuthRequired, Map<String, Object> bodyParams,
                                    final NetworkAPICallback networkAPICallback) {
-        requestHandler(context, requestUrl, isAuthRequired, bodyParams,  RequestConstants.CONTENT_TYPE_FORM,
+        requestHandler(context, requestUrl, isAuthRequired, bodyParams, RequestConstants.CONTENT_TYPE_FORM,
                 NetworkConstants.PUT_REQUEST, networkAPICallback, null);
     }
 
@@ -130,8 +130,8 @@ public class NetworkClient {
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
         if (file != null && imageFileKey != null)
-                builder.addFormDataPart(imageFileKey, imageFileKey + ".jpg", RequestBody.create(MediaType.parse("image/jpeg"), file));
-        if (bodyParams != null){
+            builder.addFormDataPart(imageFileKey, imageFileKey + ".jpg", RequestBody.create(MediaType.parse("image/jpeg"), file));
+        if (bodyParams != null) {
             for (Map.Entry<String, Object> entry : bodyParams.entrySet()) {
                 builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
                 LogUtils.error("", entry.getValue().toString());
@@ -145,9 +145,13 @@ public class NetworkClient {
                 .addHeader(RequestConstants.KEY_USER_AGENT, RequestConstants.USER_AGENT)
                 .url(requestUrl);
         if (isAuthRequired) requestBuilder.addHeader("Authorization", getOAuthToken(context));
-        switch (requestType){
-            case NetworkConstants.POST_REQUEST: requestBuilder.post(formBody); break;
-            case NetworkConstants.PUT_REQUEST: requestBuilder.put(formBody); break;
+        switch (requestType) {
+            case NetworkConstants.POST_REQUEST:
+                requestBuilder.post(formBody);
+                break;
+            case NetworkConstants.PUT_REQUEST:
+                requestBuilder.put(formBody);
+                break;
         }
 
         Request request = requestBuilder.build();
